@@ -1,0 +1,6 @@
+{
+  "name": "GitInfoGraphics",
+  "description": "Rule-based client-side engine and studio for generating beautiful, dynamic SVG infographics from GitHub repositories and READMEs, modularized for web and GitHub Actions.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

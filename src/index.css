@@ -1,0 +1,44 @@
+@import "tailwindcss";
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    background-color: #FAFAF9;
+    color: #1C1917;
+    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    overflow-x: hidden;
+    margin: 0;
+    padding: 0;
+  }
+
+  ::selection {
+    background-color: #1C1917;
+    color: #FAFAF9;
+  }
+}
+
+/* Subtle, minimal Scandinavian scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #FAFAF9;
+}
+::-webkit-scrollbar-thumb {
+  background: #E7E5E4;
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #D6D3D1;
+}
+
+/* Responsive SVG styling guarantee: never force container horizontal scroll */
+svg {
+  max-width: 100%;
+  height: auto;
+}
