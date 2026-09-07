@@ -19,29 +19,27 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
         with:
-          node-version: 20
-          cache: 'npm'
+          bun-version: latest
 
       - name: Install dependencies
-        run: npm ci
+        run: bun install
 
       - name: Run Type Check & Lint
-        run: npm run lint
+        run: bun run lint
 
       - name: Run Unit Tests
-        run: npm test
+        run: bun run test
 
       - name: Build Production Assets
-        run: npm run build
+        run: bun run build
 
-      # Optional but highly recommended: saves the built files so you can 
-      # inspect them or deploy them later without rebuilding.
+      # Saves the built files so you can inspect them or deploy them later
       - name: Upload Build Artifacts
         uses: actions/upload-artifact@v4
         with:
           name: production-build
-          path: dist/ # ⚠️ Change to 'build/' if you are using Create React App
+          path: dist/ # Matches Vite's default output and your "clean" script
           retention-days: 7
