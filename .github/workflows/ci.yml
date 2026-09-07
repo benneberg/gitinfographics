@@ -1,4 +1,4 @@
-name: CI Pipeline
+name: CI & Deploy Pipeline
 
 on:
   push:
@@ -6,12 +6,19 @@ on:
   pull_request:
     branches: [main, master]
 
-# Security best practice: restrict default permissions
+# Grant GITHUB_TOKEN the permissions required to make a Pages deployment
 permissions:
   contents: read
+  pages: write
+  id-token: write
+
+# Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
 
 jobs:
-  validate:
+  validate-and-build:
     name: Lint, Test & Build
     runs-on: ubuntu-latest
 
@@ -36,10 +43,15 @@ jobs:
       - name: Build Production Assets
         run: bun run build
 
-      # Saves the built files so you can inspect them or deploy them later
-      - name: Upload Build Artifacts
-        uses: actions/upload-artifact@v4
+      # --- NEW: GitHub Pages Deployment Steps ---
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
         with:
-          name: production-build
-          path: dist/ # Matches Vite's default output and your "clean" script
-          retention-days: 7
+          path: './dist'
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
