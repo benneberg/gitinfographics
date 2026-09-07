@@ -1,217 +1,516 @@
-# Infographic Studio — TODO
+# GitInfoGraphics — TODO
 
----
+> Deterministic rule-based engine for generating Scandinavian minimalist SVG infographics
 
-## 🚀 High Impact
+* * *
 
-### 1. Section-Level Regeneration
-- [ ] **Add per-section "Regenerate" buttons** in the Result preview
-- [ ] **Scope the LLM prompt** to only the selected section (headline, value prop, highlights, capabilities, how-it-works, tech stack, audience, CTA)
-- [ ] **Preserve other sections** from the existing JSON spec during regeneration
-- [ ] **Track token/cost savings** vs. full regeneration (nice-to-have UX touch)
+## 🚀 MIGRATION FROM INFOGRAPHIC STUDIO
 
-**Rationale:** Power users often want to tweak one section without burning a full context window. This is the biggest UX gap in the current one-shot flow.
+Permalink:  MIGRATION FROM INFOGRAPHIC STUDIO
 
----
+### Phase 1: Core Extraction (Week 1)
 
-### 2. Offline Resilience (Service Worker)
-- [ ] **Register a lightweight Service Worker** that caches the app shell (`index.html`, inline CSS/JS)
-- [ ] **Cache previous generations** in IndexedDB so they survive browser restarts
-- [ ] **Add an offline indicator** in the UI when the network is unavailable
-- [ ] **Gracefully degrade** source fetching (disable URL fetch, keep pasted text & local projects working)
+Permalink: Phase 1: Core Extraction (Week 1)
 
-**Rationale:** Zero-dependency, client-side architecture is perfect for offline use. A SW would make this feel like a native app after first load.
+- [ ] **Extract Canvas Export System**
+  - [ ] Copy `src/canvas/` from Infographic Studio
+  - [ ] Remove AI/LLM dependencies from export logic
+  - [ ] Integrate PNG export (via canvas rendering)
+  - [ ] Add SVG scaling algorithms for different viewports
+  - [ ] **Target location:** `src/export/`
+  
+- [ ] **Migrate Theme Engine**
+  - [ ] Extract theme definitions (midnight, daylight, ember, forest)
+  - [ ] Convert to declarative JSON/YAML config format
+  - [ ] Add theme validation schema
+  - [ ] Port color palette system
+  - [ ] **Target location:** `src/renderer/themes/`
+  
+- [ ] **Port Storage Layer**
+  - [ ] Copy localStorage CRUD operations
+  - [ ] Adapt data model for GitInfoGraphics (remove AI-specific fields)
+  - [ ] Implement project serialization/deserialization
+  - [ ] Add history tracking (last 20 generations per repo)
+  - [ ] **Target location:** `src/storage/`
 
----
+**Success Criteria:** Can export infographics in multiple formats with theme switching
 
-## 🎨 UX & Polish
+* * *
 
-### 3. Accessibility (A11y) in SVG Output
-- [ ] **Inject ARIA roles** (`role="img"`, `aria-label`, `aria-describedby`) into generated SVGs
-- [ ] **Add semantic grouping** (`<g role="list">`, `<g role="listitem">`) for structured sections
-- [ ] **Generate an HTML fallback** (hidden `<div>` with plain text) alongside each SVG for screen readers
-- [ ] **Ensure color contrast ratios** meet WCAG AA across all four themes (midnight, daylight, ember, forest)
+### Phase 2: Integration (Week 2)
 
-**Rationale:** Deterministic SVG rendering gives you full control over markup. A11y is often an afterthought in infographic tools — getting it right early is a differentiator.
+Permalink: Phase 2: Integration (Week 2)
 
----
+- [ ] **Multi-Format Canvas Support**
+  - [ ] Add canvas preset system:
+    - GitHub README Desktop (880px)
+    - GitHub README Mobile (400px)
+    - Twitter/X Post (1200x675)
+    - LinkedIn Post (1080x1080)
+    - Instagram Story (1080x1920)
+    - GitHub Social Preview (1280x640)
+    - Custom dimensions (user input)
+  - [ ] Implement auto-scaling logic for each format
+  - [ ] Add format preview toggle in UI
+  
+- [ ] **Theme Switching System**
+  - [ ] Integrate theme engine with SVG renderer
+  - [ ] Add theme picker UI component
+  - [ ] Implement instant theme switching (no re-generation)
+  - [ ] Add theme preview in real-time
+  - [ ] Persist user's theme preference
+  
+- [ ] **Project Management**
+  - [ ] Add project creation/editing UI
+  - [ ] Implement duplicate project functionality
+  - [ ] Add project deletion with confirmation
+  - [ ] Show generation history per project
+  - [ ] Add project search/filter
 
-### 4. Keyboard Shortcuts
-- [ ] `Ctrl/Cmd + Enter` — Trigger generation
-- [ ] `Ctrl/Cmd + Shift + S` — Export as PNG
-- [ ] `Ctrl/Cmd + Shift + E` — Export as SVG
-- [ ] `Ctrl/Cmd + D` — Duplicate current project
-- [ ] `Escape` — Close modals / cancel generation
-- [ ] Show shortcuts in a `?` help modal
+**Success Criteria:** Full project lifecycle management with multi-format/themed exports
 
----
+* * *
 
-## 🔧 Architecture & Performance
+### Phase 3: Enhancement (Week 3-4)
 
-### 5. Smarter Source Chunking (for >38k char inputs)
-- [ ] **Detect oversized sources** before truncation
-- [ ] **Implement tiered summarization:**
-  - Tier 1: Truncate README/docs to ~20k chars
-  - Tier 2: Summarize truncated remainder with a cheap model call (e.g., `llama-3.3-70b` on Groq)
-  - Tier 3: Feed condensed summary + full Tier 1 text to the main infographic generator
-- [ ] **Expose a "Source density" indicator** so users know how much material was used
+Permalink: Phase 3: Enhancement (Week 3-4)
 
-**Rationale:** 38k chars is generous, but dense documentation or large monorepos will hit it. Smart chunking extends reach without breaking the one-shot UX.
+- [ ] **Keyboard Shortcuts System**
+  - [ ] Implement global shortcut handler
+  - [ ] Add shortcuts:
+    - `Ctrl/Cmd + Enter` — Generate infographic
+    - `Ctrl/Cmd + S` — Export as SVG
+    - `Ctrl/Cmd + Shift + P` — Export as PNG
+    - `Ctrl/Cmd + M` — Toggle mobile/desktop preview
+    - `Ctrl/Cmd + T` — Switch theme
+    - `Ctrl/Cmd + D` — Duplicate project
+    - `Ctrl/Cmd + Shift + ?` — Show shortcuts modal
+  - [ ] Add help modal displaying all shortcuts
+  - [ ] Make shortcuts configurable
+  
+- [ ] **Source Fetching Utilities**
+  - [ ] Port URL fetching with CORS fallback
+  - [ ] Enhance GitHub API integration:
+    - Repo metadata (stars, forks, language)
+    - README fetching (auto-detect branch)
+    - File tree extraction
+    - package.json parsing
+  - [ ] Add source validation & error handling
+  - [ ] Implement source caching (reduce API calls)
+  
+- [ ] **Export & Import System**
+  - [ ] Export project as JSON (sources + config + generations)
+  - [ ] Import project from JSON file
+  - [ ] Add drag-and-drop import support
+  - [ ] Generate shareable links (base64-encoded spec in URL hash)
+  - [ ] Export as HTML (for Notion/Confluence)
 
----
+**Success Criteria:** Power user workflow with keyboard efficiency and data portability
 
-### 6. Project Import / Export
-- [ ] **Export full project** as a `.json` file (sources + style + all 20 generations)
-- [ ] **Import project** from `.json` file (restore state exactly)
-- [ ] **Drag-and-drop import** support
-- [ ] Consider a compressed/base64 "share link" format for portability
+* * *
 
----
+## 🎨 NEW FEATURES (Deterministic)
 
-## 🎨 Design & Theming
+Permalink:  NEW FEATURES (Deterministic)
 
-### 7. Theme Extensibility
-- [ ] **Extract theme definitions** into a declarative JSON/YAML config
-- [ ] **Allow custom themes** via a "Custom" option in the theme picker
-- [ ] **Live theme preview** while editing color values
-- [ ] **Persist custom themes** in `localStorage`
+### Section Control & Customization
 
----
+Permalink: Section Control & Customization
 
-### 8. Canvas Size Presets
-- [ ] Add **LinkedIn carousel** (1080x1080, multi-slide hint)
-- [ ] Add **Twitter/X header** (1500x500)
-- [ ] Add **GitHub social preview** (1280x640)
-- [ ] Add **Custom dimensions** input (width x height)
+- [ ] **Section-Level Controls** (NO AI)
+  - [ ] Add section toggle (enable/disable sections)
+  - [ ] Implement drag-and-drop section reordering
+  - [ ] Add manual content override per section
+  - [ ] Section layout variants:
+    - Default (standard spacing)
+    - Compact (reduced padding)
+    - Detailed (expanded with more info)
+  - [ ] Save section preferences per project
+  
+- [ ] **Advanced Layout Options**
+  - [ ] Timeline layout for changelogs/roadmaps
+  - [ ] Comparison table renderer (side-by-side features)
+  - [ ] Callout/highlight card for blockquotes
+  - [ ] Grid layout for feature lists
+  - [ ] Auto-detect best layout based on content type
 
----
+* * *
 
-## 🧪 Quality & Trust
+### Visual Enhancements
 
-### 9. "Grounded" Verification UI
-- [ ] **Highlight which source material** contributed to each generated section
-- [ ] **Show confidence indicators** (e.g., "3 of 4 highlights directly sourced" vs "1 inferred")
-- [ ] **Add a "Source check" mode** that renders the infographic with footnote-style citations
+Permalink: Visual Enhancements
 
-**Rationale:** You already forbid invented metrics in the prompt. Surfacing that grounding to the user builds even more trust.
+- [ ] **QR Code Generation**
+  - [ ] Auto-generate QR code linking to repo URL
+  - [ ] Position QR code in footer or sidebar
+  - [ ] Make QR code optional (toggle in settings)
+  - [ ] Customize QR code size and style
+  
+- [ ] **Logo & Image Support**
+  - [ ] Allow logo upload (PNG/SVG)
+  - [ ] Embed as base64 in SVG output
+  - [ ] Auto-detect logo from repo (if exists)
+  - [ ] Position controls (top-left, top-right, center)
+  - [ ] Size adjustment slider
+  
+- [ ] **Animation & Interactivity**
+  - [ ] Add subtle entrance animations (CSS-based)
+    - Staggered fade-in for sections
+    - Slide-in for metric cards
+    - Scale-in for badges
+  - [ ] Implement hover states for interactive elements
+  - [ ] Add "compact mode" toggle (reduced spacing for print)
 
----
+* * *
 
-### 10. Undo / Redo Stack
-- [ ] **Global undo/redo** for project state changes (sources, style, generation)
-- [ ] **Per-generation history** within a project (beyond the current "last 20 generations")
-- [ ] **Keyboard shortcuts:** `Ctrl/Cmd + Z`, `Ctrl/Cmd + Shift + Z`
+## 🔧 ACCESSIBILITY (A11y)
 
----
+Permalink: 🔧 ACCESSIBILITY (A11y)
 
-## 📦 Distribution
+### SVG Accessibility
 
-### 11. PWA Packaging
-- [ ] Add a `manifest.json` for installability
-- [ ] Add app icons (at least 192x192 and 512x512)
-- [ ] Ensure standalone display mode works correctly
-- [ ] Test on mobile Safari and Chrome
+Permalink: SVG Accessibility
 
----
+- [ ] **ARIA Labels & Roles**
+  - [ ] Add `role="img"` to root SVG
+  - [ ] Add `aria-labelledby` pointing to title element
+  - [ ] Add `aria-describedby` for detailed description
+  - [ ] Mark decorative elements with `aria-hidden="true"`
+  - [ ] Add `role="heading"` with proper `aria-level` to section titles
+  
+- [ ] **Semantic Structure**
+  - [ ] Wrap sections in `<g role="list">` containers
+  - [ ] Mark list items with `role="listitem"`
+  - [ ] Add `role="list"` to tech stack badges
+  - [ ] Implement proper heading hierarchy (h1-h6)
+  
+- [ ] **Text Alternatives**
+  - [ ] Generate hidden text-only summary (`<desc>` element)
+  - [ ] Create parallel HTML fallback (visually hidden, screen-reader accessible)
+  - [ ] Add "text-only view" toggle in UI
+  - [ ] Ensure all icons have `aria-label` or `aria-hidden`
 
-### 12. One-Click Deploy Templates
-- [ ] **GitHub Pages** — add a GitHub Action workflow
-- [ ] **Vercel / Netlify** — add `vercel.json` / `netlify.toml` for SPA routing
-- [ ] **Docker** — minimal nginx image for self-hosting
+### Color & Contrast
 
----
+Permalink: Color & Contrast
 
-## 🏷️ Suggested Labels
+- [ ] **WCAG AA Compliance**
+  - [ ] Audit all four themes for color contrast
+  - [ ] Ensure minimum 4.5:1 ratio for normal text
+  - [ ] Ensure minimum 3:1 ratio for large text
+  - [ ] Add contrast checker tool in theme editor
+  - [ ] Auto-warn if custom theme fails contrast checks
+  
+- [ ] **Color Blindness Support**
+  - [ ] Test themes with color blindness simulators
+  - [ ] Add patterns/textures as secondary visual cues
+  - [ ] Ensure info isn't conveyed by color alone
 
-| Label | Tasks |
-|-------|-------|
-| `good-first-issue` | #4 Keyboard Shortcuts, #8 Canvas Presets |
-| `performance` | #5 Smarter Chunking, #2 Service Worker |
-| `a11y` | #3 Accessibility |
-| `ux` | #1 Section Regen, #10 Undo/Redo |
-| `distribution` | #11 PWA, #12 Deploy Templates |
+### Keyboard Navigation
 
+Permalink: Keyboard Navigation
 
+- [ ] **SVG Keyboard Access**
+  - [ ] Make infographic sections focusable (`tabindex="0"`)
+  - [ ] Implement arrow key navigation between sections
+  - [ ] Add `Enter` key to expand/collapse sections
+  - [ ] Show visible focus indicators
+  - [ ] Test with VoiceOver, NVDA, JAWS
 
+* * *
 
-Infographic Studio — TODO
+## 📦 DISTRIBUTION & DEPLOYMENT
 
-Priority: High
+Permalink: 📦 DISTRIBUTION & DEPLOYMENT
 
-Section-Level Regeneration
+### PWA Support
 
- Implement per-section variant cycling with more distinct strategies (not just truncation length)
- Add "regenerate with different emphasis" — e.g., emphasize metrics vs. narrative vs. technical depth
- Allow manual editing of individual section source text before re-rendering
- Add undo/redo stack for regeneration history
- Show a diff or transition animation when a section changes
-Offline Resilience via Service Worker
+Permalink: PWA Support
 
- Register a Service Worker that caches the app shell (HTML, CSS, JS, fonts)
- Implement cache-first strategy for static assets, network-first for dynamic content
- Cache previously generated infographics in IndexedDB for offline viewing
- Add an offline indicator in the header
- Store the current input text in IndexedDB so it survives browser restarts
-Smarter Chunking for Large Inputs
+- [ ] **Progressive Web App**
+  - [ ] Create `manifest.json` with app metadata
+  - [ ] Generate app icons (192x192, 512x512, maskable)
+  - [ ] Register Service Worker for offline support
+    - Cache app shell (HTML, CSS, JS)
+    - Cache generated infographics in IndexedDB
+    - Implement cache-first strategy for static assets
+  - [ ] Add offline indicator in UI
+  - [ ] Test installation on Chrome, Safari, Firefox
+  - [ ] Ensure standalone display mode works
 
- Replace flat 38k truncation with section-priority-aware truncation (partially done — improve)
- Implement two-pass analysis: first pass summarizes low-priority sections, second pass generates from summaries + full high-priority sections
- Add a "section priority" UI where users can drag-reorder which sections matter most
- Show a visual indicator of which sections were truncated and which were kept in full
- For monorepo READMEs, detect and handle nested README references
-Priority: Medium
+### One-Click Deploy
 
-Accessibility (ARIA & Semantic Structure)
+Permalink: One-Click Deploy
 
- Add role="heading" with proper aria-level to all SVG title elements
- Generate a hidden text-only summary as a <desc> element for screen readers
- Ensure all decorative SVG elements have aria-hidden="true"
- Add keyboard navigation between sections in the infographic (Tab/Arrow keys)
- Provide a "text-only view" toggle that shows the extracted structured data as accessible HTML
- Test with VoiceOver, NVDA, and JAWS
- Ensure color contrast meets WCAG AA in all four themes (especially Emerald and Crimson accent on dark)
-Infographic Layout Improvements
+- [ ] **GitHub Pages**
+  - [ ] Add GitHub Action workflow for auto-deploy
+  - [ ] Configure custom domain support
+  - [ ] Add deployment badge to README
+  
+- [ ] **Vercel / Netlify**
+  - [ ] Add `vercel.json` for SPA routing
+  - [ ] Add `netlify.toml` configuration
+  - [ ] Create "Deploy to Vercel" button
+  - [ ] Create "Deploy to Netlify" button
+  
+- [ ] **Docker**
+  - [ ] Create minimal nginx Dockerfile
+  - [ ] Add docker-compose.yml for local dev
+  - [ ] Publish to Docker Hub
+  - [ ] Document self-hosting instructions
 
- Add a "timeline" layout option for roadmap/changelog sections
- Add a "comparison table" renderer for sections with aligned bullet points
- Support > blockquote rendering as a callout/highlight card
- Add QR code generation linking to the original repo URL (if detected)
- Implement a "compact" mode that reduces spacing for print-friendly output
- Add optional logo/image insertion (paste or upload, embed as base64 in SVG)
-Input Experience
+### CLI Enhancements
 
- Add a real-time "section detection" sidebar that shows what the parser finds as you type
- Support paste-from-URL — fetch a raw GitHub README via the CORS proxy
- Add syntax highlighting for the Markdown input (use a lightweight highlighter like Prism)
- Support multiple documents — paste a README + an API spec, merge into one infographic
- Add word/reading time estimate alongside character count
-Priority: Low
+Permalink: CLI Enhancements
 
-Export & Sharing
+- [ ] **Command-Line Interface**
+  - [ ] Add `gitinfographics init` for project setup
+  - [ ] Add `gitinfographics generate --repo=<url>` command
+  - [ ] Add `gitinfographics export --format=png|svg|pdf`
+  - [ ] Add `gitinfographics watch` for auto-regeneration
+  - [ ] Add configuration file support (`.gitinfographicsrc`)
+  - [ ] Support batch processing (multiple repos)
 
- Add PDF export (via SVG → Canvas → jsPDF)
- Generate a shareable URL by base64-encoding the spec (not the full text) in the hash
- Add "Copy as HTML" that converts the SVG to an inline SVG code block for pasting into Notion/Confluence
- Add print stylesheet that scales the infographic to fill a letter/A4 page
- Batch export — generate infographics for multiple READMEs in a monorepo
-Visual Polish
+* * *
 
- Add subtle entrance animations to SVG sections (staggered fade-in via CSS or SMIL)
- Implement a "dark mode / light mode" toggle for the app UI (separate from infographic theme)
- Add a mini-map / section navigator for long infographics
- Gradient text option for the hero title
- Custom accent color picker for infographic themes
-Architecture & DX
+## 🏗️ ARCHITECTURE IMPROVEMENTS
 
- Migrate to a proper build system (Vite) for development ergonomics
- Extract the parser, analyzer, and renderer into separate ES modules
- Add unit tests for the parser (various Markdown formats) and classifier
- Add visual regression tests for SVG output (pixel-diff snapshots)
- Set up a simple Storybook or demo page showing all section types
- Add TypeScript types for the infographic spec JSON schema
-Advanced Features
+Permalink: 🏗️ ARCHITECTURE IMPROVEMENTS
 
- Local LLM integration — use WebLLM or ONNX Runtime to run a small summarization model client-side for genuinely smarter analysis
- Template system — let users save/load custom layout templates as JSON
- Collaborative editing — use CRDTs (Yjs) for real-time multi-user input
- Plugin system — allow custom section renderers to be registered at runtime
+### Code Quality
+
+Permalink: Code Quality
+
+- [ ] **TypeScript Migration**
+  - [ ] Add TypeScript configuration
+  - [ ] Create types for infographic spec JSON schema
+  - [ ] Type all engine functions
+  - [ ] Add strict mode compiler options
+  - [ ] Generate type definitions for public API
+  
+- [ ] **Testing Infrastructure**
+  - [ ] Set up Jest/Vitest for unit tests
+  - [ ] Add parser tests (various Markdown formats)
+  - [ ] Add classifier tests (section detection)
+  - [ ] Add renderer tests (SVG output validation)
+  - [ ] Add visual regression tests (pixel-diff snapshots)
+  - [ ] Set up CI/CD pipeline (GitHub Actions)
+  
+- [ ] **Documentation**
+  - [ ] Add JSDoc comments to all public functions
+  - [ ] Generate API documentation (TypeDoc)
+  - [ ] Create architecture diagram
+  - [ ] Write contributing guide
+  - [ ] Add code examples for each feature
+
+### Performance Optimization
+
+Permalink: Performance Optimization
+
+- [ ] **Rendering Performance**
+  - [ ] Implement virtual scrolling for long infographics
+  - [ ] Add memoization for expensive calculations
+  - [ ] Optimize SVG path generation
+  - [ ] Lazy-load sections on demand
+  - [ ] Profile and optimize bundle size
+  
+- [ ] **Build System**
+  - [ ] Migrate to Vite for faster dev server
+  - [ ] Add code splitting for large modules
+  - [ ] Implement tree-shaking for unused code
+  - [ ] Add bundle analyzer
+  - [ ] Set up production build optimizations
+
+### Module Extraction
+
+Permalink: Module Extraction
+
+- [ ] **Decouple Core Engine**
+  - [ ] Extract parser to standalone module (`@gitinfographics/parser`)
+  - [ ] Extract analyzer to standalone module (`@gitinfographics/analyzer`)
+  - [ ] Extract renderer to standalone module (`@gitinfographics/renderer`)
+  - [ ] Publish modules to npm
+  - [ ] Create monorepo structure (pnpm workspaces)
+
+* * *
+
+## 🧪 QUALITY & RELIABILITY
+
+Permalink: 🧪 QUALITY & RELIABILITY
+
+### Content Grounding
+
+Permalink: Content Grounding
+
+- [ ] **Source Traceability**
+  - [ ] Track which source text contributed to each section
+  - [ ] Add "source density" indicator (how much material used)
+  - [ ] Show which sections were truncated/summarized
+  - [ ] Generate citation footnotes (optional mode)
+  - [ ] Highlight direct quotes vs. paraphrased content
+  
+- [ ] **Validation & Warnings**
+  - [ ] Warn if section has insufficient source material
+  - [ ] Detect potential hallucinations (content not in source)
+  - [ ] Validate extracted metrics against source
+  - [ ] Add confidence score per section
+
+### Error Handling
+
+Permalink: Error Handling
+
+- [ ] **Graceful Degradation**
+  - [ ] Handle missing README gracefully
+  - [ ] Fallback for unsupported Markdown features
+  - [ ] Network error recovery (retry logic)
+  - [ ] Add error boundary in UI
+  - [ ] Provide helpful error messages with solutions
+  
+- [ ] **Logging & Debugging**
+  - [ ] Add debug mode with verbose logging
+  - [ ] Export diagnostic report (for bug reports)
+  - [ ] Add performance timing markers
+  - [ ] Track generation success/failure rates
+
+* * *
+
+## 🎯 ADVANCED FEATURES (Future)
+
+Permalink: 🎯 ADVANCED FEATURES (Future)
+
+### Template System
+
+Permalink: Template System
+
+- [ ] **Custom Layout Templates**
+  - [ ] Allow users to save custom layouts as JSON
+  - [ ] Create template gallery (community contributions)
+  - [ ] Add template editor (visual drag-and-drop)
+  - [ ] Support template variables (dynamic content)
+  - [ ] Import/export templates
+
+### Collaboration
+
+Permalink: Collaboration
+
+- [ ] **Multi-User Editing**
+  - [ ] Implement CRDT sync (Yjs library)
+  - [ ] Add real-time cursors and selections
+  - [ ] Show user presence indicators
+  - [ ] Add comment/annotation system
+  - [ ] Version history with diffs
+
+### Plugin System
+
+Permalink: Plugin System
+
+- [ ] **Extensibility**
+  - [ ] Define plugin API interface
+  - [ ] Allow custom section renderers
+  - [ ] Support custom metric extractors
+  - [ ] Add theme plugin support
+  - [ ] Create plugin marketplace
+
+### Local AI (Optional)
+
+Permalink: Local AI (Optional)
+
+- [ ] **Client-Side Summarization** (Optional Feature)
+  - [ ] Integrate WebLLM for browser-based models
+  - [ ] Support ONNX Runtime for small models
+  - [ ] Add model download/management
+  - [ ] Use AI only for summarization (not generation)
+  - [ ] Keep deterministic core as default
+
+* * *
+
+## 📊 METRICS & ANALYTICS
+
+Permalink: 📊 METRICS & ANALYTICS
+
+- [ ] **Usage Analytics** (Opt-in)
+  - [ ] Track generation success rate
+  - [ ] Measure average generation time
+  - [ ] Count most-used formats/themes
+  - [ ] Identify common error patterns
+  - [ ] Respect privacy (no personal data)
+  
+- [ ] **Performance Metrics**
+  - [ ] Add Lighthouse CI integration
+  - [ ] Track Core Web Vitals
+  - [ ] Monitor bundle size over time
+  - [ ] Set performance budgets
+
+* * *
+
+## 🏷️ SUGGESTED LABELS
+
+Permalink: 🏷️ SUGGESTED LABELS
+
+| Label | Purpose | Example Tasks |
+| --- | --- | --- |
+| `migration` | Tasks from Infographic Studio | Canvas export, Theme engine, Storage |
+| `good-first-issue` | Beginner-friendly tasks | Keyboard shortcuts, Canvas presets |
+| `a11y` | Accessibility improvements | ARIA labels, Contrast checks |
+| `performance` | Speed & optimization | Bundle size, Rendering speed |
+| `ux` | User experience | Section controls, Theme picker |
+| `distribution` | Deployment & packaging | PWA, Docker, GitHub Pages |
+| `architecture` | Code structure | TypeScript, Testing, Modules |
+| `feature` | New capabilities | QR codes, Timeline layout |
+
+* * *
+
+## 📝 MIGRATION CHECKLIST
+
+Permalink:  MIGRATION CHECKLIST
+
+### From Infographic Studio
+- [ ] Copy `src/canvas/` → `src/export/`
+- [ ] Copy `src/themes/` → `src/renderer/themes/`
+- [ ] Copy `src/storage/` → `src/storage/`
+- [ ] Copy `src/sources/` → `src/engine/sources/`
+- [ ] Copy `src/components/` → `src/ui/components/`
+- [ ] Copy `src/a11y/` → `src/renderer/a11y/`
+- [ ] Remove all AI/LLM dependencies
+- [ ] Update imports and paths
+- [ ] Run tests to verify migration
+- [ ] Update documentation
+
+### Repository Cleanup
+- [ ] Archive Infographic Studio repo (or mark as deprecated)
+- [ ] Update GitInfoGraphics README with new features
+- [ ] Add migration guide for users
+- [ ] Create changelog entry
+- [ ] Tag new version (v2.0.0)
+
+* * *
+
+## 🎯 SUCCESS METRICS
+
+Permalink: 🎯 SUCCESS METRICS
+
+**After Migration (4 weeks):**
+- ✅ Multi-format export working (6+ presets)
+- ✅ Theme switching functional (4+ themes)
+- ✅ Project persistence implemented
+- ✅ Keyboard shortcuts active
+- ✅ Accessibility audit passed (WCAG AA)
+
+**After Enhancement (8 weeks):**
+- ✅ Section controls implemented
+- ✅ PWA installable
+- ✅ CLI fully functional
+- ✅ Tests coverage >80%
+- ✅ TypeScript migration complete
+
+**Long-term (3 months):**
+- ✅ Plugin system operational
+- ✅ Template gallery launched
+- ✅ Community contributions enabled
+- ✅ Performance benchmarks met
+
+* * *
+
+Last updated: 2026-09-07  
+Priority: Migration tasks first, then new features  
+Estimated timeline: 8-12 weeks for full implementation
