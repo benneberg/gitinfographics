@@ -130,36 +130,6 @@ export default function App() {
     Storage.saveSession({ markdown, theme, customTitle, customSubtitle, variants, disabledSections });
   }, [markdown, theme, customTitle, customSubtitle, variants, disabledSections]);
 
-  // ==========================================
-  // 4. NEW MIGRATION: Keyboard Shortcuts
-  // ==========================================
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      // Prevent triggering if user is typing in an input/textarea
-      if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) return;
-      
-      if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
-        e.preventDefault();
-        addToast('Infographic updated', 'info');
-      }
-      if ((e.ctrlKey || e.metaKey) && e.key === 's') {
-        e.preventDefault();
-        handleDownloadSvg(currentFormat);
-      }
-      if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key.toLowerCase() === 'p') {
-        e.preventDefault();
-        handleDownloadPng(currentFormat);
-      }
-      if ((e.ctrlKey || e.metaKey) && e.key === 't') {
-        e.preventDefault();
-        cycleTheme();
-      }
-    };
-    
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [currentFormat, desktopSvgString, mobileSvgString, theme]); 
-
   // Toast Helper
   const addToast = useCallback((message: string, type: 'success' | 'error' | 'info' = 'success') => {
     const id = Math.random().toString(36).substring(2, 9);
@@ -391,6 +361,36 @@ export default function App() {
     addToast('Onboarding guide reset', 'info');
   };
 
+  // ==========================================
+  // Keyboard Shortcuts (Ctrl/Cmd + Enter, S, Shift+P, T)
+  // ==========================================
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // Prevent triggering if user is typing in an input/textarea
+      if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) return;
+
+      if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+        e.preventDefault();
+        addToast('Infographic updated', 'info');
+      }
+      if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+        e.preventDefault();
+        handleDownloadSvg(currentFormat);
+      }
+      if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key.toLowerCase() === 'p') {
+        e.preventDefault();
+        handleDownloadPng(currentFormat);
+      }
+      if ((e.ctrlKey || e.metaKey) && e.key === 't') {
+        e.preventDefault();
+        cycleTheme();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [currentFormat, desktopSvgString, mobileSvgString, theme]);
+
   return (
     <div className="min-h-screen flex flex-col bg-[#FAFAF9] text-stone-900 selection:bg-stone-200 selection:text-stone-900 font-sans">
       
@@ -398,8 +398,8 @@ export default function App() {
       <Header
         currentTheme={theme}
         onThemeChange={setTheme}
-        currentFormat={currentFormat}             {/* NEW: Pass format to header */}
-        onFormatChange={setCurrentFormat}         {/* NEW: Pass format setter to header */}
+        currentFormat={currentFormat}
+        onFormatChange={(f) => setCurrentFormat(f as FormatKey)}
         onSelectSample={handleSelectSample}
         onFetchRepo={handleFetchRepo}
         isFetching={isFetching}
@@ -544,7 +544,7 @@ export default function App() {
               <div className="h-full overflow-y-auto pr-0.5 space-y-3">
                 <div className="text-xs font-semibold text-stone-900 mb-2 px-1 flex justify-between items-center">
                   <span>Recent Generations (Last 10)</span>
-               00>
+                </div>
                 {history.length === 0 ? (
                   <div className="text-xs text-stone-500 p-4 bg-stone-50 rounded-xl border border-stone-200 text-center">
                     No history yet. Export a PNG/SVG to save it here.

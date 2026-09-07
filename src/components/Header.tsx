@@ -37,6 +37,8 @@ interface HeaderProps {
 export const Header: React.FC<HeaderProps> = ({
   currentTheme,
   onThemeChange,
+  currentFormat,
+  onFormatChange,
   onSelectSample,
   onFetchRepo,
   isFetching,
@@ -151,18 +153,19 @@ export const Header: React.FC<HeaderProps> = ({
                 </option>
               ))}
             </select>
-            <select 
-  value={currentFormat} 
-  onChange={(e) => onFormatChange(e.target.value)}
-  className="text-xs border border-stone-300 rounded px-2 py-1 bg-white"
->
-  <option value="desktop">Desktop README</option>
-  <option value="mobile">Mobile README</option>
-  <option value="twitter">Twitter/X Post</option>
-  <option value="linkedin">LinkedIn Post</option>
-  <option value="instagram">Instagram Story</option>
-  <option value="github-preview">GitHub Preview</800>
-</select>
+            <select
+              value={currentFormat}
+              onChange={(e) => onFormatChange(e.target.value)}
+              className="text-xs border border-stone-200 rounded-lg px-2 py-1 bg-white text-stone-800 cursor-pointer focus:outline-none"
+              aria-label="Select export format"
+            >
+              <option value="desktop">Desktop README</option>
+              <option value="mobile">Mobile README</option>
+              <option value="twitter">Twitter/X Post</option>
+              <option value="linkedin">LinkedIn Post</option>
+              <option value="instagram">Instagram Story</option>
+              <option value="github-preview">GitHub Preview</option>
+            </select>
           </div>
 
           {/* CI/CD Workflow */}
