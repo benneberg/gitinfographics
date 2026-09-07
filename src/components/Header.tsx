@@ -30,6 +30,8 @@ interface HeaderProps {
   onOpenArchModal: () => void;
   onOpenInfoModal: (tab?: 'overview' | 'manual' | 'faq') => void;
   onOpenOnboarding: () => void;
+  currentFormat: string;
+  onFormatChange: (format: string) => void;
 }
 
 export const Header: React.FC<HeaderProps> = ({
