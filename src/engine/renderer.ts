@@ -1,6 +1,7 @@
 import { InfographicSpec, SpecSection, ThemeConfig, RenderOptions } from './types';
 import { getTheme, DEFAULT_FF } from './themes';
 import { trunc } from './extractors';
+import { generateQRCodeSVG } from './qr';
 
 export const WIDTH = 880;
 export const PAD = 40;
@@ -55,12 +56,12 @@ export interface RenderResult {
  */
 export function renderSVG(spec: InfographicSpec, tn?: string, options?: RenderOptions): string {
   if (options?.layout === 'mobile') {
-    return renderMobileSVG(spec, tn);
+    return renderMobileSVG(spec, tn, options);
   }
-  return renderDesktopSVG(spec, tn);
+  return renderDesktopSVG(spec, tn, options);
 }
 
-export function renderDesktopSVG(spec: InfographicSpec, tn?: string): string {
+export function renderDesktopSVG(spec: InfographicSpec, tn?: string, options?: RenderOptions): string {
   const t = getTheme(tn);
   const ff = t._font || t.fontFamily || DEFAULT_FF;
   const gap = spec.sections.length > 5 ? 24 : spec.sections.length > 3 ? 30 : BASE_GAP;
@@ -125,21 +126,22 @@ export function renderDesktopSVG(spec: InfographicSpec, tn?: string): string {
       default:
         rendered = { svg: '', height: 0 };
     }
-    parts.push(rendered.svg);
+    const secTitle = 'title' in sec ? sec.title : sec.type;
+    parts.push(`<g role="region" aria-label="${esc(secTitle)}">${rendered.svg}</g>`);
     y += rendered.height;
   }
 
   // 3. Footer
   y += gap;
-  const foot = rFoot(t, y);
+  const foot = rFoot(t, y, options, spec);
   parts.push(foot.svg);
   y += foot.height;
 
   const totalHeight = y + PAD;
 
-  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${WIDTH} ${totalHeight}" width="100%" height="auto" preserveAspectRatio="xMidYMid meet" style="max-width: 100%; height: auto; display: block; background-color:${t.bg}; border-radius: 16px;">
-  <title>${esc(spec.title)} - Infographic</title>
-  <desc>${esc(spec.subtitle || 'Auto-generated repository infographic by GitInfoGraphics')}</desc>
+  return `<svg xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svg-desktop-title" aria-describedby="svg-desktop-desc" viewBox="0 0 ${WIDTH} ${totalHeight}" width="100%" height="auto" preserveAspectRatio="xMidYMid meet" style="max-width: 100%; height: auto; display: block; background-color:${t.bg}; border-radius: 16px;">
+  <title id="svg-desktop-title">${esc(spec.title)} - Infographic</title>
+  <desc id="svg-desktop-desc">${esc(spec.subtitle || 'Auto-generated repository infographic by GitInfoGraphics')}</desc>
   ${defs}
   <!-- Background rect with clean hairline border -->
   <rect width="${WIDTH}" height="${totalHeight}" rx="16" fill="${t.bg}"/>
@@ -157,7 +159,7 @@ export function renderDesktopSVG(spec: InfographicSpec, tn?: string): string {
  * - 2-column tech stack pills
  * - Single-column installation steps along timeline
  */
-export function renderMobileSVG(spec: InfographicSpec, tn?: string): string {
+export function renderMobileSVG(spec: InfographicSpec, tn?: string, options?: RenderOptions): string {
   const t = getTheme(tn);
   const ff = t._font || t.fontFamily || DEFAULT_FF;
   const gap = spec.sections.length > 5 ? 16 : MOBILE_BASE_GAP;
@@ -219,21 +221,22 @@ export function renderMobileSVG(spec: InfographicSpec, tn?: string): string {
       default:
         rendered = { svg: '', height: 0 };
     }
-    parts.push(rendered.svg);
+    const secTitle = 'title' in sec ? sec.title : sec.type;
+    parts.push(`<g role="region" aria-label="${esc(secTitle)}">${rendered.svg}</g>`);
     y += rendered.height;
   }
 
   // 3. Footer
   y += gap;
-  const foot = rFootMobile(t, y);
+  const foot = rFootMobile(t, y, options, spec);
   parts.push(foot.svg);
   y += foot.height;
 
   const totalHeight = y + MOBILE_PAD;
 
-  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${MOBILE_WIDTH} ${totalHeight}" width="100%" height="auto" preserveAspectRatio="xMidYMid meet" style="max-width: 100%; height: auto; display: block; background-color:${t.bg}; border-radius: 16px;">
-  <title>${esc(spec.title)} - Mobile Infographic</title>
-  <desc>${esc(spec.subtitle || 'Auto-generated mobile repository infographic by GitInfoGraphics')}</desc>
+  return `<svg xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svg-mobile-title" aria-describedby="svg-mobile-desc" viewBox="0 0 ${MOBILE_WIDTH} ${totalHeight}" width="100%" height="auto" preserveAspectRatio="xMidYMid meet" style="max-width: 100%; height: auto; display: block; background-color:${t.bg}; border-radius: 16px;">
+  <title id="svg-mobile-title">${esc(spec.title)} - Mobile Infographic</title>
+  <desc id="svg-mobile-desc">${esc(spec.subtitle || 'Auto-generated mobile repository infographic by GitInfoGraphics')}</desc>
   ${defs}
   <!-- Background rect with clean hairline border -->
   <rect width="${MOBILE_WIDTH}" height="${totalHeight}" rx="16" fill="${t.bg}"/>
@@ -602,12 +605,33 @@ export function rCB(
   return { svg, height: h };
 }
 
-export function rFoot(t: ThemeConfig, y: number): RenderResult {
+export function rFoot(t: ThemeConfig, y: number, options?: RenderOptions, spec?: InfographicSpec): RenderResult {
+  const repoUrl = options?.qrUrl || spec?.meta?.url || (spec?.meta?.owner && spec?.meta?.repo ? `https://github.com/${spec.meta.owner}/${spec.meta.repo}` : '');
+  const showQR = options?.showQR && repoUrl;
+
+  if (showQR) {
+    const h = 76;
+    const qrSize = 54;
+    const qrX = PAD + CW - qrSize - 4;
+    const qrY = y + 12;
+    const qrSvg = generateQRCodeSVG(repoUrl, qrX, qrY, { size: qrSize, color: t.accent });
+
+    const svg = `<g id="sec-footer" class="font-sans">
+    <line x1="${PAD}" y1="${y}" x2="${PAD + CW}" y2="${y}" stroke="${t.cardBorder}" stroke-width="1"/>
+    <text x="${PAD}" y="${y + 26}" font-size="11" font-weight="600" fill="${t.text}">Generated with GitInfoGraphics • Rule-Based Infographic Studio</text>
+    <text x="${PAD}" y="${y + 44}" font-size="11" font-weight="500" fill="${t.textMuted}">${esc(repoUrl)}</text>
+    <text x="${PAD}" y="${y + 60}" font-size="10" font-weight="500" fill="${t.accent}">Scan QR to inspect repository on GitHub</text>
+    ${qrSvg}
+  </g>`;
+    return { svg, height: h };
+  }
+
   const h = 48;
+  const displayUrl = repoUrl ? repoUrl.replace(/^https?:\/\//, '') : 'github.com/benneberg/infographic-studio';
   const svg = `<g id="sec-footer" class="font-sans">
     <line x1="${PAD}" y1="${y}" x2="${PAD + CW}" y2="${y}" stroke="${t.cardBorder}" stroke-width="1"/>
     <text x="${PAD}" y="${y + 28}" font-size="11" font-weight="500" fill="${t.textMuted}">Generated with GitInfoGraphics • Rule-Based Infographic Studio</text>
-    <text x="${PAD + CW}" y="${y + 28}" text-anchor="end" font-size="11" font-weight="600" fill="${t.accent}">github.com/benneberg/infographic-studio</text>
+    <text x="${PAD + CW}" y="${y + 28}" text-anchor="end" font-size="11" font-weight="600" fill="${t.accent}">${esc(displayUrl)}</text>
   </g>`;
 
   return { svg, height: h };
@@ -952,13 +976,33 @@ export function rCBMobile(
   return { svg, height: h };
 }
 
-export function rFootMobile(t: ThemeConfig, y: number): RenderResult {
-  const h = 54;
+export function rFootMobile(t: ThemeConfig, y: number, options?: RenderOptions, spec?: InfographicSpec): RenderResult {
+  const repoUrl = options?.qrUrl || spec?.meta?.url || (spec?.meta?.owner && spec?.meta?.repo ? `https://github.com/${spec.meta.owner}/${spec.meta.repo}` : '');
+  const showQR = options?.showQR && repoUrl;
   const midX = MOBILE_PAD + MOBILE_CW / 2;
+
+  if (showQR) {
+    const h = 110;
+    const qrSize = 52;
+    const qrX = midX - qrSize / 2;
+    const qrY = y + 10;
+    const qrSvg = generateQRCodeSVG(repoUrl, qrX, qrY, { size: qrSize, color: t.accent });
+
+    const svg = `<g id="sec-footer-mobile" class="font-sans">
+    <line x1="${MOBILE_PAD}" y1="${y}" x2="${MOBILE_PAD + MOBILE_CW}" y2="${y}" stroke="${t.cardBorder}" stroke-width="1"/>
+    ${qrSvg}
+    <text x="${midX}" y="${y + 78}" text-anchor="middle" font-size="10" font-weight="500" fill="${t.textMuted}">Generated with GitInfoGraphics • Mobile Edition</text>
+    <text x="${midX}" y="${y + 96}" text-anchor="middle" font-size="10.5" font-weight="600" fill="${t.accent}">${esc(repoUrl.replace(/^https?:\/\//, ''))}</text>
+  </g>`;
+    return { svg, height: h };
+  }
+
+  const h = 54;
+  const displayUrl = repoUrl ? repoUrl.replace(/^https?:\/\//, '') : 'github.com/benneberg/infographic-studio';
   const svg = `<g id="sec-footer-mobile" class="font-sans">
     <line x1="${MOBILE_PAD}" y1="${y}" x2="${MOBILE_PAD + MOBILE_CW}" y2="${y}" stroke="${t.cardBorder}" stroke-width="1"/>
     <text x="${midX}" y="${y + 22}" text-anchor="middle" font-size="10" font-weight="500" fill="${t.textMuted}">Generated with GitInfoGraphics • Mobile Edition</text>
-    <text x="${midX}" y="${y + 38}" text-anchor="middle" font-size="10.5" font-weight="600" fill="${t.accent}">github.com/benneberg/infographic-studio</text>
+    <text x="${midX}" y="${y + 38}" text-anchor="middle" font-size="10.5" font-weight="600" fill="${t.accent}">${esc(displayUrl)}</text>
   </g>`;
 
   return { svg, height: h };

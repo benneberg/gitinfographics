@@ -134,12 +134,14 @@ export interface InfographicSpec {
   title: string;
   subtitle: string;
   sections: SpecSection[];
+  meta?: GitHubMeta;
 }
 
 export interface GitHubMeta {
   owner: string;
   repo: string;
   description?: string;
+  url?: string;
   stars: number;
   forks: number;
   openIssues?: number;
@@ -175,4 +177,6 @@ export type VariantMap = Record<string, number>;
 export interface RenderOptions {
   layout?: 'desktop' | 'mobile';
   width?: number;
+  showQR?: boolean;
+  qrUrl?: string;
 }

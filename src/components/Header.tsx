@@ -12,7 +12,10 @@ import {
   HelpCircle,
   Palette,
   Terminal,
-  Compass
+  Compass,
+  FolderOpen,
+  Share2,
+  Keyboard
 } from 'lucide-react';
 import { THEMES } from '../engine/themes';
 import { SAMPLE_READMES, SampleReadme } from '../engine/samples';
@@ -30,6 +33,9 @@ interface HeaderProps {
   onOpenArchModal: () => void;
   onOpenInfoModal: (tab?: 'overview' | 'manual' | 'faq') => void;
   onOpenOnboarding: () => void;
+  onOpenProjectsModal?: () => void;
+  onOpenShareModal?: () => void;
+  onOpenShortcutsModal?: () => void;
   currentFormat: string;
   onFormatChange: (format: string) => void;
 }
@@ -48,7 +54,10 @@ export const Header: React.FC<HeaderProps> = ({
   onOpenActionModal,
   onOpenArchModal,
   onOpenInfoModal,
-  onOpenOnboarding
+  onOpenOnboarding,
+  onOpenProjectsModal,
+  onOpenShareModal,
+  onOpenShortcutsModal
 }) => {
   const [repoInput, setRepoInput] = useState('');
 
@@ -168,6 +177,30 @@ export const Header: React.FC<HeaderProps> = ({
             </select>
           </div>
 
+          {/* Projects Management */}
+          {onOpenProjectsModal && (
+            <button
+              onClick={onOpenProjectsModal}
+              className="flex items-center gap-1 min-h-[36px] px-2.5 py-1 bg-white hover:bg-stone-50 border border-stone-200 rounded-lg text-xs font-medium text-stone-700 shadow-2xs transition-colors shrink-0"
+              title="Manage and switch projects"
+            >
+              <FolderOpen className="w-3.5 h-3.5 text-stone-500" />
+              <span className="hidden sm:inline">Projects</span>
+            </button>
+          )}
+
+          {/* Share & Embed */}
+          {onOpenShareModal && (
+            <button
+              onClick={onOpenShareModal}
+              className="flex items-center gap-1 min-h-[36px] px-2.5 py-1 bg-white hover:bg-stone-50 border border-stone-200 rounded-lg text-xs font-medium text-stone-700 shadow-2xs transition-colors shrink-0"
+              title="Share and embed infographic"
+            >
+              <Share2 className="w-3.5 h-3.5 text-stone-500" />
+              <span className="hidden sm:inline">Share</span>
+            </button>
+          )}
+
           {/* CI/CD Workflow */}
           <button
             onClick={onOpenActionModal}
@@ -187,6 +220,18 @@ export const Header: React.FC<HeaderProps> = ({
             <BookOpen className="w-3.5 h-3.5 text-stone-500" />
             <span className="hidden sm:inline">Docs</span>
           </button>
+
+          {/* Keyboard Shortcuts */}
+          {onOpenShortcutsModal && (
+            <button
+              onClick={onOpenShortcutsModal}
+              className="flex items-center gap-1 min-h-[36px] px-2.5 py-1 bg-white hover:bg-stone-50 border border-stone-200 rounded-lg text-xs font-medium text-stone-700 shadow-2xs transition-colors shrink-0"
+              title="Keyboard shortcuts (Ctrl+Shift+?)"
+            >
+              <Keyboard className="w-3.5 h-3.5 text-stone-500" />
+              <span className="hidden sm:inline">Keys</span>
+            </button>
+          )}
 
           {/* Guided Tour */}
           <button

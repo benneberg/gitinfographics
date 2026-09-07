@@ -101,6 +101,34 @@ Transforms parsed data into a structured `InfographicSpec` schema:
   ```
 - **Coordinate Math**: Calculates running Y-offsets with adaptive inter-section gaps (24px to 32px) depending on section density.
 - **XML Entity Sanitization**: Escapes all user strings through `esc()` to prevent XML/SVG injection.
+- **W3C SVG Accessibility**: Generates semantic `role="img"`, `role="region"`, `aria-labelledby`, and `<desc id="desc-infographic">` tags for complete screen-reader compatibility.
+- **Deterministic QR Generation (`src/engine/qr.ts`)**: Generates scalable vector QR codes directly in the footer linking to repository or custom URLs without external APIs.
+
+---
+
+## Storage, Export, and UI Subsystems
+
+### Canvas Exporter (`src/export/CanvasExporter.ts`)
+- Provides multi-format canvas presets:
+  - GitHub README Desktop (880px)
+  - GitHub README Mobile (400px)
+  - Twitter/X Post (1200×675)
+  - LinkedIn Post (1080×1080)
+  - Instagram Story (1080×1920)
+  - GitHub Social Preview (1280×640)
+- Supports vector SVG download and high-density Retina PNG rasterization (@2x canvas) with client-side zero-server rendering.
+
+### Theme Engine (`src/renderer/themes/ThemeManager.ts`)
+- Declarative theme configurations: Scandi Minimal (default), Midnight, Daylight, Ember, and Forest.
+- Strict WCAG AA contrast validation, color palette definitions, and instant real-time theme switching without re-parsing.
+
+### Local Project Storage (`src/storage/ProjectStorage.ts`)
+- Manages isolated project records with serialized markdown source, settings (theme, format, custom overrides), and generation history (last 20 generations).
+- Safe fallback to in-memory store in non-browser or storage-restricted environments.
+
+### Keyboard Shortcuts (`src/ui/KeyboardShortcuts.ts`)
+- Global shortcut dispatch system with input field focus detection (`input`, `textarea`, `contenteditable`) to prevent hotkey collisions during editing.
+- Built-in shortcuts for export (`Ctrl+S`, `Ctrl+Shift+P`), view toggle (`Ctrl+M`), theme switching (`Ctrl+T`), and help modal (`Ctrl+Shift+?`).
 
 ---
 
@@ -118,26 +146,41 @@ Transforms parsed data into a structured `InfographicSpec` schema:
 │   │   ├── SectionControls.tsx  # Interactive variant & toggle controls
 │   │   ├── ArchitectureModal.tsx# Visual pipeline documentation modal
 │   │   ├── WorkflowModal.tsx    # GitHub Actions workflow generator
-│   │   └── Header.tsx           # GitHub repo import & actions
+│   │   ├── ProjectsModal.tsx    # Project management and generation history modal
+│   │   ├── ShareModal.tsx       # Shareable URLs, HTML iframe & markdown embed snippets
+│   │   ├── ShortcutsModal.tsx   # Keyboard shortcuts cheat sheet modal
+│   │   ├── InfoModal.tsx        # Comprehensive user manual & FAQ modal
+│   │   └── Header.tsx           # GitHub repo import & actions toolbar
 │   ├── engine/                  # Headless, zero-DOM core engine
-│   │   ├── __tests__/           # Vitest unit test suite
+│   │   ├── __tests__/           # Vitest unit test suite (48 tests passing)
 │   │   │   ├── parser.test.ts
 │   │   │   ├── classifier.test.ts
 │   │   │   ├── extractors.test.ts
 │   │   │   ├── specBuilder.test.ts
-│   │   │   └── renderer.test.ts
+│   │   │   ├── renderer.test.ts
+│   │   │   └── qr.test.ts
 │   │   ├── parser.ts            # Markdown tokenizer & table/code parsers
 │   │   ├── classifier.ts        # 14-category heuristic classifier
 │   │   ├── extractors.ts        # Metric, feature, tech, and badge miners
 │   │   ├── specBuilder.ts       # Layout specification builder
 │   │   ├── renderer.ts          # Desktop (880px) & Mobile (400px) SVG renderers
+│   │   ├── qr.ts                # Deterministic vector QR code SVG generator
 │   │   ├── github.ts            # GitHub REST API client & rate-limit handler
 │   │   ├── themes.ts            # Scandinavian & classic color tokens
 │   │   ├── types.ts             # TypeScript domain interfaces
 │   │   └── workflowTemplate.ts  # GitHub Actions YAML builder
+│   ├── export/                  # Canvas & format export subsystems
+│   │   └── CanvasExporter.ts    # Multi-format preset definitions & canvas exporter
+│   ├── renderer/themes/         # Theme manager and palette definitions
+│   │   └── ThemeManager.ts      # Theme registry and validation
+│   ├── storage/                 # Project persistence & generation history
+│   │   └── ProjectStorage.ts    # LocalStorage CRUD & generation tracking
+│   ├── ui/                      # Interaction managers
+│   │   └── KeyboardShortcuts.ts # Global keyboard shortcut manager
 │   ├── App.tsx                  # Studio coordinator
 │   └── main.tsx                 # React entry point
 ├── package.json                 # Project dependencies & test scripts
+├── TODO.md                      # Feature backlog & migration tracking
 ├── REPOSITORY_STATUS.md         # Repository audit report
 └── README.md                    # Project overview & quickstart
 ```

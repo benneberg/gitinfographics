@@ -36,6 +36,31 @@ export interface Project {
   generations: GenerationRecord[];
 }
 
+class MemoryStorage {
+  private store: Record<string, string> = {};
+  getItem(key: string): string | null {
+    return this.store[key] ?? null;
+  }
+  setItem(key: string, val: string): void {
+    this.store[key] = val;
+  }
+  removeItem(key: string): void {
+    delete this.store[key];
+  }
+}
+
+const memoryStore = new MemoryStorage();
+
+function getStorage() {
+  if (typeof window !== 'undefined' && window.localStorage) {
+    return window.localStorage;
+  }
+  if (typeof localStorage !== 'undefined') {
+    return localStorage;
+  }
+  return memoryStore;
+}
+
 export class ProjectStorage {
   private static readonly STORAGE_KEY = 'gitinfographics-projects';
   private static readonly MAX_GENERATIONS_PER_PROJECT = 20;
@@ -44,9 +69,8 @@ export class ProjectStorage {
    * Get all projects
    */
   getAllProjects(): Project[] {
-    if (typeof window === 'undefined') return [];
-
-    const data = localStorage.getItem(ProjectStorage.STORAGE_KEY);
+    const storage = getStorage();
+    const data = storage.getItem(ProjectStorage.STORAGE_KEY);
     if (!data) return [];
 
     try {
@@ -61,8 +85,7 @@ export class ProjectStorage {
    * Save all projects
    */
   private saveProjects(projects: Project[]): void {
-    if (typeof window === 'undefined') return;
-    localStorage.setItem(ProjectStorage.STORAGE_KEY, JSON.stringify(projects));
+    getStorage().setItem(ProjectStorage.STORAGE_KEY, JSON.stringify(projects));
   }
 
   /**
@@ -239,8 +262,7 @@ export class ProjectStorage {
    * Clear all projects (for testing)
    */
   clearAll(): void {
-    if (typeof window === 'undefined') return;
-    localStorage.removeItem(ProjectStorage.STORAGE_KEY);
+    getStorage().removeItem(ProjectStorage.STORAGE_KEY);
   }
 
   /**

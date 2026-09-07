@@ -22,13 +22,31 @@ Unlike AI-based generation tools that suffer from non-deterministic layouts, hal
 
 ## Key Features
 
-- 📐 **Dual-Viewport Layout Engine**:
+- 📐 **Dual-Viewport & Multi-Format Layout Engine**:
   - **Desktop (880px)**: Expansive multi-column layouts, horizontal problem-to-solution flow (`→`), and structured feature grids.
   - **Mobile (400px)**: True reflowed single-column layouts, 2×2 metric cards, and vertical problem-to-solution flow (`↓`) optimized for mobile screens.
+  - **Social Presets**: Direct export formats for Twitter/X (1200×675), LinkedIn (1080×1080), Instagram Story (1080×1920), and GitHub Social Preview (1280×640).
   - **GitHub `<picture>` Snippet**: Generates media-query enabled markdown that serves desktop or mobile SVG automatically based on viewport width (`min-width: 600px`).
+- 📱 **Deterministic QR Code Generation**:
+  - Automatically synthesizes clean, scalable vector QR codes in the footer linking to repository or custom target URLs without external network APIs.
+- 🗂️ **Project Management & Shareable URLs**:
+  - Local persistence with project switching, duplicate, rename, and generation history tracking.
+  - One-click shareable URLs (`#project=...`) that store complete project configurations right in the URL hash, plus instant HTML iframe, img tag, and Markdown embed snippets.
+- ⌨️ **Global Keyboard Shortcuts**:
+  - `Ctrl/Cmd + S`: Export as SVG
+  - `Ctrl/Cmd + Shift + P`: Export as Retina PNG (@2x)
+  - `Ctrl/Cmd + M`: Toggle mobile / desktop preview
+  - `Ctrl/Cmd + T`: Switch graphic color themes
+  - `Ctrl/Cmd + Shift + ?`: Open keyboard shortcuts cheat sheet
+- ♿ **W3C SVG Accessibility (A11y)**:
+  - SVG roots include `role="img"`, `aria-labelledby`, and `aria-describedby` pointing to `<title>` and `<desc>` elements for full screen reader accessibility.
+  - Structured `<g role="region">` wrappers and decorative elements tagged with `aria-hidden="true"`.
+- 🎛️ **Section Reordering & Controls**:
+  - Move sections Up and Down to reorder the layout dynamically.
+  - Toggle individual sections, select layout variants (Bento Grid, Columns, Minimalist), and override titles.
 - 🎨 **Scandinavian Minimalist Design**:
   - Warm stone canvas (`#FAFAF9`), architectural cards (`#FFFFFF`), subtle hairline borders (`#E7E5E4`), and deep graphite typography (`#1C1917`).
-  - No dated neon radial gradients or heavy drop-shadows; uses clean typographic badges and subtle 1px elevation shadows.
+  - Instant theme switching between Scandi Minimal, Dark Slate, Forest, Ember, and Midnight.
 - ⚡ **Zero-DOM Headless Core**:
   - The core engine in `src/engine/` is completely decoupled from the browser and React DOM.
   - Safe for execution in browser SPAs, Node.js scripts, CLI tools, and GitHub Actions.

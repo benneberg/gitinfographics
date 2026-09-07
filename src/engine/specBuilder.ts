@@ -39,7 +39,8 @@ export function buildRuleSpec(
   const spec: InfographicSpec = {
     title: doc.title || (ghMeta ? `${ghMeta.owner}/${ghMeta.repo}` : 'Untitled Project'),
     subtitle: doc.subtitle || (ghMeta?.description || ''),
-    sections: []
+    sections: [],
+    meta: ghMeta || undefined
   };
 
   const cls: (DocSection & { type: SectionType })[] = (doc.sections || []).map((s) => ({

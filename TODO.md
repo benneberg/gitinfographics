@@ -12,26 +12,26 @@ Permalink:  MIGRATION FROM INFOGRAPHIC STUDIO
 
 Permalink: Phase 1: Core Extraction (Week 1)
 
-- [ ] **Extract Canvas Export System**
-  - [ ] Copy `src/canvas/` from Infographic Studio
-  - [ ] Remove AI/LLM dependencies from export logic
-  - [ ] Integrate PNG export (via canvas rendering)
-  - [ ] Add SVG scaling algorithms for different viewports
-  - [ ] **Target location:** `src/export/`
+- [x] **Extract Canvas Export System**
+  - [x] Copy `src/canvas/` from Infographic Studio
+  - [x] Remove AI/LLM dependencies from export logic
+  - [x] Integrate PNG export (via canvas rendering)
+  - [x] Add SVG scaling algorithms for different viewports
+  - [x] **Target location:** `src/export/`
   
-- [ ] **Migrate Theme Engine**
-  - [ ] Extract theme definitions (midnight, daylight, ember, forest)
-  - [ ] Convert to declarative JSON/YAML config format
-  - [ ] Add theme validation schema
-  - [ ] Port color palette system
-  - [ ] **Target location:** `src/renderer/themes/`
+- [x] **Migrate Theme Engine**
+  - [x] Extract theme definitions (midnight, daylight, ember, forest)
+  - [x] Convert to declarative JSON/YAML config format
+  - [x] Add theme validation schema
+  - [x] Port color palette system
+  - [x] **Target location:** `src/renderer/themes/`
   
-- [ ] **Port Storage Layer**
-  - [ ] Copy localStorage CRUD operations
-  - [ ] Adapt data model for GitInfoGraphics (remove AI-specific fields)
-  - [ ] Implement project serialization/deserialization
-  - [ ] Add history tracking (last 20 generations per repo)
-  - [ ] **Target location:** `src/storage/`
+- [x] **Port Storage Layer**
+  - [x] Copy localStorage CRUD operations
+  - [x] Adapt data model for GitInfoGraphics (remove AI-specific fields)
+  - [x] Implement project serialization/deserialization
+  - [x] Add history tracking (last 20 generations per repo)
+  - [x] **Target location:** `src/storage/`
 
 **Success Criteria:** Can export infographics in multiple formats with theme switching
 
@@ -41,8 +41,8 @@ Permalink: Phase 1: Core Extraction (Week 1)
 
 Permalink: Phase 2: Integration (Week 2)
 
-- [ ] **Multi-Format Canvas Support**
-  - [ ] Add canvas preset system:
+- [x] **Multi-Format Canvas Support**
+  - [x] Add canvas preset system:
     - GitHub README Desktop (880px)
     - GitHub README Mobile (400px)
     - Twitter/X Post (1200x675)
@@ -50,22 +50,22 @@ Permalink: Phase 2: Integration (Week 2)
     - Instagram Story (1080x1920)
     - GitHub Social Preview (1280x640)
     - Custom dimensions (user input)
-  - [ ] Implement auto-scaling logic for each format
-  - [ ] Add format preview toggle in UI
+  - [x] Implement auto-scaling logic for each format
+  - [x] Add format preview toggle in UI
   
-- [ ] **Theme Switching System**
-  - [ ] Integrate theme engine with SVG renderer
-  - [ ] Add theme picker UI component
-  - [ ] Implement instant theme switching (no re-generation)
-  - [ ] Add theme preview in real-time
-  - [ ] Persist user's theme preference
+- [x] **Theme Switching System**
+  - [x] Integrate theme engine with SVG renderer
+  - [x] Add theme picker UI component
+  - [x] Implement instant theme switching (no re-generation)
+  - [x] Add theme preview in real-time
+  - [x] Persist user's theme preference
   
-- [ ] **Project Management**
-  - [ ] Add project creation/editing UI
-  - [ ] Implement duplicate project functionality
-  - [ ] Add project deletion with confirmation
-  - [ ] Show generation history per project
-  - [ ] Add project search/filter
+- [x] **Project Management**
+  - [x] Add project creation/editing UI
+  - [x] Implement duplicate project functionality
+  - [x] Add project deletion with confirmation
+  - [x] Show generation history per project
+  - [x] Add project search/filter
 
 **Success Criteria:** Full project lifecycle management with multi-format/themed exports
 
@@ -75,9 +75,9 @@ Permalink: Phase 2: Integration (Week 2)
 
 Permalink: Phase 3: Enhancement (Week 3-4)
 
-- [ ] **Keyboard Shortcuts System**
-  - [ ] Implement global shortcut handler
-  - [ ] Add shortcuts:
+- [x] **Keyboard Shortcuts System**
+  - [x] Implement global shortcut handler
+  - [x] Add shortcuts:
     - `Ctrl/Cmd + Enter` — Generate infographic
     - `Ctrl/Cmd + S` — Export as SVG
     - `Ctrl/Cmd + Shift + P` — Export as PNG
@@ -85,25 +85,25 @@ Permalink: Phase 3: Enhancement (Week 3-4)
     - `Ctrl/Cmd + T` — Switch theme
     - `Ctrl/Cmd + D` — Duplicate project
     - `Ctrl/Cmd + Shift + ?` — Show shortcuts modal
-  - [ ] Add help modal displaying all shortcuts
-  - [ ] Make shortcuts configurable
+  - [x] Add help modal displaying all shortcuts
+  - [x] Make shortcuts configurable
   
-- [ ] **Source Fetching Utilities**
-  - [ ] Port URL fetching with CORS fallback
-  - [ ] Enhance GitHub API integration:
+- [x] **Source Fetching Utilities**
+  - [x] Port URL fetching with CORS fallback
+  - [x] Enhance GitHub API integration:
     - Repo metadata (stars, forks, language)
     - README fetching (auto-detect branch)
     - File tree extraction
     - package.json parsing
-  - [ ] Add source validation & error handling
-  - [ ] Implement source caching (reduce API calls)
+  - [x] Add source validation & error handling
+  - [x] Implement source caching (reduce API calls)
   
-- [ ] **Export & Import System**
-  - [ ] Export project as JSON (sources + config + generations)
-  - [ ] Import project from JSON file
-  - [ ] Add drag-and-drop import support
-  - [ ] Generate shareable links (base64-encoded spec in URL hash)
-  - [ ] Export as HTML (for Notion/Confluence)
+- [x] **Export & Import System**
+  - [x] Export project as JSON (sources + config + generations)
+  - [x] Import project from JSON file
+  - [x] Add drag-and-drop import support
+  - [x] Generate shareable links (base64-encoded spec in URL hash)
+  - [x] Export as HTML (for Notion/Confluence)
 
 **Success Criteria:** Power user workflow with keyboard efficiency and data portability
 
@@ -117,15 +117,15 @@ Permalink:  NEW FEATURES (Deterministic)
 
 Permalink: Section Control & Customization
 
-- [ ] **Section-Level Controls** (NO AI)
-  - [ ] Add section toggle (enable/disable sections)
-  - [ ] Implement drag-and-drop section reordering
-  - [ ] Add manual content override per section
-  - [ ] Section layout variants:
+- [x] **Section-Level Controls** (NO AI)
+  - [x] Add section toggle (enable/disable sections)
+  - [x] Implement drag-and-drop / button section reordering
+  - [x] Add manual content override per section (title, subtitle)
+  - [x] Section layout variants:
     - Default (standard spacing)
     - Compact (reduced padding)
     - Detailed (expanded with more info)
-  - [ ] Save section preferences per project
+  - [x] Save section preferences per project
   
 - [ ] **Advanced Layout Options**
   - [ ] Timeline layout for changelogs/roadmaps
@@ -140,11 +140,11 @@ Permalink: Section Control & Customization
 
 Permalink: Visual Enhancements
 
-- [ ] **QR Code Generation**
-  - [ ] Auto-generate QR code linking to repo URL
-  - [ ] Position QR code in footer or sidebar
-  - [ ] Make QR code optional (toggle in settings)
-  - [ ] Customize QR code size and style
+- [x] **QR Code Generation**
+  - [x] Auto-generate QR code linking to repo URL
+  - [x] Position QR code in footer or sidebar
+  - [x] Make QR code optional (toggle in settings)
+  - [x] Customize QR code size and style
   
 - [ ] **Logo & Image Support**
   - [ ] Allow logo upload (PNG/SVG)
@@ -171,18 +171,18 @@ Permalink: 🔧 ACCESSIBILITY (A11y)
 
 Permalink: SVG Accessibility
 
-- [ ] **ARIA Labels & Roles**
-  - [ ] Add `role="img"` to root SVG
-  - [ ] Add `aria-labelledby` pointing to title element
-  - [ ] Add `aria-describedby` for detailed description
-  - [ ] Mark decorative elements with `aria-hidden="true"`
-  - [ ] Add `role="heading"` with proper `aria-level` to section titles
+- [x] **ARIA Labels & Roles**
+  - [x] Add `role="img"` to root SVG
+  - [x] Add `aria-labelledby` pointing to title element
+  - [x] Add `aria-describedby` for detailed description
+  - [x] Mark decorative elements with `aria-hidden="true"`
+  - [x] Add `role="heading"` with proper `aria-level` to section titles
   
-- [ ] **Semantic Structure**
-  - [ ] Wrap sections in `<g role="list">` containers
-  - [ ] Mark list items with `role="listitem"`
-  - [ ] Add `role="list"` to tech stack badges
-  - [ ] Implement proper heading hierarchy (h1-h6)
+- [x] **Semantic Structure**
+  - [x] Wrap sections in `<g role="list">` / `<g role="region">` containers
+  - [x] Mark list items with `role="listitem"`
+  - [x] Add `role="list"` to tech stack badges
+  - [x] Implement proper heading hierarchy (h1-h6)
   
 - [ ] **Text Alternatives**
   - [ ] Generate hidden text-only summary (`<desc>` element)
@@ -281,18 +281,18 @@ Permalink: 🏗️ ARCHITECTURE IMPROVEMENTS
 
 Permalink: Code Quality
 
-- [ ] **TypeScript Migration**
-  - [ ] Add TypeScript configuration
-  - [ ] Create types for infographic spec JSON schema
-  - [ ] Type all engine functions
-  - [ ] Add strict mode compiler options
+- [x] **TypeScript Migration**
+  - [x] Add TypeScript configuration
+  - [x] Create types for infographic spec JSON schema
+  - [x] Type all engine functions
+  - [x] Add strict mode compiler options
   - [ ] Generate type definitions for public API
   
-- [ ] **Testing Infrastructure**
-  - [ ] Set up Jest/Vitest for unit tests
-  - [ ] Add parser tests (various Markdown formats)
-  - [ ] Add classifier tests (section detection)
-  - [ ] Add renderer tests (SVG output validation)
+- [x] **Testing Infrastructure**
+  - [x] Set up Jest/Vitest for unit tests
+  - [x] Add parser tests (various Markdown formats)
+  - [x] Add classifier tests (section detection)
+  - [x] Add renderer tests (SVG output validation)
   - [ ] Add visual regression tests (pixel-diff snapshots)
   - [ ] Set up CI/CD pipeline (GitHub Actions)
   
@@ -465,20 +465,20 @@ Permalink: 🏷️ SUGGESTED LABELS
 Permalink:  MIGRATION CHECKLIST
 
 ### From Infographic Studio
-- [ ] Copy `src/canvas/` → `src/export/`
-- [ ] Copy `src/themes/` → `src/renderer/themes/`
-- [ ] Copy `src/storage/` → `src/storage/`
-- [ ] Copy `src/sources/` → `src/engine/sources/`
-- [ ] Copy `src/components/` → `src/ui/components/`
-- [ ] Copy `src/a11y/` → `src/renderer/a11y/`
-- [ ] Remove all AI/LLM dependencies
-- [ ] Update imports and paths
-- [ ] Run tests to verify migration
-- [ ] Update documentation
+- [x] Copy `src/canvas/` → `src/export/`
+- [x] Copy `src/themes/` → `src/renderer/themes/`
+- [x] Copy `src/storage/` → `src/storage/`
+- [x] Copy `src/sources/` → `src/engine/sources/`
+- [x] Copy `src/components/` → `src/ui/components/`
+- [x] Copy `src/a11y/` → `src/renderer/a11y/`
+- [x] Remove all AI/LLM dependencies
+- [x] Update imports and paths
+- [x] Run tests to verify migration
+- [x] Update documentation
 
 ### Repository Cleanup
 - [ ] Archive Infographic Studio repo (or mark as deprecated)
-- [ ] Update GitInfoGraphics README with new features
+- [x] Update GitInfoGraphics README with new features
 - [ ] Add migration guide for users
 - [ ] Create changelog entry
 - [ ] Tag new version (v2.0.0)

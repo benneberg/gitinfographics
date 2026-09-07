@@ -74,7 +74,7 @@ export class KeyboardShortcuts {
    */
   addShortcut(shortcut: Shortcut): void {
     const normalizedKeys = this.normalizeKeys(shortcut.keys);
-    this.shortcuts.set(normalizedKeys, shortcut);
+    this.shortcuts.set(normalizedKeys, { ...shortcut, keys: normalizedKeys });
   }
 
   /**
@@ -123,6 +123,12 @@ export class KeyboardShortcuts {
    * Handle keydown event
    */
   private handleKeyDown = (event: KeyboardEvent): void => {
+    const target = event.target as HTMLElement | null;
+    const isInput = target && (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.isContentEditable);
+    if (isInput && !event.ctrlKey && !event.metaKey) {
+      return;
+    }
+
     const pressedKeys = this.normalizeKeys(this.getEventKeys(event));
     const shortcut = this.shortcuts.get(pressedKeys);
 
@@ -158,8 +164,13 @@ export class KeyboardShortcuts {
       .split('+')
       .map((k) => k.trim())
       .map((k) => {
-        if (k.length === 1) return k.toUpperCase();
-        return k;
+        const lower = k.toLowerCase();
+        if (lower === 'ctrl' || lower === 'control') return 'Ctrl';
+        if (lower === 'shift') return 'Shift';
+        if (lower === 'alt') return 'Alt';
+        if (lower === 'meta' || lower === 'cmd' || lower === 'command') return 'Meta';
+        if (lower === 'enter') return 'Enter';
+        return k.toUpperCase();
       })
       .join('+');
   }
@@ -173,9 +184,9 @@ export class KeyboardShortcuts {
       .map((k) => {
         const keyMap: Record<string, string> = {
           Ctrl: '⌃',
-          Shift: '',
-          Alt: '',
-          Meta: '',
+          Shift: '⇧',
+          Alt: '⌥',
+          Meta: '⌘',
           Enter: '↵',
         };
         return keyMap[k] || k;

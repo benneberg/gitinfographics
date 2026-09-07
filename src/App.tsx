@@ -19,6 +19,11 @@ import { ArchitectureModal } from './components/ArchitectureModal';
 import { OnboardingModal } from './components/OnboardingModal';
 import { InfoModal } from './components/InfoModal';
 import { ToastContainer, ToastMessage } from './components/Toast';
+import { ProjectsModal } from './components/ProjectsModal';
+import { ShareModal } from './components/ShareModal';
+import { ShortcutsModal } from './components/ShortcutsModal';
+import { ProjectStorage, Project } from './storage/ProjectStorage';
+import { KeyboardShortcuts } from './ui/KeyboardShortcuts';
 import { Code, Sliders, FileText, Eye, BookOpen, History as HistoryIcon, Trash2 } from 'lucide-react';
 
 // ==========================================
@@ -100,12 +105,40 @@ export default function App() {
   const [currentFormat, setCurrentFormat] = useState<FormatKey>('desktop');
   const [history, setHistory] = useState<any[]>([]);
 
-  // Check onboarding & Load History/Session on mount
+  // Project Management & Modals State
+  const storage = useMemo(() => new ProjectStorage(), []);
+  const [currentProjectId, setCurrentProjectId] = useState<string>('default-project');
+  const [projectsModalOpen, setProjectsModalOpen] = useState<boolean>(false);
+  const [shareModalOpen, setShareModalOpen] = useState<boolean>(false);
+  const [shortcutsModalOpen, setShortcutsModalOpen] = useState<boolean>(false);
+
+  // QR Code state
+  const [showQR, setShowQR] = useState<boolean>(false);
+  const [qrUrl, setQrUrl] = useState<string>('');
+
+  // Custom section ordering state
+  const [sectionOrder, setSectionOrder] = useState<string[]>([]);
+
+  // Check onboarding & Load History/Session/Shareable URL on mount
   useEffect(() => {
     try {
       const completed = localStorage.getItem('gitinfographics_onboarding_completed');
       if (!completed) {
         setOnboardingOpen(true);
+      }
+
+      // Check URL hash for shareable project link
+      if (typeof window !== 'undefined' && window.location.hash.startsWith('#project=')) {
+        const jsonStr = decodeURIComponent(window.location.hash.slice(9));
+        const shared = JSON.parse(jsonStr);
+        if (shared && shared.source) {
+          if (shared.source.content) setMarkdown(shared.source.content);
+          if (shared.settings?.theme) setTheme(shared.settings.theme);
+          if (shared.settings?.customTitle) setCustomTitle(shared.settings.customTitle);
+          if (shared.settings?.customSubtitle) setCustomSubtitle(shared.settings.customSubtitle);
+          if (shared.settings?.variants) setVariants(shared.settings.variants);
+          if (shared.name) addToast(`Opened shared project: ${shared.name}`, 'success');
+        }
       }
       
       // Load session history
@@ -119,6 +152,8 @@ export default function App() {
         setTheme(lastSession.theme || 'scandi-minimal');
         setCustomTitle(lastSession.customTitle || '');
         setCustomSubtitle(lastSession.customSubtitle || '');
+        if (lastSession.showQR !== undefined) setShowQR(lastSession.showQR);
+        if (lastSession.qrUrl) setQrUrl(lastSession.qrUrl);
       }
     } catch {
       // Ignored (e.g., in private browsing or sandboxed environments)
@@ -127,8 +162,17 @@ export default function App() {
 
   // Auto-save current state to session storage on change
   useEffect(() => {
-    Storage.saveSession({ markdown, theme, customTitle, customSubtitle, variants, disabledSections });
-  }, [markdown, theme, customTitle, customSubtitle, variants, disabledSections]);
+    Storage.saveSession({
+      markdown,
+      theme,
+      customTitle,
+      customSubtitle,
+      variants,
+      disabledSections,
+      showQR,
+      qrUrl
+    });
+  }, [markdown, theme, customTitle, customSubtitle, variants, disabledSections, showQR, qrUrl]);
 
   // Toast Helper
   const addToast = useCallback((message: string, type: 'success' | 'error' | 'info' = 'success') => {
@@ -165,35 +209,45 @@ export default function App() {
     return buildRuleSpec(parsedDoc, variants, ghMeta);
   }, [parsedDoc, variants, ghMeta]);
 
-  // 3. Apply user customizations & section toggles
+  // 3. Apply user customizations, section ordering & section toggles
   const finalSpec = useMemo(() => {
-    const filteredSections = baseSpec.sections.filter((s) => !disabledSections[s.id]);
+    let filteredSections = baseSpec.sections.filter((s) => !disabledSections[s.id]);
+    if (sectionOrder.length > 0) {
+      filteredSections = [...filteredSections].sort((a, b) => {
+        const aIdx = sectionOrder.indexOf(a.id);
+        const bIdx = sectionOrder.indexOf(b.id);
+        if (aIdx === -1 && bIdx === -1) return 0;
+        if (aIdx === -1) return 1;
+        if (bIdx === -1) return -1;
+        return aIdx - bIdx;
+      });
+    }
     return {
       ...baseSpec,
       title: customTitle.trim() || baseSpec.title,
       subtitle: customSubtitle.trim() || baseSpec.subtitle,
       sections: filteredSections
     };
-  }, [baseSpec, disabledSections, customTitle, customSubtitle]);
+  }, [baseSpec, disabledSections, customTitle, customSubtitle, sectionOrder]);
 
   // 4. Render SVG deterministically
   const desktopSvgString = useMemo(() => {
     try {
-      return renderSVG(finalSpec, theme, { layout: 'desktop' });
+      return renderSVG(finalSpec, theme, { layout: 'desktop', showQR, qrUrl });
     } catch (e) {
       console.error('Render desktop error:', e);
       return `<svg xmlns="http://www.w3.org/2000/svg" width="880" height="300"><text x="50" y="100" fill="#1C1917" font-size="20">Render Error</text></svg>`;
     }
-  }, [finalSpec, theme]);
+  }, [finalSpec, theme, showQR, qrUrl]);
 
   const mobileSvgString = useMemo(() => {
     try {
-      return renderSVG(finalSpec, theme, { layout: 'mobile' });
+      return renderSVG(finalSpec, theme, { layout: 'mobile', showQR, qrUrl });
     } catch (e) {
       console.error('Render mobile error:', e);
       return `<svg xmlns="http://www.w3.org/2000/svg" width="400" height="300"><text x="30" y="80" fill="#1C1917" font-size="16">Render Error</text></svg>`;
     }
-  }, [finalSpec, theme]);
+  }, [finalSpec, theme, showQR, qrUrl]);
 
   // --- Handlers ---
   const handleSelectSample = (sample: SampleReadme) => {
@@ -346,6 +400,56 @@ export default function App() {
     addToast('History cleared', 'info');
   };
 
+  const handleSelectProject = (project: Project) => {
+    setCurrentProjectId(project.id);
+    if (project.source.content) setMarkdown(project.source.content);
+    if (project.settings?.themeId) setTheme(project.settings.themeId);
+    if (project.settings?.customSettings?.customTitle) setCustomTitle(project.settings.customSettings.customTitle);
+    if (project.settings?.customSettings?.customSubtitle) setCustomSubtitle(project.settings.customSettings.customSubtitle);
+    if (project.settings?.customSettings?.variants) setVariants(project.settings.customSettings.variants);
+    addToast(`Switched to project "${project.name}"`, 'success');
+  };
+
+  const handleCreateProject = (name: string) => {
+    const newProj = storage.createProject({
+      name,
+      source: {
+        type: 'text',
+        content: markdown
+      },
+      settings: {
+        themeId: theme,
+        format: {
+          id: currentFormat,
+          name: EXPORT_FORMATS[currentFormat].name,
+          width: EXPORT_FORMATS[currentFormat].width,
+          height: typeof EXPORT_FORMATS[currentFormat].height === 'number' ? (EXPORT_FORMATS[currentFormat].height as number) : 1200
+        },
+        customSettings: {
+          customTitle,
+          customSubtitle,
+          variants
+        }
+      }
+    });
+    setCurrentProjectId(newProj.id);
+    addToast(`Project "${name}" created`, 'success');
+  };
+
+  const handleMoveSection = (sectionId: string, direction: 'up' | 'down') => {
+    const currentSectionIds = finalSpec.sections.map((s) => s.id);
+    const idx = currentSectionIds.indexOf(sectionId);
+    if (idx === -1) return;
+    const targetIdx = direction === 'up' ? idx - 1 : idx + 1;
+    if (targetIdx < 0 || targetIdx >= currentSectionIds.length) return;
+    const newOrder = [...currentSectionIds];
+    const temp = newOrder[idx];
+    newOrder[idx] = newOrder[targetIdx];
+    newOrder[targetIdx] = temp;
+    setSectionOrder(newOrder);
+    addToast(`Section moved ${direction}`, 'info');
+  };
+
   const openInfoModalWithTab = (tab: 'overview' | 'manual' | 'faq' = 'overview') => {
     setInfoModalTab(tab);
     setInfoModalOpen(true);
@@ -362,33 +466,68 @@ export default function App() {
   };
 
   // ==========================================
-  // Keyboard Shortcuts (Ctrl/Cmd + Enter, S, Shift+P, T)
+  // Keyboard Shortcuts via KeyboardShortcuts manager
   // ==========================================
   useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      // Prevent triggering if user is typing in an input/textarea
-      if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) return;
+    const shortcuts = new KeyboardShortcuts();
 
-      if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
-        e.preventDefault();
+    shortcuts.addShortcut({
+      keys: 'Ctrl+Enter',
+      description: 'Infographic update / refresh',
+      handler: () => {
         addToast('Infographic updated', 'info');
-      }
-      if ((e.ctrlKey || e.metaKey) && e.key === 's') {
-        e.preventDefault();
-        handleDownloadSvg(currentFormat);
-      }
-      if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key.toLowerCase() === 'p') {
-        e.preventDefault();
-        handleDownloadPng(currentFormat);
-      }
-      if ((e.ctrlKey || e.metaKey) && e.key === 't') {
-        e.preventDefault();
-        cycleTheme();
-      }
-    };
+      },
+      category: 'general'
+    });
 
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
+    shortcuts.addShortcut({
+      keys: 'Ctrl+S',
+      description: 'Export as SVG',
+      handler: () => {
+        handleDownloadSvg(currentFormat);
+      },
+      category: 'export'
+    });
+
+    shortcuts.addShortcut({
+      keys: 'Ctrl+Shift+P',
+      description: 'Export as PNG (@2x Retina)',
+      handler: () => {
+        handleDownloadPng(currentFormat);
+      },
+      category: 'export'
+    });
+
+    shortcuts.addShortcut({
+      keys: 'Ctrl+M',
+      description: 'Toggle mobile/desktop preview',
+      handler: () => {
+        setCurrentFormat((prev) => (prev === 'mobile' ? 'desktop' : 'mobile'));
+        addToast('Switched preview layout', 'info');
+      },
+      category: 'navigation'
+    });
+
+    shortcuts.addShortcut({
+      keys: 'Ctrl+T',
+      description: 'Switch color theme',
+      handler: () => {
+        cycleTheme();
+      },
+      category: 'navigation'
+    });
+
+    shortcuts.addShortcut({
+      keys: 'Ctrl+Shift+?',
+      description: 'Show keyboard shortcuts',
+      handler: () => {
+        setShortcutsModalOpen(true);
+      },
+      category: 'general'
+    });
+
+    shortcuts.register();
+    return () => shortcuts.unregister();
   }, [currentFormat, desktopSvgString, mobileSvgString, theme]);
 
   return (
@@ -410,6 +549,9 @@ export default function App() {
         onOpenArchModal={() => setArchModalOpen(true)}
         onOpenInfoModal={openInfoModalWithTab}
         onOpenOnboarding={() => setOnboardingOpen(true)}
+        onOpenProjectsModal={() => setProjectsModalOpen(true)}
+        onOpenShareModal={() => setShareModalOpen(true)}
+        onOpenShortcutsModal={() => setShortcutsModalOpen(true)}
       />
 
       {/* Subtle Scandinavian Status Bar */}
@@ -526,6 +668,11 @@ export default function App() {
                   onToggleSection={handleToggleSection}
                   onTitleChange={setCustomTitle}
                   onSubtitleChange={setCustomSubtitle}
+                  onMoveSection={handleMoveSection}
+                  showQR={showQR}
+                  onToggleQR={setShowQR}
+                  qrUrl={qrUrl}
+                  onQrUrlChange={setQrUrl}
                 />
               </div>
             )}
@@ -650,6 +797,42 @@ export default function App() {
         onClose={() => setInfoModalOpen(false)}
         onOpenWorkflowModal={() => setWorkflowModalOpen(true)}
         onOpenOnboarding={() => setOnboardingOpen(true)}
+      />
+
+      {/* Projects Management Modal */}
+      <ProjectsModal
+        isOpen={projectsModalOpen}
+        onClose={() => setProjectsModalOpen(false)}
+        storage={storage}
+        currentProjectId={currentProjectId}
+        onSelectProject={handleSelectProject}
+        onCreateProject={handleCreateProject}
+      />
+
+      {/* Share & Embed Modal */}
+      <ShareModal
+        isOpen={shareModalOpen}
+        onClose={() => setShareModalOpen(false)}
+        svgContent={desktopSvgString}
+        projectData={{
+          id: currentProjectId,
+          name: finalSpec.title || 'Infographic',
+          source: { type: 'text', content: markdown },
+          settings: {
+            themeId: theme,
+            customSettings: {
+              customTitle,
+              customSubtitle,
+              variants
+            }
+          }
+        }}
+      />
+
+      {/* Keyboard Shortcuts Modal */}
+      <ShortcutsModal
+        isOpen={shortcutsModalOpen}
+        onClose={() => setShortcutsModalOpen(false)}
       />
 
       {/* Toasts */}

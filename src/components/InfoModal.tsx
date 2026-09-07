@@ -116,12 +116,33 @@ jobs:
     {
       id: 'faq_6',
       category: 'CUSTOMIZATION',
-      question: 'Can I override the generated title, subtitle, or toggle specific sections?',
+      question: 'Can I override titles, reorder sections, and toggle QR codes?',
       answer:
-        'Yes! Switch to the "Sections" tab in the left panel. You can type custom titles and subtitles, pick between different layout variants (e.g. Bento Grid vs. Split Columns), and toggle any section on or off.'
+        'Yes! Switch to the "Sections" tab in the left panel. You can reorder sections with Up/Down buttons, select bento vs. column variants, edit custom titles/subtitles, and toggle a deterministic vector QR code in the footer with custom link target URLs.'
     },
     {
       id: 'faq_7',
+      category: 'PROJECTS & SHARING',
+      question: 'How do project management and shareable links work?',
+      answer:
+        'Click "Projects" in the header toolbar to save multiple designs, switch between them, or duplicate/delete projects. Click "Share" to generate copyable HTML iframes, image tags, markdown embed snippets, or an instant shareable URL with the configuration embedded directly in the hash.'
+    },
+    {
+      id: 'faq_8',
+      category: 'PRODUCTIVITY',
+      question: 'What keyboard shortcuts are available?',
+      answer:
+        'Press Ctrl/Cmd+S to export SVG, Ctrl/Cmd+Shift+P to export Retina PNG, Ctrl/Cmd+M to toggle mobile preview, Ctrl/Cmd+T to switch themes, and Ctrl/Cmd+Shift+? to open the shortcuts cheat sheet.'
+    },
+    {
+      id: 'faq_9',
+      category: 'ACCESSIBILITY',
+      question: 'How accessible are the generated vector SVGs?',
+      answer:
+        'Every SVG contains native W3C accessibility metadata including role="img", role="region", semantic aria-labelledby titles, and aria-describedby descriptions so screen readers can accurately convey the infographic architecture.'
+    },
+    {
+      id: 'faq_10',
       category: 'TROUBLESHOOTING',
       question: 'What if my README is very long or has huge code blocks?',
       answer:
