@@ -2,12 +2,14 @@
 
 > Deterministic rule-based engine and studio for generating dynamic, Scandinavian minimalist SVG infographics from GitHub repositories and README files.
 
+![CI](https://github.com/benneberg/gitinfographics/actions/workflows/ci.yml/badge.svg)
 ![License](https://img.shields.io/badge/license-MIT-blue)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.8-blue?logo=typescript)
 ![React](https://img.shields.io/badge/React-19-61dafb?logo=react)
 ![Vitest](https://img.shields.io/badge/tested_with-Vitest-yellow?logo=vitest)
 ![Architecture](https://img.shields.io/badge/architecture-Zero--DOM_Engine-green)
 
+---
 ---
 
 ## Overview
