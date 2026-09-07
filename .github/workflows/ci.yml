@@ -6,6 +6,10 @@ on:
   pull_request:
     branches: [main, master]
 
+# Security best practice: restrict default permissions
+permissions:
+  contents: read
+
 jobs:
   validate:
     name: Lint, Test & Build
@@ -32,3 +36,12 @@ jobs:
 
       - name: Build Production Assets
         run: npm run build
+
+      # Optional but highly recommended: saves the built files so you can 
+      # inspect them or deploy them later without rebuilding.
+      - name: Upload Build Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: production-build
+          path: dist/ # ⚠️ Change to 'build/' if you are using Create React App
+          retention-days: 7
