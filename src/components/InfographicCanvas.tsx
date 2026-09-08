@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import {
   ZoomIn,
   ZoomOut,
@@ -23,6 +23,7 @@ import {
   Quote
 } from 'lucide-react';
 import { InfographicSpec } from '../engine/types';
+import { ColorBlindnessType, COLOR_BLINDNESS_MATRICES } from '../engine/contrast';
 
 interface InfographicCanvasProps {
   desktopSvgString?: string;
@@ -34,6 +35,9 @@ interface InfographicCanvasProps {
   onDownloadPng: (layout?: 'desktop' | 'mobile') => void;
   copied: boolean;
   spec?: InfographicSpec;
+  colorBlindness?: ColorBlindnessType;
+  onOpenContrastModal?: () => void;
+  onResetColorBlindness?: () => void;
 }
 
 export const InfographicCanvas: React.FC<InfographicCanvasProps> = ({
@@ -45,7 +49,10 @@ export const InfographicCanvas: React.FC<InfographicCanvasProps> = ({
   onDownloadSvg,
   onDownloadPng,
   copied,
-  spec
+  spec,
+  colorBlindness = 'normal',
+  onOpenContrastModal,
+  onResetColorBlindness
 }) => {
   const desktopSvg = propDesktopSvg || svgString || '';
   const mobileSvg = propMobileSvg || svgString || '';
@@ -60,6 +67,38 @@ export const InfographicCanvas: React.FC<InfographicCanvasProps> = ({
   const [downloadMenuOpen, setDownloadMenuOpen] = useState(false);
   const [accessibleView, setAccessibleView] = useState(false);
   const [summaryCopied, setSummaryCopied] = useState(false);
+  const svgContainerRef = useRef<HTMLDivElement>(null);
+
+  const handleSvgKeyDown = (e: React.KeyboardEvent) => {
+    if (!svgContainerRef.current) return;
+    const focusables = Array.from(
+      svgContainerRef.current.querySelectorAll<HTMLElement>('.gig-sec[tabindex="0"]')
+    );
+    if (!focusables.length) return;
+
+    const activeEl = document.activeElement as HTMLElement | null;
+    const currentIndex = activeEl ? focusables.indexOf(activeEl) : -1;
+
+    if (e.key === 'ArrowDown' || e.key === 'j') {
+      e.preventDefault();
+      const nextIndex = (currentIndex + 1) % focusables.length;
+      focusables[nextIndex]?.focus();
+      focusables[nextIndex]?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    } else if (e.key === 'ArrowUp' || e.key === 'k') {
+      e.preventDefault();
+      const prevIndex = currentIndex <= 0 ? focusables.length - 1 : currentIndex - 1;
+      focusables[prevIndex]?.focus();
+      focusables[prevIndex]?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    } else if (e.key === 'Home') {
+      e.preventDefault();
+      focusables[0]?.focus();
+      focusables[0]?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    } else if (e.key === 'End') {
+      e.preventDefault();
+      focusables[focusables.length - 1]?.focus();
+      focusables[focusables.length - 1]?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+  };
 
   // Active SVG based on current view
   const activeLayout = viewportMode === 'mobile' ? 'mobile' : fluidLayout;
@@ -197,11 +236,29 @@ export const InfographicCanvas: React.FC<InfographicCanvasProps> = ({
             <span>Text-Only View</span>
           </button>
 
-          {/* WCAG AA Compliance Indicator */}
-          <div className="hidden sm:flex items-center gap-1 px-2.5 py-1 bg-emerald-50 border border-emerald-200/80 rounded-lg text-[11px] font-medium text-emerald-800">
+          {/* WCAG AA Compliance & Contrast Auditor Button */}
+          <button
+            onClick={onOpenContrastModal}
+            className="hidden sm:flex items-center gap-1.5 px-2.5 py-1 bg-emerald-50 hover:bg-emerald-100/80 border border-emerald-200/80 rounded-lg text-[11px] font-medium text-emerald-800 transition-colors shadow-2xs cursor-pointer"
+            title="Open WCAG AA Contrast Audit & Color Blindness Simulator"
+          >
             <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
             <span>WCAG AA Passed</span>
-          </div>
+          </button>
+
+          {/* Active Color Blindness Simulator Badge */}
+          {colorBlindness !== 'normal' && (
+            <div className="flex items-center gap-1.5 px-2.5 py-1 bg-purple-50 border border-purple-200 rounded-lg text-[11px] font-medium text-purple-900 shadow-2xs">
+              <span className="capitalize">{colorBlindness} View</span>
+              <button
+                onClick={onResetColorBlindness}
+                className="text-purple-600 hover:text-purple-950 text-xs font-bold leading-none px-0.5"
+                title="Reset simulation to standard vision"
+              >
+                ×
+              </button>
+            </div>
+          )}
 
           {/* Fluid view layout toggle (Desktop 880 vs Mobile 400) */}
           {viewportMode === 'desktop' && (
@@ -578,21 +635,35 @@ export const InfographicCanvas: React.FC<InfographicCanvasProps> = ({
         ) : viewportMode === 'desktop' ? (
           /* Desktop / Fluid Viewport: Constrained to 100% width, absolutely no horizontal scrolling */
           <div className="w-full max-w-full flex justify-center py-1">
+            <svg className="hidden absolute" aria-hidden="true" width="0" height="0">
+              <defs>
+                <filter id="cb-filter">
+                  <feColorMatrix type="matrix" values={COLOR_BLINDNESS_MATRICES[colorBlindness]} />
+                </filter>
+              </defs>
+            </svg>
             <div
+              ref={svgContainerRef}
+              tabIndex={0}
+              onKeyDown={handleSvgKeyDown}
+              role="region"
+              aria-label="Infographic SVG viewer. Use Up and Down arrow keys to focus and navigate between sections."
               style={
                 zoomMode === 'custom'
                   ? {
                       transform: `scale(${zoom})`,
                       transformOrigin: 'top center',
                       transition: 'transform 0.15s ease-out',
-                      maxWidth: '100%'
+                      maxWidth: '100%',
+                      filter: colorBlindness !== 'normal' ? 'url(#cb-filter)' : undefined
                     }
                   : {
                       width: '100%',
-                      maxWidth: `${width}px`
+                      maxWidth: `${width}px`,
+                      filter: colorBlindness !== 'normal' ? 'url(#cb-filter)' : undefined
                     }
               }
-              className="w-full max-w-full transition-all duration-150 [&_svg]:w-full [&_svg]:max-w-full [&_svg]:h-auto [&_svg]:block [&_svg]:shadow-xs"
+              className="w-full max-w-full transition-all duration-150 outline-hidden focus-visible:ring-2 focus-visible:ring-stone-400 focus-visible:rounded-xl [&_svg]:w-full [&_svg]:max-w-full [&_svg]:h-auto [&_svg]:block [&_svg]:shadow-xs"
               dangerouslySetInnerHTML={{ __html: activeSvg }}
             />
           </div>
@@ -639,6 +710,7 @@ export const InfographicCanvas: React.FC<InfographicCanvasProps> = ({
 
                 {/* SVG rendered inside mobile phone with true mobile layout */}
                 <div
+                  style={{ filter: colorBlindness !== 'normal' ? 'url(#cb-filter)' : undefined }}
                   className="w-full max-w-full overflow-hidden [&_svg]:w-full [&_svg]:max-w-full [&_svg]:h-auto [&_svg]:block"
                   dangerouslySetInnerHTML={{ __html: mobileSvg }}
                 />

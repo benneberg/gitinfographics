@@ -135,6 +135,14 @@ export function getSvgAnimationStyles(t: ThemeConfig): string {
         filter: brightness(${t.isDark ? '1.1' : '0.98'}) drop-shadow(0 4px 10px rgba(0,0,0,${t.isDark ? '0.35' : '0.08'}));
         transform: translateY(-2px);
       }
+      .gig-sec {
+        outline: none;
+        cursor: default;
+      }
+      .gig-sec:focus-visible, .gig-sec:focus {
+        outline: 2px solid ${t.accent};
+        outline-offset: 4px;
+      }
       @media print {
         svg { background-color: #FFFFFF !important; }
         .gig-interactive:hover { transform: none !important; filter: none !important; }
@@ -220,7 +228,7 @@ export function renderDesktopSVG(spec: InfographicSpec, tn?: string, options?: R
         rendered = { svg: '', height: 0 };
     }
     const secTitle = 'title' in sec ? sec.title : sec.type;
-    parts.push(`<g class="gig-sec" role="region" aria-label="${esc(secTitle)}">${rendered.svg}</g>`);
+    parts.push(`<g class="gig-sec" role="region" aria-label="${esc(secTitle)}" tabindex="0">${rendered.svg}</g>`);
     y += rendered.height;
   }
 
@@ -328,7 +336,7 @@ export function renderMobileSVG(spec: InfographicSpec, tn?: string, options?: Re
         rendered = { svg: '', height: 0 };
     }
     const secTitle = 'title' in sec ? sec.title : sec.type;
-    parts.push(`<g class="gig-sec" role="region" aria-label="${esc(secTitle)}">${rendered.svg}</g>`);
+    parts.push(`<g class="gig-sec" role="region" aria-label="${esc(secTitle)}" tabindex="0">${rendered.svg}</g>`);
     y += rendered.height;
   }
 
@@ -929,7 +937,12 @@ export function rHeroMobile(spec: InfographicSpec, t: ThemeConfig, y: number, op
   let logoSvg = '';
   if (logo && logo.dataUrl) {
     const lSize = Math.min(logo.size || 36, 44);
-    const lx = logo.position === 'top-left' ? MOBILE_PAD : MOBILE_PAD + MOBILE_CW - lSize;
+    let lx = MOBILE_PAD + MOBILE_CW - lSize;
+    if (logo.position === 'top-left') {
+      lx = MOBILE_PAD;
+    } else if (logo.position === 'center') {
+      lx = MOBILE_PAD + MOBILE_CW / 2 - lSize / 2;
+    }
     const ly = y;
     logoSvg = `<image href="${esc(logo.dataUrl)}" x="${lx}" y="${ly}" width="${lSize}" height="${lSize}" preserveAspectRatio="xMidYMid meet" />`;
   }

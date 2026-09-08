@@ -223,9 +223,18 @@ export const SectionControls: React.FC<SectionControlsProps> = ({
                       </button>
                       <button
                         type="button"
+                        onClick={() => onLogoChange({ ...logo, position: 'center' })}
+                        className={`flex-1 py-1 text-[10px] font-medium rounded transition-colors ${
+                          logo.position === 'center' ? 'bg-stone-900 text-white' : 'text-stone-600 hover:text-stone-900'
+                        }`}
+                      >
+                        Center
+                      </button>
+                      <button
+                        type="button"
                         onClick={() => onLogoChange({ ...logo, position: 'top-right' })}
                         className={`flex-1 py-1 text-[10px] font-medium rounded transition-colors ${
-                          logo.position !== 'top-left' ? 'bg-stone-900 text-white' : 'text-stone-600 hover:text-stone-900'
+                          logo.position === 'top-right' || (!logo.position && logo.position !== 'top-left' && logo.position !== 'center') ? 'bg-stone-900 text-white' : 'text-stone-600 hover:text-stone-900'
                         }`}
                       >
                         Right
@@ -462,6 +471,58 @@ export const SectionControls: React.FC<SectionControlsProps> = ({
           )}
         </div>
       )}
+
+      {/* Animation & Compact Spacing Controls */}
+      <div className="flex flex-col gap-2.5 pt-3 border-t border-stone-200">
+        <span className="font-semibold text-stone-900 text-xs flex items-center gap-1.5">
+          <Play className="w-3.5 h-3.5 text-stone-600" />
+          Animation & Density
+        </span>
+        <div className="grid grid-cols-2 gap-2">
+          {onToggleAnimated && (
+            <button
+              type="button"
+              onClick={() => onToggleAnimated(!animated)}
+              className={`flex items-center justify-between p-2 rounded-lg border text-left transition-colors ${
+                animated
+                  ? 'bg-stone-900 text-white border-stone-900 shadow-2xs'
+                  : 'bg-stone-50 text-stone-700 border-stone-200 hover:bg-stone-100'
+              }`}
+            >
+              <div>
+                <div className="text-[11px] font-semibold">CSS Animations</div>
+                <div className={`text-[9px] ${animated ? 'text-stone-300' : 'text-stone-400'}`}>Staggered entrance</div>
+              </div>
+              <span className={`text-[10px] font-bold ${animated ? 'text-emerald-400' : 'text-stone-400'}`}>
+                {animated ? 'ON' : 'OFF'}
+              </span>
+            </button>
+          )}
+
+          {onToggleCompact && (
+            <button
+              type="button"
+              onClick={() => onToggleCompact(!compact)}
+              className={`flex items-center justify-between p-2 rounded-lg border text-left transition-colors ${
+                compact
+                  ? 'bg-stone-900 text-white border-stone-900 shadow-2xs'
+                  : 'bg-stone-50 text-stone-700 border-stone-200 hover:bg-stone-100'
+              }`}
+            >
+              <div>
+                <div className="text-[11px] font-semibold flex items-center gap-1">
+                  <Minimize2 className="w-3 h-3" />
+                  Compact Mode
+                </div>
+                <div className={`text-[9px] ${compact ? 'text-stone-300' : 'text-stone-400'}`}>Reduced print gaps</div>
+              </div>
+              <span className={`text-[10px] font-bold ${compact ? 'text-emerald-400' : 'text-stone-400'}`}>
+                {compact ? 'ON' : 'OFF'}
+              </span>
+            </button>
+          )}
+        </div>
+      </div>
     </div>
   );
 };

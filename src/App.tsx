@@ -23,6 +23,9 @@ import { ToastContainer, ToastMessage } from './components/Toast';
 import { ProjectsModal } from './components/ProjectsModal';
 import { ShareModal } from './components/ShareModal';
 import { ShortcutsModal } from './components/ShortcutsModal';
+import { ContrastModal } from './components/ContrastModal';
+import { ColorBlindnessType } from './engine/contrast';
+import { getTheme } from './engine/themes';
 import { ProjectStorage, Project } from './storage/ProjectStorage';
 import { KeyboardShortcuts } from './ui/KeyboardShortcuts';
 import { Code, Sliders, FileText, Eye, BookOpen, History as HistoryIcon, Trash2 } from 'lucide-react';
@@ -122,6 +125,14 @@ export default function App() {
 
   // Custom section ordering state
   const [sectionOrder, setSectionOrder] = useState<string[]>([]);
+
+  // Animation & Layout Density states
+  const [animated, setAnimated] = useState<boolean>(false);
+  const [compact, setCompact] = useState<boolean>(false);
+
+  // WCAG AA & Accessibility Contrast Simulator state
+  const [contrastModalOpen, setContrastModalOpen] = useState<boolean>(false);
+  const [colorBlindness, setColorBlindness] = useState<ColorBlindnessType>('normal');
 
   // Check onboarding & Load History/Session/Shareable URL on mount
   useEffect(() => {
@@ -237,21 +248,21 @@ export default function App() {
   // 4. Render SVG deterministically
   const desktopSvgString = useMemo(() => {
     try {
-      return renderSVG(finalSpec, theme, { layout: 'desktop', showQR, qrUrl, logo: logo || undefined });
+      return renderSVG(finalSpec, theme, { layout: 'desktop', showQR, qrUrl, logo: logo || undefined, animated, compact });
     } catch (e) {
       console.error('Render desktop error:', e);
       return `<svg xmlns="http://www.w3.org/2000/svg" width="880" height="300"><text x="50" y="100" fill="#1C1917" font-size="20">Render Error</text></svg>`;
     }
-  }, [finalSpec, theme, showQR, qrUrl, logo]);
+  }, [finalSpec, theme, showQR, qrUrl, logo, animated, compact]);
 
   const mobileSvgString = useMemo(() => {
     try {
-      return renderSVG(finalSpec, theme, { layout: 'mobile', showQR, qrUrl, logo: logo || undefined });
+      return renderSVG(finalSpec, theme, { layout: 'mobile', showQR, qrUrl, logo: logo || undefined, animated, compact });
     } catch (e) {
       console.error('Render mobile error:', e);
       return `<svg xmlns="http://www.w3.org/2000/svg" width="400" height="300"><text x="30" y="80" fill="#1C1917" font-size="16">Render Error</text></svg>`;
     }
-  }, [finalSpec, theme, showQR, qrUrl, logo]);
+  }, [finalSpec, theme, showQR, qrUrl, logo, animated, compact]);
 
   // --- Handlers ---
   const handleAutoDetectLogo = useCallback(() => {
@@ -702,6 +713,10 @@ export default function App() {
                   logo={logo}
                   onLogoChange={setLogo}
                   onAutoDetectLogo={handleAutoDetectLogo}
+                  animated={animated}
+                  onToggleAnimated={setAnimated}
+                  compact={compact}
+                  onToggleCompact={setCompact}
                 />
               </div>
             )}
@@ -782,6 +797,9 @@ export default function App() {
             onDownloadPng={handleDownloadPng}
             copied={copied}
             spec={finalSpec}
+            colorBlindness={colorBlindness}
+            onOpenContrastModal={() => setContrastModalOpen(true)}
+            onResetColorBlindness={() => setColorBlindness('normal')}
           />
         </div>
       </main>
@@ -863,6 +881,15 @@ export default function App() {
       <ShortcutsModal
         isOpen={shortcutsModalOpen}
         onClose={() => setShortcutsModalOpen(false)}
+      />
+
+      {/* WCAG AA Contrast Audit & Color Blindness Modal */}
+      <ContrastModal
+        isOpen={contrastModalOpen}
+        onClose={() => setContrastModalOpen(false)}
+        currentTheme={getTheme(theme)}
+        colorBlindness={colorBlindness}
+        onColorBlindnessChange={setColorBlindness}
       />
 
       {/* Toasts */}
