@@ -49,6 +49,36 @@ export interface RenderResult {
   height: number;
 }
 
+export function generateAccessibleSummary(spec: InfographicSpec): string {
+  const parts: string[] = [];
+  if (spec.title) parts.push(`Project: ${spec.title}.`);
+  if (spec.subtitle) parts.push(`Overview: ${spec.subtitle}.`);
+  for (const s of spec.sections) {
+    if (s.type === 'stats') {
+      parts.push(`Key metrics: ${s.items.map((i) => `${i.label} ${i.value}`).join(', ')}.`);
+    } else if (s.type === 'problem-solution') {
+      parts.push(`Problem: ${s.problem}. Solution: ${s.solution}.`);
+    } else if (s.type === 'features') {
+      parts.push(`Features: ${s.items.map((i) => `${i.title}: ${i.description}`).join('; ')}.`);
+    } else if (s.type === 'tech-stack') {
+      parts.push(`Tech stack: ${s.items.join(', ')}.`);
+    } else if (s.type === 'steps') {
+      parts.push(`Steps: ${s.items.map((i) => `Step ${i.step} ${i.title}: ${i.description}`).join('; ')}.`);
+    } else if (s.type === 'timeline') {
+      parts.push(`Timeline (${s.title}): ${s.items.map((i) => `${i.versionOrDate} ${i.title}: ${i.description}`).join('; ')}.`);
+    } else if (s.type === 'comparison') {
+      parts.push(`Comparison (${s.title}): ${s.rows.map((r) => `${r.feature} (Project: ${r.us}, Others: ${r.others})`).join('; ')}.`);
+    } else if (s.type === 'callout') {
+      parts.push(`Highlight: "${s.text}"${s.author ? ` — ${s.author}` : ''}.`);
+    } else if (s.type === 'content-block') {
+      parts.push(`${s.title}: ${s.text}.`);
+    } else if (s.type === 'content-list') {
+      parts.push(`${s.title}: ${s.items.map((i) => `${i.title} ${i.description}`).join('; ')}.`);
+    }
+  }
+  return esc(parts.join(' '));
+}
+
 /**
  * 6. Dynamic SVG Layout Engine
  * Calculates heights dynamically, renders scalable, beautiful vector graphic.
@@ -61,10 +91,63 @@ export function renderSVG(spec: InfographicSpec, tn?: string, options?: RenderOp
   return renderDesktopSVG(spec, tn, options);
 }
 
+export function getSvgAnimationStyles(t: ThemeConfig): string {
+  return `
+      @media (prefers-reduced-motion: no-preference) {
+        @keyframes gigFadeInUp {
+          from { opacity: 0; transform: translateY(14px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes gigSlideIn {
+          from { opacity: 0; transform: translateX(-12px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes gigScaleIn {
+          from { opacity: 0; transform: scale(0.92); }
+          to { opacity: 1; transform: scale(1); }
+        }
+        .gig-animated .gig-hero {
+          animation: gigFadeInUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+        }
+        .gig-animated .gig-sec {
+          animation: gigFadeInUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+        }
+        .gig-animated .gig-sec:nth-of-type(1) { animation-delay: 0.05s; }
+        .gig-animated .gig-sec:nth-of-type(2) { animation-delay: 0.10s; }
+        .gig-animated .gig-sec:nth-of-type(3) { animation-delay: 0.15s; }
+        .gig-animated .gig-sec:nth-of-type(4) { animation-delay: 0.20s; }
+        .gig-animated .gig-sec:nth-of-type(5) { animation-delay: 0.25s; }
+        .gig-animated .gig-sec:nth-of-type(6) { animation-delay: 0.30s; }
+        .gig-animated .gig-sec:nth-of-type(n+7) { animation-delay: 0.35s; }
+        .gig-animated .gig-card-anim {
+          animation: gigSlideIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+        }
+        .gig-animated .gig-badge-anim {
+          animation: gigScaleIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) both;
+          transform-origin: center;
+        }
+      }
+      .gig-interactive {
+        transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), filter 0.2s ease;
+        cursor: default;
+      }
+      .gig-interactive:hover {
+        filter: brightness(${t.isDark ? '1.1' : '0.98'}) drop-shadow(0 4px 10px rgba(0,0,0,${t.isDark ? '0.35' : '0.08'}));
+        transform: translateY(-2px);
+      }
+      @media print {
+        svg { background-color: #FFFFFF !important; }
+        .gig-interactive:hover { transform: none !important; filter: none !important; }
+      }
+  `;
+}
+
 export function renderDesktopSVG(spec: InfographicSpec, tn?: string, options?: RenderOptions): string {
   const t = getTheme(tn);
   const ff = t._font || t.fontFamily || DEFAULT_FF;
-  const gap = spec.sections.length > 5 ? 24 : spec.sections.length > 3 ? 30 : BASE_GAP;
+  const isCompact = Boolean(options?.compact);
+  const isAnimated = Boolean(options?.animated);
+  const gap = isCompact ? 16 : (spec.sections.length > 5 ? 24 : spec.sections.length > 3 ? 30 : BASE_GAP);
   let y = PAD;
   const parts: string[] = [];
 
@@ -74,6 +157,7 @@ export function renderDesktopSVG(spec: InfographicSpec, tn?: string, options?: R
       @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Fira+Code:wght@400;500;600&amp;display=swap');
       .font-sans { font-family: ${ff}; }
       .font-mono { font-family: 'Fira Code', monospace; }
+      ${getSvgAnimationStyles(t)}
     </style>
     <linearGradient id="accentGrad" x1="0%" y1="0%" x2="100%" y2="0%">
       <stop offset="0%" stop-color="${t.accent}" />
@@ -92,8 +176,8 @@ export function renderDesktopSVG(spec: InfographicSpec, tn?: string, options?: R
   </defs>`;
 
   // 1. Hero
-  const hero = rHero(spec, t, y);
-  parts.push(hero.svg);
+  const hero = rHero(spec, t, y, options);
+  parts.push(`<g class="gig-hero">${hero.svg}</g>`);
   y += hero.height;
 
   // 2. Sections
@@ -123,11 +207,20 @@ export function renderDesktopSVG(spec: InfographicSpec, tn?: string, options?: R
       case 'content-block':
         rendered = rCB(sec, t, y);
         break;
+      case 'timeline':
+        rendered = rTimeline(sec, t, y);
+        break;
+      case 'comparison':
+        rendered = rComparison(sec, t, y);
+        break;
+      case 'callout':
+        rendered = rCallout(sec, t, y);
+        break;
       default:
         rendered = { svg: '', height: 0 };
     }
     const secTitle = 'title' in sec ? sec.title : sec.type;
-    parts.push(`<g role="region" aria-label="${esc(secTitle)}">${rendered.svg}</g>`);
+    parts.push(`<g class="gig-sec" role="region" aria-label="${esc(secTitle)}">${rendered.svg}</g>`);
     y += rendered.height;
   }
 
@@ -138,10 +231,11 @@ export function renderDesktopSVG(spec: InfographicSpec, tn?: string, options?: R
   y += foot.height;
 
   const totalHeight = y + PAD;
+  const accessibleSummary = generateAccessibleSummary(spec);
 
-  return `<svg xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svg-desktop-title" aria-describedby="svg-desktop-desc" viewBox="0 0 ${WIDTH} ${totalHeight}" width="100%" height="auto" preserveAspectRatio="xMidYMid meet" style="max-width: 100%; height: auto; display: block; background-color:${t.bg}; border-radius: 16px;">
+  return `<svg xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svg-desktop-title" aria-describedby="svg-desktop-desc" viewBox="0 0 ${WIDTH} ${totalHeight}" width="100%" height="auto" preserveAspectRatio="xMidYMid meet" class="${isAnimated ? 'gig-animated' : ''}" style="max-width: 100%; height: auto; display: block; background-color:${t.bg}; border-radius: 16px;">
   <title id="svg-desktop-title">${esc(spec.title)} - Infographic</title>
-  <desc id="svg-desktop-desc">${esc(spec.subtitle || 'Auto-generated repository infographic by GitInfoGraphics')}</desc>
+  <desc id="svg-desktop-desc">${accessibleSummary}</desc>
   ${defs}
   <!-- Background rect with clean hairline border -->
   <rect width="${WIDTH}" height="${totalHeight}" rx="16" fill="${t.bg}"/>
@@ -162,8 +256,10 @@ export function renderDesktopSVG(spec: InfographicSpec, tn?: string, options?: R
 export function renderMobileSVG(spec: InfographicSpec, tn?: string, options?: RenderOptions): string {
   const t = getTheme(tn);
   const ff = t._font || t.fontFamily || DEFAULT_FF;
-  const gap = spec.sections.length > 5 ? 16 : MOBILE_BASE_GAP;
-  let y = MOBILE_PAD;
+  const isCompact = Boolean(options?.compact);
+  const isAnimated = Boolean(options?.animated);
+  const gap = isCompact ? 10 : (spec.sections.length > 5 ? 16 : MOBILE_BASE_GAP);
+  let y = isCompact ? 12 : MOBILE_PAD;
   const parts: string[] = [];
 
   const defs = `
@@ -172,6 +268,7 @@ export function renderMobileSVG(spec: InfographicSpec, tn?: string, options?: Re
       @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Fira+Code:wght@400;500;600&amp;display=swap');
       .font-sans { font-family: ${ff}; }
       .font-mono { font-family: 'Fira Code', monospace; }
+      ${getSvgAnimationStyles(t)}
     </style>
     <linearGradient id="accentGradM" x1="0%" y1="0%" x2="100%" y2="0%">
       <stop offset="0%" stop-color="${t.accent}" />
@@ -187,8 +284,8 @@ export function renderMobileSVG(spec: InfographicSpec, tn?: string, options?: Re
   </defs>`;
 
   // 1. Hero
-  const hero = rHeroMobile(spec, t, y);
-  parts.push(hero.svg);
+  const hero = rHeroMobile(spec, t, y, options);
+  parts.push(`<g class="gig-hero">${hero.svg}</g>`);
   y += hero.height;
 
   // 2. Sections
@@ -218,11 +315,20 @@ export function renderMobileSVG(spec: InfographicSpec, tn?: string, options?: Re
       case 'content-block':
         rendered = rCBMobile(sec, t, y);
         break;
+      case 'timeline':
+        rendered = rTimelineMobile(sec, t, y);
+        break;
+      case 'comparison':
+        rendered = rComparisonMobile(sec, t, y);
+        break;
+      case 'callout':
+        rendered = rCalloutMobile(sec, t, y);
+        break;
       default:
         rendered = { svg: '', height: 0 };
     }
     const secTitle = 'title' in sec ? sec.title : sec.type;
-    parts.push(`<g role="region" aria-label="${esc(secTitle)}">${rendered.svg}</g>`);
+    parts.push(`<g class="gig-sec" role="region" aria-label="${esc(secTitle)}">${rendered.svg}</g>`);
     y += rendered.height;
   }
 
@@ -232,11 +338,12 @@ export function renderMobileSVG(spec: InfographicSpec, tn?: string, options?: Re
   parts.push(foot.svg);
   y += foot.height;
 
-  const totalHeight = y + MOBILE_PAD;
+  const totalHeight = y + (isCompact ? 12 : MOBILE_PAD);
+  const accessibleSummary = generateAccessibleSummary(spec);
 
-  return `<svg xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svg-mobile-title" aria-describedby="svg-mobile-desc" viewBox="0 0 ${MOBILE_WIDTH} ${totalHeight}" width="100%" height="auto" preserveAspectRatio="xMidYMid meet" style="max-width: 100%; height: auto; display: block; background-color:${t.bg}; border-radius: 16px;">
+  return `<svg xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svg-mobile-title" aria-describedby="svg-mobile-desc" viewBox="0 0 ${MOBILE_WIDTH} ${totalHeight}" width="100%" height="auto" preserveAspectRatio="xMidYMid meet" class="${isAnimated ? 'gig-animated' : ''}" style="max-width: 100%; height: auto; display: block; background-color:${t.bg}; border-radius: 16px;">
   <title id="svg-mobile-title">${esc(spec.title)} - Mobile Infographic</title>
-  <desc id="svg-mobile-desc">${esc(spec.subtitle || 'Auto-generated mobile repository infographic by GitInfoGraphics')}</desc>
+  <desc id="svg-mobile-desc">${accessibleSummary}</desc>
   ${defs}
   <!-- Background rect with clean hairline border -->
   <rect width="${MOBILE_WIDTH}" height="${totalHeight}" rx="16" fill="${t.bg}"/>
@@ -246,7 +353,7 @@ export function renderMobileSVG(spec: InfographicSpec, tn?: string, options?: Re
 }
 
 
-export function rHero(spec: InfographicSpec, t: ThemeConfig, y: number): RenderResult {
+export function rHero(spec: InfographicSpec, t: ThemeConfig, y: number, options?: RenderOptions): RenderResult {
   const title = spec.title || 'Repository Overview';
   const titleLines = wrapT(title, 44);
   const titleLineH = 34;
@@ -257,11 +364,31 @@ export function rHero(spec: InfographicSpec, t: ThemeConfig, y: number): RenderR
   const subHeight = subLines.length * lineH;
   const h = 42 + titleHeight + (subLines.length ? subHeight + 14 : 0) + 16;
 
+  // Custom Logo / Image rendering
+  const logo = options?.logo || spec.logo;
+  let logoSvg = '';
+  if (logo && logo.dataUrl) {
+    const lSize = logo.size || 48;
+    let lx = PAD + CW - lSize;
+    let ly = y;
+    if (logo.position === 'top-left') {
+      lx = PAD;
+      ly = y;
+    } else if (logo.position === 'center') {
+      lx = PAD + CW / 2 - lSize / 2;
+      ly = y;
+    }
+    logoSvg = `<image href="${esc(logo.dataUrl)}" x="${lx}" y="${ly}" width="${lSize}" height="${lSize}" preserveAspectRatio="xMidYMid meet" />`;
+  }
+
   let svg = `<g id="sec-hero" class="font-sans">
+    ${logoSvg}
     <!-- Top badge -->
-    <rect x="${PAD}" y="${y}" width="160" height="24" rx="6" fill="${t.badgeBg}" stroke="${t.cardBorder}" stroke-width="1"/>
-    <text x="${PAD + 12}" y="${y + 16}" font-size="10.5" font-weight="700" fill="${t.badgeText}" letter-spacing="1.2">GITINFOGRAPHICS</text>
-    <circle cx="${PAD + 146}" cy="${y + 12}" r="2.5" fill="${t.accent}"/>
+    <g class="gig-badge-anim gig-interactive">
+      <rect x="${PAD}" y="${y}" width="160" height="24" rx="6" fill="${t.badgeBg}" stroke="${t.cardBorder}" stroke-width="1"/>
+      <text x="${PAD + 12}" y="${y + 16}" font-size="10.5" font-weight="700" fill="${t.badgeText}" letter-spacing="1.2">GITINFOGRAPHICS</text>
+      <circle cx="${PAD + 146}" cy="${y + 12}" r="2.5" fill="${t.accent}"/>
+    </g>
   `;
 
   // Main Title (dynamic multi-line wrapping so long titles never overflow)
@@ -309,7 +436,7 @@ export function rStats(
     const cardH = h - 26;
 
     svg += `
-    <g transform="translate(${x}, ${cardY})">
+    <g class="gig-card-anim gig-interactive" transform="translate(${x}, ${cardY})">
       <rect width="${cw}" height="${cardH}" rx="10" fill="${t.cardBg}" stroke="${t.cardBorder}" stroke-width="1" filter="url(#softShadow)"/>
       <text x="${cw / 2}" y="36" text-anchor="middle" font-size="24" font-weight="800" fill="${t.text}">${esc(it.value)}</text>
       <text x="${cw / 2}" y="56" text-anchor="middle" font-size="12" font-weight="600" fill="${t.textMuted}" letter-spacing="0.3">${esc(it.label)}</text>
@@ -345,7 +472,7 @@ export function rPS(
     <text x="${PAD}" y="${y + 16}" font-size="10.5" font-weight="700" fill="${t.accent}" letter-spacing="1.5">PROBLEM → SOLUTION</text>
 
     <!-- Problem Box -->
-    <g transform="translate(${PAD}, ${by})">
+    <g class="gig-card-anim gig-interactive" transform="translate(${PAD}, ${by})">
       <rect width="${bw}" height="${bh}" rx="10" fill="${t.cardBg}" stroke="${t.cardBorder}" stroke-width="1" filter="url(#softShadow)"/>
       <rect x="20" y="16" width="68" height="18" rx="4" fill="${t.badgeBg}" stroke="${t.cardBorder}" stroke-width="1"/>
       <text x="54" y="29" text-anchor="middle" font-size="9.5" font-weight="700" fill="${t.textMuted}" letter-spacing="1">PROBLEM</text>
@@ -369,7 +496,7 @@ export function rPS(
   // Solution Box
   const sx = PAD + bw + aw;
   svg += `
-    <g transform="translate(${sx}, ${by})">
+    <g class="gig-card-anim gig-interactive" transform="translate(${sx}, ${by})">
       <rect width="${bw}" height="${bh}" rx="10" fill="${t.cardBg}" stroke="${t.cardBorder}" stroke-width="1" filter="url(#softShadow)"/>
       <rect x="20" y="16" width="70" height="18" rx="4" fill="${t.badgeBg}" stroke="${t.cardBorder}" stroke-width="1"/>
       <text x="55" y="29" text-anchor="middle" font-size="9.5" font-weight="700" fill="${t.text}" letter-spacing="1">SOLUTION</text>
@@ -423,7 +550,7 @@ export function rFeats(
     const cy = y + 28 + row * (ch + g);
 
     svg += `
-    <g transform="translate(${cx}, ${cy})">
+    <g class="gig-card-anim gig-interactive" transform="translate(${cx}, ${cy})">
       <rect width="${cw}" height="${ch}" rx="10" fill="${t.cardBg}" stroke="${t.cardBorder}" stroke-width="1" filter="url(#softShadow)"/>
       <circle cx="18" cy="22" r="3" fill="${t.accent}"/>
       <text x="30" y="26" font-size="13.5" font-weight="700" fill="${t.text}">${esc(trunc(it.title, cols === 2 ? 46 : 32))}</text>
@@ -466,7 +593,7 @@ export function rTech(
     const by = y + 28 + row * (bh + g);
 
     svg += `
-    <g transform="translate(${bx}, ${by})">
+    <g class="gig-card-anim gig-interactive" transform="translate(${bx}, ${by})">
       <rect width="${bw}" height="${bh}" rx="8" fill="${t.cardBg}" stroke="${t.cardBorder}" stroke-width="1"/>
       <circle cx="14" cy="18" r="3.5" fill="${t.accent2}"/>
       <text x="26" y="22" font-size="12" font-weight="600" fill="${t.text}">${esc(tech)}</text>
@@ -507,7 +634,7 @@ export function rSteps(
     const sy = y + 28 + i * (sh + g);
 
     svg += `
-    <g transform="translate(${PAD}, ${sy})">
+    <g class="gig-card-anim gig-interactive" transform="translate(${PAD}, ${sy})">
       <rect width="${CW}" height="${sh}" rx="10" fill="${t.cardBg}" stroke="${t.cardBorder}" stroke-width="1"/>
       <!-- Step circle indicator -->
       <circle cx="20" cy="${sh / 2}" r="12" fill="${t.badgeBg}" stroke="${t.accent}" stroke-width="1.5"/>
@@ -593,12 +720,157 @@ export function rCB(
 
   let svg = `<g id="sec-${esc(s.id)}" class="font-sans">
     <text x="${PAD}" y="${y + 16}" font-size="11" font-weight="700" fill="${t.accent}" letter-spacing="1.5">${esc(s.title.toUpperCase())}</text>
-    <g transform="translate(${PAD}, ${y + 28})">
+    <g class="gig-card-anim gig-interactive" transform="translate(${PAD}, ${y + 28})">
       <rect width="${CW}" height="${h - 28}" rx="12" fill="${t.cardBg}" stroke="${t.cardBorder}" stroke-width="1" filter="url(#softShadow)"/>
   `;
 
   for (let i = 0; i < lines.length; i++) {
     svg += `<text x="20" y="${28 + i * lineH}" font-size="12.5" font-weight="400" fill="${t.textMuted}">${esc(lines[i])}</text>`;
+  }
+
+  svg += `</g></g>`;
+  return { svg, height: h };
+}
+
+export function rTimeline(
+  s: { id: string; type: 'timeline'; title: string; items: { versionOrDate: string; title: string; description: string }[] },
+  t: ThemeConfig,
+  y: number
+): RenderResult {
+  const spineX = PAD + 32;
+  const cardX = spineX + 24;
+  const cardW = CW - 56;
+  const padTop = 32;
+  let curY = y + padTop;
+  let svg = `<g id="sec-timeline-${esc(s.id)}" class="font-sans">
+    <text x="${PAD}" y="${y + 16}" font-size="11" font-weight="700" fill="${t.accent}" letter-spacing="1.5">${esc((s.title || 'ROADMAP & MILESTONES').toUpperCase())}</text>
+  `;
+
+  for (let i = 0; i < s.items.length; i++) {
+    const item = s.items[i];
+    const descLines = wrapT(item.description || '', 68).slice(0, 3);
+    const itemH = Math.max(60, 36 + descLines.length * 18);
+
+    const nodeY = curY + 20;
+    const badgeW = Math.max(54, item.versionOrDate.length * 8 + 14);
+    svg += `
+      ${i < s.items.length - 1 ? `<line x1="${spineX}" y1="${nodeY}" x2="${spineX}" y2="${curY + itemH + 14}" stroke="${t.cardBorder}" stroke-width="2"/>` : ''}
+      <circle cx="${spineX}" cy="${nodeY}" r="7" fill="${t.cardBg}" stroke="${t.accent}" stroke-width="3"/>
+      <circle cx="${spineX}" cy="${nodeY}" r="3" fill="${t.accent}"/>
+
+      <g class="gig-card-anim gig-interactive" transform="translate(${cardX}, ${curY})">
+        <rect width="${cardW}" height="${itemH}" rx="10" fill="${t.cardBg}" stroke="${t.cardBorder}" stroke-width="1" filter="url(#softShadow)"/>
+        <rect x="14" y="10" width="${badgeW}" height="20" rx="5" fill="${t.badgeBg}" stroke="${t.cardBorder}" stroke-width="1"/>
+        <text x="${14 + badgeW / 2}" y="24" text-anchor="middle" font-size="10" font-weight="700" fill="${t.badgeText}">${esc(item.versionOrDate)}</text>
+        <text x="${14 + badgeW + 12}" y="25" font-size="13" font-weight="700" fill="${t.text}">${esc(item.title)}</text>
+    `;
+
+    for (let li = 0; li < descLines.length; li++) {
+      svg += `<text x="14" y="${44 + li * 18}" font-size="12" font-weight="400" fill="${t.textMuted}">${esc(descLines[li])}</text>`;
+    }
+    svg += `</g>`;
+
+    curY += itemH + 12;
+  }
+
+  svg += `</g>`;
+  return { svg, height: curY - y };
+}
+
+export function rComparison(
+  s: { id: string; type: 'comparison'; title: string; headers: [string, string, string]; rows: { feature: string; us: string | boolean; others: string | boolean }[] },
+  t: ThemeConfig,
+  y: number
+): RenderResult {
+  const padTop = 32;
+  const col1W = Math.floor(CW * 0.44);
+  const col2W = Math.floor(CW * 0.28);
+  const rowH = 34;
+  const totalH = padTop + 36 + s.rows.length * rowH + 8;
+
+  let svg = `<g id="sec-comparison-${esc(s.id)}" class="font-sans">
+    <text x="${PAD}" y="${y + 16}" font-size="11" font-weight="700" fill="${t.accent}" letter-spacing="1.5">${esc((s.title || 'FEATURE COMPARISON').toUpperCase())}</text>
+    <g transform="translate(${PAD}, ${y + 26})">
+      <rect width="${CW}" height="${totalH - 26}" rx="12" fill="${t.cardBg}" stroke="${t.cardBorder}" stroke-width="1" filter="url(#softShadow)"/>
+      
+      <!-- Table Header -->
+      <rect width="${CW}" height="36" rx="12" fill="${t.isDark ? '#292524' : '#F5F5F4'}"/>
+      <rect x="0" y="24" width="${CW}" height="12" fill="${t.isDark ? '#292524' : '#F5F5F4'}"/>
+      <text x="20" y="23" font-size="11.5" font-weight="700" fill="${t.text}">${esc(s.headers[0] || 'Feature')}</text>
+      <text x="${col1W + 16}" y="23" font-size="11.5" font-weight="700" fill="${t.accent}">${esc(s.headers[1] || 'This Project')}</text>
+      <text x="${col1W + col2W + 16}" y="23" font-size="11.5" font-weight="700" fill="${t.textMuted}">${esc(s.headers[2] || 'Alternatives')}</text>
+      <line x1="0" y1="36" x2="${CW}" y2="36" stroke="${t.cardBorder}" stroke-width="1"/>
+  `;
+
+  for (let i = 0; i < s.rows.length; i++) {
+    const row = s.rows[i];
+    const ry = 36 + i * rowH;
+    if (i % 2 === 1) {
+      svg += `<rect x="0" y="${ry}" width="${CW}" height="${rowH}" fill="${t.isDark ? '#1C1917' : '#FAFAF9'}" opacity="0.5"/>`;
+    }
+    svg += `<line x1="0" y1="${ry + rowH}" x2="${CW}" y2="${ry + rowH}" stroke="${t.cardBorder}" stroke-width="0.75" stroke-dasharray="2,2"/>`;
+
+    svg += `<text x="20" y="${ry + 22}" font-size="12" font-weight="600" fill="${t.text}">${esc(row.feature)}</text>`;
+
+    if (typeof row.us === 'boolean') {
+      if (row.us) {
+        svg += `
+          <g transform="translate(${col1W + 16}, ${ry + 8})">
+            <rect width="48" height="18" rx="4" fill="${t.accent}" opacity="0.15"/>
+            <text x="24" y="13" text-anchor="middle" font-size="10" font-weight="700" fill="${t.accent}">YES ✓</text>
+          </g>`;
+      } else {
+        svg += `<text x="${col1W + 16}" y="${ry + 22}" font-size="11.5" font-weight="500" fill="${t.textMuted}">No</text>`;
+      }
+    } else {
+      svg += `<text x="${col1W + 16}" y="${ry + 22}" font-size="11.5" font-weight="600" fill="${t.accent}">${esc(row.us)}</text>`;
+    }
+
+    if (typeof row.others === 'boolean') {
+      if (row.others) {
+        svg += `<text x="${col1W + col2W + 16}" y="${ry + 22}" font-size="11" font-weight="500" fill="${t.text}">Yes</text>`;
+      } else {
+        svg += `
+          <g transform="translate(${col1W + col2W + 16}, ${ry + 8})">
+            <rect width="42" height="18" rx="4" fill="${t.badgeBg}"/>
+            <text x="21" y="13" text-anchor="middle" font-size="10" font-weight="600" fill="${t.badgeText}">No ✕</text>
+          </g>`;
+      }
+    } else {
+      svg += `<text x="${col1W + col2W + 16}" y="${ry + 22}" font-size="11.5" font-weight="400" fill="${t.textMuted}">${esc(row.others)}</text>`;
+    }
+  }
+
+  svg += `</g></g>`;
+  return { svg, height: totalH };
+}
+
+export function rCallout(
+  s: { id: string; type: 'callout'; title?: string; text: string; author?: string; calloutType?: 'quote' | 'tip' | 'warning' | 'info' },
+  t: ThemeConfig,
+  y: number
+): RenderResult {
+  const lines = wrapT(s.text || '', 72);
+  const lineH = 20;
+  const padTop = 32;
+  const h = Math.max(88, padTop + lines.length * lineH + (s.author ? 28 : 16));
+  const borderAccentColor = s.calloutType === 'warning' ? (t.warning || '#EAB308') : s.calloutType === 'tip' ? t.success : t.accent;
+
+  let svg = `<g id="sec-callout-${esc(s.id)}" class="font-sans">
+    ${s.title ? `<text x="${PAD}" y="${y + 16}" font-size="11" font-weight="700" fill="${borderAccentColor}" letter-spacing="1.5">${esc(s.title.toUpperCase())}</text>` : ''}
+    <g transform="translate(${PAD}, ${y + (s.title ? 26 : 8)})">
+      <rect width="${CW}" height="${h - (s.title ? 26 : 8)}" rx="12" fill="${t.cardBg}" stroke="${t.cardBorder}" stroke-width="1" filter="url(#softShadow)"/>
+      <rect x="0" y="0" width="5" height="${h - (s.title ? 26 : 8)}" rx="2" fill="${borderAccentColor}"/>
+      <text x="22" y="30" font-size="28" font-family="serif" font-weight="bold" fill="${borderAccentColor}" opacity="0.3">“</text>
+  `;
+
+  for (let i = 0; i < lines.length; i++) {
+    svg += `<text x="44" y="${28 + i * lineH}" font-size="13" font-style="italic" font-weight="500" fill="${t.text}">${esc(lines[i])}</text>`;
+  }
+
+  if (s.author) {
+    const authorY = 28 + lines.length * lineH + 12;
+    svg += `<text x="${CW - 24}" y="${authorY}" text-anchor="end" font-size="11" font-weight="600" fill="${t.accent}">— ${esc(s.author)}</text>`;
   }
 
   svg += `</g></g>`;
@@ -641,7 +913,7 @@ export function rFoot(t: ThemeConfig, y: number, options?: RenderOptions, spec?:
    MOBILE RESPONSIVE SECTION RENDERERS (400px width, touch-legible typography)
    ========================================================================= */
 
-export function rHeroMobile(spec: InfographicSpec, t: ThemeConfig, y: number): RenderResult {
+export function rHeroMobile(spec: InfographicSpec, t: ThemeConfig, y: number, options?: RenderOptions): RenderResult {
   const title = spec.title || 'Repository Overview';
   const titleLines = wrapT(title, 26);
   const titleLineH = 26;
@@ -652,11 +924,24 @@ export function rHeroMobile(spec: InfographicSpec, t: ThemeConfig, y: number): R
   const subHeight = subLines.length * subLineH;
   const h = 34 + titleHeight + (subLines.length ? subHeight + 12 : 0) + 16;
 
+  // Custom Logo / Image rendering for mobile
+  const logo = options?.logo || spec.logo;
+  let logoSvg = '';
+  if (logo && logo.dataUrl) {
+    const lSize = Math.min(logo.size || 36, 44);
+    const lx = logo.position === 'top-left' ? MOBILE_PAD : MOBILE_PAD + MOBILE_CW - lSize;
+    const ly = y;
+    logoSvg = `<image href="${esc(logo.dataUrl)}" x="${lx}" y="${ly}" width="${lSize}" height="${lSize}" preserveAspectRatio="xMidYMid meet" />`;
+  }
+
   let svg = `<g id="sec-hero-mobile" class="font-sans">
+    ${logoSvg}
     <!-- Top badge -->
-    <rect x="${MOBILE_PAD}" y="${y}" width="144" height="22" rx="5" fill="${t.badgeBg}" stroke="${t.cardBorder}" stroke-width="1"/>
-    <text x="${MOBILE_PAD + 10}" y="${y + 15}" font-size="9.5" font-weight="700" fill="${t.badgeText}" letter-spacing="1.2">GITINFOGRAPHICS</text>
-    <circle cx="${MOBILE_PAD + 130}" cy="${y + 11}" r="2" fill="${t.accent}"/>
+    <g class="gig-badge-anim gig-interactive">
+      <rect x="${MOBILE_PAD}" y="${y}" width="144" height="22" rx="5" fill="${t.badgeBg}" stroke="${t.cardBorder}" stroke-width="1"/>
+      <text x="${MOBILE_PAD + 10}" y="${y + 15}" font-size="9.5" font-weight="700" fill="${t.badgeText}" letter-spacing="1.2">GITINFOGRAPHICS</text>
+      <circle cx="${MOBILE_PAD + 130}" cy="${y + 11}" r="2" fill="${t.accent}"/>
+    </g>
   `;
 
   // Title (dynamically wrapped for mobile, high legibility)
@@ -708,7 +993,7 @@ export function rStatsMobile(
     const cardY = y + 24 + row * (cardH + g);
 
     svg += `
-    <g transform="translate(${x}, ${cardY})">
+    <g class="gig-card-anim gig-interactive" transform="translate(${x}, ${cardY})">
       <rect width="${cw}" height="${cardH}" rx="10" fill="${t.cardBg}" stroke="${t.cardBorder}" stroke-width="1" filter="url(#softShadowM)"/>
       <text x="${cw / 2}" y="34" text-anchor="middle" font-size="20" font-weight="800" fill="${t.text}">${esc(it.value)}</text>
       <text x="${cw / 2}" y="52" text-anchor="middle" font-size="11" font-weight="600" fill="${t.textMuted}" letter-spacing="0.2">${esc(trunc(it.label, 20))}</text>
@@ -970,6 +1255,133 @@ export function rCBMobile(
 
   for (let i = 0; i < lines.length; i++) {
     svg += `<text x="16" y="${24 + i * lineH}" font-size="12" font-weight="400" fill="${t.textMuted}">${esc(lines[i])}</text>`;
+  }
+
+  svg += `</g></g>`;
+  return { svg, height: h };
+}
+
+export function rTimelineMobile(
+  s: { id: string; type: 'timeline'; title: string; items: { versionOrDate: string; title: string; description: string }[] },
+  t: ThemeConfig,
+  y: number
+): RenderResult {
+  const spineX = MOBILE_PAD + 16;
+  const cardX = spineX + 16;
+  const cardW = MOBILE_CW - 32;
+  const padTop = 30;
+  let curY = y + padTop;
+  let svg = `<g id="sec-timeline-${esc(s.id)}-mobile" class="font-sans">
+    <text x="${MOBILE_PAD}" y="${y + 14}" font-size="10.5" font-weight="700" fill="${t.accent}" letter-spacing="1.5">${esc((s.title || 'ROADMAP & MILESTONES').toUpperCase())}</text>
+  `;
+
+  for (let i = 0; i < s.items.length; i++) {
+    const item = s.items[i];
+    const descLines = wrapT(item.description || '', 36).slice(0, 3);
+    const itemH = Math.max(56, 32 + descLines.length * 16);
+    const nodeY = curY + 18;
+    const badgeW = Math.max(48, item.versionOrDate.length * 7 + 12);
+
+    svg += `
+      ${i < s.items.length - 1 ? `<line x1="${spineX}" y1="${nodeY}" x2="${spineX}" y2="${curY + itemH + 12}" stroke="${t.cardBorder}" stroke-width="2"/>` : ''}
+      <circle cx="${spineX}" cy="${nodeY}" r="5" fill="${t.cardBg}" stroke="${t.accent}" stroke-width="2.5"/>
+      <circle cx="${spineX}" cy="${nodeY}" r="2" fill="${t.accent}"/>
+
+      <g transform="translate(${cardX}, ${curY})">
+        <rect width="${cardW}" height="${itemH}" rx="8" fill="${t.cardBg}" stroke="${t.cardBorder}" stroke-width="1" filter="url(#softShadowM)"/>
+        <rect x="10" y="8" width="${badgeW}" height="18" rx="4" fill="${t.badgeBg}" stroke="${t.cardBorder}" stroke-width="1"/>
+        <text x="${10 + badgeW / 2}" y="20" text-anchor="middle" font-size="9.5" font-weight="700" fill="${t.badgeText}">${esc(item.versionOrDate)}</text>
+        <text x="${10 + badgeW + 8}" y="21" font-size="11.5" font-weight="700" fill="${t.text}">${esc(trunc(item.title, 24))}</text>
+    `;
+
+    for (let li = 0; li < descLines.length; li++) {
+      svg += `<text x="10" y="${38 + li * 16}" font-size="11" font-weight="400" fill="${t.textMuted}">${esc(descLines[li])}</text>`;
+    }
+    svg += `</g>`;
+
+    curY += itemH + 10;
+  }
+
+  svg += `</g>`;
+  return { svg, height: curY - y };
+}
+
+export function rComparisonMobile(
+  s: { id: string; type: 'comparison'; title: string; headers: [string, string, string]; rows: { feature: string; us: string | boolean; others: string | boolean }[] },
+  t: ThemeConfig,
+  y: number
+): RenderResult {
+  const padTop = 30;
+  const cardW = MOBILE_CW;
+  const rowH = 32;
+  const totalH = padTop + 32 + s.rows.length * rowH + 6;
+  const col1W = Math.floor(cardW * 0.46);
+  const col2W = Math.floor(cardW * 0.28);
+
+  let svg = `<g id="sec-comparison-${esc(s.id)}-mobile" class="font-sans">
+    <text x="${MOBILE_PAD}" y="${y + 14}" font-size="10.5" font-weight="700" fill="${t.accent}" letter-spacing="1.5">${esc((s.title || 'FEATURE COMPARISON').toUpperCase())}</text>
+    <g transform="translate(${MOBILE_PAD}, ${y + 24})">
+      <rect width="${cardW}" height="${totalH - 24}" rx="10" fill="${t.cardBg}" stroke="${t.cardBorder}" stroke-width="1" filter="url(#softShadowM)"/>
+      <rect width="${cardW}" height="32" rx="10" fill="${t.isDark ? '#292524' : '#F5F5F4'}"/>
+      <rect x="0" y="20" width="${cardW}" height="12" fill="${t.isDark ? '#292524' : '#F5F5F4'}"/>
+      <text x="12" y="20" font-size="10" font-weight="700" fill="${t.text}">${esc(s.headers[0] || 'Feature')}</text>
+      <text x="${col1W + 8}" y="20" font-size="10" font-weight="700" fill="${t.accent}">US</text>
+      <text x="${col1W + col2W + 8}" y="20" font-size="10" font-weight="700" fill="${t.textMuted}">OTHERS</text>
+      <line x1="0" y1="32" x2="${cardW}" y2="32" stroke="${t.cardBorder}" stroke-width="1"/>
+  `;
+
+  for (let i = 0; i < s.rows.length; i++) {
+    const row = s.rows[i];
+    const ry = 32 + i * rowH;
+    if (i % 2 === 1) {
+      svg += `<rect x="0" y="${ry}" width="${cardW}" height="${rowH}" fill="${t.isDark ? '#1C1917' : '#FAFAF9'}" opacity="0.5"/>`;
+    }
+    svg += `<line x1="0" y1="${ry + rowH}" x2="${cardW}" y2="${ry + rowH}" stroke="${t.cardBorder}" stroke-width="0.75" stroke-dasharray="2,2"/>`;
+    svg += `<text x="12" y="${ry + 20}" font-size="11" font-weight="600" fill="${t.text}">${esc(trunc(row.feature, 18))}</text>`;
+
+    if (typeof row.us === 'boolean') {
+      svg += `<text x="${col1W + 8}" y="${ry + 20}" font-size="10.5" font-weight="700" fill="${row.us ? t.accent : t.textMuted}">${row.us ? '✓ Yes' : '✕ No'}</text>`;
+    } else {
+      svg += `<text x="${col1W + 8}" y="${ry + 20}" font-size="10.5" font-weight="600" fill="${t.accent}">${esc(trunc(row.us, 10))}</text>`;
+    }
+
+    if (typeof row.others === 'boolean') {
+      svg += `<text x="${col1W + col2W + 8}" y="${ry + 20}" font-size="10.5" font-weight="500" fill="${row.others ? t.text : t.textMuted}">${row.others ? 'Yes' : 'No'}</text>`;
+    } else {
+      svg += `<text x="${col1W + col2W + 8}" y="${ry + 20}" font-size="10.5" font-weight="400" fill="${t.textMuted}">${esc(trunc(row.others, 10))}</text>`;
+    }
+  }
+
+  svg += `</g></g>`;
+  return { svg, height: totalH };
+}
+
+export function rCalloutMobile(
+  s: { id: string; type: 'callout'; title?: string; text: string; author?: string; calloutType?: 'quote' | 'tip' | 'warning' | 'info' },
+  t: ThemeConfig,
+  y: number
+): RenderResult {
+  const lines = wrapT(s.text || '', 40);
+  const lineH = 18;
+  const padTop = 30;
+  const h = Math.max(76, padTop + lines.length * lineH + (s.author ? 24 : 14));
+  const borderAccentColor = s.calloutType === 'warning' ? (t.warning || '#EAB308') : s.calloutType === 'tip' ? t.success : t.accent;
+
+  let svg = `<g id="sec-callout-${esc(s.id)}-mobile" class="font-sans">
+    ${s.title ? `<text x="${MOBILE_PAD}" y="${y + 14}" font-size="10.5" font-weight="700" fill="${borderAccentColor}" letter-spacing="1.5">${esc(s.title.toUpperCase())}</text>` : ''}
+    <g transform="translate(${MOBILE_PAD}, ${y + (s.title ? 24 : 6)})">
+      <rect width="${MOBILE_CW}" height="${h - (s.title ? 24 : 6)}" rx="10" fill="${t.cardBg}" stroke="${t.cardBorder}" stroke-width="1" filter="url(#softShadowM)"/>
+      <rect x="0" y="0" width="4" height="${h - (s.title ? 24 : 6)}" rx="2" fill="${borderAccentColor}"/>
+      <text x="16" y="24" font-size="22" font-family="serif" font-weight="bold" fill="${borderAccentColor}" opacity="0.3">“</text>
+  `;
+
+  for (let i = 0; i < lines.length; i++) {
+    svg += `<text x="32" y="${22 + i * lineH}" font-size="11.5" font-style="italic" font-weight="500" fill="${t.text}">${esc(lines[i])}</text>`;
+  }
+
+  if (s.author) {
+    const authorY = 22 + lines.length * lineH + 10;
+    svg += `<text x="${MOBILE_CW - 16}" y="${authorY}" text-anchor="end" font-size="10" font-weight="600" fill="${t.accent}">— ${esc(s.author)}</text>`;
   }
 
   svg += `</g></g>`;

@@ -84,6 +84,24 @@ export interface ContentListItem {
   description: string;
 }
 
+export interface TimelineItem {
+  versionOrDate: string;
+  title: string;
+  description: string;
+}
+
+export interface ComparisonRow {
+  feature: string;
+  us: string | boolean;
+  others: string | boolean;
+}
+
+export interface LogoConfig {
+  dataUrl: string;
+  position: 'top-left' | 'top-right' | 'center';
+  size: number;
+}
+
 export type SpecSection =
   | {
       id: string;
@@ -128,6 +146,27 @@ export type SpecSection =
       type: 'content-block';
       title: string;
       text: string;
+    }
+  | {
+      id: string;
+      type: 'timeline';
+      title: string;
+      items: TimelineItem[];
+    }
+  | {
+      id: string;
+      type: 'comparison';
+      title: string;
+      headers: [string, string, string];
+      rows: ComparisonRow[];
+    }
+  | {
+      id: string;
+      type: 'callout';
+      title?: string;
+      text: string;
+      author?: string;
+      calloutType?: 'quote' | 'tip' | 'warning' | 'info';
     };
 
 export interface InfographicSpec {
@@ -135,6 +174,7 @@ export interface InfographicSpec {
   subtitle: string;
   sections: SpecSection[];
   meta?: GitHubMeta;
+  logo?: LogoConfig;
 }
 
 export interface GitHubMeta {
@@ -179,4 +219,7 @@ export interface RenderOptions {
   width?: number;
   showQR?: boolean;
   qrUrl?: string;
+  logo?: LogoConfig;
+  animated?: boolean;
+  compact?: boolean;
 }

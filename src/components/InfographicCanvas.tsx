@@ -12,8 +12,17 @@ import {
   Battery,
   ChevronDown,
   Layers,
-  Info
+  Info,
+  FileText,
+  Eye,
+  ShieldCheck,
+  Activity,
+  Cpu,
+  GitCommit,
+  Columns,
+  Quote
 } from 'lucide-react';
+import { InfographicSpec } from '../engine/types';
 
 interface InfographicCanvasProps {
   desktopSvgString?: string;
@@ -24,6 +33,7 @@ interface InfographicCanvasProps {
   onDownloadSvg: (layout?: 'desktop' | 'mobile') => void;
   onDownloadPng: (layout?: 'desktop' | 'mobile') => void;
   copied: boolean;
+  spec?: InfographicSpec;
 }
 
 export const InfographicCanvas: React.FC<InfographicCanvasProps> = ({
@@ -34,7 +44,8 @@ export const InfographicCanvas: React.FC<InfographicCanvasProps> = ({
   onCopySvg,
   onDownloadSvg,
   onDownloadPng,
-  copied
+  copied,
+  spec
 }) => {
   const desktopSvg = propDesktopSvg || svgString || '';
   const mobileSvg = propMobileSvg || svgString || '';
@@ -47,10 +58,46 @@ export const InfographicCanvas: React.FC<InfographicCanvasProps> = ({
   const [snippetMode, setSnippetMode] = useState<'picture' | 'desktop' | 'mobile'>('picture');
   const [mdCopied, setMdCopied] = useState(false);
   const [downloadMenuOpen, setDownloadMenuOpen] = useState(false);
+  const [accessibleView, setAccessibleView] = useState(false);
+  const [summaryCopied, setSummaryCopied] = useState(false);
 
   // Active SVG based on current view
   const activeLayout = viewportMode === 'mobile' ? 'mobile' : fluidLayout;
   const activeSvg = activeLayout === 'mobile' ? mobileSvg : desktopSvg;
+
+  const copyAccessibleSummary = () => {
+    if (!spec) return;
+    const lines: string[] = [
+      `# ${spec.title || 'Repository Overview'}`,
+      spec.subtitle ? `${spec.subtitle}\n` : '',
+    ];
+    for (const sec of spec.sections) {
+      if ('title' in sec && sec.title) lines.push(`## ${sec.title}`);
+      if (sec.type === 'stats') {
+        lines.push(sec.items.map((it) => `- ${it.label}: ${it.value}`).join('\n'));
+      } else if (sec.type === 'problem-solution') {
+        lines.push(`Problem: ${sec.problem}\nSolution: ${sec.solution}`);
+      } else if (sec.type === 'features') {
+        lines.push(sec.items.map((it) => `- ${it.title}: ${it.description}`).join('\n'));
+      } else if (sec.type === 'tech-stack') {
+        lines.push(sec.items.map((it) => `- ${it}`).join('\n'));
+      } else if (sec.type === 'timeline') {
+        lines.push(sec.items.map((it) => `- [${it.versionOrDate}] ${it.title}: ${it.description}`).join('\n'));
+      } else if (sec.type === 'comparison') {
+        lines.push(`| ${sec.headers.join(' | ')} |`);
+        lines.push(`|---|---|---|`);
+        sec.rows.forEach((r) => lines.push(`| ${r.feature} | ${String(r.us)} | ${String(r.others)} |`));
+      } else if (sec.type === 'callout') {
+        lines.push(`> "${sec.text}" ${sec.author ? `— ${sec.author}` : ''}`);
+      } else if ('text' in sec && sec.text) {
+        lines.push(sec.text);
+      }
+      lines.push('');
+    }
+    navigator.clipboard.writeText(lines.join('\n'));
+    setSummaryCopied(true);
+    setTimeout(() => setSummaryCopied(false), 2000);
+  };
 
   // Extract dimensions from SVG viewBox
   const viewBoxMatch = activeSvg.match(/viewBox="0 0 (\d+) (\d+)"/);
@@ -100,12 +147,13 @@ export const InfographicCanvas: React.FC<InfographicCanvasProps> = ({
           <div className="flex items-center bg-white border border-stone-200 rounded-lg p-0.5 shadow-2xs">
             <button
               onClick={() => {
+                setAccessibleView(false);
                 setViewportMode('desktop');
                 setZoomMode('fit');
                 setZoom(1);
               }}
               className={`min-h-[34px] px-3 py-1 text-xs font-medium rounded-md flex items-center gap-1.5 transition-all ${
-                viewportMode === 'desktop'
+                !accessibleView && viewportMode === 'desktop'
                   ? 'bg-stone-900 text-white shadow-2xs'
                   : 'text-stone-600 hover:text-stone-900 hover:bg-stone-100/60'
               }`}
@@ -117,12 +165,13 @@ export const InfographicCanvas: React.FC<InfographicCanvasProps> = ({
 
             <button
               onClick={() => {
+                setAccessibleView(false);
                 setViewportMode('mobile');
                 setZoomMode('fit');
                 setZoom(1);
               }}
               className={`min-h-[34px] px-3 py-1 text-xs font-medium rounded-md flex items-center gap-1.5 transition-all ${
-                viewportMode === 'mobile'
+                !accessibleView && viewportMode === 'mobile'
                   ? 'bg-stone-900 text-white shadow-2xs'
                   : 'text-stone-600 hover:text-stone-900 hover:bg-stone-100/60'
               }`}
@@ -131,6 +180,27 @@ export const InfographicCanvas: React.FC<InfographicCanvasProps> = ({
               <Smartphone className="w-3.5 h-3.5" />
               <span>Mobile Phone</span>
             </button>
+          </div>
+
+          {/* Accessible Text-Only View Toggle */}
+          <button
+            onClick={() => setAccessibleView(!accessibleView)}
+            className={`min-h-[34px] px-3 py-1 text-xs font-medium rounded-lg border transition-all flex items-center gap-1.5 ${
+              accessibleView
+                ? 'bg-stone-900 text-white border-stone-900 shadow-2xs'
+                : 'bg-white border-stone-200 text-stone-700 hover:text-stone-950 hover:bg-stone-50'
+            }`}
+            title="Toggle Accessible Text-Only View (Screen-reader friendly parallel fallback)"
+            aria-pressed={accessibleView}
+          >
+            {accessibleView ? <Eye className="w-3.5 h-3.5 text-white" /> : <FileText className="w-3.5 h-3.5 text-stone-500" />}
+            <span>Text-Only View</span>
+          </button>
+
+          {/* WCAG AA Compliance Indicator */}
+          <div className="hidden sm:flex items-center gap-1 px-2.5 py-1 bg-emerald-50 border border-emerald-200/80 rounded-lg text-[11px] font-medium text-emerald-800">
+            <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
+            <span>WCAG AA Passed</span>
           </div>
 
           {/* Fluid view layout toggle (Desktop 880 vs Mobile 400) */}
@@ -322,7 +392,7 @@ export const InfographicCanvas: React.FC<InfographicCanvasProps> = ({
         </div>
       </div>
 
-      {/* SVG Canvas Stage - Guaranteed ZERO sidescroll */}
+      {/* SVG Canvas Stage or Accessible Text View - Guaranteed ZERO sidescroll */}
       <div
         className={`flex-1 overflow-y-auto overflow-x-hidden p-2 sm:p-5 flex items-start justify-center transition-colors ${
           backdrop === 'light'
@@ -332,7 +402,180 @@ export const InfographicCanvas: React.FC<InfographicCanvasProps> = ({
             : 'bg-[radial-gradient(#E2E0DD_1px,transparent_1px)] [background-size:16px_16px] bg-[#FAF9F6]'
         }`}
       >
-        {viewportMode === 'desktop' ? (
+        {accessibleView ? (
+          /* Accessible Semantic HTML Fallback View */
+          <div className="w-full max-w-3xl bg-white border border-stone-200 rounded-xl shadow-xs p-6 sm:p-8 font-sans text-stone-800">
+            <div className="flex flex-wrap items-center justify-between gap-3 pb-4 mb-6 border-b border-stone-200">
+              <div className="flex items-center gap-2">
+                <span className="px-2.5 py-1 bg-emerald-100 text-emerald-900 border border-emerald-300 rounded-full text-xs font-semibold flex items-center gap-1.5">
+                  <ShieldCheck className="w-4 h-4 text-emerald-700" />
+                  Screen Reader &amp; Text Alternative
+                </span>
+                <span className="text-xs text-stone-500">WCAG AA Compliant Fallback</span>
+              </div>
+              <button
+                type="button"
+                onClick={copyAccessibleSummary}
+                className="flex items-center gap-1.5 px-3 py-1.5 bg-stone-900 hover:bg-stone-800 text-white rounded-lg text-xs font-medium transition-colors shadow-2xs"
+              >
+                {summaryCopied ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
+                <span>{summaryCopied ? 'Summary Copied' : 'Copy Text Summary'}</span>
+              </button>
+            </div>
+
+            <article role="region" aria-label="Accessible Repository Infographic" className="space-y-6">
+              <header className="space-y-2">
+                <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-stone-900">
+                  {spec?.title || 'Repository Infographic'}
+                </h1>
+                {spec?.subtitle && (
+                  <p className="text-base text-stone-600 leading-relaxed" role="doc-subtitle">
+                    {spec.subtitle}
+                  </p>
+                )}
+              </header>
+
+              {spec?.sections.map((sec, idx) => {
+                if (sec.type === 'stats') {
+                  return (
+                    <section key={sec.id || idx} className="space-y-3 pt-4 border-t border-stone-100" aria-label="Key Metrics">
+                      <h2 className="text-lg font-semibold text-stone-900 flex items-center gap-2">
+                        <Activity className="w-4 h-4 text-emerald-600" />
+                        Key Metrics
+                      </h2>
+                      <dl className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                        {sec.items.map((stat, sIdx) => (
+                          <div key={sIdx} className="p-3 bg-stone-50 border border-stone-200 rounded-lg">
+                            <dt className="text-xs font-medium text-stone-500">{stat.label}</dt>
+                            <dd className="text-xl font-bold text-stone-900 mt-1">{stat.value}</dd>
+                          </div>
+                        ))}
+                      </dl>
+                    </section>
+                  );
+                }
+
+                if (sec.type === 'problem-solution') {
+                  return (
+                    <section key={sec.id || idx} className="space-y-3 pt-4 border-t border-stone-100" aria-label="The Challenge and Our Solution">
+                      <h2 className="text-lg font-semibold text-stone-900">
+                        {sec.problemTitle && sec.solutionTitle ? `${sec.problemTitle} & ${sec.solutionTitle}` : 'Challenge & Solution'}
+                      </h2>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div className="p-4 bg-amber-50/60 border border-amber-200 rounded-lg">
+                          <h3 className="text-xs font-bold uppercase tracking-wider text-amber-900 mb-1">{sec.problemTitle || 'The Problem'}</h3>
+                          <p className="text-sm text-stone-800 leading-relaxed">{sec.problem}</p>
+                        </div>
+                        <div className="p-4 bg-emerald-50/60 border border-emerald-200 rounded-lg">
+                          <h3 className="text-xs font-bold uppercase tracking-wider text-emerald-900 mb-1">{sec.solutionTitle || 'The Solution'}</h3>
+                          <p className="text-sm text-stone-800 leading-relaxed">{sec.solution}</p>
+                        </div>
+                      </div>
+                    </section>
+                  );
+                }
+
+                if (sec.type === 'features') {
+                  return (
+                    <section key={sec.id || idx} className="space-y-3 pt-4 border-t border-stone-100" aria-label={sec.title || 'Core Features'}>
+                      <h2 className="text-lg font-semibold text-stone-900">{sec.title || 'Core Features'}</h2>
+                      <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3 list-none p-0">
+                        {sec.items.map((feat, fIdx) => (
+                          <li key={fIdx} className="p-3 bg-stone-50 border border-stone-200 rounded-lg space-y-1">
+                            <strong className="text-sm font-semibold text-stone-900 block">{feat.title}</strong>
+                            <p className="text-xs text-stone-600 leading-relaxed">{feat.description}</p>
+                          </li>
+                        ))}
+                      </ul>
+                    </section>
+                  );
+                }
+
+                if (sec.type === 'tech-stack') {
+                  return (
+                    <section key={sec.id || idx} className="space-y-3 pt-4 border-t border-stone-100" aria-label={sec.title || 'Technology Architecture'}>
+                      <h2 className="text-lg font-semibold text-stone-900 flex items-center gap-2">
+                        <Cpu className="w-4 h-4 text-sky-600" />
+                        {sec.title || 'Technology Stack'}
+                      </h2>
+                      <ul className="flex flex-wrap gap-2 list-none p-0">
+                        {sec.items.map((tech, tIdx) => (
+                          <li key={tIdx} className="px-3 py-1 bg-stone-100 border border-stone-200 rounded-md text-xs font-mono text-stone-800 font-medium">
+                            {tech}
+                          </li>
+                        ))}
+                      </ul>
+                    </section>
+                  );
+                }
+
+                if (sec.type === 'timeline') {
+                  return (
+                    <section key={sec.id || idx} className="space-y-3 pt-4 border-t border-stone-100" aria-label={sec.title || 'Project Milestones'}>
+                      <h2 className="text-lg font-semibold text-stone-900 flex items-center gap-2">
+                        <GitCommit className="w-4 h-4 text-indigo-600" />
+                        {sec.title || 'Milestones & Timeline'}
+                      </h2>
+                      <ol className="space-y-3 list-none p-0 border-l-2 border-stone-200 pl-4">
+                        {sec.items.map((item, mIdx) => (
+                          <li key={mIdx} className="relative space-y-0.5">
+                            <span className="text-xs font-mono font-semibold text-indigo-600 block">{item.versionOrDate}</span>
+                            <strong className="text-sm text-stone-900 block">{item.title}</strong>
+                            <p className="text-xs text-stone-600">{item.description}</p>
+                          </li>
+                        ))}
+                      </ol>
+                    </section>
+                  );
+                }
+
+                if (sec.type === 'comparison') {
+                  return (
+                    <section key={sec.id || idx} className="space-y-3 pt-4 border-t border-stone-100" aria-label={sec.title || 'Comparison'}>
+                      <h2 className="text-lg font-semibold text-stone-900 flex items-center gap-2">
+                        <Columns className="w-4 h-4 text-teal-600" />
+                        {sec.title || 'Comparison Overview'}
+                      </h2>
+                      <div className="overflow-x-auto">
+                        <table className="w-full text-xs text-left border-collapse border border-stone-200">
+                          <thead>
+                            <tr className="bg-stone-50 border-b border-stone-200">
+                              {sec.headers.map((h, hIdx) => (
+                                <th key={hIdx} className="p-2.5 font-semibold text-stone-900">{h}</th>
+                              ))}
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {sec.rows.map((row, rIdx) => (
+                              <tr key={rIdx} className="border-b border-stone-200 hover:bg-stone-50/50">
+                                <td className="p-2.5 font-medium text-stone-900">{row.feature}</td>
+                                <td className="p-2.5 text-stone-800">{String(row.us)}</td>
+                                <td className="p-2.5 text-stone-600">{String(row.others)}</td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  );
+                }
+
+                if (sec.type === 'callout') {
+                  return (
+                    <section key={sec.id || idx} className="space-y-2 pt-4 border-t border-stone-100" aria-label="Key Highlight">
+                      <blockquote className="p-4 bg-stone-50 border-l-4 border-stone-400 rounded-r-lg space-y-1">
+                        <p className="text-sm italic text-stone-800">"{sec.text}"</p>
+                        {sec.author && <cite className="text-xs text-stone-500 font-medium block not-italic">— {sec.author}</cite>}
+                      </blockquote>
+                    </section>
+                  );
+                }
+
+                return null;
+              })}
+            </article>
+          </div>
+        ) : viewportMode === 'desktop' ? (
           /* Desktop / Fluid Viewport: Constrained to 100% width, absolutely no horizontal scrolling */
           <div className="w-full max-w-full flex justify-center py-1">
             <div

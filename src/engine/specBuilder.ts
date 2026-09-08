@@ -5,7 +5,9 @@ import {
   InfographicSpec,
   DocSection,
   SectionType,
-  MetricItem
+  MetricItem,
+  TimelineItem,
+  ComparisonRow
 } from './types';
 import { classifySec } from './classifier';
 import {
@@ -224,6 +226,100 @@ export function buildRuleSpec(
         title: api.title,
         items: items.slice(0, 6)
       });
+    }
+  }
+
+  // Timeline / Roadmap
+  const roadSec = find('roadmap') || cls.find((s) => /roadmap|changelog|history|milestone|releases?/i.test(s.title));
+  if (roadSec && ((roadSec.lists || []).length >= 2 || (roadSec.rawText || '').length > 60)) {
+    const rawItems = (roadSec.lists && roadSec.lists.length >= 2) ? roadSec.lists : (roadSec.rawText || '').split(/\n+/).filter((l) => l.trim().length > 5);
+    const tItems: TimelineItem[] = [];
+    for (let i = 0; i < rawItems.length && tItems.length < 5; i++) {
+      const line = rawItems[i].replace(/^[-*•\d.]+\s*/, '').trim();
+      const versionMatch = line.match(/^([vV]?\d+(\.\d+)*(-[a-z\d.]+)|\d{4}(-\d{2})?|Q[1-4]|Phase\s*\d+|Step\s*\d+)[\s:—–-]+(.*)/i);
+      if (versionMatch) {
+        const v = versionMatch[1];
+        const rest = (versionMatch[6] || '').trim();
+        const parts = rest.split(/[:—–-]\s+/);
+        tItems.push({
+          versionOrDate: v,
+          title: parts[0] || 'Release Update',
+          description: trunc(parts.slice(1).join(' - ') || parts[0], 120)
+        });
+      } else if (line.includes(':')) {
+        const [v, ...rest] = line.split(':');
+        tItems.push({
+          versionOrDate: trunc(v.trim(), 12),
+          title: trunc(rest.join(':').trim(), 36),
+          description: trunc(rest.join(':').trim(), 100)
+        });
+      }
+    }
+    if (tItems.length >= 2) {
+      spec.sections.push({
+        id: 'timeline',
+        type: 'timeline',
+        title: roadSec.title || 'Roadmap & Milestones',
+        items: tItems
+      });
+    }
+  }
+
+  // Feature Comparison Table
+  const compSec = cls.find((s) => /compar|versus|\bvs\b|alternative/i.test(s.title)) ||
+    cls.find((s) => s.tables && s.tables.some((t) => t.header && t.header.length >= 3 && t.rows.length >= 2));
+  if (compSec && compSec.tables && compSec.tables.length > 0) {
+    const table = compSec.tables.find((t) => t.header && t.header.length >= 3 && t.rows.length >= 2) || compSec.tables[0];
+    if (table.header && table.header.length >= 3 && table.rows && table.rows.length >= 2) {
+      const rows: ComparisonRow[] = table.rows.slice(0, 6).map((r) => {
+        const feat = r[0] || 'Feature';
+        const parseBoolOrStr = (v: string): string | boolean => {
+          const lv = (v || '').trim().toLowerCase();
+          if (/^(yes|true|✓|✔|x|supported|included)$/.test(lv)) return true;
+          if (/^(no|false|✕|✖|none|unsupported)$/.test(lv)) return false;
+          return trunc(v || '', 20);
+        };
+        return {
+          feature: trunc(feat, 24),
+          us: parseBoolOrStr(r[1] || 'Yes'),
+          others: parseBoolOrStr(r[2] || 'No')
+        };
+      });
+
+      spec.sections.push({
+        id: 'comparison',
+        type: 'comparison',
+        title: compSec.title || 'Feature Comparison',
+        headers: [
+          trunc(table.header[0] || 'Feature', 18),
+          trunc(table.header[1] || 'This Project', 18),
+          trunc(table.header[2] || 'Alternatives', 18)
+        ],
+        rows
+      });
+    }
+  }
+
+  // Callout / Blockquote / Highlight
+  for (let i = 0; i < cls.length; i++) {
+    const s = cls[i];
+    const quoteMatch = (s.rawText || '').match(/(?:^|\n)>\s*([^\n]+(?:\n>[^\n]+)*)/);
+    if (quoteMatch) {
+      const cleanQuote = quoteMatch[1].replace(/\n>\s*/g, ' ').trim();
+      if (cleanQuote.length >= 20 && cleanQuote.length <= 300) {
+        const authorMatch = cleanQuote.match(/—\s*([A-Za-z0-9\s.,@_-]+)$/);
+        const text = authorMatch ? cleanQuote.slice(0, authorMatch.index).trim() : cleanQuote;
+        const author = authorMatch ? authorMatch[1].trim() : undefined;
+        spec.sections.push({
+          id: 'callout',
+          type: 'callout',
+          title: /note|tip|quote|highlight/i.test(s.title) ? s.title : undefined,
+          text: trunc(text, 220),
+          author: author ? trunc(author, 40) : undefined,
+          calloutType: 'quote'
+        });
+        break;
+      }
     }
   }
 

@@ -1,0 +1,11 @@
+services:
+  gitinfographics:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: gitinfographics-studio
+    ports:
+      - "8080:80"
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=production

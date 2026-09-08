@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import {
   Sliders,
   CheckSquare,
@@ -11,9 +11,17 @@ import {
   FileText,
   ArrowUp,
   ArrowDown,
-  QrCode
+  QrCode,
+  Image as ImageIcon,
+  Trash2,
+  Sparkles,
+  GitCommit,
+  Columns,
+  Quote,
+  Play,
+  Minimize2
 } from 'lucide-react';
-import { InfographicSpec, VariantMap } from '../engine/types';
+import { InfographicSpec, VariantMap, LogoConfig } from '../engine/types';
 
 interface SectionControlsProps {
   spec: InfographicSpec;
@@ -28,6 +36,13 @@ interface SectionControlsProps {
   onToggleQR?: (val: boolean) => void;
   qrUrl?: string;
   onQrUrlChange?: (url: string) => void;
+  logo?: LogoConfig | null;
+  onLogoChange?: (logo: LogoConfig | null) => void;
+  onAutoDetectLogo?: () => void;
+  animated?: boolean;
+  onToggleAnimated?: (val: boolean) => void;
+  compact?: boolean;
+  onToggleCompact?: (val: boolean) => void;
 }
 
 export const SectionControls: React.FC<SectionControlsProps> = ({
@@ -42,8 +57,34 @@ export const SectionControls: React.FC<SectionControlsProps> = ({
   showQR = false,
   onToggleQR,
   qrUrl = '',
-  onQrUrlChange
+  onQrUrlChange,
+  logo,
+  onLogoChange,
+  onAutoDetectLogo,
+  animated = false,
+  onToggleAnimated,
+  compact = false,
+  onToggleCompact
 }) => {
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file || !onLogoChange) return;
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const dataUrl = event.target?.result as string;
+      if (dataUrl) {
+        onLogoChange({
+          dataUrl,
+          position: logo?.position || 'top-right',
+          size: logo?.size || 42
+        });
+      }
+    };
+    reader.readAsDataURL(file);
+  };
+
   const getSectionIcon = (type: string) => {
     switch (type) {
       case 'problem-solution':
@@ -56,6 +97,12 @@ export const SectionControls: React.FC<SectionControlsProps> = ({
         return <Cpu className="w-4 h-4 text-sky-600" />;
       case 'steps':
         return <Footprints className="w-4 h-4 text-violet-600" />;
+      case 'timeline':
+        return <GitCommit className="w-4 h-4 text-indigo-600" />;
+      case 'comparison':
+        return <Columns className="w-4 h-4 text-teal-600" />;
+      case 'callout':
+        return <Quote className="w-4 h-4 text-rose-600" />;
       default:
         return <FileText className="w-4 h-4 text-stone-500" />;
     }
@@ -89,6 +136,122 @@ export const SectionControls: React.FC<SectionControlsProps> = ({
             className="px-3 py-1.5 bg-stone-50 border border-stone-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-stone-400 focus:bg-white text-xs text-stone-700 transition-colors"
           />
         </div>
+
+        {/* Custom Logo & Branding */}
+        {onLogoChange && (
+          <div className="flex flex-col gap-2 pt-2 border-t border-stone-200/70">
+            <div className="flex items-center justify-between">
+              <span className="text-[11px] font-semibold text-stone-900 flex items-center gap-1.5">
+                <ImageIcon className="w-3.5 h-3.5 text-stone-600" />
+                Repository Logo / Icon
+              </span>
+              {logo && (
+                <button
+                  type="button"
+                  onClick={() => onLogoChange(null)}
+                  className="text-[10px] text-rose-600 hover:text-rose-700 flex items-center gap-1 font-medium transition-colors"
+                  title="Remove logo"
+                >
+                  <Trash2 className="w-3 h-3" />
+                  Remove
+                </button>
+              )}
+            </div>
+
+            <input
+              type="file"
+              ref={fileInputRef}
+              onChange={handleFileUpload}
+              accept="image/png,image/jpeg,image/svg+xml,image/webp"
+              className="hidden"
+            />
+
+            {!logo ? (
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => fileInputRef.current?.click()}
+                  className="flex-1 py-1.5 px-3 bg-stone-50 hover:bg-stone-100 border border-stone-200 rounded-lg text-stone-700 font-medium text-xs flex items-center justify-center gap-1.5 transition-colors"
+                >
+                  <ImageIcon className="w-3.5 h-3.5 text-stone-500" />
+                  Upload Logo (PNG/SVG)
+                </button>
+                {onAutoDetectLogo && (
+                  <button
+                    type="button"
+                    onClick={onAutoDetectLogo}
+                    className="py-1.5 px-3 bg-white hover:bg-stone-50 border border-stone-200 rounded-lg text-stone-700 font-medium text-xs flex items-center gap-1 transition-colors"
+                    title="Auto-detect logo from repository avatar"
+                  >
+                    <Sparkles className="w-3.5 h-3.5 text-amber-500" />
+                    Auto-detect
+                  </button>
+                )}
+              </div>
+            ) : (
+              <div className="flex flex-col gap-2.5 p-2.5 bg-stone-50 rounded-lg border border-stone-200">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <img
+                      src={logo.dataUrl}
+                      alt="Logo preview"
+                      className="w-8 h-8 rounded object-contain bg-white border border-stone-200 p-0.5"
+                    />
+                    <span className="text-[11px] font-medium text-stone-800">Custom Logo Embedded</span>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => fileInputRef.current?.click()}
+                    className="text-[11px] text-stone-600 hover:text-stone-900 underline font-medium"
+                  >
+                    Change
+                  </button>
+                </div>
+
+                <div className="grid grid-cols-2 gap-2 pt-1 border-t border-stone-200/60">
+                  <div className="flex flex-col gap-1">
+                    <label className="text-[10px] font-medium text-stone-500">Position</label>
+                    <div className="flex rounded border border-stone-200 bg-white p-0.5">
+                      <button
+                        type="button"
+                        onClick={() => onLogoChange({ ...logo, position: 'top-left' })}
+                        className={`flex-1 py-1 text-[10px] font-medium rounded transition-colors ${
+                          logo.position === 'top-left' ? 'bg-stone-900 text-white' : 'text-stone-600 hover:text-stone-900'
+                        }`}
+                      >
+                        Left
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => onLogoChange({ ...logo, position: 'top-right' })}
+                        className={`flex-1 py-1 text-[10px] font-medium rounded transition-colors ${
+                          logo.position !== 'top-left' ? 'bg-stone-900 text-white' : 'text-stone-600 hover:text-stone-900'
+                        }`}
+                      >
+                        Right
+                      </button>
+                    </div>
+                  </div>
+
+                  <div className="flex flex-col gap-1">
+                    <div className="flex items-center justify-between">
+                      <label className="text-[10px] font-medium text-stone-500">Size</label>
+                      <span className="text-[10px] font-mono text-stone-500">{logo.size || 42}px</span>
+                    </div>
+                    <input
+                      type="range"
+                      min={24}
+                      max={64}
+                      value={logo.size || 42}
+                      onChange={(e) => onLogoChange({ ...logo, size: Number(e.target.value) })}
+                      className="w-full accent-stone-800 cursor-pointer"
+                    />
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+        )}
       </div>
 
       {/* Detected Sections & Toggles */}

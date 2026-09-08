@@ -8,7 +8,8 @@ import {
   SampleReadme,
   GitHubMeta,
   fetchGitHubRepo,
-  VariantMap
+  VariantMap,
+  LogoConfig
 } from './engine';
 import { Header } from './components/Header';
 import { MarkdownEditor } from './components/MarkdownEditor';
@@ -116,6 +117,9 @@ export default function App() {
   const [showQR, setShowQR] = useState<boolean>(false);
   const [qrUrl, setQrUrl] = useState<string>('');
 
+  // Logo & Branding state
+  const [logo, setLogo] = useState<LogoConfig | null>(null);
+
   // Custom section ordering state
   const [sectionOrder, setSectionOrder] = useState<string[]>([]);
 
@@ -200,7 +204,7 @@ export default function App() {
     try {
       return parseMD(markdown);
     } catch {
-      return { sections: [], badges: [] };
+      return { title: '', subtitle: '', sections: [], badges: [], images: [] };
     }
   }, [markdown]);
 
@@ -233,23 +237,46 @@ export default function App() {
   // 4. Render SVG deterministically
   const desktopSvgString = useMemo(() => {
     try {
-      return renderSVG(finalSpec, theme, { layout: 'desktop', showQR, qrUrl });
+      return renderSVG(finalSpec, theme, { layout: 'desktop', showQR, qrUrl, logo: logo || undefined });
     } catch (e) {
       console.error('Render desktop error:', e);
       return `<svg xmlns="http://www.w3.org/2000/svg" width="880" height="300"><text x="50" y="100" fill="#1C1917" font-size="20">Render Error</text></svg>`;
     }
-  }, [finalSpec, theme, showQR, qrUrl]);
+  }, [finalSpec, theme, showQR, qrUrl, logo]);
 
   const mobileSvgString = useMemo(() => {
     try {
-      return renderSVG(finalSpec, theme, { layout: 'mobile', showQR, qrUrl });
+      return renderSVG(finalSpec, theme, { layout: 'mobile', showQR, qrUrl, logo: logo || undefined });
     } catch (e) {
       console.error('Render mobile error:', e);
       return `<svg xmlns="http://www.w3.org/2000/svg" width="400" height="300"><text x="30" y="80" fill="#1C1917" font-size="16">Render Error</text></svg>`;
     }
-  }, [finalSpec, theme, showQR, qrUrl]);
+  }, [finalSpec, theme, showQR, qrUrl, logo]);
 
   // --- Handlers ---
+  const handleAutoDetectLogo = useCallback(() => {
+    if (ghMeta?.owner) {
+      setLogo({
+        dataUrl: `https://github.com/${ghMeta.owner}.png`,
+        position: 'top-right',
+        size: 42
+      });
+      addToast(`Detected logo from GitHub user (${ghMeta.owner})`, 'success');
+      return;
+    }
+    const imgMatch = markdown.match(/!\[.*?\]\((https?:\/\/[^\s)]+\.(?:png|svg|jpg|jpeg|webp))\)/i) ||
+                     markdown.match(/<img[^>]+src=["'](https?:\/\/[^"']+\.(?:png|svg|jpg|jpeg|webp))["']/i);
+    if (imgMatch && imgMatch[1]) {
+      setLogo({
+        dataUrl: imgMatch[1],
+        position: 'top-right',
+        size: 42
+      });
+      addToast('Detected logo image from README markdown', 'success');
+      return;
+    }
+    addToast('No logo found in repository metadata or README images', 'info');
+  }, [ghMeta, markdown]);
   const handleSelectSample = (sample: SampleReadme) => {
     setMarkdown(sample.markdown);
     setGhMeta(sample.mockMeta || null);
@@ -411,19 +438,18 @@ export default function App() {
   };
 
   const handleCreateProject = (name: string) => {
-    const newProj = storage.createProject({
-      name,
-      source: {
-        type: 'text',
-        content: markdown
-      },
+    const newProj = storage.createProject(name, {
+      type: 'text',
+      content: markdown
+    });
+    storage.updateProject(newProj.id, {
       settings: {
         themeId: theme,
         format: {
-          id: currentFormat,
           name: EXPORT_FORMATS[currentFormat].name,
           width: EXPORT_FORMATS[currentFormat].width,
-          height: typeof EXPORT_FORMATS[currentFormat].height === 'number' ? (EXPORT_FORMATS[currentFormat].height as number) : 1200
+          height: EXPORT_FORMATS[currentFormat].height,
+          description: ''
         },
         customSettings: {
           customTitle,
@@ -673,6 +699,9 @@ export default function App() {
                   onToggleQR={setShowQR}
                   qrUrl={qrUrl}
                   onQrUrlChange={setQrUrl}
+                  logo={logo}
+                  onLogoChange={setLogo}
+                  onAutoDetectLogo={handleAutoDetectLogo}
                 />
               </div>
             )}
@@ -752,6 +781,7 @@ export default function App() {
             onDownloadSvg={handleDownloadSvg}
             onDownloadPng={handleDownloadPng}
             copied={copied}
+            spec={finalSpec}
           />
         </div>
       </main>
