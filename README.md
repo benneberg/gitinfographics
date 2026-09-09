@@ -10,7 +10,7 @@
 ![Architecture](https://img.shields.io/badge/architecture-Zero--DOM_Engine-green)
 
 ---
-Try it out here: https://benneberg.github.io/gitinfographics/
+### Try it out here: https://benneberg.github.io/gitinfographics/
 ---
 
 ## Overview
