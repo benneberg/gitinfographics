@@ -25,20 +25,20 @@ Permalink: Visual Enhancements
   - [x] Make QR code optional (toggle in settings)
   - [x] Customize QR code size and style
   
-- [ ] **Logo & Image Support**
-  - [ ] Allow logo upload (PNG/SVG)
-  - [ ] Embed as base64 in SVG output
-  - [ ] Auto-detect logo from repo (if exists)
-  - [ ] Position controls (top-left, top-right, center)
-  - [ ] Size adjustment slider
+- [x] **Logo & Image Support**
+  - [x] Allow logo upload (PNG/SVG)
+  - [x] Embed as base64 in SVG output
+  - [x] Auto-detect logo from repo (if exists)
+  - [x] Position controls (top-left, top-right, center)
+  - [x] Size adjustment slider
   
-- [ ] **Animation & Interactivity**
-  - [ ] Add subtle entrance animations (CSS-based)
+- [x] **Animation & Interactivity**
+  - [x] Add subtle entrance animations (CSS-based)
     - Staggered fade-in for sections
     - Slide-in for metric cards
     - Scale-in for badges
-  - [ ] Implement hover states for interactive elements
-  - [ ] Add "compact mode" toggle (reduced spacing for print)
+  - [x] Implement hover states for interactive elements
+  - [x] Add "compact mode" toggle (reduced spacing for print)
 
 * * *
 
@@ -63,38 +63,38 @@ Permalink: SVG Accessibility
   - [x] Add `role="list"` to tech stack badges
   - [x] Implement proper heading hierarchy (h1-h6)
   
-- [ ] **Text Alternatives**
-  - [ ] Generate hidden text-only summary (`<desc>` element)
-  - [ ] Create parallel HTML fallback (visually hidden, screen-reader accessible)
-  - [ ] Add "text-only view" toggle in UI
-  - [ ] Ensure all icons have `aria-label` or `aria-hidden`
+- [x] **Text Alternatives**
+  - [x] Generate hidden text-only summary (`<desc>` element)
+  - [x] Create parallel HTML fallback (visually hidden, screen-reader accessible)
+  - [x] Add "text-only view" toggle in UI
+  - [x] Ensure all icons have `aria-label` or `aria-hidden`
 
 ### Color & Contrast
 
 Permalink: Color & Contrast
 
-- [ ] **WCAG AA Compliance**
-  - [ ] Audit all four themes for color contrast
-  - [ ] Ensure minimum 4.5:1 ratio for normal text
-  - [ ] Ensure minimum 3:1 ratio for large text
-  - [ ] Add contrast checker tool in theme editor
-  - [ ] Auto-warn if custom theme fails contrast checks
+- [x] **WCAG AA Compliance**
+  - [x] Audit all four themes for color contrast
+  - [x] Ensure minimum 4.5:1 ratio for normal text
+  - [x] Ensure minimum 3:1 ratio for large text
+  - [x] Add contrast checker tool in theme editor
+  - [x] Auto-warn if custom theme fails contrast checks
   
-- [ ] **Color Blindness Support**
-  - [ ] Test themes with color blindness simulators
-  - [ ] Add patterns/textures as secondary visual cues
-  - [ ] Ensure info isn't conveyed by color alone
+- [x] **Color Blindness Support**
+  - [x] Test themes with color blindness simulators
+  - [x] Add patterns/textures as secondary visual cues
+  - [x] Ensure info isn't conveyed by color alone
 
 ### Keyboard Navigation
 
 Permalink: Keyboard Navigation
 
-- [ ] **SVG Keyboard Access**
-  - [ ] Make infographic sections focusable (`tabindex="0"`)
-  - [ ] Implement arrow key navigation between sections
-  - [ ] Add `Enter` key to expand/collapse sections
-  - [ ] Show visible focus indicators
-  - [ ] Test with VoiceOver, NVDA, JAWS
+- [x] **SVG Keyboard Access**
+  - [x] Make infographic sections focusable (`tabindex="0"`)
+  - [x] Implement arrow key navigation between sections
+  - [x] Add `Enter` key to expand/collapse sections
+  - [x] Show visible focus indicators
+  - [x] Test with VoiceOver, NVDA, JAWS
 
 * * *
 
@@ -106,49 +106,49 @@ Permalink: 📦 DISTRIBUTION & DEPLOYMENT
 
 Permalink: PWA Support
 
-- [ ] **Progressive Web App**
-  - [ ] Create `manifest.json` with app metadata
-  - [ ] Generate app icons (192x192, 512x512, maskable)
-  - [ ] Register Service Worker for offline support
-    - Cache app shell (HTML, CSS, JS)
-    - Cache generated infographics in IndexedDB
-    - Implement cache-first strategy for static assets
-  - [ ] Add offline indicator in UI
-  - [ ] Test installation on Chrome, Safari, Firefox
-  - [ ] Ensure standalone display mode works
+- [x] **Progressive Web App**
+  - [x] Create `manifest.json` with app metadata
+  - [x] Generate app icons (192x192, 512x512, maskable)
+  - [x] Register Service Worker for offline support
+    - [x] Cache app shell (HTML, CSS, JS)
+    - [x] Cache generated infographics in IndexedDB
+    - [x] Implement cache-first strategy for static assets
+  - [x] Add offline indicator in UI
+  - [x] Test installation on Chrome, Safari, Firefox
+  - [x] Ensure standalone display mode works
 
 ### One-Click Deploy
 
 Permalink: One-Click Deploy
 
-- [ ] **GitHub Pages**
-  - [ ] Add GitHub Action workflow for auto-deploy
-  - [ ] Configure custom domain support
-  - [ ] Add deployment badge to README
+- [x] **GitHub Pages**
+  - [x] Add GitHub Action workflow for auto-deploy
+  - [x] Configure custom domain support
+  - [x] Add deployment badge to README
   
-- [ ] **Vercel / Netlify**
-  - [ ] Add `vercel.json` for SPA routing
-  - [ ] Add `netlify.toml` configuration
-  - [ ] Create "Deploy to Vercel" button
-  - [ ] Create "Deploy to Netlify" button
+- [x] **Vercel / Netlify**
+  - [x] Add `vercel.json` for SPA routing
+  - [x] Add `netlify.toml` configuration
+  - [x] Create "Deploy to Vercel" button
+  - [x] Create "Deploy to Netlify" button
   
-- [ ] **Docker**
-  - [ ] Create minimal nginx Dockerfile
-  - [ ] Add docker-compose.yml for local dev
-  - [ ] Publish to Docker Hub
-  - [ ] Document self-hosting instructions
+- [x] **Docker**
+  - [x] Create minimal nginx Dockerfile
+  - [x] Add docker-compose.yml for local dev
+  - [x] Publish to Docker Hub
+  - [x] Document self-hosting instructions
 
 ### CLI Enhancements
 
 Permalink: CLI Enhancements
 
-- [ ] **Command-Line Interface**
-  - [ ] Add `gitinfographics init` for project setup
-  - [ ] Add `gitinfographics generate --repo=<url>` command
-  - [ ] Add `gitinfographics export --format=png|svg|pdf`
-  - [ ] Add `gitinfographics watch` for auto-regeneration
-  - [ ] Add configuration file support (`.gitinfographicsrc`)
-  - [ ] Support batch processing (multiple repos)
+- [x] **Command-Line Interface**
+  - [x] Add `gitinfographics init` for project setup
+  - [x] Add `gitinfographics generate --repo=<url>` command
+  - [x] Add `gitinfographics export --format=png|svg|pdf`
+  - [x] Add `gitinfographics watch` for auto-regeneration
+  - [x] Add configuration file support (`.gitinfographicsrc`)
+  - [x] Support batch processing (multiple repos)
 
 * * *
 
@@ -165,7 +165,7 @@ Permalink: Code Quality
   - [x] Create types for infographic spec JSON schema
   - [x] Type all engine functions
   - [x] Add strict mode compiler options
-  - [ ] Generate type definitions for public API
+  - [x] Generate type definitions for public API
   
 - [x] **Testing Infrastructure**
   - [x] Set up Jest/Vitest for unit tests
@@ -173,14 +173,14 @@ Permalink: Code Quality
   - [x] Add classifier tests (section detection)
   - [x] Add renderer tests (SVG output validation)
   - [ ] Add visual regression tests (pixel-diff snapshots)
-  - [ ] Set up CI/CD pipeline (GitHub Actions)
+  - [x] Set up CI/CD pipeline (GitHub Actions)
   
-- [ ] **Documentation**
-  - [ ] Add JSDoc comments to all public functions
+- [x] **Documentation**
+  - [x] Add JSDoc comments to all public functions
   - [ ] Generate API documentation (TypeDoc)
-  - [ ] Create architecture diagram
-  - [ ] Write contributing guide
-  - [ ] Add code examples for each feature
+  - [x] Create architecture diagram
+  - [x] Write contributing guide
+  - [x] Add code examples for each feature
 
 ### Performance Optimization
 
@@ -188,17 +188,17 @@ Permalink: Performance Optimization
 
 - [ ] **Rendering Performance**
   - [ ] Implement virtual scrolling for long infographics
-  - [ ] Add memoization for expensive calculations
-  - [ ] Optimize SVG path generation
+  - [x] Add memoization for expensive calculations
+  - [x] Optimize SVG path generation
   - [ ] Lazy-load sections on demand
-  - [ ] Profile and optimize bundle size
+  - [x] Profile and optimize bundle size
   
-- [ ] **Build System**
-  - [ ] Migrate to Vite for faster dev server
-  - [ ] Add code splitting for large modules
-  - [ ] Implement tree-shaking for unused code
+- [x] **Build System**
+  - [x] Migrate to Vite for faster dev server
+  - [x] Add code splitting for large modules
+  - [x] Implement tree-shaking for unused code
   - [ ] Add bundle analyzer
-  - [ ] Set up production build optimizations
+  - [x] Set up production build optimizations
 
 ### Module Extraction
 
@@ -238,18 +238,18 @@ Permalink: Content Grounding
 
 Permalink: Error Handling
 
-- [ ] **Graceful Degradation**
-  - [ ] Handle missing README gracefully
-  - [ ] Fallback for unsupported Markdown features
-  - [ ] Network error recovery (retry logic)
-  - [ ] Add error boundary in UI
-  - [ ] Provide helpful error messages with solutions
+- [x] **Graceful Degradation**
+  - [x] Handle missing README gracefully
+  - [x] Fallback for unsupported Markdown features
+  - [x] Network error recovery (retry logic)
+  - [x] Add error boundary in UI
+  - [x] Provide helpful error messages with solutions
   
-- [ ] **Logging & Debugging**
-  - [ ] Add debug mode with verbose logging
-  - [ ] Export diagnostic report (for bug reports)
-  - [ ] Add performance timing markers
-  - [ ] Track generation success/failure rates
+- [x] **Logging & Debugging**
+  - [x] Add debug mode with verbose logging
+  - [x] Export diagnostic report (for bug reports)
+  - [x] Add performance timing markers
+  - [x] Track generation success/failure rates
 
 * * *
 

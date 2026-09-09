@@ -51,13 +51,15 @@ class MemoryStorage {
 
 const memoryStore = new MemoryStorage();
 
-function getStorage() {
-  if (typeof window !== 'undefined' && window.localStorage) {
-    return window.localStorage;
-  }
-  if (typeof localStorage !== 'undefined') {
-    return localStorage;
-  }
+function getStorage(): { getItem(k: string): string | null; setItem(k: string, v: string): void; removeItem(k: string): void } {
+  try {
+    if (typeof window !== 'undefined' && window.localStorage) {
+      const testKey = '__gig_test__';
+      window.localStorage.setItem(testKey, '1');
+      window.localStorage.removeItem(testKey);
+      return window.localStorage;
+    }
+  } catch {}
   return memoryStore;
 }
 
@@ -283,9 +285,11 @@ export class ProjectStorage {
     const projects = this.getAllProjects();
     const totalGenerations = projects.reduce((acc, p) => acc + p.generations.length, 0);
     
-    const storageUsed = typeof window !== 'undefined' 
-      ? new Blob([localStorage.getItem(ProjectStorage.STORAGE_KEY) || '']).size 
-      : 0;
+    let storageUsed = 0;
+    try {
+      const data = getStorage().getItem(ProjectStorage.STORAGE_KEY) || '';
+      storageUsed = new Blob([data]).size;
+    } catch {}
 
     return {
       totalProjects: projects.length,

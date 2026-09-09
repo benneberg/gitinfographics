@@ -67,14 +67,18 @@ const Storage = {
   },
   saveHistory: (item: any) => {
     try {
-      const history = JSON.parse(localStorage.getItem('gig-history') || '[]');
+      const parsed = JSON.parse(localStorage.getItem('gig-history') || '[]');
+      const history = Array.isArray(parsed) ? parsed : [];
       history.unshift(item);
       // Keep only the last 10 generations to prevent localStorage bloat
       localStorage.setItem('gig-history', JSON.stringify(history.slice(0, 10))); 
     } catch {}
   },
   loadHistory: () => {
-    try { return JSON.parse(localStorage.getItem('gig-history') || '[]'); } catch { return []; }
+    try {
+      const parsed = JSON.parse(localStorage.getItem('gig-history') || '[]');
+      return Array.isArray(parsed) ? parsed : [];
+    } catch { return []; }
   },
   clearHistory: () => {
     try { localStorage.removeItem('gig-history'); } catch {}

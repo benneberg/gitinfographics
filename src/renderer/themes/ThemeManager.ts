@@ -294,18 +294,22 @@ export class ThemeManager {
    * Save theme preference to localStorage
    */
   private savePreference(themeId: string): void {
-    if (typeof window !== 'undefined') {
-      localStorage.setItem('gitinfographics-theme', themeId);
-    }
+    try {
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('gitinfographics-theme', themeId);
+      }
+    } catch {}
   }
 
   /**
    * Load theme preference from localStorage
    */
   loadPreference(): string | null {
-    if (typeof window !== 'undefined') {
-      return localStorage.getItem('gitinfographics-theme');
-    }
+    try {
+      if (typeof window !== 'undefined') {
+        return localStorage.getItem('gitinfographics-theme');
+      }
+    } catch {}
     return null;
   }
 
@@ -313,19 +317,19 @@ export class ThemeManager {
    * Load custom themes from localStorage
    */
   private loadCustomThemes(): void {
-    if (typeof window === 'undefined') return;
+    try {
+      if (typeof window === 'undefined') return;
 
-    const customThemes = localStorage.getItem('gitinfographics-custom-themes');
-    if (customThemes) {
-      try {
+      const customThemes = localStorage.getItem('gitinfographics-custom-themes');
+      if (customThemes) {
         const parsed = JSON.parse(customThemes);
         parsed.forEach((theme: Theme) => {
           theme.isCustom = true;
           this.themes.set(theme.id, theme);
         });
-      } catch (error) {
-        console.error('Failed to load custom themes:', error);
       }
+    } catch (error) {
+      // Ignored if storage is blocked or corrupt
     }
   }
 
@@ -336,12 +340,14 @@ export class ThemeManager {
     theme.isCustom = true;
     this.themes.set(theme.id, theme);
 
-    if (typeof window !== 'undefined') {
-      const customThemes = this.getAllThemes()
-        .filter((t) => t.isCustom)
-        .map((t) => ({ ...t }));
-      localStorage.setItem('gitinfographics-custom-themes', JSON.stringify(customThemes));
-    }
+    try {
+      if (typeof window !== 'undefined') {
+        const customThemes = this.getAllThemes()
+          .filter((t) => t.isCustom)
+          .map((t) => ({ ...t }));
+        localStorage.setItem('gitinfographics-custom-themes', JSON.stringify(customThemes));
+      }
+    } catch {}
   }
 
   /**
@@ -355,12 +361,14 @@ export class ThemeManager {
 
     this.themes.delete(themeId);
 
-    if (typeof window !== 'undefined') {
-      const customThemes = this.getAllThemes()
-        .filter((t) => t.isCustom)
-        .map((t) => ({ ...t }));
-      localStorage.setItem('gitinfographics-custom-themes', JSON.stringify(customThemes));
-    }
+    try {
+      if (typeof window !== 'undefined') {
+        const customThemes = this.getAllThemes()
+          .filter((t) => t.isCustom)
+          .map((t) => ({ ...t }));
+        localStorage.setItem('gitinfographics-custom-themes', JSON.stringify(customThemes));
+      }
+    } catch {}
   }
 
   /**
