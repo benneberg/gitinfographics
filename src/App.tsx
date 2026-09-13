@@ -609,7 +609,7 @@ export default function App() {
             System Ready
           </span>
           <span className="text-stone-300 hidden sm:inline">•</span>
-          <span className="text-stone-500 text-[11px] hidden sm:inline">100% Client-side Deterministic SVG</span>
+          <span className="text-stone-500 text-[11px] hidden sm:inline">100% Client-side Deterministic SVG Engine</span>
         </div>
 
         <div className="flex items-center gap-4 text-[11px] text-stone-500">
