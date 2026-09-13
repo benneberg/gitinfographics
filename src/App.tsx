@@ -31,20 +31,21 @@ import {
 
 // --- Framer Motion Dynamic Payload ---
 const loadFramerFeatures = () => import('framer-motion').then((res) => res.domAnimation);
-
+import type { TargetAndTransition, Transition } from 'framer-motion';
 // --- Animation Physics & Variants ---
 const pageTransition = {
   initial: { opacity: 0, y: 15 },
   animate: { opacity: 1, y: 0 },
   exit: { opacity: 0, y: -15 },
-  transition: { duration: 0.25, ease: "easeOut" }
+  transition: { duration: 0.25, ease: "easeOut" } as Transition
 };
 
-const sheetSpring = {
+const sheetSpring: Transition = {
   type: "spring",
   damping: 24,
   stiffness: 300
 };
+
 
 // --- Format Configuration ---
 const EXPORT_FORMATS = {
@@ -443,8 +444,7 @@ export default function App() {
               <m.div key="export" {...pageTransition} className="h-full overflow-y-auto p-4 space-y-4 pb-24">
                 <GlassCard className="p-5">
                   <h3 className="text-sm font-semibold mb-4">Export Configuration</h3>
-                  <VisualFormatPicker currentFormat={currentFormat} onFormatChange={(f) => setCurrentFormat(f)} />
-                  
+                  <VisualFormatPicker currentFormat={currentFormat} onFormatChange={(f) => setCurrentFormat(f as FormatKey)} />
                   <div className="flex gap-3 mt-6">
                     <button onClick={() => handleDownloadPng(currentFormat)} className="flex-1 min-h-[48px] bg-stone-900 text-white font-medium text-sm rounded-xl hover:bg-stone-800 transition-colors shadow-md">
                       Download PNG (2x)
