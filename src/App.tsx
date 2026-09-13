@@ -363,7 +363,7 @@ export default function App() {
             </div>
             <div>
               <h1 className="text-base font-bold leading-tight tracking-tight">GitInfoGraphics</h1>
-              <div className="text-[10px] text-stone-500 font-medium">Deterministic Engine</div>
+              <div className="text-[10px] text-stone-500 font-medium">Deterministic SVG Engine</div>
             </div>
           </div>
           <div className="flex items-center gap-1">
