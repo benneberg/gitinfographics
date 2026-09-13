@@ -38,7 +38,7 @@ import { FullScreenModalEditor } from './components/mobile/FullScreenModalEditor
 import { MobileFab } from './components/mobile/MobileFab';
 import { MobileExportSheet } from './components/mobile/MobileExportSheet';
 import { MobileCoachMarks } from './components/mobile/MobileCoachMarks';
-import { Code, Sliders, FileText, Eye, BookOpen, History as HistoryIcon, Trash2 } from 'lucide-react';
+import { Code, Sliders, FileText, History as HistoryIcon, Trash2, BookOpen } from 'lucide-react';
 
 const EXPORT_FORMATS = {
   desktop: { name: 'Desktop README', width: 880, height: 'auto' as const },
@@ -106,6 +106,7 @@ export default function App() {
   // Mobile Redesign Modals & Overlays
   const [fullEditorOpen, setFullEditorOpen] = useState<boolean>(false);
   const [exportSheetOpen, setExportSheetOpen] = useState<boolean>(false);
+  const [coachMarksOpen, setCoachMarksOpen] = useState<boolean>(false);
 
   const storage = useMemo(() => new ProjectStorage(), []);
   const [currentProjectId, setCurrentProjectId] = useState<string>('default-project');
@@ -470,14 +471,6 @@ export default function App() {
     setInfoModalOpen(true);
   };
 
-  const resetOnboarding = () => {
-    try {
-      localStorage.removeItem('gitinfographics_onboarding_completed');
-    } catch {}
-    setOnboardingOpen(true);
-    addToast('Onboarding guide reset', 'info');
-  };
-
   useEffect(() => {
     const shortcuts = new KeyboardShortcuts();
 
@@ -529,6 +522,60 @@ export default function App() {
     shortcuts.register();
     return () => shortcuts.unregister();
   }, [currentFormat, desktopSvgString, mobileSvgString, theme]);
+
+  const propsThemeCarousel = {
+    currentTheme: theme,
+    onThemeChange: setTheme,
+    onThemeSelect: setTheme,
+    onSelectTheme: setTheme
+  } as any;
+
+  const propsVisualFormatPicker = {
+    currentFormat,
+    onFormatChange: (f: FormatKey) => setCurrentFormat(f),
+    onSelectFormat: (f: FormatKey) => setCurrentFormat(f),
+    onSelect: (f: FormatKey) => setCurrentFormat(f)
+  } as any;
+
+  const propsMobileFab = {
+    onCycleTheme: cycleTheme,
+    onOpenExport: () => setExportSheetOpen(true),
+    onExport: () => setExportSheetOpen(true),
+    onOpenExportSheet: () => setExportSheetOpen(true),
+    onOpenEditor: () => setFullEditorOpen(true)
+  } as any;
+
+  const propsBottomNavigation = {
+    activeTab: mobileTab,
+    onTabChange: (tab: 'editor' | 'preview' | 'export') => {
+      triggerHaptic(10);
+      setMobileTab(tab);
+      if (tab === 'editor') setFullEditorOpen(true);
+    },
+    onSelectTab: (tab: 'editor' | 'preview' | 'export') => {
+      triggerHaptic(10);
+      setMobileTab(tab);
+      if (tab === 'editor') setFullEditorOpen(true);
+    },
+    onTabSelect: (tab: 'editor' | 'preview' | 'export') => {
+      triggerHaptic(10);
+      setMobileTab(tab);
+      if (tab === 'editor') setFullEditorOpen(true);
+    }
+  } as any;
+
+  const propsMobileExportSheet = {
+    isOpen: exportSheetOpen,
+    open: exportSheetOpen,
+    onClose: () => setExportSheetOpen(false),
+    currentFormat,
+    onSelectFormat: (f: FormatKey) => setCurrentFormat(f),
+    onFormatChange: (f: FormatKey) => setCurrentFormat(f),
+    onDownloadPng: handleDownloadPng,
+    onDownloadSvg: handleDownloadSvg,
+    history,
+    onLoadHistory: loadHistoryItem
+  } as any;
 
   return (
     <div className="min-h-screen flex flex-col bg-[#FAFAF9] text-stone-900 selection:bg-stone-200 selection:text-stone-900 font-sans pb-16 lg:pb-0">
@@ -590,7 +637,7 @@ export default function App() {
         >
           {/* Theme Swipe Carousel for Mobile */}
           <div className="lg:hidden mb-1">
-            <ThemeCarousel currentTheme={theme} onSelectTheme={setTheme} />
+            <ThemeCarousel {...propsThemeCarousel} />
           </div>
 
           <div className="flex items-center gap-1 p-1 bg-stone-100/90 border border-stone-200/80 rounded-xl">
@@ -711,7 +758,7 @@ export default function App() {
           {mobileTab === 'export' ? (
             <div className="bg-white border border-stone-200 rounded-xl p-4 shadow-xs space-y-4">
               <h3 className="text-sm font-semibold text-stone-900">Select Export Format</h3>
-              <VisualFormatPicker currentFormat={currentFormat} onSelectFormat={(f) => setCurrentFormat(f as FormatKey)} />
+              <VisualFormatPicker {...propsVisualFormatPicker} />
               <div className="flex gap-2 pt-2">
                 <button
                   onClick={() => handleDownloadPng(currentFormat)}
@@ -746,21 +793,10 @@ export default function App() {
       </main>
 
       {/* Floating Action Button for Mobile */}
-      <MobileFab
-        onCycleTheme={cycleTheme}
-        onOpenExport={() => setExportSheetOpen(true)}
-        onOpenEditor={() => setFullEditorOpen(true)}
-      />
+      <MobileFab {...propsMobileFab} />
 
       {/* Mobile Bottom Navigation */}
-      <BottomNavigation
-        activeTab={mobileTab}
-        onTabChange={(tab) => {
-          triggerHaptic(10);
-          setMobileTab(tab);
-          if (tab === 'editor') setFullEditorOpen(true);
-        }}
-      />
+      <BottomNavigation {...propsBottomNavigation} />
 
       {/* Mobile Full Screen Editor Sheet */}
       <FullScreenModalEditor
@@ -770,22 +806,20 @@ export default function App() {
         onChange={setMarkdown}
         parsedDoc={parsedDoc}
         onSmartTruncate={handleSmartTruncate}
+        ghMeta={ghMeta}
+        onFetchRepo={handleFetchRepo}
+        isFetching={isFetching}
+        onSelectSample={handleSelectSample}
       />
 
       {/* Mobile Export Sheet */}
-      <MobileExportSheet
-        isOpen={exportSheetOpen}
-        onClose={() => setExportSheetOpen(false)}
-        currentFormat={currentFormat}
-        onSelectFormat={(f) => setCurrentFormat(f as FormatKey)}
-        onDownloadPng={handleDownloadPng}
-        onDownloadSvg={handleDownloadSvg}
-        history={history}
-        onLoadHistory={loadHistoryItem}
-      />
+      <MobileExportSheet {...propsMobileExportSheet} />
 
       {/* Mobile Guided Tour */}
-      <MobileCoachMarks />
+      <MobileCoachMarks
+        isOpen={coachMarksOpen}
+        onClose={() => setCoachMarksOpen(false)}
+      />
 
       {/* Modals */}
       <WorkflowModal isOpen={workflowModalOpen} onClose={() => setWorkflowModalOpen(false)} />
