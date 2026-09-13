@@ -25,14 +25,21 @@ import { ShareModal } from './components/ShareModal';
 import { ShortcutsModal } from './components/ShortcutsModal';
 import { ContrastModal } from './components/ContrastModal';
 import { ColorBlindnessType } from './engine/contrast';
-import { getTheme } from './engine/themes';
+import { getTheme, THEMES } from './engine/themes';
 import { ProjectStorage, Project } from './storage/ProjectStorage';
 import { KeyboardShortcuts } from './ui/KeyboardShortcuts';
+import { triggerHaptic } from './ui/haptics';
+
+// Mobile Redesign Components
+import { BottomNavigation } from './components/mobile/BottomNavigation';
+import { ThemeCarousel } from './components/mobile/ThemeCarousel';
+import { VisualFormatPicker } from './components/mobile/VisualFormatPicker';
+import { FullScreenModalEditor } from './components/mobile/FullScreenModalEditor';
+import { MobileFab } from './components/mobile/MobileFab';
+import { MobileExportSheet } from './components/mobile/MobileExportSheet';
+import { MobileCoachMarks } from './components/mobile/MobileCoachMarks';
 import { Code, Sliders, FileText, Eye, BookOpen, History as HistoryIcon, Trash2 } from 'lucide-react';
 
-// ==========================================
-// 1. NEW MIGRATION: Multi-Format Export Presets
-// ==========================================
 const EXPORT_FORMATS = {
   desktop: { name: 'Desktop README', width: 880, height: 'auto' as const },
   mobile: { name: 'Mobile README', width: 400, height: 'auto' as const },
@@ -44,20 +51,6 @@ const EXPORT_FORMATS = {
 
 type FormatKey = keyof typeof EXPORT_FORMATS;
 
-// ==========================================
-// 2. NEW MIGRATION: Extended Theme Definitions
-// ==========================================
-const THEMES = {
-  'scandi-minimal': { name: 'Scandinavian Light', bg: '#FAFAF9' },
-  midnight: { name: 'Midnight', bg: '#0F172A' },
-  daylight: { name: 'Daylight', bg: '#FFFFFF' },
-  ember: { name: 'Ember', bg: '#1C1917' },
-  forest: { name: 'Forest', bg: '#022C22' },
-} as const;
-
-// ==========================================
-// 3. NEW MIGRATION: Local Storage Helpers
-// ==========================================
 const Storage = {
   saveSession: (data: any) => {
     try { localStorage.setItem('gig-session', JSON.stringify(data)); } catch {}
@@ -70,7 +63,6 @@ const Storage = {
       const parsed = JSON.parse(localStorage.getItem('gig-history') || '[]');
       const history = Array.isArray(parsed) ? parsed : [];
       history.unshift(item);
-      // Keep only the last 10 generations to prevent localStorage bloat
       localStorage.setItem('gig-history', JSON.stringify(history.slice(0, 10))); 
     } catch {}
   },
@@ -86,7 +78,6 @@ const Storage = {
 };
 
 export default function App() {
-  // --- Existing State ---
   const [markdown, setMarkdown] = useState<string>(SAMPLE_READMES[0].markdown);
   const [theme, setTheme] = useState<string>('scandi-minimal');
   const [variants, setVariants] = useState<VariantMap>({
@@ -100,7 +91,7 @@ export default function App() {
   const [ghMeta, setGhMeta] = useState<GitHubMeta | null>(null);
   const [isFetching, setIsFetching] = useState<boolean>(false);
   const [activeTab, setActiveTab] = useState<'editor' | 'sections' | 'spec' | 'history'>('editor');
-  const [mobileActiveView, setMobileActiveView] = useState<'editor' | 'preview'>('preview');
+  const [mobileTab, setMobileTab] = useState<'editor' | 'preview' | 'export'>('preview');
   const [copied, setCopied] = useState<boolean>(false);
   const [workflowModalOpen, setWorkflowModalOpen] = useState<boolean>(false);
   const [archModalOpen, setArchModalOpen] = useState<boolean>(false);
@@ -109,36 +100,29 @@ export default function App() {
   const [infoModalTab, setInfoModalTab] = useState<'overview' | 'manual' | 'faq'>('overview');
   const [toasts, setToasts] = useState<ToastMessage[]>([]);
 
-  // --- NEW MIGRATION STATE ---
   const [currentFormat, setCurrentFormat] = useState<FormatKey>('desktop');
   const [history, setHistory] = useState<any[]>([]);
 
-  // Project Management & Modals State
+  // Mobile Redesign Modals & Overlays
+  const [fullEditorOpen, setFullEditorOpen] = useState<boolean>(false);
+  const [exportSheetOpen, setExportSheetOpen] = useState<boolean>(false);
+
   const storage = useMemo(() => new ProjectStorage(), []);
   const [currentProjectId, setCurrentProjectId] = useState<string>('default-project');
   const [projectsModalOpen, setProjectsModalOpen] = useState<boolean>(false);
   const [shareModalOpen, setShareModalOpen] = useState<boolean>(false);
   const [shortcutsModalOpen, setShortcutsModalOpen] = useState<boolean>(false);
 
-  // QR Code state
   const [showQR, setShowQR] = useState<boolean>(false);
   const [qrUrl, setQrUrl] = useState<string>('');
-
-  // Logo & Branding state
   const [logo, setLogo] = useState<LogoConfig | null>(null);
-
-  // Custom section ordering state
   const [sectionOrder, setSectionOrder] = useState<string[]>([]);
-
-  // Animation & Layout Density states
   const [animated, setAnimated] = useState<boolean>(false);
   const [compact, setCompact] = useState<boolean>(false);
 
-  // WCAG AA & Accessibility Contrast Simulator state
   const [contrastModalOpen, setContrastModalOpen] = useState<boolean>(false);
   const [colorBlindness, setColorBlindness] = useState<ColorBlindnessType>('normal');
 
-  // Check onboarding & Load History/Session/Shareable URL on mount
   useEffect(() => {
     try {
       const completed = localStorage.getItem('gitinfographics_onboarding_completed');
@@ -146,7 +130,6 @@ export default function App() {
         setOnboardingOpen(true);
       }
 
-      // Check URL hash for shareable project link
       if (typeof window !== 'undefined' && window.location.hash.startsWith('#project=')) {
         const jsonStr = decodeURIComponent(window.location.hash.slice(9));
         const shared = JSON.parse(jsonStr);
@@ -160,11 +143,9 @@ export default function App() {
         }
       }
       
-      // Load session history
       const savedHistory = Storage.loadHistory();
       setHistory(savedHistory);
 
-      // Optional: Restore last session so users don't lose work on refresh
       const lastSession = Storage.loadSession();
       if (lastSession && lastSession.markdown) {
         setMarkdown(lastSession.markdown);
@@ -175,11 +156,10 @@ export default function App() {
         if (lastSession.qrUrl) setQrUrl(lastSession.qrUrl);
       }
     } catch {
-      // Ignored (e.g., in private browsing or sandboxed environments)
+      // Ignored
     }
   }, []);
 
-  // Auto-save current state to session storage on change
   useEffect(() => {
     Storage.saveSession({
       markdown,
@@ -193,7 +173,6 @@ export default function App() {
     });
   }, [markdown, theme, customTitle, customSubtitle, variants, disabledSections, showQR, qrUrl]);
 
-  // Toast Helper
   const addToast = useCallback((message: string, type: 'success' | 'error' | 'info' = 'success') => {
     const id = Math.random().toString(36).substring(2, 9);
     setToasts((prev) => [...prev, { id, message, type }]);
@@ -207,14 +186,15 @@ export default function App() {
   };
 
   const cycleTheme = () => {
-    const keys = Object.keys(THEMES) as (keyof typeof THEMES)[];
-    const currentIdx = keys.indexOf(theme as keyof typeof THEMES);
+    triggerHaptic(10);
+    const keys = Object.keys(THEMES);
+    const currentIdx = keys.indexOf(theme);
     const nextTheme = keys[(currentIdx + 1) % keys.length];
     setTheme(nextTheme);
-    addToast(`Theme switched to ${THEMES[nextTheme].name}`, 'info');
+    const themeName = getTheme(nextTheme).name;
+    addToast(`Theme switched to ${themeName}`, 'info');
   };
 
-  // 1. Parse document from raw markdown
   const parsedDoc = useMemo(() => {
     try {
       return parseMD(markdown);
@@ -223,12 +203,10 @@ export default function App() {
     }
   }, [markdown]);
 
-  // 2. Build infographic specification
   const baseSpec = useMemo(() => {
     return buildRuleSpec(parsedDoc, variants, ghMeta);
   }, [parsedDoc, variants, ghMeta]);
 
-  // 3. Apply user customizations, section ordering & section toggles
   const finalSpec = useMemo(() => {
     let filteredSections = baseSpec.sections.filter((s) => !disabledSections[s.id]);
     if (sectionOrder.length > 0) {
@@ -249,7 +227,6 @@ export default function App() {
     };
   }, [baseSpec, disabledSections, customTitle, customSubtitle, sectionOrder]);
 
-  // 4. Render SVG deterministically
   const desktopSvgString = useMemo(() => {
     try {
       return renderSVG(finalSpec, theme, { layout: 'desktop', showQR, qrUrl, logo: logo || undefined, animated, compact });
@@ -268,7 +245,6 @@ export default function App() {
     }
   }, [finalSpec, theme, showQR, qrUrl, logo, animated, compact]);
 
-  // --- Handlers ---
   const handleAutoDetectLogo = useCallback(() => {
     if (ghMeta?.owner) {
       setLogo({
@@ -292,6 +268,7 @@ export default function App() {
     }
     addToast('No logo found in repository metadata or README images', 'info');
   }, [ghMeta, markdown]);
+
   const handleSelectSample = (sample: SampleReadme) => {
     setMarkdown(sample.markdown);
     setGhMeta(sample.mockMeta || null);
@@ -311,7 +288,7 @@ export default function App() {
       setCustomSubtitle('');
       setDisabledSections({});
       addToast(`Fetched ${meta.owner}/${meta.repo} (${meta.stars.toLocaleString()} stars)`, 'success');
-      setMobileActiveView('preview');
+      setMobileTab('preview');
     } catch (err: unknown) {
       const errorMsg = err instanceof Error ? err.message : 'Failed to fetch repository';
       addToast(errorMsg, 'error');
@@ -338,6 +315,7 @@ export default function App() {
   };
 
   const handleCopySvg = (layout: 'desktop' | 'mobile' = 'desktop') => {
+    triggerHaptic(15);
     const isMobile = layout === 'mobile';
     const targetSvg = isMobile ? mobileSvgString : desktopSvgString;
     navigator.clipboard.writeText(targetSvg);
@@ -346,11 +324,9 @@ export default function App() {
     setTimeout(() => setCopied(false), 2000);
   };
 
-  // ==========================================
-  // UPDATED: Multi-Format Download Handlers
-  // ==========================================
   const handleDownloadSvg = (formatKey: FormatKey = currentFormat) => {
-    const format = EXPORT_FORMATS[formatKey];
+    triggerHaptic(20);
+    const format = EXPORT_FORMATS[formatKey] || EXPORT_FORMATS.desktop;
     const targetSvg = formatKey === 'mobile' ? mobileSvgString : desktopSvgString;
     const blob = new Blob([targetSvg], { type: 'image/svg+xml;charset=utf-8' });
     const url = URL.createObjectURL(blob);
@@ -366,7 +342,8 @@ export default function App() {
   };
 
   const handleDownloadPng = (formatKey: FormatKey = currentFormat) => {
-    const format = EXPORT_FORMATS[formatKey];
+    triggerHaptic(20);
+    const format = EXPORT_FORMATS[formatKey] || EXPORT_FORMATS.desktop;
     const isAutoHeight = format.height === 'auto';
     const fallbackHeight = formatKey === 'mobile' ? 1500 : 1200;
     const targetSvg = formatKey === 'mobile' ? mobileSvgString : desktopSvgString;
@@ -377,7 +354,7 @@ export default function App() {
 
     img.onload = () => {
       const canvas = document.createElement('canvas');
-      const scale = 2; // 2x Retina resolution
+      const scale = 2;
       const width = format.width;
       const height = isAutoHeight ? (img.naturalHeight || fallbackHeight) : (format.height as number);
       
@@ -387,8 +364,7 @@ export default function App() {
       
       if (ctx) {
         ctx.scale(scale, scale);
-        // Fill background to prevent transparent PNGs from being black
-        ctx.fillStyle = THEMES[theme as keyof typeof THEMES]?.bg || '#FAFAF9';
+        ctx.fillStyle = getTheme(theme).bg;
         ctx.fillRect(0, 0, width, height);
         ctx.drawImage(img, 0, 0, width, height);
         
@@ -402,7 +378,6 @@ export default function App() {
         document.body.removeChild(a);
         addToast(`Exported ${format.name} Retina PNG (@2x)`, 'success');
 
-        // NEW MIGRATION: Save to history on successful export
         const historyItem = {
           id: Date.now().toString(),
           timestamp: Date.now(),
@@ -426,12 +401,11 @@ export default function App() {
     img.src = url;
   };
 
-  // NEW MIGRATION: History Handlers
   const loadHistoryItem = (item: any) => {
-    // Note: In a production app, you'd store the full markdown in history. 
-    // For now, this restores the theme and format, and notifies the user.
     setTheme(item.theme);
-    setCurrentFormat(item.format);
+    if (item.format && item.format in EXPORT_FORMATS) {
+      setCurrentFormat(item.format as FormatKey);
+    }
     setActiveTab('editor');
     addToast('Loaded theme/format from history', 'info');
   };
@@ -499,43 +473,32 @@ export default function App() {
   const resetOnboarding = () => {
     try {
       localStorage.removeItem('gitinfographics_onboarding_completed');
-    } catch {
-      // Ignored
-    }
+    } catch {}
     setOnboardingOpen(true);
     addToast('Onboarding guide reset', 'info');
   };
 
-  // ==========================================
-  // Keyboard Shortcuts via KeyboardShortcuts manager
-  // ==========================================
   useEffect(() => {
     const shortcuts = new KeyboardShortcuts();
 
     shortcuts.addShortcut({
       keys: 'Ctrl+Enter',
       description: 'Infographic update / refresh',
-      handler: () => {
-        addToast('Infographic updated', 'info');
-      },
+      handler: () => { addToast('Infographic updated', 'info'); },
       category: 'general'
     });
 
     shortcuts.addShortcut({
       keys: 'Ctrl+S',
       description: 'Export as SVG',
-      handler: () => {
-        handleDownloadSvg(currentFormat);
-      },
+      handler: () => { handleDownloadSvg(currentFormat); },
       category: 'export'
     });
 
     shortcuts.addShortcut({
       keys: 'Ctrl+Shift+P',
       description: 'Export as PNG (@2x Retina)',
-      handler: () => {
-        handleDownloadPng(currentFormat);
-      },
+      handler: () => { handleDownloadPng(currentFormat); },
       category: 'export'
     });
 
@@ -552,18 +515,14 @@ export default function App() {
     shortcuts.addShortcut({
       keys: 'Ctrl+T',
       description: 'Switch color theme',
-      handler: () => {
-        cycleTheme();
-      },
+      handler: () => { cycleTheme(); },
       category: 'navigation'
     });
 
     shortcuts.addShortcut({
       keys: 'Ctrl+Shift+?',
       description: 'Show keyboard shortcuts',
-      handler: () => {
-        setShortcutsModalOpen(true);
-      },
+      handler: () => { setShortcutsModalOpen(true); },
       category: 'general'
     });
 
@@ -572,9 +531,9 @@ export default function App() {
   }, [currentFormat, desktopSvgString, mobileSvgString, theme]);
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#FAFAF9] text-stone-900 selection:bg-stone-200 selection:text-stone-900 font-sans">
+    <div className="min-h-screen flex flex-col bg-[#FAFAF9] text-stone-900 selection:bg-stone-200 selection:text-stone-900 font-sans pb-16 lg:pb-0">
       
-      {/* App Header */}
+      {/* Header */}
       <Header
         currentTheme={theme}
         onThemeChange={setTheme}
@@ -595,7 +554,7 @@ export default function App() {
         onOpenShortcutsModal={() => setShortcutsModalOpen(true)}
       />
 
-      {/* Subtle Scandinavian Status Bar */}
+      {/* Status Bar */}
       <div className="border-b border-stone-200/80 bg-stone-50/70 px-3 sm:px-6 py-1.5 flex flex-wrap items-center justify-between gap-2 text-xs text-stone-500">
         <div className="flex items-center gap-3">
           <span className="flex items-center gap-1.5 font-medium text-stone-700 text-[11px] sm:text-xs">
@@ -603,20 +562,13 @@ export default function App() {
             System Ready
           </span>
           <span className="text-stone-300 hidden sm:inline">•</span>
-          <span className="text-stone-500 text-[11px] hidden sm:inline">
-            100% Client-side Deterministic SVG
-          </span>
-          <span className="text-stone-300 hidden md:inline">•</span>
-          <span className="text-stone-500 text-[11px] hidden md:inline">
-            Zero-dependency CI/CD Compatible
-          </span>
+          <span className="text-stone-500 text-[11px] hidden sm:inline">100% Client-side Deterministic SVG</span>
         </div>
 
         <div className="flex items-center gap-4 text-[11px] text-stone-500">
           <button
             onClick={() => openInfoModalWithTab('overview')}
             className="hover:text-stone-900 transition-colors flex items-center gap-1 font-medium"
-            title="Open Documentation & Manual"
           >
             <BookOpen className="w-3.5 h-3.5 text-stone-400" />
             <span>Manual & FAQ</span>
@@ -627,51 +579,25 @@ export default function App() {
         </div>
       </div>
 
-      {/* Mobile Navigation Toggle Bar */}
-      <div className="lg:hidden border-b border-stone-200 bg-white px-3 py-2">
-        <div className="flex items-center gap-1 w-full bg-stone-100 rounded-xl p-1 border border-stone-200/70">
-          <button
-            onClick={() => setMobileActiveView('editor')}
-            className={`flex-1 min-h-[42px] flex items-center justify-center gap-2 text-xs font-semibold rounded-lg transition-all ${
-              mobileActiveView === 'editor'
-                ? 'bg-white text-stone-900 shadow-2xs'
-                : 'text-stone-500 hover:text-stone-800'
-            }`}
-          >
-            <FileText className="w-4 h-4" />
-            <span>1. Edit & Configure</span>
-          </button>
-
-          <button
-            onClick={() => setMobileActiveView('preview')}
-            className={`flex-1 min-h-[42px] flex items-center justify-center gap-2 text-xs font-semibold rounded-lg transition-all ${
-              mobileActiveView === 'preview'
-                ? 'bg-stone-900 text-white shadow-2xs'
-                : 'text-stone-500 hover:text-stone-800'
-            }`}
-          >
-            <Eye className="w-4 h-4" />
-            <span>2. Live Preview</span>
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
-          </button>
-        </div>
-      </div>
-
-      {/* Main Studio Area */}
+      {/* Main Content */}
       <main className="flex-1 max-w-7xl w-full mx-auto p-2.5 sm:p-4 lg:p-6 flex flex-col lg:flex-row gap-4 lg:gap-6 overflow-hidden">
         
-        {/* Left Side: Editor & Configuration */}
+        {/* Left Side (Editor & Config) */}
         <div
           className={`w-full lg:w-[460px] xl:w-[490px] flex flex-col gap-3 shrink-0 ${
-            mobileActiveView === 'preview' ? 'hidden lg:flex' : 'flex'
+            mobileTab === 'preview' ? 'hidden lg:flex' : 'flex'
           } lg:h-[calc(100vh-130px)]`}
         >
-          {/* Internal Tabs */}
+          {/* Theme Swipe Carousel for Mobile */}
+          <div className="lg:hidden mb-1">
+            <ThemeCarousel currentTheme={theme} onSelectTheme={setTheme} />
+          </div>
+
           <div className="flex items-center gap-1 p-1 bg-stone-100/90 border border-stone-200/80 rounded-xl">
             {(['editor', 'sections', 'spec', 'history'] as const).map((tab) => (
               <button
                 key={tab}
-                onClick={() => setActiveTab(tab)}
+                onClick={() => { triggerHaptic(5); setActiveTab(tab); }}
                 className={`flex-1 min-h-[38px] flex items-center justify-center gap-1.5 py-1.5 text-xs font-medium rounded-lg transition-all capitalize ${
                   activeTab === tab
                     ? 'bg-white text-stone-900 shadow-2xs font-semibold'
@@ -687,7 +613,6 @@ export default function App() {
             ))}
           </div>
 
-          {/* Active Tab Content */}
           <div className="flex-1 overflow-hidden min-h-[480px] lg:min-h-0">
             {activeTab === 'editor' && (
               <MarkdownEditor
@@ -727,18 +652,15 @@ export default function App() {
 
             {activeTab === 'spec' && (
               <div className="h-full bg-white border border-stone-200 rounded-xl p-4 overflow-auto font-mono text-xs text-stone-700 shadow-xs">
-                <div className="text-xs font-semibold text-stone-900 mb-2">
-                  // Generated Infographic Spec
-                </div>
+                <div className="text-xs font-semibold text-stone-900 mb-2">// Generated Infographic Spec</div>
                 <pre className="leading-relaxed">{JSON.stringify(finalSpec, null, 2)}</pre>
               </div>
             )}
 
-            {/* NEW MIGRATION: History Tab */}
             {activeTab === 'history' && (
               <div className="h-full overflow-y-auto pr-0.5 space-y-3">
                 <div className="text-xs font-semibold text-stone-900 mb-2 px-1 flex justify-between items-center">
-                  <span>Recent Generations (Last 10)</span>
+                  <span>Recent Export History</span>
                 </div>
                 {history.length === 0 ? (
                   <div className="text-xs text-stone-500 p-4 bg-stone-50 rounded-xl border border-stone-200 text-center">
@@ -759,16 +681,10 @@ export default function App() {
                           {new Date(item.timestamp).toLocaleDateString()}
                         </span>
                       </div>
-                      <div className="text-[11px] text-stone-500 line-clamp-2 mb-2">
-                        {item.markdown}
-                      </div>
+                      <div className="text-[11px] text-stone-500 line-clamp-2 mb-2">{item.markdown}</div>
                       <div className="flex gap-2">
-                        <span className="text-[10px] px-1.5 py-0.5 bg-stone-100 text-stone-600 rounded capitalize">
-                          {item.theme}
-                        </span>
-                        <span className="text-[10px] px-1.5 py-0.5 bg-stone-100 text-stone-600 rounded capitalize">
-                          {item.format}
-                        </span>
+                        <span className="text-[10px] px-1.5 py-0.5 bg-stone-100 text-stone-600 rounded capitalize">{item.theme}</span>
+                        <span className="text-[10px] px-1.5 py-0.5 bg-stone-100 text-stone-600 rounded capitalize">{item.format}</span>
                       </div>
                     </button>
                   ))
@@ -786,117 +702,101 @@ export default function App() {
           </div>
         </div>
 
-        {/* Right Side: Live SVG Infographic Canvas */}
+        {/* Right Side (Canvas & Preview) */}
         <div
           className={`flex-1 min-w-0 ${
-            mobileActiveView === 'editor' ? 'hidden lg:block' : 'block'
+            mobileTab === 'editor' ? 'hidden lg:block' : 'block'
           } lg:h-[calc(100vh-130px)]`}
         >
-          <InfographicCanvas
-            desktopSvgString={desktopSvgString}
-            mobileSvgString={mobileSvgString}
-            themeName={theme}
-            onCopySvg={handleCopySvg}
-            onDownloadSvg={handleDownloadSvg}
-            onDownloadPng={handleDownloadPng}
-            copied={copied}
-            spec={finalSpec}
-            colorBlindness={colorBlindness}
-            onOpenContrastModal={() => setContrastModalOpen(true)}
-            onResetColorBlindness={() => setColorBlindness('normal')}
-          />
+          {mobileTab === 'export' ? (
+            <div className="bg-white border border-stone-200 rounded-xl p-4 shadow-xs space-y-4">
+              <h3 className="text-sm font-semibold text-stone-900">Select Export Format</h3>
+              <VisualFormatPicker currentFormat={currentFormat} onSelectFormat={(f) => setCurrentFormat(f as FormatKey)} />
+              <div className="flex gap-2 pt-2">
+                <button
+                  onClick={() => handleDownloadPng(currentFormat)}
+                  className="flex-1 min-h-[44px] bg-stone-900 text-white font-medium text-xs rounded-xl hover:bg-stone-800 transition-colors"
+                >
+                  Download PNG (@2x)
+                </button>
+                <button
+                  onClick={() => handleDownloadSvg(currentFormat)}
+                  className="flex-1 min-h-[44px] bg-stone-100 text-stone-800 font-medium text-xs rounded-xl hover:bg-stone-200 transition-colors border border-stone-200"
+                >
+                  Download SVG
+                </button>
+              </div>
+            </div>
+          ) : (
+            <InfographicCanvas
+              desktopSvgString={desktopSvgString}
+              mobileSvgString={mobileSvgString}
+              themeName={theme}
+              onCopySvg={handleCopySvg}
+              onDownloadSvg={handleDownloadSvg}
+              onDownloadPng={handleDownloadPng}
+              copied={copied}
+              spec={finalSpec}
+              colorBlindness={colorBlindness}
+              onOpenContrastModal={() => setContrastModalOpen(true)}
+              onResetColorBlindness={() => setColorBlindness('normal')}
+            />
+          )}
         </div>
       </main>
 
-      {/* Scandinavian Minimalist Footer */}
-      <footer className="border-t border-stone-200 bg-white/80 px-4 sm:px-6 py-3 flex flex-wrap justify-between items-center text-xs text-stone-500 gap-2">
-        <div className="flex items-center gap-3">
-          <p>GitInfoGraphics • Deterministic SVG Engine</p>
-        </div>
-        <div className="flex items-center gap-4">
-          <button
-            onClick={resetOnboarding}
-            className="hover:text-stone-900 transition-colors underline decoration-stone-300"
-          >
-            Reset tour
-          </button>
-          <p>&copy; {new Date().getFullYear()} GitInfoGraphics Studio</p>
-        </div>
-      </footer>
+      {/* Floating Action Button for Mobile */}
+      <MobileFab
+        onCycleTheme={cycleTheme}
+        onOpenExport={() => setExportSheetOpen(true)}
+        onOpenEditor={() => setFullEditorOpen(true)}
+      />
+
+      {/* Mobile Bottom Navigation */}
+      <BottomNavigation
+        activeTab={mobileTab}
+        onTabChange={(tab) => {
+          triggerHaptic(10);
+          setMobileTab(tab);
+          if (tab === 'editor') setFullEditorOpen(true);
+        }}
+      />
+
+      {/* Mobile Full Screen Editor Sheet */}
+      <FullScreenModalEditor
+        isOpen={fullEditorOpen}
+        onClose={() => setFullEditorOpen(false)}
+        markdown={markdown}
+        onChange={setMarkdown}
+        parsedDoc={parsedDoc}
+        onSmartTruncate={handleSmartTruncate}
+      />
+
+      {/* Mobile Export Sheet */}
+      <MobileExportSheet
+        isOpen={exportSheetOpen}
+        onClose={() => setExportSheetOpen(false)}
+        currentFormat={currentFormat}
+        onSelectFormat={(f) => setCurrentFormat(f as FormatKey)}
+        onDownloadPng={handleDownloadPng}
+        onDownloadSvg={handleDownloadSvg}
+        history={history}
+        onLoadHistory={loadHistoryItem}
+      />
+
+      {/* Mobile Guided Tour */}
+      <MobileCoachMarks />
 
       {/* Modals */}
-      <WorkflowModal
-        isOpen={workflowModalOpen}
-        onClose={() => setWorkflowModalOpen(false)}
-      />
+      <WorkflowModal isOpen={workflowModalOpen} onClose={() => setWorkflowModalOpen(false)} />
+      <ArchitectureModal isOpen={archModalOpen} onClose={() => setArchModalOpen(false)} />
+      <OnboardingModal isOpen={onboardingOpen} onClose={() => setOnboardingOpen(false)} onComplete={() => addToast('Ready!', 'success')} />
+      <InfoModal isOpen={infoModalOpen} initialTab={infoModalTab} onClose={() => setInfoModalOpen(false)} onOpenWorkflowModal={() => setWorkflowModalOpen(true)} onOpenOnboarding={() => setOnboardingOpen(true)} />
+      <ProjectsModal isOpen={projectsModalOpen} onClose={() => setProjectsModalOpen(false)} storage={storage} currentProjectId={currentProjectId} onSelectProject={handleSelectProject} onCreateProject={handleCreateProject} />
+      <ShareModal isOpen={shareModalOpen} onClose={() => setShareModalOpen(false)} svgContent={desktopSvgString} projectData={{ id: currentProjectId, name: finalSpec.title || 'Infographic', source: { type: 'text', content: markdown }, settings: { themeId: theme, customSettings: { customTitle, customSubtitle, variants } } }} />
+      <ShortcutsModal isOpen={shortcutsModalOpen} onClose={() => setShortcutsModalOpen(false)} />
+      <ContrastModal isOpen={contrastModalOpen} onClose={() => setContrastModalOpen(false)} currentTheme={getTheme(theme)} colorBlindness={colorBlindness} onColorBlindnessChange={setColorBlindness} />
 
-      <ArchitectureModal
-        isOpen={archModalOpen}
-        onClose={() => setArchModalOpen(false)}
-      />
-
-      <OnboardingModal
-        isOpen={onboardingOpen}
-        onClose={() => setOnboardingOpen(false)}
-        onComplete={() => {
-          addToast('Ready! Craft your repository infographic below.', 'success');
-        }}
-      />
-
-      <InfoModal
-        isOpen={infoModalOpen}
-        initialTab={infoModalTab}
-        onClose={() => setInfoModalOpen(false)}
-        onOpenWorkflowModal={() => setWorkflowModalOpen(true)}
-        onOpenOnboarding={() => setOnboardingOpen(true)}
-      />
-
-      {/* Projects Management Modal */}
-      <ProjectsModal
-        isOpen={projectsModalOpen}
-        onClose={() => setProjectsModalOpen(false)}
-        storage={storage}
-        currentProjectId={currentProjectId}
-        onSelectProject={handleSelectProject}
-        onCreateProject={handleCreateProject}
-      />
-
-      {/* Share & Embed Modal */}
-      <ShareModal
-        isOpen={shareModalOpen}
-        onClose={() => setShareModalOpen(false)}
-        svgContent={desktopSvgString}
-        projectData={{
-          id: currentProjectId,
-          name: finalSpec.title || 'Infographic',
-          source: { type: 'text', content: markdown },
-          settings: {
-            themeId: theme,
-            customSettings: {
-              customTitle,
-              customSubtitle,
-              variants
-            }
-          }
-        }}
-      />
-
-      {/* Keyboard Shortcuts Modal */}
-      <ShortcutsModal
-        isOpen={shortcutsModalOpen}
-        onClose={() => setShortcutsModalOpen(false)}
-      />
-
-      {/* WCAG AA Contrast Audit & Color Blindness Modal */}
-      <ContrastModal
-        isOpen={contrastModalOpen}
-        onClose={() => setContrastModalOpen(false)}
-        currentTheme={getTheme(theme)}
-        colorBlindness={colorBlindness}
-        onColorBlindnessChange={setColorBlindness}
-      />
-
-      {/* Toasts */}
       <ToastContainer toasts={toasts} onDismiss={dismissToast} />
     </div>
   );
