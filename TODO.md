@@ -58,15 +58,14 @@ See Git commit history and documentation for implementation specifications:
 
 ---
 
-### ** A 4-Step Action Plan**
-1. **Fix Parser Bugs**: Prevent duplicate section headers and fix mid-word text truncation (use word-boundary wrapping).
-2. **Add Visual Density Selector**: Let users choose their preferred level of visual enrichment.
-3. **Implement Semantic Icons**: Map section types to meaningful Lucide icons.
-4. **Add Layout Variety**: Use different card styles (e.g., timeline for steps, pills for tech stack) instead of uniform boxes.
+### ** A 3-Step Action Plan**
+1. **Add Visual Density Selector**: Let users choose their preferred level of visual enrichment.
+2. **Implement Semantic Icons**: Map section types to meaningful Lucide icons.
+3. **Add Layout Variety**: Use different card styles (e.g., timeline for steps, pills for tech stack) instead of uniform boxes.
 
 ---
 
-### **✨ The "Visual Density" Feature**
+### ** The "Visual Density" Feature**
 
 Add a state and configuration object to control how much visual flair is applied.
 
@@ -101,7 +100,7 @@ export const DENSITY_CONFIG = {
 
 ---
 
-### **⚙️ Implementation Code**
+### **⚙️ Implementation Code example sugestions**
 
 #### **1. Add Density State to App.tsx**
 ```tsx
@@ -200,7 +199,7 @@ export function renderSection(section: Section, densityConfig: typeof DENSITY_CO
 ```
 
 #### **4. UI Selector for the User**
-Add this to the mobile settings/bottom sheet so users can toggle it.
+Add this to the mobile settings/bottom sheet or some better suitable place so users can toggle it.
 
 ```tsx
 // components/DensitySelector.tsx
