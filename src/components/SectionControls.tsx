@@ -21,7 +21,8 @@ import {
   Play,
   Minimize2
 } from 'lucide-react';
-import { InfographicSpec, VariantMap, LogoConfig } from '../engine/types';
+import { InfographicSpec, VariantMap, LogoConfig, VisualDensity } from '../engine/types';
+import { DensitySelector } from './DensitySelector';
 
 interface SectionControlsProps {
   spec: InfographicSpec;
@@ -43,6 +44,8 @@ interface SectionControlsProps {
   onToggleAnimated?: (val: boolean) => void;
   compact?: boolean;
   onToggleCompact?: (val: boolean) => void;
+  density?: VisualDensity;
+  onDensityChange?: (val: VisualDensity) => void;
 }
 
 export const SectionControls: React.FC<SectionControlsProps> = ({
@@ -64,7 +67,9 @@ export const SectionControls: React.FC<SectionControlsProps> = ({
   animated = false,
   onToggleAnimated,
   compact = false,
-  onToggleCompact
+  onToggleCompact,
+  density = 'dense',
+  onDensityChange
 }) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -472,11 +477,22 @@ export const SectionControls: React.FC<SectionControlsProps> = ({
         </div>
       )}
 
+      {/* Visual Density Selector */}
+      {onDensityChange && (
+        <div className="pt-3 border-t border-stone-200">
+          <DensitySelector
+            value={density}
+            onChange={onDensityChange}
+            compact={false}
+          />
+        </div>
+      )}
+
       {/* Animation & Compact Spacing Controls */}
       <div className="flex flex-col gap-2.5 pt-3 border-t border-stone-200">
         <span className="font-semibold text-stone-900 text-xs flex items-center gap-1.5">
           <Play className="w-3.5 h-3.5 text-stone-600" />
-          Animation & Density
+          Animation & Layout Spacing
         </span>
         <div className="grid grid-cols-2 gap-2">
           {onToggleAnimated && (

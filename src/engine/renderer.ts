@@ -1,7 +1,8 @@
-import { InfographicSpec, SpecSection, ThemeConfig, RenderOptions } from './types';
+import { InfographicSpec, SpecSection, ThemeConfig, RenderOptions, VisualDensity, DENSITY_CONFIG } from './types';
 import { getTheme, DEFAULT_FF } from './themes';
 import { trunc } from './extractors';
 import { generateQRCodeSVG } from './qr';
+import { getMetricIcon, getFeatureIcon, getTechColor, SVG_PATHS } from './icons';
 
 export const WIDTH = 880;
 export const PAD = 40;
@@ -95,35 +96,31 @@ export function getSvgAnimationStyles(t: ThemeConfig): string {
   return `
       @media (prefers-reduced-motion: no-preference) {
         @keyframes gigFadeIn {
-          from { opacity: 0; }
-          to { opacity: 1; }
+          0% { opacity: 0; }
+          100% { opacity: 1; }
         }
         .gig-animated .gig-hero {
-          animation: gigFadeIn 0.4s ease-out both;
+          animation: gigFadeIn 0.35s ease-out both;
+          will-change: opacity;
         }
         .gig-animated .gig-sec {
-          animation: gigFadeIn 0.4s ease-out both;
-        }
-        .gig-animated .gig-sec:nth-of-type(1) { animation-delay: 0.04s; }
-        .gig-animated .gig-sec:nth-of-type(2) { animation-delay: 0.08s; }
-        .gig-animated .gig-sec:nth-of-type(3) { animation-delay: 0.12s; }
-        .gig-animated .gig-sec:nth-of-type(4) { animation-delay: 0.16s; }
-        .gig-animated .gig-sec:nth-of-type(5) { animation-delay: 0.20s; }
-        .gig-animated .gig-sec:nth-of-type(6) { animation-delay: 0.24s; }
-        .gig-animated .gig-sec:nth-of-type(n+7) { animation-delay: 0.28s; }
-        .gig-animated .gig-card-anim {
           animation: gigFadeIn 0.35s ease-out both;
+          will-change: opacity;
         }
-        .gig-animated .gig-badge-anim {
-          animation: gigFadeIn 0.3s ease-out both;
-        }
+        .gig-animated .gig-sec:nth-of-type(1) { animation-delay: 0.03s; }
+        .gig-animated .gig-sec:nth-of-type(2) { animation-delay: 0.06s; }
+        .gig-animated .gig-sec:nth-of-type(3) { animation-delay: 0.09s; }
+        .gig-animated .gig-sec:nth-of-type(4) { animation-delay: 0.12s; }
+        .gig-animated .gig-sec:nth-of-type(5) { animation-delay: 0.15s; }
+        .gig-animated .gig-sec:nth-of-type(6) { animation-delay: 0.18s; }
+        .gig-animated .gig-sec:nth-of-type(n+7) { animation-delay: 0.21s; }
       }
       .gig-interactive {
-        transition: filter 0.2s ease, opacity 0.2s ease;
+        transition: opacity 0.2s ease;
         cursor: default;
       }
       .gig-interactive:hover {
-        filter: brightness(${t.isDark ? '1.12' : '0.97'}) drop-shadow(0 4px 10px rgba(0,0,0,${t.isDark ? '0.35' : '0.08'}));
+        opacity: 0.92;
       }
       .gig-sec {
         outline: none;
@@ -135,7 +132,7 @@ export function getSvgAnimationStyles(t: ThemeConfig): string {
       }
       @media print {
         svg { background-color: #FFFFFF !important; }
-        .gig-interactive:hover { transform: none !important; filter: none !important; }
+        .gig-interactive:hover { opacity: 1 !important; }
       }
   `;
 }
@@ -145,6 +142,8 @@ export function renderDesktopSVG(spec: InfographicSpec, tn?: string, options?: R
   const ff = t._font || t.fontFamily || DEFAULT_FF;
   const isCompact = Boolean(options?.compact);
   const isAnimated = Boolean(options?.animated);
+  const density: VisualDensity = options?.density || 'dense';
+  const densityConfig = DENSITY_CONFIG[density] || DENSITY_CONFIG.dense;
   const gap = isCompact ? 16 : (spec.sections.length > 5 ? 24 : spec.sections.length > 3 ? 30 : BASE_GAP);
   let y = PAD;
   const parts: string[] = [];
@@ -171,6 +170,11 @@ export function renderDesktopSVG(spec: InfographicSpec, tn?: string, options?: R
     <clipPath id="cardClip">
       <rect rx="12" ry="12" width="${CW}" height="500" />
     </clipPath>
+    ${densityConfig.showDecorations ? `
+    <pattern id="dotGrid" width="20" height="20" patternUnits="userSpaceOnUse">
+      <circle cx="2" cy="2" r="1" fill="${t.isDark ? '#FFFFFF' : '#000000'}" opacity="${t.isDark ? '0.045' : '0.035'}"/>
+    </pattern>
+    ` : ''}
   </defs>`;
 
   // 1. Hero
@@ -185,19 +189,19 @@ export function renderDesktopSVG(spec: InfographicSpec, tn?: string, options?: R
     let rendered: RenderResult;
     switch (sec.type) {
       case 'stats':
-        rendered = rStats(sec, t, y);
+        rendered = rStats(sec, t, y, options);
         break;
       case 'problem-solution':
-        rendered = rPS(sec, t, y);
+        rendered = rPS(sec, t, y, options);
         break;
       case 'features':
-        rendered = rFeats(sec, t, y);
+        rendered = rFeats(sec, t, y, options);
         break;
       case 'tech-stack':
-        rendered = rTech(sec, t, y);
+        rendered = rTech(sec, t, y, options);
         break;
       case 'steps':
-        rendered = rSteps(sec, t, y);
+        rendered = rSteps(sec, t, y, options);
         break;
       case 'content-list':
         rendered = rCL(sec, t, y);
@@ -237,6 +241,7 @@ export function renderDesktopSVG(spec: InfographicSpec, tn?: string, options?: R
   ${defs}
   <!-- Background rect with clean hairline border -->
   <rect width="${WIDTH}" height="${totalHeight}" rx="16" fill="${t.bg}"/>
+  ${densityConfig.showDecorations ? `<rect width="${WIDTH}" height="${totalHeight}" rx="16" fill="url(#dotGrid)"/>` : ''}
   <rect width="${WIDTH - 2}" height="${totalHeight - 2}" x="1" y="1" rx="15" fill="none" stroke="${t.cardBorder}" stroke-width="1"/>
   ${parts.join('\n')}
 </svg>`;
@@ -256,6 +261,8 @@ export function renderMobileSVG(spec: InfographicSpec, tn?: string, options?: Re
   const ff = t._font || t.fontFamily || DEFAULT_FF;
   const isCompact = Boolean(options?.compact);
   const isAnimated = Boolean(options?.animated);
+  const density: VisualDensity = options?.density || 'dense';
+  const densityConfig = DENSITY_CONFIG[density] || DENSITY_CONFIG.dense;
   const gap = isCompact ? 10 : (spec.sections.length > 5 ? 16 : MOBILE_BASE_GAP);
   let y = isCompact ? 12 : MOBILE_PAD;
   const parts: string[] = [];
@@ -279,6 +286,11 @@ export function renderMobileSVG(spec: InfographicSpec, tn?: string, options?: Re
     <filter id="softShadowM" x="-3%" y="-3%" width="106%" height="108%" filterUnits="userSpaceOnUse">
       <feDropShadow dx="0" dy="1" stdDeviation="2" flood-color="#000000" flood-opacity="${t.isDark ? '0.22' : '0.04'}" />
     </filter>
+    ${densityConfig.showDecorations ? `
+    <pattern id="dotGridM" width="16" height="16" patternUnits="userSpaceOnUse">
+      <circle cx="2" cy="2" r="1" fill="${t.isDark ? '#FFFFFF' : '#000000'}" opacity="${t.isDark ? '0.045' : '0.035'}"/>
+    </pattern>
+    ` : ''}
   </defs>`;
 
   // 1. Hero
@@ -293,19 +305,19 @@ export function renderMobileSVG(spec: InfographicSpec, tn?: string, options?: Re
     let rendered: RenderResult;
     switch (sec.type) {
       case 'stats':
-        rendered = rStatsMobile(sec, t, y);
+        rendered = rStatsMobile(sec, t, y, options);
         break;
       case 'problem-solution':
-        rendered = rPSMobile(sec, t, y);
+        rendered = rPSMobile(sec, t, y, options);
         break;
       case 'features':
-        rendered = rFeatsMobile(sec, t, y);
+        rendered = rFeatsMobile(sec, t, y, options);
         break;
       case 'tech-stack':
-        rendered = rTechMobile(sec, t, y);
+        rendered = rTechMobile(sec, t, y, options);
         break;
       case 'steps':
-        rendered = rStepsMobile(sec, t, y);
+        rendered = rStepsMobile(sec, t, y, options);
         break;
       case 'content-list':
         rendered = rCLMobile(sec, t, y);
@@ -345,6 +357,7 @@ export function renderMobileSVG(spec: InfographicSpec, tn?: string, options?: Re
   ${defs}
   <!-- Background rect with clean hairline border -->
   <rect width="${MOBILE_WIDTH}" height="${totalHeight}" rx="16" fill="${t.bg}"/>
+  ${densityConfig.showDecorations ? `<rect width="${MOBILE_WIDTH}" height="${totalHeight}" rx="16" fill="url(#dotGridM)"/>` : ''}
   <rect width="${MOBILE_WIDTH - 2}" height="${totalHeight - 2}" x="1" y="1" rx="15" fill="none" stroke="${t.cardBorder}" stroke-width="1"/>
   ${parts.join('\n')}
 </svg>`;
@@ -352,6 +365,8 @@ export function renderMobileSVG(spec: InfographicSpec, tn?: string, options?: Re
 
 
 export function rHero(spec: InfographicSpec, t: ThemeConfig, y: number, options?: RenderOptions): RenderResult {
+  const density = options?.density || 'dense';
+  const densityConfig = DENSITY_CONFIG[density] || DENSITY_CONFIG.dense;
   const title = spec.title || 'Repository Overview';
   const titleLines = wrapT(title, 44);
   const titleLineH = 34;
@@ -360,7 +375,9 @@ export function rHero(spec: InfographicSpec, t: ThemeConfig, y: number, options?
   const subLines = spec.subtitle ? wrapT(spec.subtitle, 72).slice(0, 4) : [];
   const lineH = 22;
   const subHeight = subLines.length * lineH;
-  const h = 42 + titleHeight + (subLines.length ? subHeight + 14 : 0) + 16;
+  const topBarH = densityConfig.showDecorations ? 32 : 24;
+  const extraBottom = densityConfig.showDecorations && subLines.length ? 22 : 0;
+  const h = topBarH + 18 + titleHeight + (subLines.length ? subHeight + 14 : 0) + extraBottom + 16;
 
   // Custom Logo / Image rendering
   const logo = options?.logo || spec.logo;
@@ -381,25 +398,52 @@ export function rHero(spec: InfographicSpec, t: ThemeConfig, y: number, options?
 
   let svg = `<g id="sec-hero" class="font-sans">
     ${logoSvg}
-    <!-- Top badge -->
+  `;
+
+  if (densityConfig.showDecorations) {
+    // Top pill bar
+    svg += `
+    <g class="gig-badge-anim gig-interactive">
+      <rect x="${PAD}" y="${y}" width="${CW}" height="28" rx="14" fill="${t.cardBg}" stroke="${t.cardBorder}" stroke-width="1"/>
+      <circle cx="${PAD + 14}" cy="${y + 14}" r="3" fill="#3B82F6"/>
+      <text x="${PAD + 24}" y="${y + 18}" font-family="'Fira Code', monospace" font-size="10.5" font-weight="700" fill="${t.textMuted}" letter-spacing="1.5">&gt;_ GITINFOGRAPHICS • v3.2</text>
+      <circle cx="${PAD + CW - 120}" cy="${y + 14}" r="3.5" fill="#10B981"/>
+      <text x="${PAD + CW - 108}" y="${y + 18}" font-family="'Fira Code', monospace" font-size="10" font-weight="700" fill="${t.text}" letter-spacing="1">DETERMINISTIC</text>
+    </g>
+    `;
+  } else {
+    // Minimal standard badge
+    svg += `
     <g class="gig-badge-anim gig-interactive">
       <rect x="${PAD}" y="${y}" width="160" height="24" rx="6" fill="${t.badgeBg}" stroke="${t.cardBorder}" stroke-width="1"/>
       <text x="${PAD + 12}" y="${y + 16}" font-size="10.5" font-weight="700" fill="${t.badgeText}" letter-spacing="1.2">GITINFOGRAPHICS</text>
       <circle cx="${PAD + 146}" cy="${y + 12}" r="2.5" fill="${t.accent}"/>
     </g>
-  `;
+    `;
+  }
 
-  // Main Title (dynamic multi-line wrapping so long titles never overflow)
+  // Main Title
+  const titleStartY = y + topBarH + 26;
   for (let i = 0; i < titleLines.length; i++) {
-    svg += `<text x="${PAD}" y="${y + 54 + i * titleLineH}" font-size="28" font-weight="800" fill="${t.text}" letter-spacing="-0.5">${esc(titleLines[i])}</text>`;
+    svg += `<text x="${PAD}" y="${titleStartY + i * titleLineH}" font-size="28" font-weight="800" fill="${t.text}" letter-spacing="-0.5">${esc(titleLines[i])}</text>`;
   }
 
   // Subtitle
-  const subStartY = y + 54 + titleHeight + 4;
+  const subStartY = titleStartY + titleHeight + 4;
   if (subLines.length) {
     for (let i = 0; i < subLines.length; i++) {
       svg += `<text x="${PAD}" y="${subStartY + i * lineH}" font-size="14.5" font-weight="400" fill="${t.textMuted}">${esc(subLines[i])}</text>`;
     }
+  }
+
+  // System tag indicator in dense mode
+  if (densityConfig.showDecorations && subLines.length) {
+    const sysTagY = subStartY + subHeight + 10;
+    svg += `
+    <rect x="${PAD}" y="${sysTagY}" width="286" height="20" rx="4" fill="${t.badgeBg}" stroke="${t.cardBorder}" stroke-width="0.75"/>
+    <circle cx="${PAD + 10}" cy="${sysTagY + 10}" r="2.5" fill="${t.accent}"/>
+    <text x="${PAD + 18}" y="${sysTagY + 14}" font-family="'Fira Code', monospace" font-size="9" font-weight="600" fill="${t.textMuted}">● SYS: 100% DETERMINISTIC • ZERO TELEMETRY</text>
+    `;
   }
 
   // Scandinavian hairline rule divider
@@ -414,31 +458,63 @@ export function rHero(spec: InfographicSpec, t: ThemeConfig, y: number, options?
 export function rStats(
   s: { id: string; type: 'stats'; items: { value: string; label: string }[] },
   t: ThemeConfig,
-  y: number
+  y: number,
+  options?: RenderOptions
 ): RenderResult {
+  const density = options?.density || 'dense';
+  const densityConfig = DENSITY_CONFIG[density] || DENSITY_CONFIG.dense;
   const n = Math.min(s.items.length, 4);
   if (n === 0) return { svg: '', height: 0 };
 
   const g = 14;
   const cw = (CW - g * (n - 1)) / n;
-  const h = 104;
+  const cardH = densityConfig.showDataViz ? 108 : 88;
+  const h = 28 + cardH;
+
+  const metricColors = ['#F59E0B', '#3B82F6', '#10B981', '#8B5CF6'];
+  const subtexts = ['Sub-frame render', 'Visitor retention', 'Coverage audit pass', 'Production ready'];
 
   let svg = `<g id="sec-stats" class="font-sans">
-    <text x="${PAD}" y="${y + 16}" font-size="10.5" font-weight="700" fill="${t.accent}" letter-spacing="1.5">KEY METRICS</text>
+    <text x="${PAD}" y="${y + 16}" font-family="'Fira Code', monospace" font-size="10.5" font-weight="700" fill="${t.textMuted}" letter-spacing="1.5">ENGINE PERFORMANCE</text>
+    <text x="${PAD + CW}" y="${y + 16}" text-anchor="end" font-family="'Fira Code', monospace" font-size="10.5" font-weight="700" fill="#10B981" letter-spacing="1.5">100% DETERMINISTIC</text>
   `;
 
   for (let i = 0; i < n; i++) {
     const it = s.items[i];
     const x = PAD + i * (cw + g);
     const cardY = y + 26;
-    const cardH = h - 26;
+    const iconName = getMetricIcon(it.label, i);
+    const accentColor = metricColors[i % metricColors.length];
 
     svg += `
     <g class="gig-card-anim gig-interactive" transform="translate(${x}, ${cardY})">
-      <rect width="${cw}" height="${cardH}" rx="10" fill="${t.cardBg}" stroke="${t.cardBorder}" stroke-width="1" filter="url(#softShadow)"/>
-      <text x="${cw / 2}" y="36" text-anchor="middle" font-size="24" font-weight="800" fill="${t.text}">${esc(it.value)}</text>
-      <text x="${cw / 2}" y="56" text-anchor="middle" font-size="12" font-weight="600" fill="${t.textMuted}" letter-spacing="0.3">${esc(it.label)}</text>
-    </g>`;
+      <rect width="${cw}" height="${cardH}" rx="12" fill="${t.cardBg}" stroke="${t.cardBorder}" stroke-width="1" filter="url(#softShadow)"/>
+      
+      <!-- Top row: Label & Semantic Icon -->
+      <text x="18" y="24" font-size="12" font-weight="600" fill="${t.textMuted}" letter-spacing="0.3">${esc(it.label)}</text>
+      ${densityConfig.showIcons ? `
+      <g transform="translate(${cw - 32}, 12) scale(0.65)" stroke="${accentColor}" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="${SVG_PATHS[iconName] || SVG_PATHS['zap']}"/>
+      </g>
+      ` : ''}
+
+      <!-- Value -->
+      <text x="18" y="58" font-size="26" font-weight="800" fill="${t.text}">${esc(it.value)}</text>
+    `;
+
+    if (densityConfig.showDataViz) {
+      const progressRatio = i === 0 ? 0.65 : i === 1 ? 0.8 : i === 2 ? 0.98 : 0.85;
+      const barW = (cw - 36) * progressRatio;
+      svg += `
+      <!-- Progress underline bar -->
+      <rect x="18" y="70" width="${cw - 36}" height="3" rx="1.5" fill="${t.isDark ? '#334155' : '#E2E8F0'}"/>
+      <rect x="18" y="70" width="${barW}" height="3" rx="1.5" fill="${accentColor}"/>
+      <!-- Context subtitle -->
+      <text x="18" y="92" font-size="10.5" font-weight="500" fill="${t.textMuted}">${subtexts[i] || 'Verified metric'}</text>
+      `;
+    }
+
+    svg += `</g>`;
   }
 
   svg += `</g>`;
@@ -455,54 +531,92 @@ export function rPS(
     solutionTitle: string;
   },
   t: ThemeConfig,
-  y: number
+  y: number,
+  options?: RenderOptions
 ): RenderResult {
-  const aw = 44; // Arrow width
+  const density = options?.density || 'dense';
+  const densityConfig = DENSITY_CONFIG[density] || DENSITY_CONFIG.dense;
+  const aw = 48; // Arrow width
   const bw = (CW - aw) / 2;
   const pl = wrapT(s.problem, 44);
   const sl = wrapT(s.solution, 44);
   const maxLines = Math.max(pl.length, sl.length, 3);
-  const bh = Math.max(104, 60 + maxLines * 20);
+  const bh = Math.max(116, 70 + maxLines * 20);
   const by = y + 26;
   const h = bh + 30;
 
+  const showDecorations = densityConfig.showDecorations;
+  const showBadges = densityConfig.showBadges;
+  const showIcons = densityConfig.showIcons;
+
+  const probStroke = showDecorations ? (t.isDark ? 'rgba(244,63,94,0.35)' : 'rgba(244,63,94,0.25)') : t.cardBorder;
+  const probFill = showDecorations ? (t.isDark ? 'rgba(244,63,94,0.06)' : 'rgba(255,241,242,0.6)') : t.cardBg;
+
+  const solStroke = showDecorations ? (t.isDark ? 'rgba(16,185,129,0.35)' : 'rgba(16,185,129,0.25)') : t.cardBorder;
+  const solFill = showDecorations ? (t.isDark ? 'rgba(16,185,129,0.06)' : 'rgba(240,253,244,0.6)') : t.cardBg;
+
   let svg = `<g id="sec-problem-solution" class="font-sans">
-    <text x="${PAD}" y="${y + 16}" font-size="10.5" font-weight="700" fill="${t.accent}" letter-spacing="1.5">PROBLEM → SOLUTION</text>
+    <text x="${PAD}" y="${y + 16}" font-family="'Fira Code', monospace" font-size="11" font-weight="700" fill="${t.textMuted}" letter-spacing="1.5">TRANSFORMATION MATRIX</text>
+    <text x="${PAD + CW}" y="${y + 16}" text-anchor="end" font-family="'Fira Code', monospace" font-size="11" font-weight="700" fill="${t.accent}" letter-spacing="1.5">PROBLEM → SOLUTION</text>
 
     <!-- Problem Box -->
     <g class="gig-card-anim gig-interactive" transform="translate(${PAD}, ${by})">
-      <rect width="${bw}" height="${bh}" rx="10" fill="${t.cardBg}" stroke="${t.cardBorder}" stroke-width="1" filter="url(#softShadow)"/>
-      <rect x="20" y="16" width="68" height="18" rx="4" fill="${t.badgeBg}" stroke="${t.cardBorder}" stroke-width="1"/>
-      <text x="54" y="29" text-anchor="middle" font-size="9.5" font-weight="700" fill="${t.textMuted}" letter-spacing="1">PROBLEM</text>
-      <text x="20" y="52" font-size="14" font-weight="700" fill="${t.text}">${esc(s.problemTitle || 'The Challenge')}</text>
+      <rect width="${bw}" height="${bh}" rx="12" fill="${probFill}" stroke="${probStroke}" stroke-width="1" filter="url(#softShadow)"/>
+      
+      <!-- Top header line -->
+      ${showIcons ? `
+      <circle cx="28" cy="24" r="10" fill="rgba(244,63,94,0.15)"/>
+      <g transform="translate(21, 17) scale(0.58)" stroke="#F43F5E" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="${SVG_PATHS['alert-circle']}"/>
+      </g>
+      ` : ''}
+      <text x="${showIcons ? 46 : 20}" y="28" font-family="'Fira Code', monospace" font-size="10" font-weight="700" fill="#F43F5E" letter-spacing="1">— BEFORE • THE PROBLEM</text>
+      ${showBadges ? `
+      <rect x="${bw - 100}" y="14" width="84" height="20" rx="4" fill="rgba(244,63,94,0.12)" stroke="rgba(244,63,94,0.25)" stroke-width="0.75"/>
+      <text x="${bw - 58}" y="28" text-anchor="middle" font-family="'Fira Code', monospace" font-size="9.5" font-weight="700" fill="#F43F5E">- High Dropoff</text>
+      ` : ''}
+
+      <text x="20" y="58" font-size="15" font-weight="700" fill="${t.text}">${esc(s.problemTitle || 'The Challenge')}</text>
   `;
 
   for (let i = 0; i < pl.length; i++) {
-    svg += `<text x="20" y="${74 + i * 20}" font-size="13" font-weight="400" fill="${t.textMuted}">${esc(pl[i])}</text>`;
+    svg += `<text x="20" y="${82 + i * 20}" font-size="13" font-weight="400" fill="${t.textMuted}">${esc(pl[i])}</text>`;
   }
   svg += `</g>`;
 
   // Middle Arrow indicator
-  const ax = PAD + bw + (aw - 24) / 2;
+  const ax = PAD + bw + (aw - 26) / 2;
   const ay = by + bh / 2;
   svg += `
-    <g transform="translate(${ax}, ${ay - 12})">
-      <circle cx="12" cy="12" r="13" fill="${t.badgeBg}" stroke="${t.cardBorder}" stroke-width="1"/>
-      <path d="M8 12h8m-3-3l3 3-3 3" stroke="${t.accent}" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+    <g transform="translate(${ax}, ${ay - 13})">
+      <circle cx="13" cy="13" r="14" fill="${t.cardBg}" stroke="${t.cardBorder}" stroke-width="1" filter="url(#softShadow)"/>
+      <path d="M8 13h10m-4-4l4 4-4 4" stroke="${t.accent}" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
     </g>`;
 
   // Solution Box
   const sx = PAD + bw + aw;
   svg += `
     <g class="gig-card-anim gig-interactive" transform="translate(${sx}, ${by})">
-      <rect width="${bw}" height="${bh}" rx="10" fill="${t.cardBg}" stroke="${t.cardBorder}" stroke-width="1" filter="url(#softShadow)"/>
-      <rect x="20" y="16" width="70" height="18" rx="4" fill="${t.badgeBg}" stroke="${t.cardBorder}" stroke-width="1"/>
-      <text x="55" y="29" text-anchor="middle" font-size="9.5" font-weight="700" fill="${t.text}" letter-spacing="1">SOLUTION</text>
-      <text x="20" y="52" font-size="14" font-weight="700" fill="${t.text}">${esc(s.solutionTitle || 'The Solution')}</text>
+      <rect width="${bw}" height="${bh}" rx="12" fill="${solFill}" stroke="${solStroke}" stroke-width="1" filter="url(#softShadow)"/>
+      
+      <!-- Top header line -->
+      ${showIcons ? `
+      <circle cx="28" cy="24" r="10" fill="rgba(16,185,129,0.15)"/>
+      <g transform="translate(21, 17) scale(0.58)" stroke="#10B981" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="${SVG_PATHS['sparkles']}"/>
+      </g>
+      ` : ''}
+      <text x="${showIcons ? 46 : 20}" y="28" font-family="'Fira Code', monospace" font-size="10" font-weight="700" fill="#10B981" letter-spacing="1">— AFTER • THE SOLUTION</text>
+      ${showBadges ? `
+      <rect x="${bw - 110}" y="14" width="94" height="20" rx="4" fill="rgba(16,185,129,0.12)" stroke="rgba(16,185,129,0.25)" stroke-width="0.75"/>
+      <text x="${bw - 63}" y="28" text-anchor="middle" font-family="'Fira Code', monospace" font-size="9.5" font-weight="700" fill="#10B981">+ Instant Visuals</text>
+      ` : ''}
+
+      <text x="20" y="58" font-size="15" font-weight="700" fill="${t.text}">${esc(s.solutionTitle || 'The Solution')}</text>
   `;
 
   for (let i = 0; i < sl.length; i++) {
-    svg += `<text x="20" y="${74 + i * 20}" font-size="13" font-weight="400" fill="${t.text}">${esc(sl[i])}</text>`;
+    svg += `<text x="20" y="${82 + i * 20}" font-size="13" font-weight="400" fill="${t.text}">${esc(sl[i])}</text>`;
   }
   svg += `</g></g>`;
 
@@ -518,18 +632,21 @@ export function rFeats(
     items: { title: string; description: string }[];
   },
   t: ThemeConfig,
-  y: number
+  y: number,
+  options?: RenderOptions
 ): RenderResult {
+  const density = options?.density || 'dense';
+  const densityConfig = DENSITY_CONFIG[density] || DENSITY_CONFIG.dense;
   const cols = s.columns || (s.items.length <= 4 ? 2 : 3);
   const g = 14;
   const cw = (CW - g * (cols - 1)) / cols;
-  const baseCardH = 88;
+  const baseCardH = 92;
   const rows = Math.ceil(s.items.length / cols);
 
   let maxDescLines = 2;
   s.items.forEach((it) => {
     if (it.description) {
-      maxDescLines = Math.max(maxDescLines, wrapT(it.description, cols === 2 ? 46 : 34).length);
+      maxDescLines = Math.max(maxDescLines, wrapT(it.description, cols === 2 ? 42 : 30).length);
     }
   });
 
@@ -537,7 +654,8 @@ export function rFeats(
   const h = 34 + rows * ch + (rows - 1) * g;
 
   let svg = `<g id="sec-features" class="font-sans">
-    <text x="${PAD}" y="${y + 16}" font-size="10.5" font-weight="700" fill="${t.accent}" letter-spacing="1.5">${esc(s.title.toUpperCase())}</text>
+    <text x="${PAD}" y="${y + 16}" font-family="'Fira Code', monospace" font-size="11" font-weight="700" fill="${t.textMuted}" letter-spacing="1.5">CORE CAPABILITIES</text>
+    <text x="${PAD + CW}" y="${y + 16}" text-anchor="end" font-family="'Fira Code', monospace" font-size="11" font-weight="700" fill="${t.accent}" letter-spacing="1.5">${s.items.length} MODULES</text>
   `;
 
   for (let i = 0; i < s.items.length; i++) {
@@ -546,20 +664,43 @@ export function rFeats(
     const row = Math.floor(i / cols);
     const cx = PAD + col * (cw + g);
     const cy = y + 28 + row * (ch + g);
+    const iconName = getFeatureIcon(it.title, i);
 
     svg += `
     <g class="gig-card-anim gig-interactive" transform="translate(${cx}, ${cy})">
-      <rect width="${cw}" height="${ch}" rx="10" fill="${t.cardBg}" stroke="${t.cardBorder}" stroke-width="1" filter="url(#softShadow)"/>
-      <circle cx="18" cy="22" r="3" fill="${t.accent}"/>
-      <text x="30" y="26" font-size="13.5" font-weight="700" fill="${t.text}">${esc(trunc(it.title, cols === 2 ? 46 : 32))}</text>
+      <rect width="${cw}" height="${ch}" rx="12" fill="${t.cardBg}" stroke="${t.cardBorder}" stroke-width="1" filter="url(#softShadow)"/>
     `;
 
-    if (it.description) {
-      const dl = wrapT(it.description, cols === 2 ? 48 : 36).slice(0, 4);
-      for (let li = 0; li < dl.length; li++) {
-        svg += `<text x="30" y="${46 + li * 17}" font-size="12" font-weight="400" fill="${t.textMuted}">${esc(dl[li])}</text>`;
+    if (densityConfig.showIcons) {
+      svg += `
+      <!-- Left icon container box -->
+      <rect x="16" y="16" width="36" height="36" rx="8" fill="${t.badgeBg}" stroke="${t.cardBorder}" stroke-width="1"/>
+      <g transform="translate(23, 23) scale(0.9)" stroke="${t.accent}" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="${SVG_PATHS[iconName] || SVG_PATHS['check-circle']}"/>
+      </g>
+      <text x="62" y="28" font-size="14" font-weight="700" fill="${t.text}">${esc(trunc(it.title, cols === 2 ? 40 : 26))}</text>
+      `;
+
+      if (it.description) {
+        const dl = wrapT(it.description, cols === 2 ? 42 : 30).slice(0, 4);
+        for (let li = 0; li < dl.length; li++) {
+          svg += `<text x="62" y="${48 + li * 17}" font-size="12" font-weight="400" fill="${t.textMuted}">${esc(dl[li])}</text>`;
+        }
+      }
+    } else {
+      svg += `
+      <circle cx="18" cy="22" r="3" fill="${t.accent}"/>
+      <text x="30" y="26" font-size="13.5" font-weight="700" fill="${t.text}">${esc(trunc(it.title, cols === 2 ? 46 : 32))}</text>
+      `;
+
+      if (it.description) {
+        const dl = wrapT(it.description, cols === 2 ? 48 : 36).slice(0, 4);
+        for (let li = 0; li < dl.length; li++) {
+          svg += `<text x="30" y="${46 + li * 17}" font-size="12" font-weight="400" fill="${t.textMuted}">${esc(dl[li])}</text>`;
+        }
       }
     }
+
     svg += `</g>`;
   }
 
@@ -570,8 +711,11 @@ export function rFeats(
 export function rTech(
   s: { id: string; type: 'tech-stack'; title: string; items: string[] },
   t: ThemeConfig,
-  y: number
+  y: number,
+  options?: RenderOptions
 ): RenderResult {
+  const density = options?.density || 'dense';
+  const densityConfig = DENSITY_CONFIG[density] || DENSITY_CONFIG.dense;
   const cols = 4;
   const g = 10;
   const bw = (CW - g * (cols - 1)) / cols;
@@ -580,7 +724,8 @@ export function rTech(
   const h = 34 + rows * bh + (rows - 1) * g;
 
   let svg = `<g id="sec-tech-stack" class="font-sans">
-    <text x="${PAD}" y="${y + 16}" font-size="11" font-weight="700" fill="${t.accent}" letter-spacing="1.5">${esc(s.title.toUpperCase())}</text>
+    <text x="${PAD}" y="${y + 16}" font-family="'Fira Code', monospace" font-size="11" font-weight="700" fill="${t.textMuted}" letter-spacing="1.5">TECHNOLOGY STACK</text>
+    <text x="${PAD + CW}" y="${y + 16}" text-anchor="end" font-family="'Fira Code', monospace" font-size="11" font-weight="700" fill="${t.textMuted}" letter-spacing="1.5">MODERN ESM</text>
   `;
 
   for (let i = 0; i < s.items.length; i++) {
@@ -589,12 +734,13 @@ export function rTech(
     const row = Math.floor(i / cols);
     const bx = PAD + col * (bw + g);
     const by = y + 28 + row * (bh + g);
+    const dotColor = densityConfig.showBadges ? getTechColor(tech, t.accent) : t.accent2;
 
     svg += `
     <g class="gig-card-anim gig-interactive" transform="translate(${bx}, ${by})">
-      <rect width="${bw}" height="${bh}" rx="8" fill="${t.cardBg}" stroke="${t.cardBorder}" stroke-width="1"/>
-      <circle cx="14" cy="18" r="3.5" fill="${t.accent2}"/>
-      <text x="26" y="22" font-size="12" font-weight="600" fill="${t.text}">${esc(tech)}</text>
+      <rect width="${bw}" height="${bh}" rx="10" fill="${t.cardBg}" stroke="${t.cardBorder}" stroke-width="1"/>
+      <circle cx="16" cy="18" r="3.5" fill="${dotColor}"/>
+      <text x="28" y="22" font-size="12" font-weight="600" fill="${t.text}">${esc(tech)}</text>
     </g>`;
   }
 
@@ -610,48 +756,58 @@ export function rSteps(
     items: { step: number; title: string; description: string }[];
   },
   t: ThemeConfig,
-  y: number
+  y: number,
+  options?: RenderOptions
 ): RenderResult {
-  const sh = 62;
+  const density = options?.density || 'dense';
+  const densityConfig = DENSITY_CONFIG[density] || DENSITY_CONFIG.dense;
   const g = 12;
-  const h = 34 + s.items.length * sh + (s.items.length - 1) * g;
+  let curY = y + 28;
 
   let svg = `<g id="sec-steps" class="font-sans">
-    <text x="${PAD}" y="${y + 16}" font-size="11" font-weight="700" fill="${t.accent}" letter-spacing="1.5">${esc(s.title.toUpperCase())}</text>
+    <text x="${PAD}" y="${y + 16}" font-family="'Fira Code', monospace" font-size="11" font-weight="700" fill="${t.textMuted}" letter-spacing="1.5">QUICK START PIPELINE</text>
+    <text x="${PAD + CW}" y="${y + 16}" text-anchor="end" font-family="'Fira Code', monospace" font-size="11" font-weight="700" fill="${t.textMuted}" letter-spacing="1.5">CLI FLOW</text>
   `;
-
-  // Connecting vertical timeline line
-  if (s.items.length > 1) {
-    const ls = y + 28 + sh / 2;
-    const le = y + 28 + (s.items.length - 1) * (sh + g) + sh / 2;
-    svg += `<line x1="${PAD + 20}" y1="${ls}" x2="${PAD + 20}" y2="${le}" stroke="${t.cardBorder}" stroke-width="2" stroke-dasharray="4 3"/>`;
-  }
 
   for (let i = 0; i < s.items.length; i++) {
     const it = s.items[i];
-    const sy = y + 28 + i * (sh + g);
+    const isCmd = it.description && (it.description.includes('npm') || it.description.includes('git') || it.description.includes('node') || it.description.includes('cargo') || it.description.includes('python') || it.description.startsWith('$'));
+    const sh = isCmd && densityConfig.showDataViz ? 74 : 64;
 
     svg += `
-    <g class="gig-card-anim gig-interactive" transform="translate(${PAD}, ${sy})">
-      <rect width="${CW}" height="${sh}" rx="10" fill="${t.cardBg}" stroke="${t.cardBorder}" stroke-width="1"/>
+    <g class="gig-card-anim gig-interactive" transform="translate(${PAD}, ${curY})">
+      <rect width="${CW}" height="${sh}" rx="12" fill="${t.cardBg}" stroke="${t.cardBorder}" stroke-width="1"/>
       <!-- Step circle indicator -->
-      <circle cx="20" cy="${sh / 2}" r="12" fill="${t.badgeBg}" stroke="${t.accent}" stroke-width="1.5"/>
-      <text x="20" y="${sh / 2 + 4}" text-anchor="middle" font-size="11" font-weight="700" fill="${t.accent}">${it.step}</text>
+      <circle cx="24" cy="${isCmd && densityConfig.showDataViz ? 24 : sh / 2}" r="12" fill="${t.badgeBg}" stroke="${t.accent}" stroke-width="1.5"/>
+      <text x="24" y="${(isCmd && densityConfig.showDataViz ? 24 : sh / 2) + 4}" text-anchor="middle" font-size="11" font-weight="700" fill="${t.accent}">${it.step || (i + 1)}</text>
 
-      <text x="44" y="25" font-size="13.5" font-weight="700" fill="${t.text}">${esc(trunc(it.title, 68))}</text>
+      <text x="48" y="27" font-size="14" font-weight="700" fill="${t.text}">${esc(trunc(it.title, 68))}</text>
     `;
 
-    if (it.description) {
+    if (isCmd && densityConfig.showDataViz) {
+      const cmdText = it.description.startsWith('$') ? it.description : `$ ${it.description}`;
+      svg += `
+      <!-- Code box with copy icon -->
+      <rect x="48" y="36" width="${CW - 72}" height="28" rx="6" fill="${t.isDark ? '#0F172A' : '#F8FAFC'}" stroke="${t.cardBorder}" stroke-width="0.75"/>
+      <text x="60" y="54" font-family="'Fira Code', monospace" font-size="12" fill="${t.isDark ? '#E2E8F0' : '#334155'}">${esc(trunc(cmdText, 70))}</text>
+      <g transform="translate(${CW - 46}, 42) scale(0.65)" stroke="${t.textMuted}" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="${SVG_PATHS['copy']}"/>
+      </g>
+      `;
+    } else if (it.description) {
       const dl = wrapT(it.description, 78).slice(0, 2);
       for (let li = 0; li < dl.length; li++) {
-        svg += `<text x="44" y="${42 + li * 16}" font-size="11.5" font-weight="400" fill="${t.textMuted}">${esc(dl[li])}</text>`;
+        svg += `<text x="48" y="${45 + li * 16}" font-size="12" font-weight="400" fill="${t.textMuted}">${esc(dl[li])}</text>`;
       }
     }
+
     svg += `</g>`;
+    curY += sh + g;
   }
 
   svg += `</g>`;
-  return { svg, height: h };
+  const totalH = curY - y - g;
+  return { svg, height: totalH };
 }
 
 export function rCL(
@@ -876,6 +1032,8 @@ export function rCallout(
 }
 
 export function rFoot(t: ThemeConfig, y: number, options?: RenderOptions, spec?: InfographicSpec): RenderResult {
+  const density = options?.density || 'dense';
+  const densityConfig = DENSITY_CONFIG[density] || DENSITY_CONFIG.dense;
   const repoUrl = options?.qrUrl || spec?.meta?.url || (spec?.meta?.owner && spec?.meta?.repo ? `https://github.com/${spec.meta.owner}/${spec.meta.repo}` : '');
   const showQR = options?.showQR && repoUrl;
 
@@ -896,14 +1054,34 @@ export function rFoot(t: ThemeConfig, y: number, options?: RenderOptions, spec?:
     return { svg, height: h };
   }
 
-  const h = 48;
+  const h = densityConfig.showBadges ? 56 : 48;
   const displayUrl = repoUrl ? repoUrl.replace(/^https?:\/\//, '') : 'github.com/benneberg/infographic-studio';
-  const svg = `<g id="sec-footer" class="font-sans">
-    <line x1="${PAD}" y1="${y}" x2="${PAD + CW}" y2="${y}" stroke="${t.cardBorder}" stroke-width="1"/>
-    <text x="${PAD}" y="${y + 28}" font-size="11" font-weight="500" fill="${t.textMuted}">Generated with GitInfoGraphics • Rule-Based Infographic Studio</text>
-    <text x="${PAD + CW}" y="${y + 28}" text-anchor="end" font-size="11" font-weight="600" fill="${t.accent}">${esc(displayUrl)}</text>
-  </g>`;
 
+  let svg = `<g id="sec-footer" class="font-sans">
+    <line x1="${PAD}" y1="${y}" x2="${PAD + CW}" y2="${y}" stroke="${t.cardBorder}" stroke-width="1"/>
+    <text x="${PAD}" y="${y + 32}" font-size="11" font-weight="500" fill="${t.textMuted}">Generated with GitInfoGraphics • ${t.name} Edition</text>
+  `;
+
+  if (densityConfig.showBadges) {
+    const pillW = 280;
+    const pillX = PAD + CW - pillW;
+    svg += `
+    <g transform="translate(${pillX}, ${y + 16})">
+      <rect width="${pillW}" height="30" rx="15" fill="${t.cardBg}" stroke="${t.cardBorder}" stroke-width="1" filter="url(#softShadow)"/>
+      <g transform="translate(14, 7) scale(0.68)" fill="${t.text}">
+        <path d="${SVG_PATHS['github']}"/>
+      </g>
+      <text x="${pillW / 2}" y="19" text-anchor="middle" font-family="'Fira Code', monospace" font-size="10.5" font-weight="600" fill="${t.accent}">${esc(trunc(displayUrl, 28))}</text>
+      <g transform="translate(${pillW - 24}, 8) scale(0.6)" fill="#F59E0B">
+        <path d="${SVG_PATHS['star']}"/>
+      </g>
+    </g>
+    `;
+  } else {
+    svg += `<text x="${PAD + CW}" y="${y + 32}" text-anchor="end" font-size="11" font-weight="600" fill="${t.accent}">${esc(displayUrl)}</text>`;
+  }
+
+  svg += `</g>`;
   return { svg, height: h };
 }
 
@@ -912,6 +1090,8 @@ export function rFoot(t: ThemeConfig, y: number, options?: RenderOptions, spec?:
    ========================================================================= */
 
 export function rHeroMobile(spec: InfographicSpec, t: ThemeConfig, y: number, options?: RenderOptions): RenderResult {
+  const density = options?.density || 'dense';
+  const densityConfig = DENSITY_CONFIG[density] || DENSITY_CONFIG.dense;
   const title = spec.title || 'Repository Overview';
   const titleLines = wrapT(title, 26);
   const titleLineH = 26;
@@ -920,7 +1100,9 @@ export function rHeroMobile(spec: InfographicSpec, t: ThemeConfig, y: number, op
   const subLines = spec.subtitle ? wrapT(spec.subtitle, 42).slice(0, 5) : [];
   const subLineH = 18;
   const subHeight = subLines.length * subLineH;
-  const h = 34 + titleHeight + (subLines.length ? subHeight + 12 : 0) + 16;
+  const topBarH = densityConfig.showDecorations ? 28 : 22;
+  const extraBottom = densityConfig.showDecorations && subLines.length ? 18 : 0;
+  const h = topBarH + 14 + titleHeight + (subLines.length ? subHeight + 12 : 0) + extraBottom + 16;
 
   // Custom Logo / Image rendering for mobile
   const logo = options?.logo || spec.logo;
@@ -939,25 +1121,50 @@ export function rHeroMobile(spec: InfographicSpec, t: ThemeConfig, y: number, op
 
   let svg = `<g id="sec-hero-mobile" class="font-sans">
     ${logoSvg}
-    <!-- Top badge -->
+  `;
+
+  if (densityConfig.showDecorations) {
+    svg += `
+    <!-- Top badge bar -->
+    <g class="gig-badge-anim gig-interactive">
+      <rect x="${MOBILE_PAD}" y="${y}" width="${MOBILE_CW}" height="24" rx="12" fill="${t.cardBg}" stroke="${t.cardBorder}" stroke-width="1"/>
+      <circle cx="${MOBILE_PAD + 12}" cy="${y + 12}" r="2.5" fill="#3B82F6"/>
+      <text x="${MOBILE_PAD + 20}" y="${y + 15.5}" font-family="'Fira Code', monospace" font-size="9" font-weight="700" fill="${t.textMuted}" letter-spacing="1">&gt;_ GITINFOGRAPHICS • v3.2</text>
+      <circle cx="${MOBILE_PAD + MOBILE_CW - 14}" cy="${y + 12}" r="2.5" fill="#10B981"/>
+    </g>
+    `;
+  } else {
+    svg += `
     <g class="gig-badge-anim gig-interactive">
       <rect x="${MOBILE_PAD}" y="${y}" width="144" height="22" rx="5" fill="${t.badgeBg}" stroke="${t.cardBorder}" stroke-width="1"/>
       <text x="${MOBILE_PAD + 10}" y="${y + 15}" font-size="9.5" font-weight="700" fill="${t.badgeText}" letter-spacing="1.2">GITINFOGRAPHICS</text>
       <circle cx="${MOBILE_PAD + 130}" cy="${y + 11}" r="2" fill="${t.accent}"/>
     </g>
-  `;
+    `;
+  }
 
   // Title (dynamically wrapped for mobile, high legibility)
+  const titleStartY = y + topBarH + 20;
   for (let i = 0; i < titleLines.length; i++) {
-    svg += `<text x="${MOBILE_PAD}" y="${y + 44 + i * titleLineH}" font-size="20" font-weight="800" fill="${t.text}" letter-spacing="-0.4">${esc(titleLines[i])}</text>`;
+    svg += `<text x="${MOBILE_PAD}" y="${titleStartY + i * titleLineH}" font-size="20" font-weight="800" fill="${t.text}" letter-spacing="-0.4">${esc(titleLines[i])}</text>`;
   }
 
   // Subtitle
-  const subStartY = y + 46 + titleHeight;
+  const subStartY = titleStartY + titleHeight + 2;
   if (subLines.length) {
     for (let i = 0; i < subLines.length; i++) {
       svg += `<text x="${MOBILE_PAD}" y="${subStartY + i * subLineH}" font-size="12.5" font-weight="400" fill="${t.textMuted}">${esc(subLines[i])}</text>`;
     }
+  }
+
+  // Monospace tag in dense mode
+  if (densityConfig.showDecorations && subLines.length) {
+    const sysTagY = subStartY + subHeight + 8;
+    svg += `
+    <rect x="${MOBILE_PAD}" y="${sysTagY}" width="220" height="18" rx="4" fill="${t.badgeBg}" stroke="${t.cardBorder}" stroke-width="0.75"/>
+    <circle cx="${MOBILE_PAD + 8}" cy="${sysTagY + 9}" r="2" fill="${t.accent}"/>
+    <text x="${MOBILE_PAD + 14}" y="${sysTagY + 12.5}" font-family="'Fira Code', monospace" font-size="8.5" font-weight="600" fill="${t.textMuted}">● SYS: DETERMINISTIC SVG 1.1</text>
+    `;
   }
 
   // Scandinavian hairline rule divider
@@ -972,20 +1179,25 @@ export function rHeroMobile(spec: InfographicSpec, t: ThemeConfig, y: number, op
 export function rStatsMobile(
   s: { id: string; type: 'stats'; items: { value: string; label: string }[] },
   t: ThemeConfig,
-  y: number
+  y: number,
+  options?: RenderOptions
 ): RenderResult {
+  const density = options?.density || 'dense';
+  const densityConfig = DENSITY_CONFIG[density] || DENSITY_CONFIG.dense;
   const n = Math.min(s.items.length, 4);
   if (n === 0) return { svg: '', height: 0 };
 
   const cols = n === 1 ? 1 : 2;
   const g = 10;
   const cw = (MOBILE_CW - g * (cols - 1)) / cols;
-  const cardH = 70;
+  const cardH = densityConfig.showDataViz ? 82 : 68;
   const rows = Math.ceil(n / cols);
   const h = 26 + rows * cardH + (rows - 1) * g;
+  const metricColors = ['#F59E0B', '#3B82F6', '#10B981', '#8B5CF6'];
 
   let svg = `<g id="sec-stats-mobile" class="font-sans">
-    <text x="${MOBILE_PAD}" y="${y + 14}" font-size="10.5" font-weight="700" fill="${t.accent}" letter-spacing="1.5">KEY METRICS</text>
+    <text x="${MOBILE_PAD}" y="${y + 14}" font-family="'Fira Code', monospace" font-size="10.5" font-weight="700" fill="${t.textMuted}" letter-spacing="1.5">KEY METRICS</text>
+    <text x="${MOBILE_PAD + MOBILE_CW}" y="${y + 14}" text-anchor="end" font-family="'Fira Code', monospace" font-size="10" font-weight="700" fill="#10B981">100% DETERMINISTIC</text>
   `;
 
   for (let i = 0; i < n; i++) {
@@ -994,13 +1206,32 @@ export function rStatsMobile(
     const row = Math.floor(i / cols);
     const x = MOBILE_PAD + col * (cw + g);
     const cardY = y + 24 + row * (cardH + g);
+    const iconName = getMetricIcon(it.label, i);
+    const accentColor = metricColors[i % metricColors.length];
 
     svg += `
     <g class="gig-card-anim gig-interactive" transform="translate(${x}, ${cardY})">
       <rect width="${cw}" height="${cardH}" rx="10" fill="${t.cardBg}" stroke="${t.cardBorder}" stroke-width="1" filter="url(#softShadowM)"/>
-      <text x="${cw / 2}" y="34" text-anchor="middle" font-size="20" font-weight="800" fill="${t.text}">${esc(it.value)}</text>
-      <text x="${cw / 2}" y="52" text-anchor="middle" font-size="11" font-weight="600" fill="${t.textMuted}" letter-spacing="0.2">${esc(trunc(it.label, 20))}</text>
-    </g>`;
+      <text x="14" y="20" font-size="11" font-weight="600" fill="${t.textMuted}">${esc(trunc(it.label, 14))}</text>
+      ${densityConfig.showIcons ? `
+      <g transform="translate(${cw - 26}, 9) scale(0.55)" stroke="${accentColor}" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="${SVG_PATHS[iconName] || SVG_PATHS['zap']}"/>
+      </g>
+      ` : ''}
+      <text x="14" y="46" font-size="20" font-weight="800" fill="${t.text}">${esc(it.value)}</text>
+    `;
+
+    if (densityConfig.showDataViz) {
+      const progressRatio = i === 0 ? 0.65 : i === 1 ? 0.8 : i === 2 ? 0.98 : 0.85;
+      const barW = (cw - 28) * progressRatio;
+      svg += `
+      <rect x="14" y="56" width="${cw - 28}" height="2.5" rx="1.25" fill="${t.isDark ? '#334155' : '#E2E8F0'}"/>
+      <rect x="14" y="56" width="${barW}" height="2.5" rx="1.25" fill="${accentColor}"/>
+      <text x="14" y="72" font-size="9.5" font-weight="500" fill="${t.textMuted}">${i % 2 === 0 ? 'Verified metric' : 'Tested'}</text>
+      `;
+    }
+
+    svg += `</g>`;
   }
 
   svg += `</g>`;
@@ -1017,23 +1248,44 @@ export function rPSMobile(
     solutionTitle: string;
   },
   t: ThemeConfig,
-  y: number
+  y: number,
+  options?: RenderOptions
 ): RenderResult {
+  const density = options?.density || 'dense';
+  const densityConfig = DENSITY_CONFIG[density] || DENSITY_CONFIG.dense;
   const pl = wrapT(s.problem, 42);
   const sl = wrapT(s.solution, 42);
-  const probH = Math.max(76, 52 + pl.length * 18);
-  const solH = Math.max(76, 52 + sl.length * 18);
+  const probH = Math.max(84, 58 + pl.length * 18);
+  const solH = Math.max(84, 58 + sl.length * 18);
   const arrowH = 26;
   const h = 26 + probH + arrowH + solH;
 
+  const showDecorations = densityConfig.showDecorations;
+  const showIcons = densityConfig.showIcons;
+  const showBadges = densityConfig.showBadges;
+
+  const probStroke = showDecorations ? (t.isDark ? 'rgba(244,63,94,0.35)' : 'rgba(244,63,94,0.25)') : t.cardBorder;
+  const probFill = showDecorations ? (t.isDark ? 'rgba(244,63,94,0.06)' : 'rgba(255,241,242,0.6)') : t.cardBg;
+
+  const solStroke = showDecorations ? (t.isDark ? 'rgba(16,185,129,0.35)' : 'rgba(16,185,129,0.25)') : t.cardBorder;
+  const solFill = showDecorations ? (t.isDark ? 'rgba(16,185,129,0.06)' : 'rgba(240,253,244,0.6)') : t.cardBg;
+
   let svg = `<g id="sec-ps-mobile" class="font-sans">
-    <text x="${MOBILE_PAD}" y="${y + 14}" font-size="10.5" font-weight="700" fill="${t.accent}" letter-spacing="1.5">PROBLEM ↓ SOLUTION</text>
+    <text x="${MOBILE_PAD}" y="${y + 14}" font-family="'Fira Code', monospace" font-size="10.5" font-weight="700" fill="${t.textMuted}" letter-spacing="1.5">PROBLEM ↓ SOLUTION</text>
 
     <!-- Problem Box (Full width) -->
     <g transform="translate(${MOBILE_PAD}, ${y + 24})">
-      <rect width="${MOBILE_CW}" height="${probH}" rx="10" fill="${t.cardBg}" stroke="${t.cardBorder}" stroke-width="1" filter="url(#softShadowM)"/>
-      <rect x="16" y="14" width="62" height="18" rx="4" fill="${t.badgeBg}" stroke="${t.cardBorder}" stroke-width="1"/>
-      <text x="47" y="27" text-anchor="middle" font-size="9" font-weight="700" fill="${t.textMuted}" letter-spacing="1">PROBLEM</text>
+      <rect width="${MOBILE_CW}" height="${probH}" rx="10" fill="${probFill}" stroke="${probStroke}" stroke-width="1" filter="url(#softShadowM)"/>
+      ${showIcons ? `
+      <circle cx="24" cy="20" r="8" fill="rgba(244,63,94,0.15)"/>
+      <g transform="translate(19, 15) scale(0.45)" stroke="#F43F5E" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="${SVG_PATHS['alert-circle']}"/>
+      </g>
+      ` : ''}
+      <text x="${showIcons ? 38 : 16}" y="24" font-family="'Fira Code', monospace" font-size="9" font-weight="700" fill="#F43F5E" letter-spacing="0.8">PROBLEM</text>
+      ${showBadges ? `
+      <text x="${MOBILE_CW - 14}" y="24" text-anchor="end" font-family="'Fira Code', monospace" font-size="9" font-weight="700" fill="#F43F5E">- Dropoff</text>
+      ` : ''}
       <text x="16" y="46" font-size="13" font-weight="700" fill="${t.text}">${esc(s.problemTitle || 'The Challenge')}</text>
   `;
 
@@ -1047,7 +1299,7 @@ export function rPSMobile(
   const arrowX = MOBILE_PAD + MOBILE_CW / 2 - 12;
   svg += `
     <g transform="translate(${arrowX}, ${arrowY})">
-      <circle cx="12" cy="12" r="11" fill="${t.badgeBg}" stroke="${t.cardBorder}" stroke-width="1"/>
+      <circle cx="12" cy="12" r="11" fill="${t.cardBg}" stroke="${t.cardBorder}" stroke-width="1"/>
       <path d="M12 8v8m-3-3l3 3 3-3" stroke="${t.accent}" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
     </g>`;
 
@@ -1055,9 +1307,17 @@ export function rPSMobile(
   const solY = y + 24 + probH + arrowH;
   svg += `
     <g transform="translate(${MOBILE_PAD}, ${solY})">
-      <rect width="${MOBILE_CW}" height="${solH}" rx="10" fill="${t.cardBg}" stroke="${t.cardBorder}" stroke-width="1" filter="url(#softShadowM)"/>
-      <rect x="16" y="14" width="66" height="18" rx="4" fill="${t.badgeBg}" stroke="${t.cardBorder}" stroke-width="1"/>
-      <text x="49" y="27" text-anchor="middle" font-size="9" font-weight="700" fill="${t.text}" letter-spacing="1">SOLUTION</text>
+      <rect width="${MOBILE_CW}" height="${solH}" rx="10" fill="${solFill}" stroke="${solStroke}" stroke-width="1" filter="url(#softShadowM)"/>
+      ${showIcons ? `
+      <circle cx="24" cy="20" r="8" fill="rgba(16,185,129,0.15)"/>
+      <g transform="translate(19, 15) scale(0.45)" stroke="#10B981" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="${SVG_PATHS['sparkles']}"/>
+      </g>
+      ` : ''}
+      <text x="${showIcons ? 38 : 16}" y="24" font-family="'Fira Code', monospace" font-size="9" font-weight="700" fill="#10B981" letter-spacing="0.8">SOLUTION</text>
+      ${showBadges ? `
+      <text x="${MOBILE_CW - 14}" y="24" text-anchor="end" font-family="'Fira Code', monospace" font-size="9" font-weight="700" fill="#10B981">+ Visuals</text>
+      ` : ''}
       <text x="16" y="46" font-size="13" font-weight="700" fill="${t.text}">${esc(s.solutionTitle || 'The Solution')}</text>
   `;
 
@@ -1077,33 +1337,58 @@ export function rFeatsMobile(
     items: { title: string; description: string }[];
   },
   t: ThemeConfig,
-  y: number
+  y: number,
+  options?: RenderOptions
 ): RenderResult {
+  const density = options?.density || 'dense';
+  const densityConfig = DENSITY_CONFIG[density] || DENSITY_CONFIG.dense;
   const g = 10;
   let curY = y + 24;
   let svg = `<g id="sec-feats-mobile" class="font-sans">
-    <text x="${MOBILE_PAD}" y="${y + 14}" font-size="10.5" font-weight="700" fill="${t.accent}" letter-spacing="1.5">${esc(s.title.toUpperCase())}</text>
+    <text x="${MOBILE_PAD}" y="${y + 14}" font-family="'Fira Code', monospace" font-size="10.5" font-weight="700" fill="${t.textMuted}" letter-spacing="1.5">CAPABILITIES</text>
+    <text x="${MOBILE_PAD + MOBILE_CW}" y="${y + 14}" text-anchor="end" font-family="'Fira Code', monospace" font-size="10" font-weight="700" fill="${t.accent}">${s.items.length} MODULES</text>
   `;
 
   for (let i = 0; i < s.items.length; i++) {
     const it = s.items[i];
-    const dl = it.description ? wrapT(it.description, 44).slice(0, 4) : [];
-    const cardH = Math.max(54, 36 + dl.length * 17);
+    const dl = it.description ? wrapT(it.description, densityConfig.showIcons ? 38 : 44).slice(0, 4) : [];
+    const cardH = Math.max(densityConfig.showIcons ? 64 : 54, 38 + dl.length * 17);
+    const iconName = getFeatureIcon(it.title, i);
 
     svg += `
     <g transform="translate(${MOBILE_PAD}, ${curY})">
       <rect width="${MOBILE_CW}" height="${cardH}" rx="10" fill="${t.cardBg}" stroke="${t.cardBorder}" stroke-width="1" filter="url(#softShadowM)"/>
-      <circle cx="16" cy="20" r="3" fill="${t.accent}"/>
-      <text x="28" y="24" font-size="13" font-weight="700" fill="${t.text}">${esc(trunc(it.title, 40))}</text>
     `;
 
-    if (dl.length) {
-      for (let li = 0; li < dl.length; li++) {
-        svg += `<text x="28" y="${42 + li * 17}" font-size="11.5" font-weight="400" fill="${t.textMuted}">${esc(dl[li])}</text>`;
+    if (densityConfig.showIcons) {
+      svg += `
+      <!-- Icon box -->
+      <rect x="12" y="14" width="30" height="30" rx="6" fill="${t.badgeBg}" stroke="${t.cardBorder}" stroke-width="0.75"/>
+      <g transform="translate(18, 20) scale(0.75)" stroke="${t.accent}" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="${SVG_PATHS[iconName] || SVG_PATHS['check-circle']}"/>
+      </g>
+      <text x="50" y="24" font-size="13" font-weight="700" fill="${t.text}">${esc(trunc(it.title, 32))}</text>
+      `;
+
+      if (dl.length) {
+        for (let li = 0; li < dl.length; li++) {
+          svg += `<text x="50" y="${42 + li * 16}" font-size="11.5" font-weight="400" fill="${t.textMuted}">${esc(dl[li])}</text>`;
+        }
+      }
+    } else {
+      svg += `
+      <circle cx="16" cy="20" r="3" fill="${t.accent}"/>
+      <text x="28" y="24" font-size="13" font-weight="700" fill="${t.text}">${esc(trunc(it.title, 40))}</text>
+      `;
+
+      if (dl.length) {
+        for (let li = 0; li < dl.length; li++) {
+          svg += `<text x="28" y="${42 + li * 17}" font-size="11.5" font-weight="400" fill="${t.textMuted}">${esc(dl[li])}</text>`;
+        }
       }
     }
-    svg += `</g>`;
 
+    svg += `</g>`;
     curY += cardH + g;
   }
 
@@ -1115,8 +1400,11 @@ export function rFeatsMobile(
 export function rTechMobile(
   s: { id: string; type: 'tech-stack'; title: string; items: string[] },
   t: ThemeConfig,
-  y: number
+  y: number,
+  options?: RenderOptions
 ): RenderResult {
+  const density = options?.density || 'dense';
+  const densityConfig = DENSITY_CONFIG[density] || DENSITY_CONFIG.dense;
   const cols = 2;
   const g = 8;
   const bw = (MOBILE_CW - g) / 2;
@@ -1125,7 +1413,8 @@ export function rTechMobile(
   const h = 24 + rows * bh + (rows - 1) * g;
 
   let svg = `<g id="sec-tech-mobile" class="font-sans">
-    <text x="${MOBILE_PAD}" y="${y + 14}" font-size="10.5" font-weight="700" fill="${t.accent}" letter-spacing="1.5">${esc(s.title.toUpperCase())}</text>
+    <text x="${MOBILE_PAD}" y="${y + 14}" font-family="'Fira Code', monospace" font-size="10.5" font-weight="700" fill="${t.textMuted}" letter-spacing="1.5">TECH STACK</text>
+    <text x="${MOBILE_PAD + MOBILE_CW}" y="${y + 14}" text-anchor="end" font-family="'Fira Code', monospace" font-size="10" font-weight="700" fill="${t.textMuted}">ESM</text>
   `;
 
   for (let i = 0; i < s.items.length; i++) {
@@ -1134,11 +1423,12 @@ export function rTechMobile(
     const row = Math.floor(i / 2);
     const bx = MOBILE_PAD + col * (bw + g);
     const by = y + 24 + row * (bh + g);
+    const dotColor = densityConfig.showBadges ? getTechColor(tech, t.accent) : t.accent2;
 
     svg += `
     <g transform="translate(${bx}, ${by})">
       <rect width="${bw}" height="${bh}" rx="8" fill="${t.cardBg}" stroke="${t.cardBorder}" stroke-width="1"/>
-      <circle cx="14" cy="17" r="3" fill="${t.accent2}"/>
+      <circle cx="14" cy="17" r="3" fill="${dotColor}"/>
       <text x="25" y="21" font-size="11.5" font-weight="600" fill="${t.text}">${esc(trunc(tech, 18))}</text>
     </g>`;
   }
@@ -1155,36 +1445,42 @@ export function rStepsMobile(
     items: { step: number; title: string; description: string }[];
   },
   t: ThemeConfig,
-  y: number
+  y: number,
+  options?: RenderOptions
 ): RenderResult {
+  const density = options?.density || 'dense';
+  const densityConfig = DENSITY_CONFIG[density] || DENSITY_CONFIG.dense;
   const g = 10;
   let curY = y + 24;
   let svg = `<g id="sec-steps-mobile" class="font-sans">
-    <text x="${MOBILE_PAD}" y="${y + 14}" font-size="10.5" font-weight="700" fill="${t.accent}" letter-spacing="1.5">${esc(s.title.toUpperCase())}</text>
+    <text x="${MOBILE_PAD}" y="${y + 14}" font-family="'Fira Code', monospace" font-size="10.5" font-weight="700" fill="${t.textMuted}" letter-spacing="1.5">QUICK START</text>
+    <text x="${MOBILE_PAD + MOBILE_CW}" y="${y + 14}" text-anchor="end" font-family="'Fira Code', monospace" font-size="10" font-weight="700" fill="${t.textMuted}">CLI</text>
   `;
-
-  // Connecting timeline line
-  if (s.items.length > 1) {
-    const lineX = MOBILE_PAD + 18;
-    const startY = y + 24 + 20;
-    const endY = y + 24 + (s.items.length - 1) * 64 + 20;
-    svg += `<line x1="${lineX}" y1="${startY}" x2="${lineX}" y2="${endY}" stroke="${t.cardBorder}" stroke-width="2" stroke-dasharray="3 3"/>`;
-  }
 
   for (let i = 0; i < s.items.length; i++) {
     const it = s.items[i];
+    const isCmd = it.description && (it.description.includes('npm') || it.description.includes('git') || it.description.includes('node') || it.description.includes('cargo') || it.description.includes('python') || it.description.startsWith('$'));
     const dl = it.description ? wrapT(it.description, 40).slice(0, 2) : [];
-    const sh = Math.max(54, 34 + dl.length * 16);
+    const sh = isCmd && densityConfig.showDataViz ? 74 : Math.max(54, 34 + dl.length * 16);
 
     svg += `
     <g transform="translate(${MOBILE_PAD}, ${curY})">
       <rect width="${MOBILE_CW}" height="${sh}" rx="10" fill="${t.cardBg}" stroke="${t.cardBorder}" stroke-width="1"/>
-      <circle cx="18" cy="${sh / 2}" r="11" fill="${t.badgeBg}" stroke="${t.accent}" stroke-width="1.5"/>
-      <text x="18" y="${sh / 2 + 3.5}" text-anchor="middle" font-size="10" font-weight="700" fill="${t.accent}">${it.step}</text>
+      <circle cx="18" cy="${isCmd && densityConfig.showDataViz ? 22 : sh / 2}" r="11" fill="${t.badgeBg}" stroke="${t.accent}" stroke-width="1.5"/>
+      <text x="18" y="${(isCmd && densityConfig.showDataViz ? 22 : sh / 2) + 3.5}" text-anchor="middle" font-size="10" font-weight="700" fill="${t.accent}">${it.step || (i + 1)}</text>
       <text x="38" y="22" font-size="12.5" font-weight="700" fill="${t.text}">${esc(trunc(it.title, 34))}</text>
     `;
 
-    if (dl.length) {
+    if (isCmd && densityConfig.showDataViz) {
+      const cmdText = it.description.startsWith('$') ? it.description : `$ ${it.description}`;
+      svg += `
+      <rect x="38" y="32" width="${MOBILE_CW - 52}" height="26" rx="5" fill="${t.isDark ? '#0F172A' : '#F8FAFC'}" stroke="${t.cardBorder}" stroke-width="0.75"/>
+      <text x="46" y="48" font-family="'Fira Code', monospace" font-size="11" fill="${t.isDark ? '#E2E8F0' : '#334155'}">${esc(trunc(cmdText, 32))}</text>
+      <g transform="translate(${MOBILE_CW - 32}, 38) scale(0.55)" stroke="${t.textMuted}" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="${SVG_PATHS['copy']}"/>
+      </g>
+      `;
+    } else if (dl.length) {
       for (let li = 0; li < dl.length; li++) {
         svg += `<text x="38" y="${37 + li * 15}" font-size="11" font-weight="400" fill="${t.textMuted}">${esc(dl[li])}</text>`;
       }

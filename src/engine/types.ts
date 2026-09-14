@@ -214,6 +214,40 @@ export interface ThemeConfig {
 
 export type VariantMap = Record<string, number>;
 
+export type VisualDensity = 'minimal' | 'medium' | 'dense';
+
+export interface DensityConfig {
+  showIcons: boolean;
+  showBadges: boolean;
+  showDataViz: boolean;
+  showDecorations: boolean;
+  description: string;
+}
+
+export const DENSITY_CONFIG: Record<VisualDensity, DensityConfig> = {
+  minimal: {
+    showIcons: false,
+    showBadges: false,
+    showDataViz: false,
+    showDecorations: false,
+    description: 'Clean, text-focused, maximum readability and compact sizing.',
+  },
+  medium: {
+    showIcons: true,
+    showBadges: true,
+    showDataViz: false,
+    showDecorations: true,
+    description: 'Balanced. Adds semantic vector icons, status badges, and color-coded chips.',
+  },
+  dense: {
+    showIcons: true,
+    showBadges: true,
+    showDataViz: true,
+    showDecorations: true,
+    description: 'Rich infographic. Progress bars, metric indicators, diff badges & micro-illustrations.',
+  },
+};
+
 export interface RenderOptions {
   layout?: 'desktop' | 'mobile';
   width?: number;
@@ -222,4 +256,5 @@ export interface RenderOptions {
   logo?: LogoConfig;
   animated?: boolean;
   compact?: boolean;
+  density?: VisualDensity;
 }
