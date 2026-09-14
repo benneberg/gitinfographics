@@ -1,5 +1,4 @@
 import React, { useState, useMemo, useCallback, useEffect } from 'react';
-import { LazyMotion, m, AnimatePresence } from 'framer-motion';
 import {
   parseMD,
   buildRuleSpec,
@@ -10,166 +9,116 @@ import {
   GitHubMeta,
   fetchGitHubRepo,
   VariantMap,
-  LogoConfig
+  LogoConfig,
+  InfographicSpec
 } from './engine';
-import { MarkdownEditor } from './components/MarkdownEditor';
-import { SectionControls } from './components/SectionControls';
-import { InfographicCanvas } from './components/InfographicCanvas';
-import { VisualFormatPicker } from './components/mobile/VisualFormatPicker';
-import { ToastContainer, ToastMessage } from './components/Toast';
-import { ContrastModal } from './components/ContrastModal';
-import { ShortcutsModal } from './components/ShortcutsModal';
-import { ColorBlindnessType } from './engine/contrast';
 import { getTheme, THEMES } from './engine/themes';
+import { ColorBlindnessType } from './engine/contrast';
 import { ProjectStorage, Project } from './storage/ProjectStorage';
 import { KeyboardShortcuts } from './ui/KeyboardShortcuts';
 import { triggerHaptic } from './ui/haptics';
-import { 
-  FileText, Eye, Download, Palette, History as HistoryIcon, Github, 
-  Sparkles, ChevronRight, X, Check, Zap, Share2, Maximize2, Trash2, Code, Sliders
+
+// Core Components
+import { Header } from './components/Header';
+import { MarkdownEditor } from './components/MarkdownEditor';
+import { SectionControls } from './components/SectionControls';
+import { InfographicCanvas } from './components/InfographicCanvas';
+import { ToastContainer, ToastMessage } from './components/Toast';
+
+// Mobile Components
+import { BottomNavigation, MobileTab } from './components/mobile/BottomNavigation';
+import { FullScreenModalEditor } from './components/mobile/FullScreenModalEditor';
+import { ThemeCarousel } from './components/mobile/ThemeCarousel';
+import { VisualFormatPicker } from './components/mobile/VisualFormatPicker';
+import { MobileExportSheet } from './components/mobile/MobileExportSheet';
+import { MobileActionSheet } from './components/mobile/MobileActionSheet';
+import { MobileFab } from './components/mobile/MobileFab';
+import { MobileCoachMarks } from './components/mobile/MobileCoachMarks';
+
+// Modals
+import { ProjectsModal } from './components/ProjectsModal';
+import { ShareModal } from './components/ShareModal';
+import { WorkflowModal } from './components/WorkflowModal';
+import { ArchitectureModal } from './components/ArchitectureModal';
+import { InfoModal } from './components/InfoModal';
+import { ContrastModal } from './components/ContrastModal';
+import { ShortcutsModal } from './components/ShortcutsModal';
+
+import {
+  Sparkles,
+  Palette,
+  MoreVertical,
+  Layers,
+  FileText,
+  Sliders,
+  Share2,
+  History as HistoryIcon,
+  Download,
+  Copy,
+  Check,
+  Zap,
+  Github,
+  Maximize2,
+  Eye,
+  SlidersHorizontal,
+  ExternalLink,
+  Code2
 } from 'lucide-react';
 
-// --- Framer Motion Dynamic Payload ---
-const loadFramerFeatures = () => import('framer-motion').then((res) => res.domAnimation);
-import type { TargetAndTransition, Transition } from 'framer-motion';
-// --- Animation Physics & Variants ---
-const pageTransition = {
-  initial: { opacity: 0, y: 15 },
-  animate: { opacity: 1, y: 0 },
-  exit: { opacity: 0, y: -15 },
-  transition: { duration: 0.25, ease: "easeOut" } as Transition
+// Format configurations for export and previews
+const EXPORT_FORMATS: Record<string, { name: string; width: number; height: number | 'auto' }> = {
+  desktop: { name: 'Desktop README', width: 880, height: 'auto' },
+  mobile: { name: 'Mobile README', width: 400, height: 'auto' },
+  twitter: { name: 'Twitter/X Post', width: 1200, height: 675 },
+  linkedin: { name: 'LinkedIn Post', width: 1080, height: 1080 },
+  instagram: { name: 'Instagram Story', width: 1080, height: 1920 },
+  'github-preview': { name: 'GitHub Social Preview', width: 1280, height: 640 },
 };
 
-const sheetSpring: Transition = {
-  type: "spring",
-  damping: 24,
-  stiffness: 300
-};
-
-
-// --- Format Configuration ---
-const EXPORT_FORMATS = {
-  desktop: { name: 'Desktop README', width: 880, height: 'auto' as const },
-  mobile: { name: 'Mobile README', width: 400, height: 'auto' as const },
-  twitter: { name: 'Twitter/X Post', width: 1200, height: 675 as const },
-  linkedin: { name: 'LinkedIn Post', width: 1080, height: 1080 as const },
-  instagram: { name: 'Instagram Story', width: 1080, height: 1920 as const },
-  'github-preview': { name: 'GitHub Social Preview', width: 1280, height: 640 as const },
-} as const;
-
-type FormatKey = keyof typeof EXPORT_FORMATS;
-
-// --- Storage Utilities ---
+// Storage Utilities with robust error insulation
 const Storage = {
-  saveSession: (data: any) => { try { localStorage.setItem('gig-session', JSON.stringify(data)); } catch {} },
-  loadSession: () => { try { return JSON.parse(localStorage.getItem('gig-session') || 'null'); } catch { return null; } },
+  saveSession: (data: any) => {
+    try {
+      localStorage.setItem('gig-session', JSON.stringify(data));
+    } catch {}
+  },
+  loadSession: () => {
+    try {
+      const data = localStorage.getItem('gig-session');
+      return data ? JSON.parse(data) : null;
+    } catch {
+      return null;
+    }
+  },
   saveHistory: (item: any) => {
     try {
       const parsed = JSON.parse(localStorage.getItem('gig-history') || '[]');
       const history = Array.isArray(parsed) ? parsed : [];
       history.unshift(item);
-      localStorage.setItem('gig-history', JSON.stringify(history.slice(0, 10))); 
+      localStorage.setItem('gig-history', JSON.stringify(history.slice(0, 15)));
     } catch {}
   },
-  loadHistory: () => { try { const p = JSON.parse(localStorage.getItem('gig-history') || '[]'); return Array.isArray(p) ? p : []; } catch { return []; } },
-  clearHistory: () => { try { localStorage.removeItem('gig-history'); } catch {} }
+  loadHistory: () => {
+    try {
+      const p = JSON.parse(localStorage.getItem('gig-history') || '[]');
+      return Array.isArray(p) ? p : [];
+    } catch {
+      return [];
+    }
+  },
+  clearHistory: () => {
+    try {
+      localStorage.removeItem('gig-history');
+    } catch {}
+  }
 };
 
-// --- Reusable UI Primitives ---
-const GlassCard: React.FC<{ children: React.ReactNode; className?: string; onClick?: () => void }> = ({ children, className = "", onClick }) => (
-  <m.div
-    onClick={() => {
-      if (onClick) {
-        triggerHaptic(10);
-        onClick();
-      }
-    }}
-    whileTap={onClick ? { scale: 0.97 } : undefined}
-    className={`bg-white/70 backdrop-blur-xl border border-white/40 shadow-sm rounded-2xl ${className}`}
-  >
-    {children}
-  </m.div>
-);
-
-const IconButton: React.FC<{ icon: any; onClick: () => void; label?: string; active?: boolean }> = ({ icon: Icon, onClick, label, active = false }) => (
-  <m.button
-    onClick={() => { triggerHaptic(10); onClick(); }}
-    whileTap={{ scale: 0.9 }}
-    className={`flex flex-col items-center justify-center gap-1 p-2 rounded-xl transition-colors ${
-      active ? 'text-emerald-600 bg-emerald-50' : 'text-stone-600 hover:bg-stone-100'
-    }`}
-  >
-    <Icon className="w-6 h-6" />
-    {label && <span className="text-[10px] font-medium">{label}</span>}
-  </m.button>
-);
-
-const FloatingActionButton: React.FC<{ icon: any; onClick: () => void }> = ({ icon: Icon, onClick }) => (
-  <m.button
-    onClick={() => { triggerHaptic(15); onClick(); }}
-    initial={{ scale: 0, opacity: 0 }}
-    animate={{ scale: 1, opacity: 1 }}
-    exit={{ scale: 0, opacity: 0 }}
-    whileTap={{ scale: 0.9 }}
-    className="absolute bottom-24 right-4 w-14 h-14 bg-emerald-600 text-white rounded-full shadow-lg flex items-center justify-center z-40"
-  >
-    <Icon className="w-6 h-6" />
-  </m.button>
-);
-
-const BottomSheet: React.FC<{ isOpen: boolean; onClose: () => void; title: string; children: React.ReactNode }> = ({ isOpen, onClose, title, children }) => (
-  <AnimatePresence>
-    {isOpen && (
-      <>
-        <m.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          onClick={() => { triggerHaptic(10); onClose(); }}
-          className="fixed inset-0 bg-stone-900/40 backdrop-blur-sm z-40"
-        />
-        <m.div
-          initial={{ y: "100%" }}
-          animate={{ y: 0 }}
-          exit={{ y: "100%" }}
-          transition={sheetSpring}
-          className="fixed bottom-0 left-0 right-0 bg-[#FAFAF9] rounded-t-[32px] p-6 z-50 max-h-[85vh] overflow-y-auto shadow-2xl border-t border-white/50"
-        >
-          <div className="flex items-center justify-between mb-6">
-            <h3 className="text-xl font-bold text-stone-900">{title}</h3>
-            <button onClick={() => { triggerHaptic(10); onClose(); }} className="p-2 bg-stone-200/50 hover:bg-stone-200 rounded-full transition-colors">
-              <X className="w-5 h-5 text-stone-600" />
-            </button>
-          </div>
-          {children}
-        </m.div>
-      </>
-    )}
-  </AnimatePresence>
-);
-
-const ThemeCard: React.FC<{ name: string; color: string; selected: boolean; onClick: () => void }> = ({ name, color, selected, onClick }) => (
-  <m.button
-    onClick={() => { triggerHaptic(10); onClick(); }}
-    whileTap={{ scale: 0.95 }}
-    className={`relative p-4 rounded-2xl border-2 transition-all ${selected ? 'border-emerald-500 shadow-md' : 'border-stone-200/50'}`}
-    style={{ backgroundColor: color }}
-  >
-    <div className="text-xs font-semibold text-white drop-shadow-md">{name}</div>
-    {selected && (
-      <m.div initial={{ scale: 0 }} animate={{ scale: 1 }} className="absolute top-2 right-2 w-6 h-6 bg-emerald-500 rounded-full flex items-center justify-center">
-        <Check className="w-4 h-4 text-white" />
-      </m.div>
-    )}
-  </m.button>
-);
-
-// --- Main App Component ---
 export default function App() {
-  const [activeTab, setActiveTab] = useState<'create' | 'preview' | 'export'>('create');
-  const [createSubTab, setCreateSubTab] = useState<'editor' | 'sections'>('editor');
-  
-  // Data State
+  // Mobile Navigation State ('preview' | 'editor' | 'style' | 'export')
+  const [mobileTab, setMobileTab] = useState<MobileTab>('preview');
+  const [desktopTab, setDesktopTab] = useState<'editor' | 'sections' | 'export' | 'history'>('editor');
+
+  // Core Data State
   const [markdown, setMarkdown] = useState<string>(SAMPLE_READMES[0].markdown);
   const [theme, setTheme] = useState<string>('scandi-minimal');
   const [variants, setVariants] = useState<VariantMap>({ 'problem-solution': 0, features: 0, stats: 0 });
@@ -178,8 +127,8 @@ export default function App() {
   const [customSubtitle, setCustomSubtitle] = useState<string>('');
   const [ghMeta, setGhMeta] = useState<GitHubMeta | null>(null);
   const [isFetching, setIsFetching] = useState<boolean>(false);
-  const [currentFormat, setCurrentFormat] = useState<FormatKey>('mobile');
-  
+  const [currentFormat, setCurrentFormat] = useState<string>('desktop');
+
   // Customization State
   const [showQR, setShowQR] = useState<boolean>(false);
   const [qrUrl, setQrUrl] = useState<string>('');
@@ -189,48 +138,101 @@ export default function App() {
   const [compact, setCompact] = useState<boolean>(false);
   const [colorBlindness, setColorBlindness] = useState<ColorBlindnessType>('normal');
 
-  // App Level UI State
-  const [history, setHistory] = useState<any[]>([]);
-  const [toasts, setToasts] = useState<ToastMessage[]>([]);
-  const [copied, setCopied] = useState<boolean>(false);
-  
-  // Modals & Sheets
-  const [showThemeSheet, setShowThemeSheet] = useState(false);
-  const [showExportSheet, setShowExportSheet] = useState(false);
-  const [showHistorySheet, setShowHistorySheet] = useState(false);
+  // UI Modals and Sheets
+  const [showMobileActionSheet, setShowMobileActionSheet] = useState(false);
+  const [showMobileExportSheet, setShowMobileExportSheet] = useState(false);
+  const [showMobileEditorModal, setShowMobileEditorModal] = useState(false);
+  const [showCoachMarks, setShowCoachMarks] = useState(false);
+
+  // Desktop/Universal Modals
+  const [projectsModalOpen, setProjectsModalOpen] = useState(false);
+  const [shareModalOpen, setShareModalOpen] = useState(false);
+  const [workflowModalOpen, setWorkflowModalOpen] = useState(false);
+  const [architectureModalOpen, setArchitectureModalOpen] = useState(false);
+  const [infoModalOpen, setInfoModalOpen] = useState(false);
   const [shortcutsModalOpen, setShortcutsModalOpen] = useState(false);
   const [contrastModalOpen, setContrastModalOpen] = useState(false);
 
-  useEffect(() => {
-    const savedHistory = Storage.loadHistory();
-    setHistory(savedHistory);
-    const lastSession = Storage.loadSession();
-    if (lastSession?.markdown) {
-      setMarkdown(lastSession.markdown);
-      setTheme(lastSession.theme || 'scandi-minimal');
-      if (lastSession.showQR !== undefined) setShowQR(lastSession.showQR);
-      if (lastSession.qrUrl) setQrUrl(lastSession.qrUrl);
-    }
-  }, []);
+  // Notifications & History
+  const [history, setHistory] = useState<any[]>([]);
+  const [toasts, setToasts] = useState<ToastMessage[]>([]);
+  const [copied, setCopied] = useState<boolean>(false);
 
-  useEffect(() => {
-    Storage.saveSession({ markdown, theme, customTitle, customSubtitle, variants, disabledSections, showQR, qrUrl });
-  }, [markdown, theme, customTitle, customSubtitle, variants, disabledSections, showQR, qrUrl]);
+  // Storage Manager Instance
+  const projectStorage = useMemo(() => new ProjectStorage(), []);
 
+  // Toast Helper
   const addToast = useCallback((message: string, type: 'success' | 'error' | 'info' = 'success') => {
     const id = Math.random().toString(36).substring(2, 9);
     setToasts((prev) => [...prev, { id, message, type }]);
-    setTimeout(() => setToasts((prev) => prev.filter((t) => t.id !== id)), 3200);
+    setTimeout(() => setToasts((prev) => prev.filter((t) => t.id !== id)), 3000);
   }, []);
 
+  // Initial Load from LocalStorage
+  useEffect(() => {
+    try {
+      const savedHistory = Storage.loadHistory();
+      setHistory(savedHistory);
+
+      const lastSession = Storage.loadSession();
+      if (lastSession?.markdown) {
+        setMarkdown(lastSession.markdown);
+        if (lastSession.theme) setTheme(lastSession.theme);
+        if (lastSession.customTitle) setCustomTitle(lastSession.customTitle);
+        if (lastSession.customSubtitle) setCustomSubtitle(lastSession.customSubtitle);
+        if (lastSession.variants) setVariants(lastSession.variants);
+        if (lastSession.disabledSections) setDisabledSections(lastSession.disabledSections);
+        if (lastSession.showQR !== undefined) setShowQR(lastSession.showQR);
+        if (lastSession.qrUrl) setQrUrl(lastSession.qrUrl);
+        if (lastSession.logo) setLogo(lastSession.logo);
+      }
+
+      // Check CoachMarks for first time mobile visitors
+      const hasSeenCoach = localStorage.getItem('gitinfographics_mobile_coachmarks');
+      if (!hasSeenCoach && window.innerWidth < 1024) {
+        setShowCoachMarks(true);
+      }
+    } catch (e) {
+      console.warn('Failed to load session:', e);
+    }
+  }, []);
+
+  // Sync session state to LocalStorage
+  useEffect(() => {
+    Storage.saveSession({
+      markdown,
+      theme,
+      customTitle,
+      customSubtitle,
+      variants,
+      disabledSections,
+      showQR,
+      qrUrl,
+      logo
+    });
+  }, [markdown, theme, customTitle, customSubtitle, variants, disabledSections, showQR, qrUrl, logo]);
+
+  // Derived Markdown AST
   const parsedDoc = useMemo(() => {
-    try { return parseMD(markdown); } catch { return { title: '', subtitle: '', sections: [], badges: [], images: [] }; }
+    try {
+      return parseMD(markdown);
+    } catch {
+      return { title: '', subtitle: '', sections: [], badges: [], images: [] };
+    }
   }, [markdown]);
 
-  const baseSpec = useMemo(() => buildRuleSpec(parsedDoc, variants, ghMeta), [parsedDoc, variants, ghMeta]);
+  // Intermediate Rule-Based Spec
+  const baseSpec = useMemo(() => {
+    try {
+      return buildRuleSpec(parsedDoc, variants, ghMeta);
+    } catch {
+      return { title: 'Untitled', subtitle: '', sections: [] };
+    }
+  }, [parsedDoc, variants, ghMeta]);
 
-  const finalSpec = useMemo(() => {
-    let filteredSections = baseSpec.sections.filter((s) => !disabledSections[s.id]);
+  // Filtered & Sorted Final Spec
+  const finalSpec: InfographicSpec = useMemo(() => {
+    let filteredSections = (baseSpec.sections || []).filter((s) => !disabledSections[s.id]);
     if (sectionOrder.length > 0) {
       filteredSections = [...filteredSections].sort((a, b) => {
         const aIdx = sectionOrder.indexOf(a.id);
@@ -241,22 +243,56 @@ export default function App() {
         return aIdx - bIdx;
       });
     }
-    return { ...baseSpec, title: customTitle.trim() || baseSpec.title, subtitle: customSubtitle.trim() || baseSpec.subtitle, sections: filteredSections };
-  }, [baseSpec, disabledSections, customTitle, customSubtitle, sectionOrder]);
+    return {
+      ...baseSpec,
+      title: customTitle.trim() || baseSpec.title,
+      subtitle: customSubtitle.trim() || baseSpec.subtitle,
+      sections: filteredSections,
+      meta: ghMeta || undefined
+    };
+  }, [baseSpec, disabledSections, customTitle, customSubtitle, sectionOrder, ghMeta]);
 
+  // SVG Render Outputs
   const desktopSvgString = useMemo(() => {
-    try { return renderSVG(finalSpec, theme, { layout: 'desktop', showQR, qrUrl, logo: logo || undefined, animated, compact }); } 
-    catch { return `<svg xmlns="http://www.w3.org/2000/svg" width="880" height="300"><text x="50" y="100">Render Error</text></svg>`; }
+    try {
+      return renderSVG(finalSpec, theme, {
+        layout: 'desktop',
+        showQR,
+        qrUrl,
+        logo: logo || undefined,
+        animated,
+        compact
+      });
+    } catch {
+      return `<svg xmlns="http://www.w3.org/2000/svg" width="880" height="300"><text x="50" y="100">Render Error</text></svg>`;
+    }
   }, [finalSpec, theme, showQR, qrUrl, logo, animated, compact]);
 
   const mobileSvgString = useMemo(() => {
-    try { return renderSVG(finalSpec, theme, { layout: 'mobile', showQR, qrUrl, logo: logo || undefined, animated, compact }); } 
-    catch { return `<svg xmlns="http://www.w3.org/2000/svg" width="400" height="300"><text x="30" y="80">Render Error</text></svg>`; }
+    try {
+      return renderSVG(finalSpec, theme, {
+        layout: 'mobile',
+        showQR,
+        qrUrl,
+        logo: logo || undefined,
+        animated,
+        compact
+      });
+    } catch {
+      return `<svg xmlns="http://www.w3.org/2000/svg" width="400" height="300"><text x="30" y="80">Render Error</text></svg>`;
+    }
   }, [finalSpec, theme, showQR, qrUrl, logo, animated, compact]);
 
+  // Active SVG String based on context
+  const activeSvgString = useMemo(() => {
+    return currentFormat === 'mobile' ? mobileSvgString : desktopSvgString;
+  }, [currentFormat, mobileSvgString, desktopSvgString]);
+
+  // GitHub Repo Fetcher
   const handleFetchRepo = async (repoUrl: string) => {
     setIsFetching(true);
     try {
+      triggerHaptic(15);
       const { markdown: md, meta } = await fetchGitHubRepo(repoUrl);
       setMarkdown(md);
       setGhMeta(meta);
@@ -264,7 +300,8 @@ export default function App() {
       setCustomSubtitle('');
       setDisabledSections({});
       addToast(`Fetched ${meta.owner}/${meta.repo}`, 'success');
-      setActiveTab('preview');
+      setMobileTab('preview');
+      setShowMobileEditorModal(false);
     } catch (err: any) {
       addToast(err.message || 'Failed to fetch repository', 'error');
     } finally {
@@ -272,270 +309,838 @@ export default function App() {
     }
   };
 
+  // Smart Truncate Helper
   const handleSmartTruncate = () => {
+    triggerHaptic(10);
     setMarkdown(smartTrunc(markdown, 3000));
-    addToast('Optimized README for infographics', 'success');
+    addToast('Optimized README for visual infographics', 'success');
   };
 
-  const handleCopySvg = () => {
-    const targetSvg = currentFormat === 'mobile' ? mobileSvgString : desktopSvgString;
+  // Sample Selection
+  const handleSelectSample = (sample: SampleReadme) => {
+    triggerHaptic(12);
+    setMarkdown(sample.markdown);
+    setGhMeta(null);
+    setCustomTitle('');
+    setCustomSubtitle('');
+    setDisabledSections({});
+    addToast(`Loaded preset: ${sample.name}`, 'info');
+    setMobileTab('preview');
+    setShowMobileEditorModal(false);
+  };
+
+  // Theme Cycler
+  const cycleTheme = () => {
+    triggerHaptic(10);
+    const themeKeys = Object.keys(THEMES);
+    const currentIndex = themeKeys.indexOf(theme);
+    const nextIndex = (currentIndex + 1) % themeKeys.length;
+    const nextTheme = themeKeys[nextIndex];
+    setTheme(nextTheme);
+    addToast(`Theme: ${THEMES[nextTheme].name}`, 'info');
+  };
+
+  // Clipboard SVG Copy
+  const handleCopySvg = (layoutOverride?: 'desktop' | 'mobile') => {
+    triggerHaptic(15);
+    const targetSvg = layoutOverride === 'mobile' || (layoutOverride === undefined && currentFormat === 'mobile')
+      ? mobileSvgString
+      : desktopSvgString;
     navigator.clipboard.writeText(targetSvg);
     setCopied(true);
     addToast('SVG copied to clipboard', 'success');
     setTimeout(() => setCopied(false), 2000);
   };
 
-  const handleDownloadSvg = (formatKey: FormatKey = currentFormat) => {
+  // SVG File Downloader
+  const handleDownloadSvg = (formatKey: string = currentFormat) => {
+    triggerHaptic(15);
     const targetSvg = formatKey === 'mobile' ? mobileSvgString : desktopSvgString;
     const blob = new Blob([targetSvg], { type: 'image/svg+xml;charset=utf-8' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `infographic-${formatKey}.svg`;
+    a.download = `${(finalSpec.title || 'infographic').toLowerCase().replace(/\s+/g, '-')}-${formatKey}.svg`;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
-    addToast('Downloaded SVG', 'success');
+    addToast('Downloaded vector SVG', 'success');
+
+    // Record History
+    const histItem = {
+      id: Date.now().toString(),
+      timestamp: Date.now(),
+      title: finalSpec.title || 'Untitled',
+      markdown: markdown.substring(0, 60),
+      theme,
+      format: formatKey
+    };
+    Storage.saveHistory(histItem);
+    setHistory((prev) => [histItem, ...prev].slice(0, 15));
   };
 
-  const handleDownloadPng = (formatKey: FormatKey = currentFormat) => {
-    const format = EXPORT_FORMATS[formatKey] || EXPORT_FORMATS.desktop;
+  // High-Resolution Retina PNG Downloader
+  const handleDownloadPng = (formatKey: string = currentFormat) => {
+    triggerHaptic(15);
+    const fmt = EXPORT_FORMATS[formatKey] || EXPORT_FORMATS.desktop;
     const targetSvg = formatKey === 'mobile' ? mobileSvgString : desktopSvgString;
     const blob = new Blob([targetSvg], { type: 'image/svg+xml;charset=utf-8' });
     const url = URL.createObjectURL(blob);
     const img = new Image();
-    
+
     img.onload = () => {
       const canvas = document.createElement('canvas');
-      const scale = 2;
-      canvas.width = format.width * scale;
-      canvas.height = (format.height === 'auto' ? (img.naturalHeight || 1200) : format.height as number) * scale;
+      const scale = 2; // High-DPI @2x Retina scale
+      canvas.width = fmt.width * scale;
+      canvas.height = ((fmt.height === 'auto' ? (img.naturalHeight || 1200) : fmt.height) as number) * scale;
       const ctx = canvas.getContext('2d');
       if (ctx) {
         ctx.scale(scale, scale);
         ctx.fillStyle = getTheme(theme).bg;
         ctx.fillRect(0, 0, canvas.width, canvas.height);
         ctx.drawImage(img, 0, 0, canvas.width / scale, canvas.height / scale);
-        
+
         const a = document.createElement('a');
         a.href = canvas.toDataURL('image/png');
-        a.download = `infographic-${formatKey}@2x.png`;
+        a.download = `${(finalSpec.title || 'infographic').toLowerCase().replace(/\s+/g, '-')}-${formatKey}@2x.png`;
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
         addToast('Exported Retina PNG (@2x)', 'success');
-        
-        const histItem = { id: Date.now().toString(), timestamp: Date.now(), title: finalSpec.title || 'Untitled', markdown: markdown.substring(0, 50), theme, format: formatKey };
+
+        const histItem = {
+          id: Date.now().toString(),
+          timestamp: Date.now(),
+          title: finalSpec.title || 'Untitled',
+          markdown: markdown.substring(0, 60),
+          theme,
+          format: formatKey
+        };
         Storage.saveHistory(histItem);
-        setHistory(prev => [histItem, ...prev].slice(0, 10));
+        setHistory((prev) => [histItem, ...prev].slice(0, 15));
       }
       URL.revokeObjectURL(url);
     };
     img.src = url;
   };
 
+  // Load Record from History
   const loadHistoryItem = (item: any) => {
-    setTheme(item.theme);
-    if (item.format) setCurrentFormat(item.format as FormatKey);
-    setShowHistorySheet(false);
-    setActiveTab('preview');
-    addToast('Loaded from history', 'info');
+    triggerHaptic(10);
+    if (item.theme) setTheme(item.theme);
+    if (item.format) setCurrentFormat(item.format);
+    setMobileTab('preview');
+    addToast('Restored settings from history', 'info');
   };
 
+  // Register Global Keyboard Shortcuts
   useEffect(() => {
     const shortcuts = new KeyboardShortcuts();
-    shortcuts.addShortcut({ keys: 'Ctrl+Enter', description: 'Refresh preview', handler: () => setActiveTab('preview'), category: 'general' });
-    shortcuts.addShortcut({ keys: 'Ctrl+S', description: 'Export SVG', handler: () => handleDownloadSvg(currentFormat), category: 'export' });
+    shortcuts.addShortcut({
+      keys: 'Ctrl+Enter',
+      description: 'Preview infographic',
+      handler: () => setMobileTab('preview'),
+      category: 'general'
+    });
+    shortcuts.addShortcut({
+      keys: 'Ctrl+S',
+      description: 'Download SVG',
+      handler: () => handleDownloadSvg(currentFormat),
+      category: 'export'
+    });
+    shortcuts.addShortcut({
+      keys: 'Ctrl+Shift+P',
+      description: 'Export Retina PNG',
+      handler: () => handleDownloadPng(currentFormat),
+      category: 'export'
+    });
+    shortcuts.addShortcut({
+      keys: 'Ctrl+T',
+      description: 'Cycle Theme',
+      handler: () => cycleTheme(),
+      category: 'general'
+    });
     shortcuts.register();
     return () => shortcuts.unregister();
   }, [currentFormat, desktopSvgString, mobileSvgString, theme]);
 
-  return (
-    <LazyMotion features={loadFramerFeatures} strict>
-      <div className="min-h-screen bg-[#FAFAF9] text-stone-900 flex flex-col overflow-hidden selection:bg-stone-200 mx-auto max-w-3xl shadow-2xl relative">
-        
-        {/* Header */}
-        <header className="bg-white/80 backdrop-blur-xl border-b border-stone-200/50 px-4 py-3 flex items-center justify-between sticky top-0 z-30">
-          <div className="flex items-center gap-3">
-            <div className="w-9 h-9 bg-gradient-to-br from-emerald-500 to-emerald-700 rounded-xl flex items-center justify-center shadow-sm">
-              <Sparkles className="w-5 h-5 text-white" />
-            </div>
-            <div>
-              <h1 className="text-base font-bold leading-tight tracking-tight">GitInfoGraphics</h1>
-              <div className="text-[10px] text-stone-500 font-medium">Deterministic SVG Engine</div>
-            </div>
-          </div>
-          <div className="flex items-center gap-1">
-            <IconButton icon={HistoryIcon} onClick={() => setShowHistorySheet(true)} />
-            <IconButton icon={Palette} onClick={() => setShowThemeSheet(true)} />
-          </div>
-        </header>
+  // Mobile Bottom Navigation Tab Handler
+  const handleSelectMobileTab = (tab: MobileTab) => {
+    if (tab === 'editor') {
+      setShowMobileEditorModal(true);
+      return;
+    }
+    if (tab === 'export') {
+      setShowMobileExportSheet(true);
+      return;
+    }
+    setMobileTab(tab);
+  };
 
-        {/* Main Content */}
-        <main className="flex-1 overflow-hidden relative">
-          <AnimatePresence mode="wait">
-            
-            {/* CREATE TAB */}
-            {activeTab === 'create' && (
-              <m.div key="create" {...pageTransition} className="h-full overflow-y-auto p-4 space-y-4 pb-24">
-                
-                {/* Sub-tab Navigation */}
-                <div className="flex p-1 bg-stone-100/80 rounded-xl backdrop-blur-md">
-                  <button onClick={() => { triggerHaptic(5); setCreateSubTab('editor'); }} className={`flex-1 py-1.5 text-xs font-semibold rounded-lg transition-all flex items-center justify-center gap-1.5 ${createSubTab === 'editor' ? 'bg-white shadow-sm text-stone-900' : 'text-stone-500'}`}>
-                    <Code className="w-3.5 h-3.5" /> Editor
-                  </button>
-                  <button onClick={() => { triggerHaptic(5); setCreateSubTab('sections'); }} className={`flex-1 py-1.5 text-xs font-semibold rounded-lg transition-all flex items-center justify-center gap-1.5 ${createSubTab === 'sections' ? 'bg-white shadow-sm text-stone-900' : 'text-stone-500'}`}>
-                    <Sliders className="w-3.5 h-3.5" /> Modules
+  return (
+    <div className="min-h-screen bg-[#FAFAF9] text-stone-900 flex flex-col font-sans selection:bg-stone-200">
+      
+      {/* ========================================================================= */}
+      {/* 1. MOBILE HEADER (< lg)                                                  */}
+      {/* ========================================================================= */}
+      <header className="lg:hidden sticky top-0 z-30 bg-white/90 backdrop-blur-md border-b border-stone-200/90 px-3.5 py-2.5 flex items-center justify-between shadow-xs">
+        <div className="flex items-center gap-2.5">
+          <div className="w-8 h-8 rounded-lg bg-stone-900 text-white flex items-center justify-center shadow-xs">
+            <Sparkles className="w-4 h-4 text-amber-400" />
+          </div>
+          <div>
+            <h1 className="text-sm font-bold tracking-tight text-stone-900 leading-none">GitInfoGraphics</h1>
+            <p className="text-[10px] text-stone-500 font-medium truncate max-w-[140px] mt-0.5">
+              {finalSpec.title || 'Repository Banner'}
+            </p>
+          </div>
+        </div>
+
+        <div className="flex items-center gap-1.5">
+          {/* Quick Theme Cycle Button */}
+          <button
+            type="button"
+            id="mobile-theme-quick-btn"
+            onClick={cycleTheme}
+            className="flex items-center gap-1 text-[11px] font-semibold text-stone-700 bg-stone-100 hover:bg-stone-200 px-2.5 py-1.5 rounded-lg transition-colors active:scale-95"
+            title="Cycle theme"
+          >
+            <Palette className="w-3.5 h-3.5 text-stone-600" />
+            <span className="hidden xs:inline truncate max-w-[70px]">{THEMES[theme]?.name || 'Theme'}</span>
+          </button>
+
+          {/* Action Sheet Menu Button */}
+          <button
+            type="button"
+            id="mobile-menu-btn"
+            onClick={() => {
+              triggerHaptic(10);
+              setShowMobileActionSheet(true);
+            }}
+            className="p-1.5 text-stone-600 hover:text-stone-900 hover:bg-stone-100 rounded-lg transition-colors active:scale-95"
+            aria-label="Open menu and tools"
+          >
+            <MoreVertical className="w-5 h-5" />
+          </button>
+        </div>
+      </header>
+
+      {/* ========================================================================= */}
+      {/* 2. DESKTOP HEADER (>= lg)                                                */}
+      {/* ========================================================================= */}
+      <div className="hidden lg:block">
+        <Header
+          currentTheme={theme}
+          onThemeChange={setTheme}
+          currentFormat={currentFormat}
+          onFormatChange={setCurrentFormat}
+          onSelectSample={handleSelectSample}
+          onFetchRepo={handleFetchRepo}
+          isFetching={isFetching}
+          onCopySvg={() => handleCopySvg()}
+          onDownloadSvg={() => handleDownloadSvg()}
+          onDownloadPng={() => handleDownloadPng()}
+          onOpenActionModal={() => setWorkflowModalOpen(true)}
+          onOpenArchModal={() => setArchitectureModalOpen(true)}
+          onOpenInfoModal={() => setInfoModalOpen(true)}
+          onOpenOnboarding={() => setShowCoachMarks(true)}
+          onOpenProjectsModal={() => setProjectsModalOpen(true)}
+          onOpenShareModal={() => setShareModalOpen(true)}
+          onOpenShortcutsModal={() => setShortcutsModalOpen(true)}
+        />
+      </div>
+
+      {/* ========================================================================= */}
+      {/* 3. MAIN CONTENT CONTAINER                                                */}
+      {/* ========================================================================= */}
+      <div className="flex-1 flex flex-col lg:flex-row max-w-7xl w-full mx-auto p-0 lg:p-6 gap-6 overflow-hidden">
+        
+        {/* ======================================================================= */}
+        {/* 3A. MOBILE VIEW (Full-Screen Focus Area)                                */}
+        {/* ======================================================================= */}
+        <div className="lg:hidden flex-1 flex flex-col min-h-0 relative pb-20">
+          
+          {/* Active Mobile View: Preview (Default) */}
+          {mobileTab === 'preview' && (
+            <div className="flex-1 flex flex-col min-h-0 bg-stone-100/70 p-2 sm:p-4 overflow-y-auto">
+              
+              {/* Quick status bar */}
+              <div className="flex items-center justify-between mb-2 px-1 text-xs text-stone-500">
+                <span className="font-medium text-stone-700 truncate max-w-[200px]">
+                  {finalSpec.title || 'Infographic Preview'}
+                </span>
+                <span className="text-[10px] font-mono bg-white px-2 py-0.5 rounded-md border border-stone-200">
+                  {EXPORT_FORMATS[currentFormat]?.name || 'Desktop'}
+                </span>
+              </div>
+
+              {/* Live Canvas Component */}
+              <div className="flex-1 flex flex-col justify-center">
+                <InfographicCanvas
+                  desktopSvgString={desktopSvgString}
+                  mobileSvgString={mobileSvgString}
+                  themeName={theme}
+                  onCopySvg={handleCopySvg}
+                  onDownloadSvg={handleDownloadSvg}
+                  onDownloadPng={handleDownloadPng}
+                  copied={copied}
+                  spec={finalSpec}
+                  colorBlindness={colorBlindness}
+                  onOpenContrastModal={() => setContrastModalOpen(true)}
+                  onResetColorBlindness={() => setColorBlindness('normal')}
+                />
+              </div>
+
+              {/* Mobile Quick Format Switcher Pill */}
+              <div className="mt-3 flex items-center justify-center gap-1.5 p-1 bg-white/80 backdrop-blur-sm rounded-xl border border-stone-200/80 shadow-xs max-w-xs mx-auto">
+                <button
+                  type="button"
+                  onClick={() => { triggerHaptic(8); setCurrentFormat('desktop'); }}
+                  className={`flex-1 py-1 px-2.5 rounded-lg text-xs font-semibold transition-all ${
+                    currentFormat === 'desktop' ? 'bg-stone-900 text-white shadow-xs' : 'text-stone-500 hover:text-stone-800'
+                  }`}
+                >
+                  Desktop (880px)
+                </button>
+                <button
+                  type="button"
+                  onClick={() => { triggerHaptic(8); setCurrentFormat('mobile'); }}
+                  className={`flex-1 py-1 px-2.5 rounded-lg text-xs font-semibold transition-all ${
+                    currentFormat === 'mobile' ? 'bg-stone-900 text-white shadow-xs' : 'text-stone-500 hover:text-stone-800'
+                  }`}
+                >
+                  Mobile (400px)
+                </button>
+              </div>
+            </div>
+          )}
+
+          {/* Active Mobile View: Style (Themes & Sections) */}
+          {mobileTab === 'style' && (
+            <div className="flex-1 p-4 space-y-4 overflow-y-auto bg-stone-50">
+              {/* Theme Carousel */}
+              <div className="bg-white p-3.5 rounded-2xl border border-stone-200 shadow-xs">
+                <ThemeCarousel
+                  currentTheme={theme}
+                  onThemeChange={(newTheme) => setTheme(newTheme)}
+                />
+              </div>
+
+              {/* Section Controls Accordion */}
+              <div className="bg-white p-3.5 rounded-2xl border border-stone-200 shadow-xs">
+                <div className="flex items-center justify-between pb-3 mb-3 border-b border-stone-100">
+                  <div className="flex items-center gap-2">
+                    <Sliders className="w-4 h-4 text-stone-700" />
+                    <h2 className="text-sm font-bold text-stone-900">Module Structure &amp; Variants</h2>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setMobileTab('preview')}
+                    className="text-xs font-semibold text-emerald-600 hover:text-emerald-700 flex items-center gap-1"
+                  >
+                    <Eye className="w-3.5 h-3.5" /> View
                   </button>
                 </div>
 
-                {createSubTab === 'editor' ? (
-                  <div className="space-y-4">
-                    <div className="grid grid-cols-2 gap-3">
-                      <GlassCard onClick={() => handleFetchRepo('https://github.com/benneberg/gitinfographics')} className="p-4 flex flex-col items-center text-center hover:bg-white/90">
-                        <Github className="w-7 h-7 text-emerald-600 mb-2" />
-                        <div className="font-semibold text-sm">Import Repo</div>
-                      </GlassCard>
-                      <GlassCard onClick={() => { setMarkdown(SAMPLE_READMES[0].markdown); addToast('Loaded template'); }} className="p-4 flex flex-col items-center text-center hover:bg-white/90">
-                        <Zap className="w-7 h-7 text-amber-500 mb-2" />
-                        <div className="font-semibold text-sm">Quick Start</div>
-                      </GlassCard>
-                    </div>
-                    <GlassCard className="p-4 min-h-[400px]">
-                      <MarkdownEditor markdown={markdown} onChange={setMarkdown} parsedDoc={parsedDoc} ghMeta={ghMeta} onSmartTruncate={handleSmartTruncate} />
-                    </GlassCard>
-                  </div>
-                ) : (
-                  <GlassCard className="p-4 min-h-[400px]">
-                    <SectionControls
-                      spec={finalSpec} variants={variants} onVariantChange={(k, v) => setVariants(p => ({...p, [k]: v}))}
-                      disabledSections={disabledSections} onToggleSection={(id) => setDisabledSections(p => ({...p, [id]: !p[id]}))}
-                      onTitleChange={setCustomTitle} onSubtitleChange={setCustomSubtitle}
-                      onMoveSection={(id, dir) => {
-                        const arr = [...sectionOrder.length ? sectionOrder : finalSpec.sections.map(s => s.id)];
-                        const i = arr.indexOf(id);
-                        if (dir === 'up' && i > 0) { [arr[i], arr[i-1]] = [arr[i-1], arr[i]]; setSectionOrder(arr); }
-                        if (dir === 'down' && i < arr.length - 1) { [arr[i], arr[i+1]] = [arr[i+1], arr[i]]; setSectionOrder(arr); }
-                      }}
-                      showQR={showQR} onToggleQR={setShowQR} qrUrl={qrUrl} onQrUrlChange={setQrUrl}
-                      logo={logo} onLogoChange={setLogo} onAutoDetectLogo={() => {}}
-                      animated={animated} onToggleAnimated={setAnimated} compact={compact} onToggleCompact={setCompact}
-                    />
-                  </GlassCard>
-                )}
-              </m.div>
-            )}
-
-            {/* PREVIEW TAB */}
-            {activeTab === 'preview' && (
-              <m.div key="preview" {...pageTransition} className="h-full overflow-y-auto bg-stone-200/50 p-4 pb-24">
-                <InfographicCanvas
-                  desktopSvgString={desktopSvgString} mobileSvgString={mobileSvgString} themeName={theme}
-                  onCopySvg={handleCopySvg} onDownloadSvg={handleDownloadSvg} onDownloadPng={handleDownloadPng}
-                  copied={copied} spec={finalSpec} colorBlindness={colorBlindness}
-                  onOpenContrastModal={() => setContrastModalOpen(true)} onResetColorBlindness={() => setColorBlindness('normal')}
+                <SectionControls
+                  spec={finalSpec}
+                  variants={variants}
+                  onVariantChange={(key, val) => setVariants((p) => ({ ...p, [key]: val }))}
+                  disabledSections={disabledSections}
+                  onToggleSection={(id) => setDisabledSections((p) => ({ ...p, [id]: !p[id] }))}
+                  onTitleChange={setCustomTitle}
+                  onSubtitleChange={setCustomSubtitle}
+                  onMoveSection={(id, dir) => {
+                    const arr = [...(sectionOrder.length ? sectionOrder : finalSpec.sections.map((s) => s.id))];
+                    const i = arr.indexOf(id);
+                    if (dir === 'up' && i > 0) {
+                      [arr[i], arr[i - 1]] = [arr[i - 1], arr[i]];
+                      setSectionOrder(arr);
+                    }
+                    if (dir === 'down' && i < arr.length - 1) {
+                      [arr[i], arr[i + 1]] = [arr[i + 1], arr[i]];
+                      setSectionOrder(arr);
+                    }
+                  }}
+                  showQR={showQR}
+                  onToggleQR={setShowQR}
+                  qrUrl={qrUrl}
+                  onQrUrlChange={setQrUrl}
+                  logo={logo}
+                  onLogoChange={setLogo}
+                  onAutoDetectLogo={() => {}}
+                  animated={animated}
+                  onToggleAnimated={setAnimated}
+                  compact={compact}
+                  onToggleCompact={setCompact}
                 />
-              </m.div>
-            )}
-
-            {/* EXPORT TAB */}
-            {activeTab === 'export' && (
-              <m.div key="export" {...pageTransition} className="h-full overflow-y-auto p-4 space-y-4 pb-24">
-                <GlassCard className="p-5">
-                  <h3 className="text-sm font-semibold mb-4">Export Configuration</h3>
-                  <VisualFormatPicker currentFormat={currentFormat} onFormatChange={(f) => setCurrentFormat(f as FormatKey)} />
-                  <div className="flex gap-3 mt-6">
-                    <button onClick={() => handleDownloadPng(currentFormat)} className="flex-1 min-h-[48px] bg-stone-900 text-white font-medium text-sm rounded-xl hover:bg-stone-800 transition-colors shadow-md">
-                      Download PNG (2x)
-                    </button>
-                    <button onClick={() => handleDownloadSvg(currentFormat)} className="flex-1 min-h-[48px] bg-white border border-stone-200 text-stone-800 font-medium text-sm rounded-xl hover:bg-stone-50 transition-colors shadow-sm">
-                      Download SVG
-                    </button>
-                  </div>
-                </GlassCard>
-                
-                <GlassCard className="p-4">
-                  <button onClick={() => addToast('Link copied to clipboard', 'info')} className="w-full flex items-center justify-center gap-2 p-3 bg-emerald-50 text-emerald-700 rounded-xl font-semibold transition-colors">
-                    <Share2 className="w-5 h-5" /> Share Interactive Link
-                  </button>
-                </GlassCard>
-              </m.div>
-            )}
-            
-          </AnimatePresence>
-        </main>
-
-        {/* Bottom Navigation */}
-        <nav className="bg-white/90 backdrop-blur-xl border-t border-stone-200/50 px-6 py-2 flex items-center justify-around absolute bottom-0 w-full z-30 pb-safe">
-          <IconButton icon={FileText} label="Create" active={activeTab === 'create'} onClick={() => setActiveTab('create')} />
-          <IconButton icon={Eye} label="Preview" active={activeTab === 'preview'} onClick={() => setActiveTab('preview')} />
-          <IconButton icon={Download} label="Export" active={activeTab === 'export'} onClick={() => setActiveTab('export')} />
-        </nav>
-
-        {/* Floating Action Button */}
-        <AnimatePresence>
-          {activeTab === 'preview' && (
-            <FloatingActionButton icon={Maximize2} onClick={() => setShowExportSheet(true)} />
+              </div>
+            </div>
           )}
-        </AnimatePresence>
 
-        {/* --- Bottom Sheets --- */}
-        <BottomSheet isOpen={showThemeSheet} onClose={() => setShowThemeSheet(false)} title="Color Themes">
-          <div className="grid grid-cols-2 gap-3">
-            {Object.entries(THEMES).map(([id, t]) => (
-              <ThemeCard key={id} name={t.name} color={t.bg} selected={theme === id} onClick={() => setTheme(id)} />
-            ))}
-          </div>
-        </BottomSheet>
+          {/* Floating Action Button for Instant Exports on Mobile */}
+          <MobileFab
+            onDownloadPng={() => handleDownloadPng(currentFormat)}
+            onDownloadSvg={() => handleDownloadSvg(currentFormat)}
+            onCycleTheme={cycleTheme}
+            onCopySvg={() => handleCopySvg()}
+            onRefresh={() => setMobileTab('preview')}
+            copied={copied}
+          />
 
-        <BottomSheet isOpen={showExportSheet} onClose={() => setShowExportSheet(false)} title="Quick Export">
-          <div className="space-y-3">
-            <button onClick={() => { handleDownloadPng(currentFormat); setShowExportSheet(false); }} className="w-full p-4 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl font-semibold transition-colors">
-              Save to Photos (PNG)
-            </button>
-            <button onClick={() => { handleDownloadSvg(currentFormat); setShowExportSheet(false); }} className="w-full p-4 bg-stone-100 hover:bg-stone-200 text-stone-900 rounded-xl font-semibold transition-colors">
-              Save Source (SVG)
-            </button>
-            <button onClick={() => { handleCopySvg(); setShowExportSheet(false); }} className="w-full p-4 bg-stone-100 hover:bg-stone-200 text-stone-900 rounded-xl font-semibold transition-colors">
-              Copy to Clipboard
-            </button>
-          </div>
-        </BottomSheet>
+          {/* Bottom Navigation Bar */}
+          <BottomNavigation
+            activeTab={mobileTab}
+            onSelectTab={handleSelectMobileTab}
+            editorBadge={markdown.length > 0}
+          />
+        </div>
 
-        <BottomSheet isOpen={showHistorySheet} onClose={() => setShowHistorySheet(false)} title="Recent Generations">
-          <div className="space-y-3">
-            {history.length === 0 ? (
-              <div className="text-center text-stone-500 py-8 text-sm bg-stone-50 rounded-xl border border-stone-200 border-dashed">No history yet. Export a file to save it here.</div>
-            ) : (
-              history.map((item) => (
-                <GlassCard key={item.id} onClick={() => loadHistoryItem(item)} className="p-3 flex items-center gap-3 cursor-pointer hover:bg-white/90">
-                  <div className="w-12 h-12 bg-stone-100 rounded-lg border border-stone-200 flex items-center justify-center overflow-hidden" style={{ backgroundColor: THEMES[item.theme]?.bg || '#fff' }}>
-                    <span className="text-[8px] font-mono text-stone-500 opacity-50 block rotate-45">SVG</span>
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <div className="text-sm font-semibold truncate text-stone-800">{item.title}</div>
-                    <div className="text-xs text-stone-500 flex gap-2 mt-1">
-                      <span className="capitalize">{item.theme}</span> • <span>{new Date(item.timestamp).toLocaleDateString()}</span>
-                    </div>
-                  </div>
-                </GlassCard>
-              ))
-            )}
-            {history.length > 0 && (
-              <button onClick={() => Storage.clearHistory()} className="w-full py-3 mt-4 text-xs text-red-600 hover:bg-red-50 rounded-lg transition-colors flex items-center justify-center gap-1.5 font-semibold">
-                <Trash2 className="w-4 h-4" /> Clear History
+        {/* ======================================================================= */}
+        {/* 3B. DESKTOP VIEW (Two-Column Split Layout >= lg)                         */}
+        {/* ======================================================================= */}
+        <div className="hidden lg:flex w-full gap-6 items-start">
+          
+          {/* Left Column: Tabbed Controls & Editor (w-1/2 or 540px) */}
+          <div className="w-[520px] shrink-0 flex flex-col bg-white border border-stone-200/90 rounded-2xl shadow-xs overflow-hidden max-h-[calc(100vh-140px)]">
+            
+            {/* Desktop Navigation Tabs */}
+            <div className="flex border-b border-stone-200 bg-stone-50/70 p-1.5 gap-1">
+              <button
+                type="button"
+                id="desktop-tab-editor"
+                onClick={() => setDesktopTab('editor')}
+                className={`flex-1 py-2 px-3 text-xs font-semibold rounded-xl transition-all flex items-center justify-center gap-1.5 ${
+                  desktopTab === 'editor'
+                    ? 'bg-white text-stone-900 shadow-xs border border-stone-200/80'
+                    : 'text-stone-500 hover:text-stone-800'
+                }`}
+              >
+                <FileText className="w-3.5 h-3.5" /> Markdown Editor
               </button>
-            )}
-          </div>
-        </BottomSheet>
 
-        {/* Existing Legacy Modals triggered conditionally */}
-        <ContrastModal isOpen={contrastModalOpen} onClose={() => setContrastModalOpen(false)} currentTheme={getTheme(theme)} colorBlindness={colorBlindness} onColorBlindnessChange={setColorBlindness} />
-        <ShortcutsModal isOpen={shortcutsModalOpen} onClose={() => setShortcutsModalOpen(false)} />
-        <ToastContainer toasts={toasts} onDismiss={(id) => setToasts(p => p.filter(t => t.id !== id))} />
+              <button
+                type="button"
+                id="desktop-tab-sections"
+                onClick={() => setDesktopTab('sections')}
+                className={`flex-1 py-2 px-3 text-xs font-semibold rounded-xl transition-all flex items-center justify-center gap-1.5 ${
+                  desktopTab === 'sections'
+                    ? 'bg-white text-stone-900 shadow-xs border border-stone-200/80'
+                    : 'text-stone-500 hover:text-stone-800'
+                }`}
+              >
+                <Sliders className="w-3.5 h-3.5" /> Modules &amp; Layout
+              </button>
+
+              <button
+                type="button"
+                id="desktop-tab-export"
+                onClick={() => setDesktopTab('export')}
+                className={`flex-1 py-2 px-3 text-xs font-semibold rounded-xl transition-all flex items-center justify-center gap-1.5 ${
+                  desktopTab === 'export'
+                    ? 'bg-white text-stone-900 shadow-xs border border-stone-200/80'
+                    : 'text-stone-500 hover:text-stone-800'
+                }`}
+              >
+                <Download className="w-3.5 h-3.5" /> Export Specs
+              </button>
+
+              <button
+                type="button"
+                id="desktop-tab-history"
+                onClick={() => setDesktopTab('history')}
+                className={`py-2 px-2.5 text-xs font-semibold rounded-xl transition-all flex items-center justify-center ${
+                  desktopTab === 'history'
+                    ? 'bg-white text-stone-900 shadow-xs border border-stone-200/80'
+                    : 'text-stone-500 hover:text-stone-800'
+                }`}
+                title="Recent exports"
+              >
+                <HistoryIcon className="w-3.5 h-3.5" />
+              </button>
+            </div>
+
+            {/* Tab Body */}
+            <div className="flex-1 overflow-y-auto p-4">
+              
+              {/* Tab 1: Editor */}
+              {desktopTab === 'editor' && (
+                <div className="space-y-4">
+                  {/* Quick Preset Cards */}
+                  <div className="grid grid-cols-2 gap-2.5">
+                    <button
+                      type="button"
+                      onClick={() => handleFetchRepo('https://github.com/benneberg/gitinfographics')}
+                      className="p-3 bg-stone-50 hover:bg-stone-100 border border-stone-200 rounded-xl text-left transition-colors flex items-center gap-2.5"
+                    >
+                      <div className="w-7 h-7 rounded-lg bg-stone-900 text-white flex items-center justify-center shrink-0">
+                        <Github className="w-4 h-4" />
+                      </div>
+                      <div className="min-w-0">
+                        <div className="text-xs font-bold text-stone-900 truncate">Import This Repo</div>
+                        <div className="text-[10px] text-stone-500 truncate">benneberg/gitinfographics</div>
+                      </div>
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => handleSelectSample(SAMPLE_READMES[0])}
+                      className="p-3 bg-stone-50 hover:bg-stone-100 border border-stone-200 rounded-xl text-left transition-colors flex items-center gap-2.5"
+                    >
+                      <div className="w-7 h-7 rounded-lg bg-amber-500 text-white flex items-center justify-center shrink-0">
+                        <Zap className="w-4 h-4" />
+                      </div>
+                      <div className="min-w-0">
+                        <div className="text-xs font-bold text-stone-900 truncate">Standard Sample</div>
+                        <div className="text-[10px] text-stone-500 truncate">Fast CLI Engine</div>
+                      </div>
+                    </button>
+                  </div>
+
+                  {/* Markdown Editor component */}
+                  <div className="min-h-[420px]">
+                    <MarkdownEditor
+                      markdown={markdown}
+                      onChange={setMarkdown}
+                      parsedDoc={parsedDoc}
+                      ghMeta={ghMeta}
+                      onSmartTruncate={handleSmartTruncate}
+                    />
+                  </div>
+                </div>
+              )}
+
+              {/* Tab 2: Modules & Controls */}
+              {desktopTab === 'sections' && (
+                <div className="space-y-4">
+                  {/* Theme Selector Strip */}
+                  <div className="p-3 bg-stone-50 border border-stone-200 rounded-xl">
+                    <ThemeCarousel
+                      currentTheme={theme}
+                      onThemeChange={(newTheme) => setTheme(newTheme)}
+                    />
+                  </div>
+
+                  <SectionControls
+                    spec={finalSpec}
+                    variants={variants}
+                    onVariantChange={(key, val) => setVariants((p) => ({ ...p, [key]: val }))}
+                    disabledSections={disabledSections}
+                    onToggleSection={(id) => setDisabledSections((p) => ({ ...p, [id]: !p[id] }))}
+                    onTitleChange={setCustomTitle}
+                    onSubtitleChange={setCustomSubtitle}
+                    onMoveSection={(id, dir) => {
+                      const arr = [...(sectionOrder.length ? sectionOrder : finalSpec.sections.map((s) => s.id))];
+                      const i = arr.indexOf(id);
+                      if (dir === 'up' && i > 0) {
+                        [arr[i], arr[i - 1]] = [arr[i - 1], arr[i]];
+                        setSectionOrder(arr);
+                      }
+                      if (dir === 'down' && i < arr.length - 1) {
+                        [arr[i], arr[i + 1]] = [arr[i + 1], arr[i]];
+                        setSectionOrder(arr);
+                      }
+                    }}
+                    showQR={showQR}
+                    onToggleQR={setShowQR}
+                    qrUrl={qrUrl}
+                    onQrUrlChange={setQrUrl}
+                    logo={logo}
+                    onLogoChange={setLogo}
+                    onAutoDetectLogo={() => {}}
+                    animated={animated}
+                    onToggleAnimated={setAnimated}
+                    compact={compact}
+                    onToggleCompact={setCompact}
+                  />
+                </div>
+              )}
+
+              {/* Tab 3: Export Configuration */}
+              {desktopTab === 'export' && (
+                <div className="space-y-5">
+                  <div>
+                    <h3 className="text-xs font-bold uppercase tracking-wider text-stone-500 mb-2">
+                      1. Select Target Aspect Ratio
+                    </h3>
+                    <VisualFormatPicker
+                      currentFormat={currentFormat}
+                      onFormatChange={(fmt) => setCurrentFormat(fmt)}
+                    />
+                  </div>
+
+                  <div className="p-4 bg-stone-50 border border-stone-200 rounded-xl space-y-3">
+                    <h4 className="text-xs font-bold uppercase tracking-wider text-stone-500">
+                      2. Download Production Assets
+                    </h4>
+                    <div className="grid grid-cols-2 gap-2.5">
+                      <button
+                        type="button"
+                        onClick={() => handleDownloadPng(currentFormat)}
+                        className="py-3 px-4 bg-stone-900 hover:bg-stone-800 text-white rounded-xl text-xs font-semibold transition-colors flex items-center justify-center gap-2 shadow-xs"
+                      >
+                        <Download className="w-4 h-4" /> Download PNG (@2x)
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() => handleDownloadSvg(currentFormat)}
+                        className="py-3 px-4 bg-white hover:bg-stone-50 text-stone-900 border border-stone-200 rounded-xl text-xs font-semibold transition-colors flex items-center justify-center gap-2 shadow-xs"
+                      >
+                        <Code2 className="w-4 h-4" /> Download SVG
+                      </button>
+                    </div>
+
+                    <button
+                      type="button"
+                      onClick={() => handleCopySvg()}
+                      className="w-full py-2.5 px-4 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-200 rounded-xl text-xs font-semibold transition-colors flex items-center justify-center gap-2"
+                    >
+                      {copied ? <Check className="w-4 h-4 text-emerald-600" /> : <Copy className="w-4 h-4" />}
+                      {copied ? 'Copied SVG to Clipboard!' : 'Copy Vector Code to Clipboard'}
+                    </button>
+                  </div>
+                </div>
+              )}
+
+              {/* Tab 4: History */}
+              {desktopTab === 'history' && (
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between pb-2 border-b border-stone-200">
+                    <h3 className="text-xs font-bold uppercase tracking-wider text-stone-500">
+                      Recent Export Snapshots ({history.length})
+                    </h3>
+                    {history.length > 0 && (
+                      <button
+                        type="button"
+                        onClick={() => {
+                          Storage.clearHistory();
+                          setHistory([]);
+                        }}
+                        className="text-[11px] font-medium text-rose-600 hover:text-rose-700"
+                      >
+                        Clear History
+                      </button>
+                    )}
+                  </div>
+
+                  {history.length === 0 ? (
+                    <div className="py-12 text-center text-xs text-stone-400">
+                      No exports logged yet. Generate an SVG or PNG to view it here.
+                    </div>
+                  ) : (
+                    history.map((item) => (
+                      <div
+                        key={item.id}
+                        onClick={() => loadHistoryItem(item)}
+                        className="p-3 bg-stone-50 hover:bg-stone-100 border border-stone-200 rounded-xl cursor-pointer transition-colors flex items-center justify-between"
+                      >
+                        <div>
+                          <div className="text-xs font-bold text-stone-900 truncate">{item.title}</div>
+                          <div className="text-[10px] text-stone-500 flex gap-2 mt-0.5">
+                            <span className="capitalize">{item.theme}</span>
+                            <span>•</span>
+                            <span>{new Date(item.timestamp).toLocaleTimeString()}</span>
+                          </div>
+                        </div>
+                        <span className="text-[10px] font-mono bg-white px-2 py-0.5 rounded border border-stone-200">
+                          {item.format}
+                        </span>
+                      </div>
+                    ))
+                  )}
+                </div>
+              )}
+
+            </div>
+          </div>
+
+          {/* Right Column: Sticky Live Vector Preview */}
+          <div className="flex-1 bg-stone-100/70 border border-stone-200/90 rounded-2xl p-6 shadow-xs flex flex-col min-h-[600px] sticky top-24">
+            <div className="flex items-center justify-between mb-4 pb-3 border-b border-stone-200/80">
+              <div className="flex items-center gap-2">
+                <div className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse" />
+                <span className="text-xs font-bold text-stone-900">Deterministic SVG Canvas</span>
+                <span className="text-[11px] text-stone-400 font-mono">
+                  ({EXPORT_FORMATS[currentFormat]?.width}px wide)
+                </span>
+              </div>
+
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => setShareModalOpen(true)}
+                  className="p-1.5 text-stone-600 hover:text-stone-900 bg-white hover:bg-stone-50 border border-stone-200 rounded-lg text-xs font-medium flex items-center gap-1.5 shadow-2xs transition-colors"
+                >
+                  <Share2 className="w-3.5 h-3.5" /> Share
+                </button>
+              </div>
+            </div>
+
+            {/* Canvas */}
+            <div className="flex-1 flex flex-col justify-center">
+              <InfographicCanvas
+                desktopSvgString={desktopSvgString}
+                mobileSvgString={mobileSvgString}
+                themeName={theme}
+                onCopySvg={handleCopySvg}
+                onDownloadSvg={handleDownloadSvg}
+                onDownloadPng={handleDownloadPng}
+                copied={copied}
+                spec={finalSpec}
+                colorBlindness={colorBlindness}
+                onOpenContrastModal={() => setContrastModalOpen(true)}
+                onResetColorBlindness={() => setColorBlindness('normal')}
+              />
+            </div>
+          </div>
+
+        </div>
 
       </div>
-    </LazyMotion>
+
+      {/* ========================================================================= */}
+      {/* 4. MOBILE-FIRST MODALS & ACTION SHEETS                                   */}
+      {/* ========================================================================= */}
+
+      {/* 4A. Full-Screen Modal Editor for Mobile */}
+      <FullScreenModalEditor
+        isOpen={showMobileEditorModal}
+        onClose={() => setShowMobileEditorModal(false)}
+        markdown={markdown}
+        onChange={setMarkdown}
+        parsedDoc={parsedDoc}
+        ghMeta={ghMeta}
+        onSmartTruncate={handleSmartTruncate}
+        onFetchRepo={handleFetchRepo}
+        isFetching={isFetching}
+        onSelectSample={handleSelectSample}
+      />
+
+      {/* 4B. Mobile Export Bottom Sheet */}
+      <MobileExportSheet
+        isOpen={showMobileExportSheet}
+        onClose={() => setShowMobileExportSheet(false)}
+        currentFormat={currentFormat}
+        onFormatChange={(fmt) => setCurrentFormat(fmt)}
+        onDownloadSvg={() => handleDownloadSvg(currentFormat)}
+        onDownloadPng={() => handleDownloadPng(currentFormat)}
+        onCopySvg={() => handleCopySvg()}
+        copied={copied}
+        history={history}
+        onLoadHistory={loadHistoryItem}
+        onClearHistory={() => {
+          Storage.clearHistory();
+          setHistory([]);
+        }}
+        spec={finalSpec}
+        svgContent={activeSvgString}
+        onOpenShareModal={() => setShareModalOpen(true)}
+      />
+
+      {/* 4C. Mobile Action Sheet (Slide up menu) */}
+      <MobileActionSheet
+        isOpen={showMobileActionSheet}
+        onClose={() => setShowMobileActionSheet(false)}
+        onOpenWorkflow={() => setWorkflowModalOpen(true)}
+        onOpenProjects={() => setProjectsModalOpen(true)}
+        onOpenShare={() => setShareModalOpen(true)}
+        onOpenShortcuts={() => setShortcutsModalOpen(true)}
+        onOpenContrast={() => setContrastModalOpen(true)}
+        onOpenTour={() => setShowCoachMarks(true)}
+        onOpenDocs={() => setInfoModalOpen(true)}
+        onReset={() => {
+          setMarkdown(SAMPLE_READMES[0].markdown);
+          setTheme('scandi-minimal');
+          setCustomTitle('');
+          setCustomSubtitle('');
+          setDisabledSections({});
+          setGhMeta(null);
+          addToast('Reset to default preset', 'info');
+        }}
+      />
+
+      {/* 4D. Mobile First-Time Coach Marks Tour */}
+      <MobileCoachMarks
+        isOpen={showCoachMarks}
+        onClose={() => setShowCoachMarks(false)}
+      />
+
+      {/* ========================================================================= */}
+      {/* 5. DESKTOP & GLOBAL SYSTEM MODALS                                        */}
+      {/* ========================================================================= */}
+
+      {/* Projects Modal */}
+      <ProjectsModal
+        isOpen={projectsModalOpen}
+        onClose={() => setProjectsModalOpen(false)}
+        storage={projectStorage}
+        onSelectProject={(proj) => {
+          setMarkdown(proj.source.content);
+          if (proj.settings?.themeId) setTheme(proj.settings.themeId);
+          if (proj.settings?.format) setCurrentFormat(String(proj.settings.format));
+          setProjectsModalOpen(false);
+          addToast(`Loaded project: ${proj.name}`, 'success');
+        }}
+        onCreateProject={(name) => {
+          addToast(`Created project: ${name}`, 'success');
+        }}
+      />
+
+      {/* Share Modal */}
+      <ShareModal
+        isOpen={shareModalOpen}
+        onClose={() => setShareModalOpen(false)}
+        svgContent={activeSvgString}
+        projectData={{
+          markdown,
+          theme,
+          customTitle,
+          customSubtitle,
+          format: currentFormat
+        }}
+      />
+
+      {/* CI/CD GitHub Actions Workflow Modal */}
+      <WorkflowModal
+        isOpen={workflowModalOpen}
+        onClose={() => setWorkflowModalOpen(false)}
+      />
+
+      {/* Architecture & Headless Module Documentation Modal */}
+      <ArchitectureModal
+        isOpen={architectureModalOpen}
+        onClose={() => setArchitectureModalOpen(false)}
+      />
+
+      {/* Info, User Manual & FAQ Modal */}
+      <InfoModal
+        isOpen={infoModalOpen}
+        onClose={() => setInfoModalOpen(false)}
+        onOpenWorkflowModal={() => setWorkflowModalOpen(true)}
+        onOpenOnboarding={() => setShowCoachMarks(true)}
+      />
+
+      {/* Keyboard Shortcuts Reference Modal */}
+      <ShortcutsModal
+        isOpen={shortcutsModalOpen}
+        onClose={() => setShortcutsModalOpen(false)}
+      />
+
+      {/* WCAG AA Accessibility & Color Blindness Contrast Modal */}
+      <ContrastModal
+        isOpen={contrastModalOpen}
+        onClose={() => setContrastModalOpen(false)}
+        currentTheme={getTheme(theme)}
+        colorBlindness={colorBlindness}
+        onColorBlindnessChange={setColorBlindness}
+      />
+
+      {/* Toast Container */}
+      <ToastContainer toasts={toasts} onDismiss={(id) => setToasts((p) => p.filter((t) => t.id !== id))} />
+
+    </div>
   );
 }
+

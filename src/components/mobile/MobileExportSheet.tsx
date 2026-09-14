@@ -10,13 +10,16 @@ import {
   FileCode,
   Sparkles,
   ChevronDown,
-  ChevronUp
+  ChevronUp,
+  X
 } from 'lucide-react';
 import { VisualFormatPicker } from './VisualFormatPicker';
 import { InfographicSpec } from '../../engine/types';
 import { triggerHaptic } from '../../ui/haptics';
 
 interface MobileExportSheetProps {
+  isOpen?: boolean;
+  onClose?: () => void;
   currentFormat: string;
   onFormatChange: (format: string) => void;
   onDownloadSvg: (format?: string) => void;
@@ -32,6 +35,8 @@ interface MobileExportSheetProps {
 }
 
 export const MobileExportSheet: React.FC<MobileExportSheetProps> = ({
+  isOpen,
+  onClose,
   currentFormat,
   onFormatChange,
   onDownloadSvg,
@@ -49,6 +54,8 @@ export const MobileExportSheet: React.FC<MobileExportSheetProps> = ({
   const [embedCopied, setEmbedCopied] = useState(false);
   const [specCopied, setSpecCopied] = useState(false);
 
+  if (isOpen === false) return null;
+
   const handleCopyEmbed = () => {
     triggerHaptic(15);
     const snippet = `<!-- GitInfoGraphics README Banner -->\n<p align="center">\n  <img src="https://raw.githubusercontent.com/owner/repo/main/infographic.svg" alt="${spec.title || 'Infographic'}" width="100%" />\n</p>`;
@@ -64,8 +71,9 @@ export const MobileExportSheet: React.FC<MobileExportSheetProps> = ({
     setTimeout(() => setSpecCopied(false), 2200);
   };
 
-  return (
+  const sheetContent = (
     <div className="flex flex-col gap-5 p-4 bg-[#FAFAF9] pb-24 text-stone-800 font-sans">
+
       {/* 1. Visual Format Selector */}
       <div className="bg-white border border-stone-200/90 rounded-2xl p-3.5 shadow-xs">
         <VisualFormatPicker
@@ -245,4 +253,42 @@ export const MobileExportSheet: React.FC<MobileExportSheetProps> = ({
       </div>
     </div>
   );
+
+  if (isOpen) {
+    return (
+      <div className="fixed inset-0 z-50 flex flex-col justify-end bg-stone-900/40 backdrop-blur-xs animate-in fade-in duration-150">
+        <div
+          className="fixed inset-0"
+          onClick={() => {
+            triggerHaptic(8);
+            if (onClose) onClose();
+          }}
+        />
+        <div className="relative bg-[#FAFAF9] rounded-t-3xl border-t border-stone-200 shadow-2xl max-h-[85vh] flex flex-col overflow-hidden animate-in slide-in-from-bottom duration-200 z-10">
+          <div className="flex items-center justify-between px-5 py-3.5 border-b border-stone-200 bg-white sticky top-0 z-10">
+            <div className="flex items-center gap-2">
+              <Download className="w-4 h-4 text-emerald-600" />
+              <h3 className="text-sm font-bold text-stone-900">Export Infographic Assets</h3>
+            </div>
+            <button
+              type="button"
+              onClick={() => {
+                triggerHaptic(8);
+                if (onClose) onClose();
+              }}
+              className="p-1.5 rounded-full text-stone-500 hover:text-stone-800 hover:bg-stone-100"
+            >
+              <X className="w-4 h-4" />
+            </button>
+          </div>
+          <div className="overflow-y-auto flex-1">
+            {sheetContent}
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  return sheetContent;
 };
+
