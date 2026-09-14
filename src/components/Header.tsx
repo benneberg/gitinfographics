@@ -127,7 +127,7 @@ export const Header: React.FC<HeaderProps> = ({
             value={repoInput}
             onChange={(e) => setRepoInput(e.target.value)}
             placeholder="owner/repo or GitHub URL..."
-            className="w-full bg-transparent text-xs text-stone-800 placeholder-stone-400 focus:outline-none px-2 py-1 font-mono min-h-[36px] sm:min-h-0"
+            className="w-full bg-transparent text-base sm:text-xs text-stone-800 placeholder-stone-400 focus:outline-none px-2 py-1 font-mono min-h-[36px] sm:min-h-0"
           />
           <button
             type="submit"

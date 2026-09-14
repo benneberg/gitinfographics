@@ -130,7 +130,7 @@ export const MarkdownEditor: React.FC<MarkdownEditorProps> = ({
           value={markdown}
           onChange={(e) => onChange(e.target.value)}
           placeholder="# Project Title&#10;&#10;A concise description of your project...&#10;&#10;## Features&#10;- Feature 1&#10;- Feature 2"
-          className="w-full h-full p-4 font-mono text-xs text-stone-800 bg-transparent resize-none focus:outline-none leading-relaxed placeholder-stone-400 selection:bg-stone-200"
+          className="w-full h-full p-4 font-mono text-base sm:text-xs text-stone-800 bg-transparent resize-none focus:outline-none leading-relaxed placeholder-stone-400 selection:bg-stone-200"
           spellCheck={false}
         />
       </div>

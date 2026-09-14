@@ -28,6 +28,8 @@ import { ToastContainer, ToastMessage } from './components/Toast';
 // Mobile Components
 import { BottomNavigation, MobileTab } from './components/mobile/BottomNavigation';
 import { FullScreenModalEditor } from './components/mobile/FullScreenModalEditor';
+import { MobileInlineEditor } from './components/mobile/MobileInlineEditor';
+import { MobileTopRepoBar } from './components/mobile/MobileTopRepoBar';
 import { ThemeCarousel } from './components/mobile/ThemeCarousel';
 import { VisualFormatPicker } from './components/mobile/VisualFormatPicker';
 import { MobileExportSheet } from './components/mobile/MobileExportSheet';
@@ -467,19 +469,12 @@ export default function App() {
 
   // Mobile Bottom Navigation Tab Handler
   const handleSelectMobileTab = (tab: MobileTab) => {
-    if (tab === 'editor') {
-      setShowMobileEditorModal(true);
-      return;
-    }
-    if (tab === 'export') {
-      setShowMobileExportSheet(true);
-      return;
-    }
+    triggerHaptic(8);
     setMobileTab(tab);
   };
 
   return (
-    <div className="min-h-screen bg-[#FAFAF9] text-stone-900 flex flex-col font-sans selection:bg-stone-200">
+    <div className="min-h-[100dvh] h-[100dvh] bg-[#FAFAF9] text-stone-900 flex flex-col font-sans selection:bg-stone-200 overflow-hidden">
       
       {/* ========================================================================= */}
       {/* 1. MOBILE HEADER (< lg)                                                  */}
@@ -526,6 +521,14 @@ export default function App() {
         </div>
       </header>
 
+      {/* Persistent GitHub Repository URL & Presets Bar (< lg) */}
+      <MobileTopRepoBar
+        onFetchRepo={handleFetchRepo}
+        isFetching={isFetching}
+        onSelectSample={handleSelectSample}
+        currentTitle={finalSpec.title}
+      />
+
       {/* ========================================================================= */}
       {/* 2. DESKTOP HEADER (>= lg)                                                */}
       {/* ========================================================================= */}
@@ -559,7 +562,7 @@ export default function App() {
         {/* ======================================================================= */}
         {/* 3A. MOBILE VIEW (Full-Screen Focus Area)                                */}
         {/* ======================================================================= */}
-        <div className="lg:hidden flex-1 flex flex-col min-h-0 relative pb-20">
+        <div className="lg:hidden flex-1 flex flex-col min-h-0 relative pb-[calc(4.5rem+env(safe-area-inset-bottom,0px))] overflow-hidden">
           
           {/* Active Mobile View: Preview (Default) */}
           {mobileTab === 'preview' && (
@@ -614,6 +617,17 @@ export default function App() {
                 </button>
               </div>
             </div>
+          )}
+
+          {/* Active Mobile View: Edit (Inline Editor - Same UX as Style Page) */}
+          {mobileTab === 'editor' && (
+            <MobileInlineEditor
+              markdown={markdown}
+              onChange={setMarkdown}
+              onSelectSample={handleSelectSample}
+              onSmartTruncate={handleSmartTruncate}
+              onOpenFullScreen={() => setShowMobileEditorModal(true)}
+            />
           )}
 
           {/* Active Mobile View: Style (Themes & Sections) */}
@@ -679,6 +693,77 @@ export default function App() {
             </div>
           )}
 
+          {/* Active Mobile View: Export & Downloads */}
+          {mobileTab === 'export' && (
+            <div className="flex-1 p-4 space-y-4 overflow-y-auto bg-stone-50">
+              <div className="bg-white p-4 rounded-2xl border border-stone-200 shadow-xs space-y-4">
+                <div className="flex items-center justify-between pb-3 border-b border-stone-100">
+                  <div className="flex items-center gap-2">
+                    <Download className="w-4 h-4 text-stone-700" />
+                    <h2 className="text-sm font-bold text-stone-900">Export &amp; Downloads</h2>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setMobileTab('preview')}
+                    className="text-xs font-semibold text-emerald-600 hover:text-emerald-700 flex items-center gap-1"
+                  >
+                    <Eye className="w-3.5 h-3.5" /> Preview
+                  </button>
+                </div>
+
+                <VisualFormatPicker
+                  currentFormat={currentFormat}
+                  onSelectFormat={setCurrentFormat}
+                />
+
+                <div className="grid grid-cols-2 gap-2 pt-2">
+                  <button
+                    type="button"
+                    onClick={() => handleDownloadSvg(currentFormat)}
+                    className="p-3 bg-stone-900 text-white rounded-xl text-xs font-semibold flex flex-col gap-1 shadow-2xs hover:bg-stone-800 transition-colors"
+                  >
+                    <span>Download SVG</span>
+                    <span className="text-[10px] text-stone-400 font-mono">Vector Graphic</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => handleDownloadPng(currentFormat)}
+                    className="p-3 bg-white border border-stone-200 rounded-xl text-xs font-semibold text-stone-800 flex flex-col gap-1 shadow-2xs hover:bg-stone-50 transition-colors"
+                  >
+                    <span className="flex items-center gap-1">
+                      <span>Retina PNG</span>
+                      <Sparkles className="w-3 h-3 text-amber-500" />
+                    </span>
+                    <span className="text-[10px] text-stone-500 font-mono">@2x High-Res</span>
+                  </button>
+                </div>
+
+                <div className="pt-2 border-t border-stone-100 space-y-2">
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs font-bold text-stone-700">README Markdown Embed</span>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        triggerHaptic(15);
+                        navigator.clipboard.writeText(`<picture>\n  <source media="(max-width: 600px)" srcset="./infographic-mobile.svg">\n  <img alt="Infographic" src="./infographic.svg">\n</picture>`);
+                        addToast('Copied README embed snippet', 'info');
+                      }}
+                      className="text-xs font-semibold text-stone-600 hover:text-stone-900 bg-stone-100 hover:bg-stone-200 px-2.5 py-1 rounded-lg transition-colors"
+                    >
+                      Copy Snippet
+                    </button>
+                  </div>
+                  <pre className="p-3 bg-stone-900 text-stone-200 rounded-xl text-[11px] font-mono select-all overflow-x-auto">
+{`<picture>
+  <source media="(max-width: 600px)" srcset="./infographic-mobile.svg">
+  <img alt="Infographic" src="./infographic.svg">
+</picture>`}
+                  </pre>
+                </div>
+              </div>
+            </div>
+          )}
+
           {/* Floating Action Button for Instant Exports on Mobile */}
           <MobileFab
             onDownloadPng={() => handleDownloadPng(currentFormat)}
@@ -703,7 +788,7 @@ export default function App() {
         <div className="hidden lg:flex w-full gap-6 items-start">
           
           {/* Left Column: Tabbed Controls & Editor (w-1/2 or 540px) */}
-          <div className="w-[520px] shrink-0 flex flex-col bg-white border border-stone-200/90 rounded-2xl shadow-xs overflow-hidden max-h-[calc(100vh-140px)]">
+          <div className="w-[520px] shrink-0 flex flex-col bg-white border border-stone-200/90 rounded-2xl shadow-xs overflow-hidden max-h-[calc(100dvh-140px)]">
             
             {/* Desktop Navigation Tabs */}
             <div className="flex border-b border-stone-200 bg-stone-50/70 p-1.5 gap-1">

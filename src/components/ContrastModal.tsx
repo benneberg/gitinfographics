@@ -23,8 +23,8 @@ export const ContrastModal: React.FC<ContrastModalProps> = ({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-stone-900/40 backdrop-blur-xs animate-in fade-in duration-150 font-sans">
-      <div className="bg-white border border-stone-200 w-full max-w-2xl max-h-[90vh] flex flex-col shadow-2xl rounded-2xl overflow-hidden">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-stone-900/40 backdrop-blur-md animate-in fade-in duration-150 font-sans">
+      <div className="bg-white/95 backdrop-blur-xl border border-stone-200 w-full max-w-2xl max-h-[90vh] flex flex-col shadow-2xl rounded-2xl overflow-hidden">
         {/* Header */}
         <div className="flex items-center justify-between px-6 py-4 border-b border-stone-200 bg-white">
           <div className="flex items-center gap-3">

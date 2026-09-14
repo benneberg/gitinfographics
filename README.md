@@ -28,8 +28,29 @@ Unlike AI-based generation tools that suffer from non-deterministic layouts, hal
   - **Mobile (400px)**: True reflowed single-column layouts, 2×2 metric cards, and vertical problem-to-solution flow (`↓`) optimized for mobile screens.
   - **Social Presets**: Direct export formats for Twitter/X (1200×675), LinkedIn (1080×1080), Instagram Story (1080×1920), and GitHub Social Preview (1280×640).
   - **GitHub `<picture>` Snippet**: Generates media-query enabled markdown that serves desktop or mobile SVG automatically based on viewport width (`min-width: 600px`).
+- 🗂️ **Slide-in View & Export Drawer Panels**:
+  - **Zero Footer Clutter**: View controls and export actions slide out smoothly from the sides on demand, leaving maximum screen space for live graphic rendering.
+  - **Visual Format Picker**: One-tap resolution and preset switcher with live badge previews.
+  - **Instant Export Actions**: Direct vector SVG download, Retina @2x PNG rendering, and copyable README markdown embed codes.
+- 📱 **Mobile-Native Inline Editing & Ergonomics**:
+  - **Inline Tab Experience**: The mobile Edit view operates inline seamlessly alongside the Style view without hiding the bottom navigation bar.
+  - **Persistent Top Repository Bar**: Direct GitHub repository input, preset selection, and quick-fetch button always accessible at the top of the mobile viewport.
+  - **Dynamic Viewport Height (`100dvh`)**: Immune to mobile address bar expansion/contraction on iOS Safari and Android Chrome.
+  - **iOS Auto-Zoom Prevention**: Strict `16px` base font size on all text fields eliminates unwanted viewport zooming on focus.
+  - **Safe-Area Insets**: Proper padding for iPhone home indicator swipe bar (`env(safe-area-inset-bottom)`).
+- 🖼️ **Logo Upload & Base64 Embedding**:
+  - Upload custom project logos in PNG or SVG format.
+  - Auto-embeds logos directly as vector base64 data inside the exported SVG with alignment and size controls.
 - 📱 **Deterministic QR Code Generation**:
   - Automatically synthesizes clean, scalable vector QR codes in the footer linking to repository or custom target URLs without external network APIs.
+- 🪟 **Liquid Glass & Premium Scandinavian Design**:
+  - Warm stone canvas (`#FAFAF9`), architectural cards (`#FFFFFF`), subtle hairline borders (`#E7E5E4`), and deep graphite typography (`#1C1917`).
+  - Frosted modal overlays with `backdrop-blur-md` and `bg-white/95` liquid glass cards.
+  - Instant theme switching between Scandi Minimal, Dark Slate, Forest, Ember, and Midnight.
+- ♿ **W3C SVG Accessibility (A11y) & Contrast Auditor**:
+  - SVG roots include `role="img"`, `aria-labelledby`, and `aria-describedby` pointing to `<title>` and `<desc>` elements for full screen reader accessibility.
+  - Structured `<g role="region">` wrappers and decorative elements tagged with `aria-hidden="true"`.
+  - Built-in **WCAG AA Contrast Audit Tool** and **Color Blindness Simulator** (Protanopia, Deuteranopia, Tritanopia, Achromatopsia).
 - 🗂️ **Project Management & Shareable URLs**:
   - Local persistence with project switching, duplicate, rename, and generation history tracking.
   - One-click shareable URLs (`#project=...`) that store complete project configurations right in the URL hash, plus instant HTML iframe, img tag, and Markdown embed snippets.
@@ -39,15 +60,9 @@ Unlike AI-based generation tools that suffer from non-deterministic layouts, hal
   - `Ctrl/Cmd + M`: Toggle mobile / desktop preview
   - `Ctrl/Cmd + T`: Switch graphic color themes
   - `Ctrl/Cmd + Shift + ?`: Open keyboard shortcuts cheat sheet
-- ♿ **W3C SVG Accessibility (A11y)**:
-  - SVG roots include `role="img"`, `aria-labelledby`, and `aria-describedby` pointing to `<title>` and `<desc>` elements for full screen reader accessibility.
-  - Structured `<g role="region">` wrappers and decorative elements tagged with `aria-hidden="true"`.
 - 🎛️ **Section Reordering & Controls**:
   - Move sections Up and Down to reorder the layout dynamically.
   - Toggle individual sections, select layout variants (Bento Grid, Columns, Minimalist), and override titles.
-- 🎨 **Scandinavian Minimalist Design**:
-  - Warm stone canvas (`#FAFAF9`), architectural cards (`#FFFFFF`), subtle hairline borders (`#E7E5E4`), and deep graphite typography (`#1C1917`).
-  - Instant theme switching between Scandi Minimal, Dark Slate, Forest, Ember, and Midnight.
 - ⚡ **Zero-DOM Headless Core**:
   - The core engine in `src/engine/` is completely decoupled from the browser and React DOM.
   - Safe for execution in browser SPAs, Node.js scripts, CLI tools, and GitHub Actions.

@@ -94,46 +94,36 @@ export function renderSVG(spec: InfographicSpec, tn?: string, options?: RenderOp
 export function getSvgAnimationStyles(t: ThemeConfig): string {
   return `
       @media (prefers-reduced-motion: no-preference) {
-        @keyframes gigFadeInUp {
-          from { opacity: 0; transform: translateY(14px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-        @keyframes gigSlideIn {
-          from { opacity: 0; transform: translateX(-12px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-        @keyframes gigScaleIn {
-          from { opacity: 0; transform: scale(0.92); }
-          to { opacity: 1; transform: scale(1); }
+        @keyframes gigFadeIn {
+          from { opacity: 0; }
+          to { opacity: 1; }
         }
         .gig-animated .gig-hero {
-          animation: gigFadeInUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+          animation: gigFadeIn 0.4s ease-out both;
         }
         .gig-animated .gig-sec {
-          animation: gigFadeInUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+          animation: gigFadeIn 0.4s ease-out both;
         }
-        .gig-animated .gig-sec:nth-of-type(1) { animation-delay: 0.05s; }
-        .gig-animated .gig-sec:nth-of-type(2) { animation-delay: 0.10s; }
-        .gig-animated .gig-sec:nth-of-type(3) { animation-delay: 0.15s; }
-        .gig-animated .gig-sec:nth-of-type(4) { animation-delay: 0.20s; }
-        .gig-animated .gig-sec:nth-of-type(5) { animation-delay: 0.25s; }
-        .gig-animated .gig-sec:nth-of-type(6) { animation-delay: 0.30s; }
-        .gig-animated .gig-sec:nth-of-type(n+7) { animation-delay: 0.35s; }
+        .gig-animated .gig-sec:nth-of-type(1) { animation-delay: 0.04s; }
+        .gig-animated .gig-sec:nth-of-type(2) { animation-delay: 0.08s; }
+        .gig-animated .gig-sec:nth-of-type(3) { animation-delay: 0.12s; }
+        .gig-animated .gig-sec:nth-of-type(4) { animation-delay: 0.16s; }
+        .gig-animated .gig-sec:nth-of-type(5) { animation-delay: 0.20s; }
+        .gig-animated .gig-sec:nth-of-type(6) { animation-delay: 0.24s; }
+        .gig-animated .gig-sec:nth-of-type(n+7) { animation-delay: 0.28s; }
         .gig-animated .gig-card-anim {
-          animation: gigSlideIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+          animation: gigFadeIn 0.35s ease-out both;
         }
         .gig-animated .gig-badge-anim {
-          animation: gigScaleIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) both;
-          transform-origin: center;
+          animation: gigFadeIn 0.3s ease-out both;
         }
       }
       .gig-interactive {
-        transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), filter 0.2s ease;
+        transition: filter 0.2s ease, opacity 0.2s ease;
         cursor: default;
       }
       .gig-interactive:hover {
-        filter: brightness(${t.isDark ? '1.1' : '0.98'}) drop-shadow(0 4px 10px rgba(0,0,0,${t.isDark ? '0.35' : '0.08'}));
-        transform: translateY(-2px);
+        filter: brightness(${t.isDark ? '1.12' : '0.97'}) drop-shadow(0 4px 10px rgba(0,0,0,${t.isDark ? '0.35' : '0.08'}));
       }
       .gig-sec {
         outline: none;

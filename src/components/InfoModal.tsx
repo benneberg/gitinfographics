@@ -164,9 +164,9 @@ jobs:
       role="dialog"
       aria-modal="true"
       aria-label="Application Information and Manual"
-      className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-stone-900/40 backdrop-blur-sm animate-in fade-in duration-150 font-sans"
+      className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-stone-900/40 backdrop-blur-md animate-in fade-in duration-150 font-sans"
     >
-      <div className="bg-white border border-stone-200 w-full max-w-4xl max-h-[92vh] flex flex-col shadow-2xl rounded-2xl overflow-hidden">
+      <div className="bg-white/95 backdrop-blur-xl border border-stone-200 w-full max-w-4xl max-h-[92vh] flex flex-col shadow-2xl rounded-2xl overflow-hidden">
         {/* Header */}
         <div className="px-5 sm:px-6 py-4 border-b border-stone-200 bg-white flex items-center justify-between gap-3">
           <div className="flex items-center gap-3">

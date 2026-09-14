@@ -7,6 +7,6 @@ describe('App component', () => {
   it('renders without crashing on SSR / client initial mount', () => {
     const html = renderToString(<App />);
     expect(html).toContain('GitInfoGraphics');
-    expect(html).toContain('Deterministic SVG Engine');
+    expect(html).toContain('README vector infographics');
   });
 });

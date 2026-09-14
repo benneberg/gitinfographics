@@ -48,9 +48,9 @@ export const ShareModal: React.FC<ShareModalProps> = ({
       role="dialog"
       aria-modal="true"
       aria-labelledby="share-modal-title"
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-stone-900/60 backdrop-blur-xs animate-in fade-in duration-150"
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-stone-900/40 backdrop-blur-md animate-in fade-in duration-150"
     >
-      <div className="bg-white border border-stone-200/90 rounded-2xl max-w-xl w-full shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
+      <div className="bg-white/95 backdrop-blur-xl border border-stone-200/90 rounded-2xl max-w-xl w-full shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
         {/* Header */}
         <div className="flex items-center justify-between px-5 py-4 border-b border-stone-200/80 bg-stone-50/60">
           <div className="flex items-center gap-2.5">
@@ -116,7 +116,7 @@ export const ShareModal: React.FC<ShareModalProps> = ({
               readOnly
               rows={2}
               value={imgEmbed}
-              className="w-full px-3 py-2 bg-stone-50 border border-stone-200 rounded-lg text-xs font-mono text-stone-700 focus:outline-none"
+              className="w-full px-3 py-2 bg-stone-50 border border-stone-200 rounded-lg text-base sm:text-xs font-mono text-stone-700 focus:outline-none"
             />
           </div>
 
@@ -140,7 +140,7 @@ export const ShareModal: React.FC<ShareModalProps> = ({
               readOnly
               rows={2}
               value={iframeEmbed}
-              className="w-full px-3 py-2 bg-stone-50 border border-stone-200 rounded-lg text-xs font-mono text-stone-700 focus:outline-none"
+              className="w-full px-3 py-2 bg-stone-50 border border-stone-200 rounded-lg text-base sm:text-xs font-mono text-stone-700 focus:outline-none"
             />
           </div>
 
@@ -164,7 +164,7 @@ export const ShareModal: React.FC<ShareModalProps> = ({
               readOnly
               rows={2}
               value={markdownEmbed}
-              className="w-full px-3 py-2 bg-stone-50 border border-stone-200 rounded-lg text-xs font-mono text-stone-700 focus:outline-none"
+              className="w-full px-3 py-2 bg-stone-50 border border-stone-200 rounded-lg text-base sm:text-xs font-mono text-stone-700 focus:outline-none"
             />
           </div>
         </div>

@@ -78,18 +78,21 @@ export const FORMAT_ITEMS: FormatConfig[] = [
 
 interface VisualFormatPickerProps {
   currentFormat: string;
-  onFormatChange: (formatId: string) => void;
+  onFormatChange?: (formatId: string) => void;
+  onSelectFormat?: (formatId: string) => void;
   className?: string;
 }
 
 export const VisualFormatPicker: React.FC<VisualFormatPickerProps> = ({
   currentFormat,
   onFormatChange,
+  onSelectFormat,
   className = '',
 }) => {
   const handleSelect = (id: string) => {
     triggerHaptic(10);
-    onFormatChange(id);
+    if (onFormatChange) onFormatChange(id);
+    if (onSelectFormat) onSelectFormat(id);
   };
 
   return (

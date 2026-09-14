@@ -123,7 +123,7 @@ export const SectionControls: React.FC<SectionControlsProps> = ({
             type="text"
             value={spec.title}
             onChange={(e) => onTitleChange(e.target.value)}
-            className="px-3 py-1.5 bg-stone-50 border border-stone-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-stone-400 focus:bg-white text-xs font-semibold text-stone-900 transition-colors"
+            className="px-3 py-1.5 bg-stone-50 border border-stone-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-stone-400 focus:bg-white text-base sm:text-xs font-semibold text-stone-900 transition-colors"
           />
         </div>
 
@@ -133,7 +133,7 @@ export const SectionControls: React.FC<SectionControlsProps> = ({
             type="text"
             value={spec.subtitle}
             onChange={(e) => onSubtitleChange(e.target.value)}
-            className="px-3 py-1.5 bg-stone-50 border border-stone-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-stone-400 focus:bg-white text-xs text-stone-700 transition-colors"
+            className="px-3 py-1.5 bg-stone-50 border border-stone-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-stone-400 focus:bg-white text-base sm:text-xs text-stone-700 transition-colors"
           />
         </div>
 
@@ -462,7 +462,7 @@ export const SectionControls: React.FC<SectionControlsProps> = ({
                 value={qrUrl}
                 onChange={(e) => onQrUrlChange(e.target.value)}
                 placeholder="https://github.com/owner/repo"
-                className="px-3 py-1.5 bg-stone-50 border border-stone-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-stone-400 focus:bg-white text-xs font-mono text-stone-900 transition-colors"
+                className="px-3 py-1.5 bg-stone-50 border border-stone-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-stone-400 focus:bg-white text-base sm:text-xs font-mono text-stone-900 transition-colors"
               />
               <span className="text-[10px] text-stone-400">
                 Vector QR code is rendered in the SVG footer linking mobile scanners directly to GitHub.

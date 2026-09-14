@@ -37,6 +37,17 @@
   background: #D6D3D1;
 }
 
+/* Safe area utilities for iOS Home Indicator & Notches */
+.pb-safe {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+.pt-safe {
+  padding-top: env(safe-area-inset-top, 0px);
+}
+.mb-safe {
+  margin-bottom: env(safe-area-inset-bottom, 0px);
+}
+
 /* Responsive SVG styling guarantee: never force container horizontal scroll */
 svg {
   max-width: 100%;

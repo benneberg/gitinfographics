@@ -119,7 +119,7 @@ export const FullScreenModalEditor: React.FC<FullScreenModalEditorProps> = ({
               value={repoInput}
               onChange={(e) => setRepoInput(e.target.value)}
               placeholder="Paste owner/repo or GitHub URL..."
-              className="w-full pl-8 pr-3 min-h-[40px] text-xs bg-white border border-stone-200 rounded-lg text-stone-800 placeholder-stone-400 focus:outline-none focus:ring-1 focus:ring-stone-400 font-mono"
+              className="w-full pl-8 pr-3 min-h-[40px] text-base sm:text-xs bg-white border border-stone-200 rounded-lg text-stone-800 placeholder-stone-400 focus:outline-none focus:ring-1 focus:ring-stone-400 font-mono"
             />
           </div>
           <button
@@ -195,7 +195,7 @@ export const FullScreenModalEditor: React.FC<FullScreenModalEditorProps> = ({
             value={markdown}
             onChange={(e) => onChange(e.target.value)}
             placeholder="Write or paste your GitHub README markdown here..."
-            className="flex-1 w-full p-3 font-mono text-xs sm:text-sm text-stone-900 bg-transparent focus:outline-none resize-none leading-relaxed"
+            className="flex-1 w-full p-3 font-mono text-base sm:text-sm text-stone-900 bg-transparent focus:outline-none resize-none leading-relaxed"
             spellCheck={false}
           />
         </div>

@@ -12,7 +12,6 @@ import {
   Battery,
   ChevronDown,
   Layers,
-  Info,
   FileText,
   Eye,
   ShieldCheck,
@@ -20,10 +19,15 @@ import {
   Cpu,
   GitCommit,
   Columns,
-  Quote
+  Quote,
+  SlidersHorizontal,
+  X,
+  Code2,
+  Image as ImageIcon
 } from 'lucide-react';
 import { InfographicSpec } from '../engine/types';
 import { ColorBlindnessType, COLOR_BLINDNESS_MATRICES } from '../engine/contrast';
+import { triggerHaptic } from '../ui/haptics';
 
 interface InfographicCanvasProps {
   desktopSvgString?: string;
@@ -64,9 +68,13 @@ export const InfographicCanvas: React.FC<InfographicCanvasProps> = ({
   const [fluidLayout, setFluidLayout] = useState<'desktop' | 'mobile'>('desktop');
   const [snippetMode, setSnippetMode] = useState<'picture' | 'desktop' | 'mobile'>('picture');
   const [mdCopied, setMdCopied] = useState(false);
-  const [downloadMenuOpen, setDownloadMenuOpen] = useState(false);
   const [accessibleView, setAccessibleView] = useState(false);
   const [summaryCopied, setSummaryCopied] = useState(false);
+
+  // Slide-in / Collapsible Menu Panels
+  const [showViewMenu, setShowViewMenu] = useState(false);
+  const [showExportMenu, setShowExportMenu] = useState(false);
+
   const svgContainerRef = useRef<HTMLDivElement>(null);
 
   const handleSvgKeyDown = (e: React.KeyboardEvent) => {
@@ -145,10 +153,7 @@ export const InfographicCanvas: React.FC<InfographicCanvasProps> = ({
 
   const getEmbedSnippet = () => {
     if (snippetMode === 'picture') {
-      return `<picture>
-  <source media="(max-width: 600px)" srcset="./infographic-mobile.svg">
-  <img alt="Repository Infographic" src="./infographic.svg">
-</picture>`;
+      return `<picture>\n  <source media="(max-width: 600px)" srcset="./infographic-mobile.svg">\n  <img alt="Repository Infographic" src="./infographic.svg">\n</picture>`;
     }
     if (snippetMode === 'mobile') {
       return `[![Repository Infographic](./infographic-mobile.svg)](https://github.com/)`;
@@ -157,6 +162,7 @@ export const InfographicCanvas: React.FC<InfographicCanvasProps> = ({
   };
 
   const copyMarkdownSnippet = () => {
+    triggerHaptic(15);
     navigator.clipboard.writeText(getEmbedSnippet());
     setMdCopied(true);
     setTimeout(() => setMdCopied(false), 2000);
@@ -177,281 +183,476 @@ export const InfographicCanvas: React.FC<InfographicCanvasProps> = ({
     setZoom(1);
   };
 
-  return (
-    <div className="flex flex-col h-full bg-white border border-stone-200 rounded-xl shadow-xs overflow-hidden">
-      {/* Top View Toolbar */}
-      <div className="flex flex-wrap items-center justify-between gap-2.5 px-3.5 py-2.5 border-b border-stone-200 bg-stone-50/70 text-xs font-sans">
-        {/* Left: Viewport Switch Tabs (Fluid Desktop vs Mobile Phone) */}
-        <div className="flex items-center gap-2 flex-wrap">
-          <div className="flex items-center bg-white border border-stone-200 rounded-lg p-0.5 shadow-2xs">
-            <button
-              onClick={() => {
-                setAccessibleView(false);
-                setViewportMode('desktop');
-                setZoomMode('fit');
-                setZoom(1);
-              }}
-              className={`min-h-[34px] px-3 py-1 text-xs font-medium rounded-md flex items-center gap-1.5 transition-all ${
-                !accessibleView && viewportMode === 'desktop'
-                  ? 'bg-stone-900 text-white shadow-2xs'
-                  : 'text-stone-600 hover:text-stone-900 hover:bg-stone-100/60'
-              }`}
-              title="Fluid Preview (View at desktop or mobile width)"
-            >
-              <Monitor className="w-3.5 h-3.5" />
-              <span>Fluid</span>
-            </button>
+  const toggleViewMenu = () => {
+    triggerHaptic(10);
+    setShowViewMenu((prev) => !prev);
+    if (!showViewMenu) setShowExportMenu(false);
+  };
 
+  const toggleExportMenu = () => {
+    triggerHaptic(10);
+    setShowExportMenu((prev) => !prev);
+    if (!showExportMenu) setShowViewMenu(false);
+  };
+
+  return (
+    <div className="relative flex flex-col h-full bg-white border border-stone-200/90 rounded-2xl shadow-xs overflow-hidden">
+      
+      {/* ======================================================================= */}
+      {/* 1. CLEAN PREVIEW HEADER                                                 */}
+      {/* ======================================================================= */}
+      <div className="flex items-center justify-between px-3.5 py-2.5 border-b border-stone-200/80 bg-white/95 backdrop-blur-md text-xs font-sans z-10 shrink-0">
+        
+        {/* Left: Quick Layout Switcher & Dimensions */}
+        <div className="flex items-center gap-2">
+          {/* Quick Layout Pill Switcher */}
+          <div className="flex items-center bg-stone-100 p-0.5 rounded-xl text-[11px] font-semibold">
             <button
+              type="button"
+              id="canvas-format-desktop"
               onClick={() => {
-                setAccessibleView(false);
-                setViewportMode('mobile');
-                setZoomMode('fit');
-                setZoom(1);
+                triggerHaptic(8);
+                setViewportMode('desktop');
+                setFluidLayout('desktop');
               }}
-              className={`min-h-[34px] px-3 py-1 text-xs font-medium rounded-md flex items-center gap-1.5 transition-all ${
-                !accessibleView && viewportMode === 'mobile'
-                  ? 'bg-stone-900 text-white shadow-2xs'
-                  : 'text-stone-600 hover:text-stone-900 hover:bg-stone-100/60'
+              className={`px-2.5 py-1 rounded-lg transition-all ${
+                viewportMode === 'desktop' && fluidLayout === 'desktop'
+                  ? 'bg-white text-stone-900 shadow-2xs'
+                  : 'text-stone-500 hover:text-stone-800'
               }`}
-              title="True Mobile Portrait View (Simulates smartphone screen with true reflowed layout)"
             >
-              <Smartphone className="w-3.5 h-3.5" />
-              <span>Mobile Phone</span>
+              Desktop
+            </button>
+            <button
+              type="button"
+              id="canvas-format-mobile"
+              onClick={() => {
+                triggerHaptic(8);
+                setFluidLayout('mobile');
+              }}
+              className={`px-2.5 py-1 rounded-lg transition-all ${
+                activeLayout === 'mobile'
+                  ? 'bg-white text-stone-900 shadow-2xs'
+                  : 'text-stone-500 hover:text-stone-800'
+              }`}
+            >
+              Mobile
             </button>
           </div>
 
-          {/* Accessible Text-Only View Toggle */}
-          <button
-            onClick={() => setAccessibleView(!accessibleView)}
-            className={`min-h-[34px] px-3 py-1 text-xs font-medium rounded-lg border transition-all flex items-center gap-1.5 ${
-              accessibleView
-                ? 'bg-stone-900 text-white border-stone-900 shadow-2xs'
-                : 'bg-white border-stone-200 text-stone-700 hover:text-stone-950 hover:bg-stone-50'
-            }`}
-            title="Toggle Accessible Text-Only View (Screen-reader friendly parallel fallback)"
-            aria-pressed={accessibleView}
-          >
-            {accessibleView ? <Eye className="w-3.5 h-3.5 text-white" /> : <FileText className="w-3.5 h-3.5 text-stone-500" />}
-            <span>Text-Only View</span>
-          </button>
-
-          {/* WCAG AA Compliance & Contrast Auditor Button */}
-          <button
-            onClick={onOpenContrastModal}
-            className="hidden sm:flex items-center gap-1.5 px-2.5 py-1 bg-emerald-50 hover:bg-emerald-100/80 border border-emerald-200/80 rounded-lg text-[11px] font-medium text-emerald-800 transition-colors shadow-2xs cursor-pointer"
-            title="Open WCAG AA Contrast Audit & Color Blindness Simulator"
-          >
-            <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
-            <span>WCAG AA Passed</span>
-          </button>
-
-          {/* Active Color Blindness Simulator Badge */}
-          {colorBlindness !== 'normal' && (
-            <div className="flex items-center gap-1.5 px-2.5 py-1 bg-purple-50 border border-purple-200 rounded-lg text-[11px] font-medium text-purple-900 shadow-2xs">
-              <span className="capitalize">{colorBlindness} View</span>
-              <button
-                onClick={onResetColorBlindness}
-                className="text-purple-600 hover:text-purple-950 text-xs font-bold leading-none px-0.5"
-                title="Reset simulation to standard vision"
-              >
-                ×
-              </button>
-            </div>
-          )}
-
-          {/* Fluid view layout toggle (Desktop 880 vs Mobile 400) */}
-          {viewportMode === 'desktop' && (
-            <div className="flex items-center bg-white border border-stone-200 rounded-lg p-0.5 shadow-2xs text-[11px]">
-              <button
-                onClick={() => setFluidLayout('desktop')}
-                className={`px-2 py-1 rounded transition-colors ${
-                  fluidLayout === 'desktop'
-                    ? 'bg-stone-100 text-stone-900 font-semibold'
-                    : 'text-stone-500 hover:text-stone-900'
-                }`}
-                title="880px Desktop Multi-column Layout"
-              >
-                Desktop (880px)
-              </button>
-              <button
-                onClick={() => setFluidLayout('mobile')}
-                className={`px-2 py-1 rounded transition-colors ${
-                  fluidLayout === 'mobile'
-                    ? 'bg-stone-100 text-stone-900 font-semibold'
-                    : 'text-stone-500 hover:text-stone-900'
-                }`}
-                title="400px Responsive Mobile Layout"
-              >
-                Mobile (400px)
-              </button>
-            </div>
-          )}
-
-          {/* Active Layout Badge */}
-          <span className="hidden sm:inline-flex items-center gap-1 px-2 py-0.5 text-[11px] font-mono text-stone-600 bg-white border border-stone-200 rounded-md">
-            <span>{width} × {height} px</span>
-            <span className="text-stone-300">•</span>
-            <span className="font-sans text-[10px] text-stone-500 capitalize">{activeLayout} layout</span>
+          {/* Dimensions Badge */}
+          <span className="hidden sm:inline-flex items-center gap-1.5 px-2.5 py-1 text-[11px] font-mono text-stone-500 bg-stone-50 border border-stone-200/70 rounded-lg">
+            <span>{width} × {height}px</span>
           </span>
+
+          {accessibleView && (
+            <span className="inline-flex items-center gap-1 px-2 py-0.5 text-[10px] font-semibold text-emerald-700 bg-emerald-50 border border-emerald-200 rounded-lg">
+              <Eye className="w-3 h-3" /> Text-Only
+            </span>
+          )}
         </div>
 
-        {/* Right: Controls (Zoom, Backdrop, Actions) */}
-        <div className="flex items-center gap-1.5 flex-wrap justify-end">
-          {/* Zoom controls */}
-          <div className="flex items-center bg-white border border-stone-200 rounded-lg p-0.5 text-stone-700 shadow-2xs">
-            <button
-              onClick={() => {
-                if (zoomMode === 'fit') {
-                  setZoomMode('custom');
-                  setZoom(1);
-                } else {
-                  handleResetFit();
-                }
-              }}
-              className={`px-2 py-1 text-[11px] font-medium rounded transition-colors ${
-                zoomMode === 'fit' ? 'bg-stone-100 text-stone-900 font-semibold' : 'text-stone-500 hover:text-stone-900'
-              }`}
-              title="Fit to container width"
-            >
-              Fit
-            </button>
-            <div className="h-3 w-px bg-stone-200 mx-0.5" />
-            <button
-              onClick={handleZoomOut}
-              className="p-1 hover:text-stone-950 text-stone-500 hover:bg-stone-100 rounded"
-              title="Zoom out"
-            >
-              <ZoomOut className="w-3.5 h-3.5" />
-            </button>
-            <span className="w-9 text-center text-[10px] font-mono text-stone-600">
-              {zoomMode === 'fit' ? 'Auto' : `${Math.round(zoom * 100)}%`}
-            </span>
-            <button
-              onClick={handleZoomIn}
-              className="p-1 hover:text-stone-950 text-stone-500 hover:bg-stone-100 rounded"
-              title="Zoom in"
-            >
-              <ZoomIn className="w-3.5 h-3.5" />
-            </button>
-          </div>
-
-          {/* Backdrop Mode */}
-          <div className="flex items-center bg-white border border-stone-200 rounded-lg p-0.5 shadow-2xs">
-            <button
-              onClick={() => setBackdrop('light')}
-              className={`px-2 py-1 text-[11px] font-medium rounded transition-colors ${
-                backdrop === 'light' ? 'bg-stone-100 text-stone-900 font-semibold' : 'text-stone-500 hover:text-stone-800'
-              }`}
-              title="Natural light background"
-            >
-              Light
-            </button>
-            <button
-              onClick={() => setBackdrop('grid')}
-              className={`px-2 py-1 text-[11px] font-medium rounded transition-colors ${
-                backdrop === 'grid' ? 'bg-stone-100 text-stone-900 font-semibold' : 'text-stone-500 hover:text-stone-800'
-              }`}
-              title="Subtle grid canvas"
-            >
-              Grid
-            </button>
-            <button
-              onClick={() => setBackdrop('dark')}
-              className={`px-2 py-1 text-[11px] font-medium rounded transition-colors ${
-                backdrop === 'dark' ? 'bg-stone-900 text-white font-semibold' : 'text-stone-500 hover:text-stone-800'
-              }`}
-              title="Dark backdrop"
-            >
-              Dark
-            </button>
-          </div>
-
-          {/* Quick Actions */}
+        {/* Right: Consolidated View & Export Menus */}
+        <div className="flex items-center gap-1.5">
+          {/* Quick Copy SVG button */}
           <button
+            type="button"
             onClick={() => onCopySvg(activeLayout)}
-            className="flex items-center gap-1.5 min-h-[34px] px-2.5 py-1 bg-white hover:bg-stone-50 border border-stone-200 rounded-lg text-stone-700 text-xs font-medium shadow-2xs transition-colors"
-            title={`Copy ${activeLayout} SVG XML to clipboard`}
+            className="flex items-center gap-1 min-h-[34px] px-2.5 py-1 bg-white hover:bg-stone-50 border border-stone-200/90 rounded-xl text-stone-700 text-xs font-semibold shadow-2xs transition-all active:scale-95"
+            title="Quick copy SVG vector code to clipboard"
           >
             {copied ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5 text-stone-500" />}
-            <span className="hidden sm:inline">{copied ? 'Copied' : `Copy ${activeLayout === 'mobile' ? 'Mobile' : 'Desktop'} SVG`}</span>
+            <span className="hidden md:inline">{copied ? 'Copied' : 'Copy SVG'}</span>
           </button>
 
-          {/* Download split button */}
-          <div className="relative inline-flex">
-            <button
-              onClick={() => onDownloadSvg(activeLayout)}
-              className="flex items-center gap-1.5 min-h-[34px] px-3 py-1 bg-stone-900 hover:bg-stone-800 text-white text-xs font-medium rounded-l-lg shadow-2xs transition-colors"
-              title={`Download ${activeLayout === 'mobile' ? 'infographic-mobile.svg' : 'infographic.svg'}`}
-            >
-              <Download className="w-3.5 h-3.5" />
-              <span>Download {activeLayout === 'mobile' ? 'Mobile SVG' : 'Desktop SVG'}</span>
-            </button>
-            <button
-              onClick={() => setDownloadMenuOpen((o) => !o)}
-              className="px-1.5 min-h-[34px] bg-stone-900 hover:bg-stone-800 text-white border-l border-stone-700 rounded-r-lg"
-              title="More download options"
-            >
-              <ChevronDown className="w-3.5 h-3.5" />
-            </button>
+          {/* View Settings Menu Trigger */}
+          <button
+            type="button"
+            id="canvas-view-settings-btn"
+            onClick={toggleViewMenu}
+            className={`flex items-center gap-1.5 min-h-[34px] px-2.5 sm:px-3 py-1 rounded-xl text-xs font-semibold border transition-all active:scale-95 ${
+              showViewMenu
+                ? 'bg-stone-900 text-white border-stone-900 shadow-xs'
+                : 'bg-stone-50 hover:bg-stone-100 border-stone-200 text-stone-700'
+            }`}
+            title="Configure canvas view, frame, zoom, and accessibility"
+            aria-expanded={showViewMenu}
+          >
+            <SlidersHorizontal className="w-3.5 h-3.5" />
+            <span className="hidden sm:inline">View Options</span>
+            <ChevronDown className={`w-3 h-3 transition-transform ${showViewMenu ? 'rotate-180' : ''}`} />
+          </button>
 
-            {downloadMenuOpen && (
-              <div
-                className="absolute right-0 top-full mt-1.5 w-56 bg-white border border-stone-200 rounded-xl shadow-lg p-1.5 z-50 text-xs font-sans text-stone-700"
-                onMouseLeave={() => setDownloadMenuOpen(false)}
-              >
-                <div className="px-2 py-1 text-[10px] font-semibold text-stone-400 uppercase tracking-wider">SVG Downloads</div>
-                <button
-                  onClick={() => {
-                    onDownloadSvg('desktop');
-                    setDownloadMenuOpen(false);
-                  }}
-                  className="w-full text-left px-2.5 py-1.5 hover:bg-stone-50 rounded-lg flex items-center justify-between"
-                >
-                  <span>Desktop SVG (880px)</span>
-                  <span className="font-mono text-[10px] text-stone-400">.svg</span>
-                </button>
-                <button
-                  onClick={() => {
-                    onDownloadSvg('mobile');
-                    setDownloadMenuOpen(false);
-                  }}
-                  className="w-full text-left px-2.5 py-1.5 hover:bg-stone-50 rounded-lg flex items-center justify-between"
-                >
-                  <span>Mobile SVG (400px portrait)</span>
-                  <span className="font-mono text-[10px] text-stone-400">.svg</span>
-                </button>
-                <div className="my-1 border-t border-stone-100" />
-                <div className="px-2 py-1 text-[10px] font-semibold text-stone-400 uppercase tracking-wider">Retina PNG Exports</div>
-                <button
-                  onClick={() => {
-                    onDownloadPng('desktop');
-                    setDownloadMenuOpen(false);
-                  }}
-                  className="w-full text-left px-2.5 py-1.5 hover:bg-stone-50 rounded-lg flex items-center justify-between"
-                >
-                  <span>Desktop Retina PNG (@2x)</span>
-                  <span className="font-mono text-[10px] text-stone-400">1760px</span>
-                </button>
-                <button
-                  onClick={() => {
-                    onDownloadPng('mobile');
-                    setDownloadMenuOpen(false);
-                  }}
-                  className="w-full text-left px-2.5 py-1.5 hover:bg-stone-50 rounded-lg flex items-center justify-between"
-                >
-                  <span>Mobile Retina PNG (@2x)</span>
-                  <span className="font-mono text-[10px] text-stone-400">800px</span>
-                </button>
-              </div>
-            )}
-          </div>
+          {/* Export Settings Menu Trigger */}
+          <button
+            type="button"
+            id="canvas-export-settings-btn"
+            onClick={toggleExportMenu}
+            className={`flex items-center gap-1.5 min-h-[34px] px-2.5 sm:px-3 py-1 rounded-xl text-xs font-semibold border transition-all active:scale-95 ${
+              showExportMenu
+                ? 'bg-stone-900 text-white border-stone-900 shadow-xs'
+                : 'bg-stone-900 hover:bg-stone-800 border-stone-900 text-white shadow-2xs'
+            }`}
+            title="Download SVG, Retina PNG, or copy embed codes"
+            aria-expanded={showExportMenu}
+          >
+            <Download className="w-3.5 h-3.5 text-stone-200" />
+            <span>Export</span>
+            <ChevronDown className={`w-3 h-3 transition-transform ${showExportMenu ? 'rotate-180' : ''}`} />
+          </button>
         </div>
       </div>
 
-      {/* SVG Canvas Stage or Accessible Text View - Guaranteed ZERO sidescroll */}
+      {/* ======================================================================= */}
+      {/* 2. SLIDE-IN VIEW SETTINGS MENU PANEL                                    */}
+      {/* ======================================================================= */}
+      {showViewMenu && (
+        <div
+          id="canvas-view-settings-panel"
+          className="absolute right-3 top-[54px] z-30 w-80 bg-white/95 backdrop-blur-xl border border-stone-200/90 rounded-2xl shadow-xl p-4 text-xs font-sans space-y-4 animate-in fade-in zoom-in-95 duration-150"
+        >
+          <div className="flex items-center justify-between pb-2 border-b border-stone-100">
+            <span className="font-bold text-stone-900 flex items-center gap-1.5 text-sm">
+              <SlidersHorizontal className="w-4 h-4 text-stone-700" />
+              View &amp; Display Settings
+            </span>
+            <button
+              type="button"
+              onClick={() => setShowViewMenu(false)}
+              className="p-1 text-stone-400 hover:text-stone-700 hover:bg-stone-100 rounded-lg transition-colors"
+            >
+              <X className="w-4 h-4" />
+            </button>
+          </div>
+
+          {/* Frame & Display Mode */}
+          <div className="space-y-1.5">
+            <label className="text-[11px] font-bold text-stone-500 uppercase tracking-wider">
+              Display Mode
+            </label>
+            <div className="grid grid-cols-2 gap-1.5 bg-stone-50 p-1 rounded-xl border border-stone-200/70">
+              <button
+                type="button"
+                onClick={() => {
+                  setAccessibleView(false);
+                  setViewportMode('desktop');
+                  setZoomMode('fit');
+                  setZoom(1);
+                }}
+                className={`py-1.5 px-2 rounded-lg font-semibold flex items-center justify-center gap-1.5 transition-all ${
+                  !accessibleView && viewportMode === 'desktop'
+                    ? 'bg-white text-stone-900 shadow-2xs'
+                    : 'text-stone-500 hover:text-stone-800'
+                }`}
+              >
+                <Monitor className="w-3.5 h-3.5" /> Fluid Canvas
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  setAccessibleView(false);
+                  setViewportMode('mobile');
+                  setZoomMode('fit');
+                  setZoom(1);
+                }}
+                className={`py-1.5 px-2 rounded-lg font-semibold flex items-center justify-center gap-1.5 transition-all ${
+                  !accessibleView && viewportMode === 'mobile'
+                    ? 'bg-white text-stone-900 shadow-2xs'
+                    : 'text-stone-500 hover:text-stone-800'
+                }`}
+              >
+                <Smartphone className="w-3.5 h-3.5" /> Phone Frame
+              </button>
+            </div>
+          </div>
+
+          {/* Zoom Controls */}
+          <div className="space-y-1.5">
+            <div className="flex items-center justify-between">
+              <label className="text-[11px] font-bold text-stone-500 uppercase tracking-wider">
+                Zoom &amp; Scale
+              </label>
+              <span className="font-mono text-[10px] text-stone-500 font-semibold">
+                {zoomMode === 'fit' ? 'Auto Fit' : `${Math.round(zoom * 100)}%`}
+              </span>
+            </div>
+            <div className="flex items-center gap-1 bg-stone-50 p-1 rounded-xl border border-stone-200/70">
+              <button
+                type="button"
+                onClick={handleResetFit}
+                className={`flex-1 py-1 px-2 rounded-lg font-semibold transition-all ${
+                  zoomMode === 'fit' ? 'bg-white text-stone-900 shadow-2xs' : 'text-stone-500 hover:text-stone-800'
+                }`}
+              >
+                Fit
+              </button>
+              <button
+                type="button"
+                onClick={handleZoomOut}
+                className="p-1.5 hover:bg-white text-stone-600 rounded-lg transition-colors"
+                title="Zoom out"
+              >
+                <ZoomOut className="w-3.5 h-3.5" />
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  setZoomMode('custom');
+                  setZoom(1);
+                }}
+                className={`flex-1 py-1 px-2 rounded-lg font-semibold transition-all ${
+                  zoomMode === 'custom' && zoom === 1
+                    ? 'bg-white text-stone-900 shadow-2xs'
+                    : 'text-stone-500 hover:text-stone-800'
+                }`}
+              >
+                100%
+              </button>
+              <button
+                type="button"
+                onClick={handleZoomIn}
+                className="p-1.5 hover:bg-white text-stone-600 rounded-lg transition-colors"
+                title="Zoom in"
+              >
+                <ZoomIn className="w-3.5 h-3.5" />
+              </button>
+            </div>
+          </div>
+
+          {/* Backdrop Mode */}
+          <div className="space-y-1.5">
+            <label className="text-[11px] font-bold text-stone-500 uppercase tracking-wider">
+              Canvas Backdrop
+            </label>
+            <div className="grid grid-cols-3 gap-1 bg-stone-50 p-1 rounded-xl border border-stone-200/70">
+              <button
+                type="button"
+                onClick={() => setBackdrop('light')}
+                className={`py-1.5 rounded-lg font-semibold transition-all ${
+                  backdrop === 'light' ? 'bg-white text-stone-900 shadow-2xs' : 'text-stone-500 hover:text-stone-800'
+                }`}
+              >
+                Light
+              </button>
+              <button
+                type="button"
+                onClick={() => setBackdrop('grid')}
+                className={`py-1.5 rounded-lg font-semibold transition-all ${
+                  backdrop === 'grid' ? 'bg-white text-stone-900 shadow-2xs' : 'text-stone-500 hover:text-stone-800'
+                }`}
+              >
+                Grid
+              </button>
+              <button
+                type="button"
+                onClick={() => setBackdrop('dark')}
+                className={`py-1.5 rounded-lg font-semibold transition-all ${
+                  backdrop === 'dark' ? 'bg-stone-900 text-white shadow-2xs' : 'text-stone-500 hover:text-stone-800'
+                }`}
+              >
+                Dark
+              </button>
+            </div>
+          </div>
+
+          {/* Accessibility & Testing Tools */}
+          <div className="pt-2 border-t border-stone-100 space-y-2">
+            <label className="text-[11px] font-bold text-stone-500 uppercase tracking-wider">
+              Accessibility &amp; Audits
+            </label>
+            
+            <div className="space-y-1.5">
+              <button
+                type="button"
+                onClick={() => {
+                  setAccessibleView(!accessibleView);
+                  setShowViewMenu(false);
+                }}
+                className={`w-full py-2 px-3 rounded-xl font-semibold flex items-center justify-between border transition-all ${
+                  accessibleView
+                    ? 'bg-emerald-50 border-emerald-300 text-emerald-900'
+                    : 'bg-stone-50 hover:bg-stone-100 border-stone-200 text-stone-700'
+                }`}
+              >
+                <div className="flex items-center gap-2">
+                  <FileText className="w-3.5 h-3.5" />
+                  <span>Text-Only Fallback View</span>
+                </div>
+                <span className="text-[10px] font-mono text-stone-400">
+                  {accessibleView ? 'ON' : 'OFF'}
+                </span>
+              </button>
+
+              {onOpenContrastModal && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    setShowViewMenu(false);
+                    onOpenContrastModal();
+                  }}
+                  className="w-full py-2 px-3 rounded-xl font-semibold flex items-center justify-between bg-emerald-50/70 hover:bg-emerald-100/80 border border-emerald-200/80 text-emerald-800 transition-colors"
+                >
+                  <div className="flex items-center gap-2">
+                    <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
+                    <span>WCAG AA Contrast Audit</span>
+                  </div>
+                  <span className="text-[10px] font-mono font-bold text-emerald-700">PASS</span>
+                </button>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ======================================================================= */}
+      {/* 3. SLIDE-IN EXPORT SETTINGS MENU PANEL                                  */}
+      {/* ======================================================================= */}
+      {showExportMenu && (
+        <div
+          id="canvas-export-settings-panel"
+          className="absolute right-3 top-[54px] z-30 w-84 bg-white/95 backdrop-blur-xl border border-stone-200/90 rounded-2xl shadow-xl p-4 text-xs font-sans space-y-4 animate-in fade-in zoom-in-95 duration-150"
+        >
+          <div className="flex items-center justify-between pb-2 border-b border-stone-100">
+            <span className="font-bold text-stone-900 flex items-center gap-1.5 text-sm">
+              <Download className="w-4 h-4 text-stone-700" />
+              Export &amp; Embed Settings
+            </span>
+            <button
+              type="button"
+              onClick={() => setShowExportMenu(false)}
+              className="p-1 text-stone-400 hover:text-stone-700 hover:bg-stone-100 rounded-lg transition-colors"
+            >
+              <X className="w-4 h-4" />
+            </button>
+          </div>
+
+          {/* Quick Downloads */}
+          <div className="space-y-1.5">
+            <label className="text-[11px] font-bold text-stone-500 uppercase tracking-wider">
+              Vector SVG Downloads
+            </label>
+            <div className="grid grid-cols-2 gap-1.5">
+              <button
+                type="button"
+                onClick={() => {
+                  onDownloadSvg('desktop');
+                  setShowExportMenu(false);
+                }}
+                className="p-2.5 bg-stone-50 hover:bg-stone-100 border border-stone-200 rounded-xl text-left transition-colors group"
+              >
+                <div className="font-semibold text-stone-900 group-hover:text-stone-950">Desktop SVG</div>
+                <div className="text-[10px] text-stone-500 font-mono">880px • Vector XML</div>
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  onDownloadSvg('mobile');
+                  setShowExportMenu(false);
+                }}
+                className="p-2.5 bg-stone-50 hover:bg-stone-100 border border-stone-200 rounded-xl text-left transition-colors group"
+              >
+                <div className="font-semibold text-stone-900 group-hover:text-stone-950">Mobile SVG</div>
+                <div className="text-[10px] text-stone-500 font-mono">400px • Mobile XML</div>
+              </button>
+            </div>
+          </div>
+
+          {/* Retina PNG Exports */}
+          <div className="space-y-1.5">
+            <label className="text-[11px] font-bold text-stone-500 uppercase tracking-wider">
+              Retina PNG Exports (@2x)
+            </label>
+            <div className="grid grid-cols-2 gap-1.5">
+              <button
+                type="button"
+                onClick={() => {
+                  onDownloadPng('desktop');
+                  setShowExportMenu(false);
+                }}
+                className="p-2.5 bg-stone-50 hover:bg-stone-100 border border-stone-200 rounded-xl text-left transition-colors group"
+              >
+                <div className="font-semibold text-stone-900 flex items-center gap-1">
+                  <span>Desktop PNG</span>
+                  <Sparkles className="w-3 h-3 text-amber-500" />
+                </div>
+                <div className="text-[10px] text-stone-500 font-mono">1760px Retina</div>
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  onDownloadPng('mobile');
+                  setShowExportMenu(false);
+                }}
+                className="p-2.5 bg-stone-50 hover:bg-stone-100 border border-stone-200 rounded-xl text-left transition-colors group"
+              >
+                <div className="font-semibold text-stone-900 flex items-center gap-1">
+                  <span>Mobile PNG</span>
+                  <Sparkles className="w-3 h-3 text-amber-500" />
+                </div>
+                <div className="text-[10px] text-stone-500 font-mono">800px Retina</div>
+              </button>
+            </div>
+          </div>
+
+          {/* GitHub README Embed Snippet */}
+          <div className="pt-2 border-t border-stone-100 space-y-2">
+            <div className="flex items-center justify-between">
+              <label className="text-[11px] font-bold text-stone-500 uppercase tracking-wider">
+                README Embed Snippet
+              </label>
+              <button
+                type="button"
+                onClick={copyMarkdownSnippet}
+                className="flex items-center gap-1 text-[11px] font-semibold text-stone-800 hover:text-stone-950 bg-stone-100 hover:bg-stone-200 px-2 py-0.5 rounded-lg transition-colors"
+              >
+                {mdCopied ? <Check className="w-3 h-3 text-emerald-600" /> : <Copy className="w-3 h-3" />}
+                <span>{mdCopied ? 'Copied' : 'Copy'}</span>
+              </button>
+            </div>
+
+            {/* Snippet format selector */}
+            <div className="grid grid-cols-3 gap-1 bg-stone-50 p-1 rounded-xl border border-stone-200/70 text-[10px]">
+              <button
+                type="button"
+                onClick={() => setSnippetMode('picture')}
+                className={`py-1 rounded-lg font-medium transition-all ${
+                  snippetMode === 'picture' ? 'bg-white text-stone-900 font-semibold shadow-2xs' : 'text-stone-500 hover:text-stone-800'
+                }`}
+              >
+                Responsive &lt;picture&gt;
+              </button>
+              <button
+                type="button"
+                onClick={() => setSnippetMode('desktop')}
+                className={`py-1 rounded-lg font-medium transition-all ${
+                  snippetMode === 'desktop' ? 'bg-white text-stone-900 font-semibold shadow-2xs' : 'text-stone-500 hover:text-stone-800'
+                }`}
+              >
+                Desktop MD
+              </button>
+              <button
+                type="button"
+                onClick={() => setSnippetMode('mobile')}
+                className={`py-1 rounded-lg font-medium transition-all ${
+                  snippetMode === 'mobile' ? 'bg-white text-stone-900 font-semibold shadow-2xs' : 'text-stone-500 hover:text-stone-800'
+                }`}
+              >
+                Mobile MD
+              </button>
+            </div>
+
+            <pre className="p-2.5 bg-stone-900 text-stone-200 rounded-xl text-[10px] font-mono overflow-x-auto whitespace-pre leading-relaxed select-all">
+              {getEmbedSnippet()}
+            </pre>
+          </div>
+        </div>
+      )}
+
+      {/* ======================================================================= */}
+      {/* 4. CANVAS STAGE / RENDER VIEW                                           */}
+      {/* ======================================================================= */}
       <div
-        className={`flex-1 overflow-y-auto overflow-x-hidden p-2 sm:p-5 flex items-start justify-center transition-colors ${
+        className={`flex-1 overflow-y-auto overflow-x-hidden p-3 sm:p-6 flex items-start justify-center transition-colors ${
           backdrop === 'light'
             ? 'bg-[#F9F9F8]'
             : backdrop === 'dark'
@@ -461,7 +662,7 @@ export const InfographicCanvas: React.FC<InfographicCanvasProps> = ({
       >
         {accessibleView ? (
           /* Accessible Semantic HTML Fallback View */
-          <div className="w-full max-w-3xl bg-white border border-stone-200 rounded-xl shadow-xs p-6 sm:p-8 font-sans text-stone-800">
+          <div className="w-full max-w-3xl bg-white border border-stone-200 rounded-2xl shadow-xs p-6 sm:p-8 font-sans text-stone-800">
             <div className="flex flex-wrap items-center justify-between gap-3 pb-4 mb-6 border-b border-stone-200">
               <div className="flex items-center gap-2">
                 <span className="px-2.5 py-1 bg-emerald-100 text-emerald-900 border border-emerald-300 rounded-full text-xs font-semibold flex items-center gap-1.5">
@@ -473,7 +674,7 @@ export const InfographicCanvas: React.FC<InfographicCanvasProps> = ({
               <button
                 type="button"
                 onClick={copyAccessibleSummary}
-                className="flex items-center gap-1.5 px-3 py-1.5 bg-stone-900 hover:bg-stone-800 text-white rounded-lg text-xs font-medium transition-colors shadow-2xs"
+                className="flex items-center gap-1.5 px-3 py-1.5 bg-stone-900 hover:bg-stone-800 text-white rounded-xl text-xs font-medium transition-colors shadow-2xs"
               >
                 {summaryCopied ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
                 <span>{summaryCopied ? 'Summary Copied' : 'Copy Text Summary'}</span>
@@ -502,7 +703,7 @@ export const InfographicCanvas: React.FC<InfographicCanvasProps> = ({
                       </h2>
                       <dl className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                         {sec.items.map((stat, sIdx) => (
-                          <div key={sIdx} className="p-3 bg-stone-50 border border-stone-200 rounded-lg">
+                          <div key={sIdx} className="p-3 bg-stone-50 border border-stone-200 rounded-xl">
                             <dt className="text-xs font-medium text-stone-500">{stat.label}</dt>
                             <dd className="text-xl font-bold text-stone-900 mt-1">{stat.value}</dd>
                           </div>
@@ -519,11 +720,11 @@ export const InfographicCanvas: React.FC<InfographicCanvasProps> = ({
                         {sec.problemTitle && sec.solutionTitle ? `${sec.problemTitle} & ${sec.solutionTitle}` : 'Challenge & Solution'}
                       </h2>
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <div className="p-4 bg-amber-50/60 border border-amber-200 rounded-lg">
+                        <div className="p-4 bg-amber-50/60 border border-amber-200 rounded-xl">
                           <h3 className="text-xs font-bold uppercase tracking-wider text-amber-900 mb-1">{sec.problemTitle || 'The Problem'}</h3>
                           <p className="text-sm text-stone-800 leading-relaxed">{sec.problem}</p>
                         </div>
-                        <div className="p-4 bg-emerald-50/60 border border-emerald-200 rounded-lg">
+                        <div className="p-4 bg-emerald-50/60 border border-emerald-200 rounded-xl">
                           <h3 className="text-xs font-bold uppercase tracking-wider text-emerald-900 mb-1">{sec.solutionTitle || 'The Solution'}</h3>
                           <p className="text-sm text-stone-800 leading-relaxed">{sec.solution}</p>
                         </div>
@@ -538,7 +739,7 @@ export const InfographicCanvas: React.FC<InfographicCanvasProps> = ({
                       <h2 className="text-lg font-semibold text-stone-900">{sec.title || 'Core Features'}</h2>
                       <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3 list-none p-0">
                         {sec.items.map((feat, fIdx) => (
-                          <li key={fIdx} className="p-3 bg-stone-50 border border-stone-200 rounded-lg space-y-1">
+                          <li key={fIdx} className="p-3 bg-stone-50 border border-stone-200 rounded-xl space-y-1">
                             <strong className="text-sm font-semibold text-stone-900 block">{feat.title}</strong>
                             <p className="text-xs text-stone-600 leading-relaxed">{feat.description}</p>
                           </li>
@@ -557,7 +758,7 @@ export const InfographicCanvas: React.FC<InfographicCanvasProps> = ({
                       </h2>
                       <ul className="flex flex-wrap gap-2 list-none p-0">
                         {sec.items.map((tech, tIdx) => (
-                          <li key={tIdx} className="px-3 py-1 bg-stone-100 border border-stone-200 rounded-md text-xs font-mono text-stone-800 font-medium">
+                          <li key={tIdx} className="px-3 py-1 bg-stone-100 border border-stone-200 rounded-lg text-xs font-mono text-stone-800 font-medium">
                             {tech}
                           </li>
                         ))}
@@ -620,7 +821,7 @@ export const InfographicCanvas: React.FC<InfographicCanvasProps> = ({
                 if (sec.type === 'callout') {
                   return (
                     <section key={sec.id || idx} className="space-y-2 pt-4 border-t border-stone-100" aria-label="Key Highlight">
-                      <blockquote className="p-4 bg-stone-50 border-l-4 border-stone-400 rounded-r-lg space-y-1">
+                      <blockquote className="p-4 bg-stone-50 border-l-4 border-stone-400 rounded-r-xl space-y-1">
                         <p className="text-sm italic text-stone-800">"{sec.text}"</p>
                         {sec.author && <cite className="text-xs text-stone-500 font-medium block not-italic">— {sec.author}</cite>}
                       </blockquote>
@@ -633,7 +834,7 @@ export const InfographicCanvas: React.FC<InfographicCanvasProps> = ({
             </article>
           </div>
         ) : viewportMode === 'desktop' ? (
-          /* Desktop / Fluid Viewport: Constrained to 100% width, absolutely no horizontal scrolling */
+          /* Desktop / Fluid Viewport */
           <div className="w-full max-w-full flex justify-center py-1">
             <svg className="hidden absolute" aria-hidden="true" width="0" height="0">
               <defs>
@@ -663,19 +864,17 @@ export const InfographicCanvas: React.FC<InfographicCanvasProps> = ({
                       filter: colorBlindness !== 'normal' ? 'url(#cb-filter)' : undefined
                     }
               }
-              className="w-full max-w-full transition-all duration-150 outline-hidden focus-visible:ring-2 focus-visible:ring-stone-400 focus-visible:rounded-xl [&_svg]:w-full [&_svg]:max-w-full [&_svg]:h-auto [&_svg]:block [&_svg]:shadow-xs"
+              className="w-full max-w-full transition-all duration-150 outline-hidden focus-visible:ring-2 focus-visible:ring-stone-400 focus-visible:rounded-2xl [&_svg]:w-full [&_svg]:max-w-full [&_svg]:h-auto [&_svg]:block [&_svg]:shadow-xs"
               dangerouslySetInnerHTML={{ __html: activeSvg }}
             />
           </div>
         ) : (
-          /* Mobile Phone Portrait Simulation: Renders the genuine 400px mobile SVG layout */
+          /* Mobile Phone Portrait Simulation */
           <div className="w-full max-w-[390px] sm:max-w-[420px] mx-auto my-2 shrink-0">
-            {/* Minimalist Scandinavian Phone Chasis */}
-            <div className="bg-stone-900 border border-stone-800 shadow-xl rounded-[36px] p-2.5 overflow-hidden flex flex-col text-stone-300">
+            <div className="bg-stone-900 border border-stone-800 shadow-2xl rounded-[40px] p-2.5 overflow-hidden flex flex-col text-stone-300">
               {/* Phone Status Bar */}
-              <div className="px-3 pt-1 pb-1.5 flex items-center justify-between text-stone-400 font-sans text-[11px] select-none">
+              <div className="px-4 pt-1.5 pb-2 flex items-center justify-between text-stone-400 font-sans text-[11px] select-none">
                 <span className="font-semibold text-white">09:41</span>
-                {/* Minimal Dynamic Island / Camera */}
                 <div className="w-20 h-4 bg-stone-950 rounded-full flex items-center justify-center gap-2">
                   <div className="w-2 h-2 rounded-full bg-stone-800" />
                   <div className="w-1.5 h-1.5 rounded-full bg-emerald-500/80" />
@@ -687,7 +886,7 @@ export const InfographicCanvas: React.FC<InfographicCanvasProps> = ({
               </div>
 
               {/* GitHub App / Mobile Browser URL bar */}
-              <div className="bg-stone-950/80 rounded-t-xl px-3 py-1.5 border border-stone-800/80 flex items-center justify-between text-[11px] text-stone-400">
+              <div className="bg-stone-950/80 rounded-t-2xl px-3.5 py-1.5 border border-stone-800/80 flex items-center justify-between text-[11px] text-stone-400">
                 <div className="truncate flex items-center gap-1 text-[10px]">
                   <span className="text-stone-500">github.com/</span>
                   <span className="text-stone-200 font-medium">project</span>
@@ -698,8 +897,8 @@ export const InfographicCanvas: React.FC<InfographicCanvasProps> = ({
                 </span>
               </div>
 
-              {/* Phone Content Screen: Displays genuine 400px mobile layout with 2x2 stats, stacked problem/solution, 1-col features */}
-              <div className="bg-white rounded-b-xl p-2.5 max-h-[620px] overflow-y-auto overflow-x-hidden border-x border-b border-stone-800/80">
+              {/* Phone Content Screen */}
+              <div className="bg-white rounded-b-2xl p-2.5 max-h-[620px] overflow-y-auto overflow-x-hidden border-x border-b border-stone-800/80">
                 <div className="mb-2 pb-1.5 border-b border-stone-100 flex items-center justify-between text-[10px] text-stone-500 font-sans">
                   <span className="flex items-center gap-1 font-medium text-stone-700">
                     <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
@@ -708,7 +907,6 @@ export const InfographicCanvas: React.FC<InfographicCanvasProps> = ({
                   <span className="text-stone-400 font-mono">1:1 Native Scale</span>
                 </div>
 
-                {/* SVG rendered inside mobile phone with true mobile layout */}
                 <div
                   style={{ filter: colorBlindness !== 'normal' ? 'url(#cb-filter)' : undefined }}
                   className="w-full max-w-full overflow-hidden [&_svg]:w-full [&_svg]:max-w-full [&_svg]:h-auto [&_svg]:block"
@@ -721,82 +919,13 @@ export const InfographicCanvas: React.FC<InfographicCanvasProps> = ({
               </div>
 
               {/* Phone Home Bar */}
-              <div className="pt-2 pb-0.5 flex justify-center">
+              <div className="pt-2.5 pb-1 flex justify-center">
                 <div className="w-32 h-1 bg-stone-700 rounded-full" />
               </div>
             </div>
           </div>
         )}
       </div>
-
-      {/* Quick Markdown & Responsive Embed snippet bar */}
-      <div className="px-3.5 py-2.5 border-t border-stone-200 bg-stone-50/90 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs">
-        <div className="flex items-center gap-2 text-stone-600 font-mono text-[11px] truncate max-w-full">
-          <div className="flex items-center bg-white border border-stone-200 rounded-md p-0.5 shrink-0 font-sans">
-            <button
-              onClick={() => setSnippetMode('picture')}
-              className={`px-2 py-0.5 rounded text-[10px] font-medium transition-colors ${
-                snippetMode === 'picture'
-                  ? 'bg-stone-900 text-white'
-                  : 'text-stone-600 hover:text-stone-900'
-              }`}
-              title="GitHub & Web Responsive <picture> tag: Auto-serves mobile SVG on phones and desktop SVG on monitors"
-            >
-              Responsive &lt;picture&gt;
-            </button>
-            <button
-              onClick={() => setSnippetMode('desktop')}
-              className={`px-2 py-0.5 rounded text-[10px] font-medium transition-colors ${
-                snippetMode === 'desktop'
-                  ? 'bg-stone-900 text-white'
-                  : 'text-stone-600 hover:text-stone-900'
-              }`}
-              title="Standard single image markdown"
-            >
-              Desktop MD
-            </button>
-            <button
-              onClick={() => setSnippetMode('mobile')}
-              className={`px-2 py-0.5 rounded text-[10px] font-medium transition-colors ${
-                snippetMode === 'mobile'
-                  ? 'bg-stone-900 text-white'
-                  : 'text-stone-600 hover:text-stone-900'
-              }`}
-              title="Mobile single image markdown"
-            >
-              Mobile MD
-            </button>
-          </div>
-
-          <code className="bg-white px-2 py-0.5 border border-stone-200 rounded text-stone-800 select-all truncate max-w-xs sm:max-w-md">
-            {snippetMode === 'picture'
-              ? '<picture><source media="(max-width: 600px)" srcset="./infographic-mobile.svg"><img alt="Infographic" src="./infographic.svg"></picture>'
-              : snippetMode === 'mobile'
-              ? '[![Infographic](./infographic-mobile.svg)](https://github.com/)'
-              : '[![Infographic](./infographic.svg)](https://github.com/)'}
-          </code>
-        </div>
-
-        <div className="flex items-center gap-2 shrink-0 w-full sm:w-auto justify-end">
-          <button
-            onClick={copyMarkdownSnippet}
-            className="min-h-[34px] flex items-center gap-1.5 text-xs font-medium px-2.5 py-1 bg-white border border-stone-200 hover:bg-stone-50 rounded-lg text-stone-700 shadow-2xs transition-colors"
-          >
-            {mdCopied ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5 text-stone-400" />}
-            <span>{mdCopied ? 'Copied Snippet' : 'Copy Embed Snippet'}</span>
-          </button>
-
-          <button
-            onClick={() => onDownloadPng(activeLayout)}
-            className="min-h-[34px] flex items-center gap-1.5 text-xs font-medium px-2.5 py-1 bg-white border border-stone-200 hover:bg-stone-50 rounded-lg text-stone-700 shadow-2xs transition-colors"
-            title={`Rasterize ${activeLayout} SVG to high-res Retina PNG`}
-          >
-            <Sparkles className="w-3.5 h-3.5 text-amber-600" />
-            <span>Retina PNG ({activeLayout === 'mobile' ? 'Mobile' : 'Desktop'})</span>
-          </button>
-        </div>
-      </div>
     </div>
   );
 };
-
