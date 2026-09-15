@@ -1,0 +1,47 @@
+name: CCC Context
+
+on:
+  push:
+    branches: [main]
+
+  pull_request:
+
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  ccc:
+    name: Generate repository context
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install CCC
+        run: python -m pip install --upgrade ccc-contextcompiler
+
+      - name: Generate CCC context
+        run: ccc
+
+      - name: Verify CCC output
+        run: |
+          test -d .llm-context
+          test -n "$(find .llm-context -type f -print -quit)"
+          echo "CCC generated $(find .llm-context -type f | wc -l) artifact file(s)."
+
+      - name: Upload CCC context
+        uses: actions/upload-artifact@v4
+        with:
+          name: ccc-context-${{ github.sha }}
+          path: .llm-context/
+          if-no-files-found: error
+          retention-days: 7
