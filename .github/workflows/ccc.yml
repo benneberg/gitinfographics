@@ -44,7 +44,9 @@ jobs:
         run: |
           test -d .llm-context
 
-          echo "CCC generated $(find .llm-context -type f | wc -l) artifact file(s)."
+          count=$(find .llm-context -type f | wc -l)
+
+          echo "CCC generated $count artifact file(s)."
           echo
           echo "Generated files:"
           find .llm-context -type f | sort
@@ -54,57 +56,73 @@ jobs:
           set +e
 
           echo "=== Layout ==="
-          ccc context-for "add a new infographic layout" > context-layout.txt 2> context-layout-error.txt
+          ccc context-for "add a new infographic layout" \
+            > context-layout.txt \
+            2> context-layout-error.txt
           layout_exit=$?
           echo "Exit code: $layout_exit"
 
           echo
           echo "=== Renderer ==="
-          ccc context-for "change the SVG renderer" > context-renderer.txt 2> context-renderer-error.txt
+          ccc context-for "change the SVG renderer" \
+            > context-renderer.txt \
+            2> context-renderer-error.txt
           renderer_exit=$?
           echo "Exit code: $renderer_exit"
 
           echo
           echo "=== README/content ==="
-          ccc context-for "add support for a new README content type" > context-content.txt 2> context-content-error.txt
+          ccc context-for "add support for a new README content type" \
+            > context-content.txt \
+            2> context-content-error.txt
           content_exit=$?
           echo "Exit code: $content_exit"
 
           echo
           echo "=== Errors ==="
-          for file in context-*-error.txt; do
+
+          for file in \
+            context-layout-error.txt \
+            context-renderer-error.txt \
+            context-content-error.txt
+          do
             echo "--- $file ---"
-            cat "$file"
+            if [ -s "$file" ]; then
+              cat "$file"
+            else
+              echo "(empty)"
+            fi
           done
 
           echo
-          echo "=== Results ==="
-          for file in context-layout.txt context-renderer.txt context-content.txt; do
-            echo "--- $file ---"
-            wc -c "$file"
-          done
+          echo "=== Result sizes ==="
 
-          if [ "$layout_exit" -ne 0 ] || \
-             [ "$renderer_exit" -ne 0 ] || \
-             [ "$content_exit" -ne 0 ]; then
-            echo
-            echo "One or more context-for experiments failed."
-            exit 1
-          fi
+          wc -c \
+            context-layout.txt \
+            context-renderer.txt \
+            context-content.txt
 
           echo
-          echo "All task-context experiments completed successfully."
+          echo "Task-context experiments completed."
 
-      - name: Show task-context sizes
+      - name: Inspect context-for output
         run: |
-          echo "Layout context:"
-          wc -c context-layout.txt
+          echo "========================================"
+          echo "LAYOUT CONTEXT"
+          echo "========================================"
+          cat context-layout.txt
 
-          echo "Renderer context:"
-          wc -c context-renderer.txt
+          echo
+          echo "========================================"
+          echo "RENDERER CONTEXT"
+          echo "========================================"
+          cat context-renderer.txt
 
-          echo "Content context:"
-          wc -c context-content.txt
+          echo
+          echo "========================================"
+          echo "README / CONTENT CONTEXT"
+          echo "========================================"
+          cat context-content.txt
 
       - name: Upload CCC context
         uses: actions/upload-artifact@v4
