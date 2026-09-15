@@ -29,7 +29,22 @@ jobs:
         run: python -m pip install --upgrade ccc-contextcompiler
 
       - name: Generate CCC context
-        run: ccc
+        run: |
+          echo "=== CCC version ==="
+          ccc --version || true
+
+          echo "=== CCC help ==="
+          ccc --help
+
+          echo "=== Running CCC ==="
+          ccc
+
+          echo "=== Repository root ==="
+          pwd
+          ls -la
+
+          echo "=== Generated files ==="
+          find . -maxdepth 4 -type f | sort
 
       - name: Verify CCC output
         run: |
@@ -37,10 +52,4 @@ jobs:
           test -n "$(find .llm-context -type f -print -quit)"
           echo "CCC generated $(find .llm-context -type f | wc -l) artifact file(s)."
 
-      - name: Upload CCC context
-        uses: actions/upload-artifact@v4
-        with:
-          name: ccc-context-${{ github.sha }}
-          path: .llm-context/
-          if-no-files-found: error
-          retention-days: 7
+     
