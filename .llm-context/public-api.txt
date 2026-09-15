@@ -1,0 +1,317 @@
+# Public API (function signatures)
+# Generated: 2026-09-15 21:19 UTC
+
+
+## src/renderer/themes/contrast.ts
+  function hexToRgb(hex: string): [number, number, number]
+  function getRelativeLuminance(rgb: [number, number, number]): number
+  function getContrastRatio(colorA: string, colorB: string): number
+  function evaluateContrast(fg: string, bg: string): ContrastResult
+  function auditTheme(theme: {
+  id: string;
+  name: string;
+  colors: {
+    background: string;
+    card: string;
+    text: string;
+    textSecondary: string;
+    accent: string;
+  };
+}): ThemeContrastAudit
+
+## src/ui/haptics.ts
+  function triggerHaptic(duration: number = 12): void
+
+## src/ui/useOnlineStatus.ts
+  function useOnlineStatus()
+
+## src/ui/usePWAInstall.ts
+  function usePWAInstall()
+
+## src/engine/github.ts
+  function parseRepoUrl(input: string)
+  function fetchGitHubRepo(
+  input: string,
+  token?: string
+): Promise<
+  function fetchGitHubRepoData(
+  owner: string,
+  repo: string,
+  token?: string
+): Promise<
+
+## src/engine/parser.ts
+  function parseMD(text: string): ParsedDoc
+  function parseTable(rows: string[]): TableData | null
+  function smartTrunc(text: string, max: number): string
+
+## src/engine/specBuilder.ts
+  function detectSmartLayout(
+  doc: ParsedDoc,
+  ghMeta?: GitHubMeta | null,
+  sections?: SpecSection[]
+): SmartRecommendation
+  function buildRuleSpec(
+  doc: ParsedDoc,
+  vmapOrGhMeta?: VariantMap | GitHubMeta | null,
+  ghMetaOrVmap?: GitHubMeta | VariantMap | null
+): InfographicSpec
+  function mergeGHMeta(spec: InfographicSpec, ghMeta: GitHubMeta): InfographicSpec
+
+## src/engine/classifier.ts
+  function classifySec(
+  s: DocSection | (Partial<DocSection> & { title: string })
+
+## src/engine/icons.ts
+  function renderSvgIcon(
+  name: string,
+  options: IconOptions = {}
+): string
+  function renderIconPathGroup(
+  name: string,
+  x: number,
+  y: number,
+  options: IconOptions = {}
+): string
+  function getSectionIcon(secType: string): string
+  function getFeatureIcon(title: string, index: number = 0): string
+  function getMetricIcon(label: string, index: number = 0): string
+  function getTechColor(techName: string, fallbackColor: string = '#10B981'): string
+
+## src/engine/contrast.ts
+  function hexToRgb(hex: string)
+  function getRelativeLuminance(r: number, g: number, b: number): number
+  function getContrastRatio(hexForeground: string, hexBackground: string): number
+  function auditThemeContrast(theme: ThemeConfig): ThemeContrastAudit
+
+## src/engine/extractors.ts
+  function trunc(s: string, max: number): string
+  function cleanMarkdownText(s: string): string
+  function extractMetrics(text: string): MetricItem[]
+  function extractMetricsFromBadges(badges: BadgeItem[]): MetricItem[]
+  function splitFeat(text: string): FeatureItem
+  function extractTechAdvanced(doc: ParsedDoc): string[]
+
+## src/engine/qr.ts
+  function generateQRCodeSVG(
+  text: string,
+  x: number,
+  y: number,
+  options?: QROptions
+): string
+
+## src/engine/themes.ts
+  function getTheme(name?: string): ThemeConfig
+
+## src/engine/renderer.ts
+  function esc(s: string | number | null | undefined): string
+  function wrapT(text: string, maxChars: number): string[]
+  function generateAccessibleSummary(spec: InfographicSpec): string
+  function renderSVG(spec: InfographicSpec, tn?: string, options?: RenderOptions): string
+  function getSvgAnimationStyles(t: ThemeConfig): string
+  function renderDesktopSVG(spec: InfographicSpec, tn?: string, options?: RenderOptions): string
+  function renderMobileSVG(spec: InfographicSpec, tn?: string, options?: RenderOptions): string
+  function rHero(spec: InfographicSpec, t: ThemeConfig, y: number, options?: RenderOptions): RenderResult
+  function rStats(
+  s: { id: string; type: 'stats'; items: { value: string; label: string }[] },
+  t: ThemeConfig,
+  y: number,
+  options?: RenderOptions
+): RenderResult
+  function rPS(
+  s: {
+    id: string;
+    type: 'problem-solution';
+    problem: string;
+    solution: string;
+    problemTitle: string;
+    solutionTitle: string;
+  },
+  t: ThemeConfig,
+  y: number,
+  options?: RenderOptions
+): RenderResult
+  function rFeats(
+  s: {
+    id: string;
+    type: 'features';
+    title: string;
+    columns?: number;
+    items: { title: string; description: string }[];
+  },
+  t: ThemeConfig,
+  y: number,
+  options?: RenderOptions
+): RenderResult
+  function rTech(
+  s: { id: string; type: 'tech-stack'; title: string; items: string[] },
+  t: ThemeConfig,
+  y: number,
+  options?: RenderOptions
+): RenderResult
+  function rSteps(
+  s: {
+    id: string;
+    type: 'steps';
+    title: string;
+    items: { step: number; title: string; description: string }[];
+  },
+  t: ThemeConfig,
+  y: number,
+  options?: RenderOptions
+): RenderResult
+  function rCL(
+  s: {
+    id: string;
+    type: 'content-list';
+    title: string;
+    items: { title: string; description: string }[];
+  },
+  t: ThemeConfig,
+  y: number
+): RenderResult
+  function rCB(
+  s: { id: string; type: 'content-block'; title: string; text: string },
+  t: ThemeConfig,
+  y: number
+): RenderResult
+  function rTimeline(
+  s: { id: string; type: 'timeline'; title: string; items: { versionOrDate: string; title: string; description: string }[] },
+  t: ThemeConfig,
+  y: number
+): RenderResult
+  function rComparison(
+  s: { id: string; type: 'comparison'; title: string; headers: [string, string, string]; rows: { feature: string; us: string | boolean; others: string | boolean }[] },
+  t: ThemeConfig,
+  y: number
+): RenderResult
+  function rCallout(
+  s: { id: string; type: 'callout'; title?: string; text: string; author?: string; calloutType?: 'quote' | 'tip' | 'warning' | 'info' },
+  t: ThemeConfig,
+  y: number
+): RenderResult
+  function rFoot(t: ThemeConfig, y: number, options?: RenderOptions, spec?: InfographicSpec): RenderResult
+  function rHeroMobile(spec: InfographicSpec, t: ThemeConfig, y: number, options?: RenderOptions): RenderResult
+  function rStatsMobile(
+  s: { id: string; type: 'stats'; items: { value: string; label: string }[] },
+  t: ThemeConfig,
+  y: number,
+  options?: RenderOptions
+): RenderResult
+  function rPSMobile(
+  s: {
+    id: string;
+    type: 'problem-solution';
+    problem: string;
+    solution: string;
+    problemTitle: string;
+    solutionTitle: string;
+  },
+  t: ThemeConfig,
+  y: number,
+  options?: RenderOptions
+): RenderResult
+  function rFeatsMobile(
+  s: {
+    id: string;
+    type: 'features';
+    title: string;
+    items: { title: string; description: string }[];
+  },
+  t: ThemeConfig,
+  y: number,
+  options?: RenderOptions
+): RenderResult
+  function rTechMobile(
+  s: { id: string; type: 'tech-stack'; title: string; items: string[] },
+  t: ThemeConfig,
+  y: number,
+  options?: RenderOptions
+): RenderResult
+  function rStepsMobile(
+  s: {
+    id: string;
+    type: 'steps';
+    title: string;
+    items: { step: number; title: string; description: string }[];
+  },
+  t: ThemeConfig,
+  y: number,
+  options?: RenderOptions
+): RenderResult
+  function rCLMobile(
+  s: {
+    id: string;
+    type: 'content-list';
+    title: string;
+    items: { title: string; description: string }[];
+  },
+  t: ThemeConfig,
+  y: number
+): RenderResult
+  function rCBMobile(
+  s: { id: string; type: 'content-block'; title: string; text: string },
+  t: ThemeConfig,
+  y: number
+): RenderResult
+  function rTimelineMobile(
+  s: { id: string; type: 'timeline'; title: string; items: { versionOrDate: string; title: string; description: string }[] },
+  t: ThemeConfig,
+  y: number
+): RenderResult
+  function rComparisonMobile(
+  s: { id: string; type: 'comparison'; title: string; headers: [string, string, string]; rows: { feature: string; us: string | boolean; others: string | boolean }[] },
+  t: ThemeConfig,
+  y: number
+): RenderResult
+  function rCalloutMobile(
+  s: { id: string; type: 'callout'; title?: string; text: string; author?: string; calloutType?: 'quote' | 'tip' | 'warning' | 'info' },
+  t: ThemeConfig,
+  y: number
+): RenderResult
+  function rFootMobile(t: ThemeConfig, y: number, options?: RenderOptions, spec?: InfographicSpec): RenderResult
+
+## bin/cli.ts
+  function runCLI(argv: string[] = process.argv.slice(2)
+
+## src/components/ArchitectureModal.tsx
+  function parseMD(text: string): ParsedDoc;
+export function parseTable(rows: string[]): TableData | null;
+export function smartTrunc(text: string, max: number): string;
+
+// Highlights:
+// - HTML tag skipping for non-content blocks
+// - Early badge extraction (< 25 lines)
+// - Normalized code block languages & 40-line hard cap
+// - Table parsing defensive against malformed borders`
+    },
+  function classifySec(s: DocSection): SectionType;
+
+// Highlights:
+// - Title hits receive +4 boost over body matches
+// - Relative document position (0.0 to 1.0) biases problem, roadmap, license
+// - Code block presence biases tech-stack and getting-started
+// - Generic title penalty keeps 'overview' and 'readme' from hijacking types`
+    },
+  function extractMetrics(text: string): MetricItem[];
+export function extractMetricsFromBadges(badges: BadgeItem[]): MetricItem[];
+export function splitFeat(text: string): FeatureItem;
+export function extractTechAdvanced(doc: ParsedDoc): string[];
+
+// Highlights:
+// - Handles uptime, coverage, user counts, latency ranges, multipliers (3x faster)
+// - Mines package.json, requirements.txt, Dockerfiles inside code blocks
+// - Markdown checkbox & bold separator splitting for clean feature cards`
+    },
+  function buildRuleSpec(doc: ParsedDoc, vmap?: VariantMap, ghMeta?: GitHubMeta | null): InfographicSpec;
+export function mergeGHMeta(spec: InfographicSpec, ghMeta: GitHubMeta): InfographicSpec;
+
+// Highlights:
+// - Problem / Solution 2-column or content block fallback
+// - Variant-driven columns (2 or 3 for features, 3 or 4 for metrics)
+// - Seamless GitHub API metadata enrichment with deduplication`
+    },
+  function renderSVG(spec: InfographicSpec, themeName?: string): string;
+
+// Highlights:
+// - All sub-renderers (rHero, rStats, rPS, rFeats, rTech, rSteps, rCL, rCB, rFoot) return

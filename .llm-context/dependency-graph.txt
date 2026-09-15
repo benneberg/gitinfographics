@@ -1,0 +1,7 @@
+# Internal Dependency Graph
+# Generated: 2026-09-15 21:19 UTC
+
+## JavaScript/TypeScript Imports
+
+src/main.tsx
+  -> ./index.css

@@ -1,0 +1,837 @@
+{
+  "_meta": {
+    "generated": "2026-09-15 21:19 UTC",
+    "total_functions": 99,
+    "connected_functions": 76,
+    "depth": 2,
+    "note": "Shows which functions call which others (2-level depth). Only includes functions with at least one internal connection. Use with symbol-index.json to trace call paths."
+  },
+  "graph": {
+    "auditThemeContrast": {
+      "file": "src/engine/contrast.ts",
+      "line": 71,
+      "calls": [
+        "getContrastRatio"
+      ]
+    },
+    "buildRuleSpec": {
+      "file": "src/components/ArchitectureModal.tsx",
+      "line": 101,
+      "calls": [
+        "classifySec",
+        "extractMetrics",
+        "extractMetricsFromBadges",
+        "extractTechAdvanced",
+        "renderSVG",
+        "splitFeat",
+        "trunc"
+      ],
+      "called_by": [
+        "extractMetrics",
+        "extractMetricsFromBadges",
+        "extractTechAdvanced",
+        "for",
+        "if",
+        "runCLI",
+        "splitFeat"
+      ]
+    },
+    "classifySec": {
+      "file": "src/components/ArchitectureModal.tsx",
+      "line": 73,
+      "calls": [
+        "extractMetrics",
+        "extractMetricsFromBadges",
+        "extractTechAdvanced",
+        "splitFeat"
+      ],
+      "called_by": [
+        "buildRuleSpec",
+        "for",
+        "if",
+        "parseMD",
+        "parseTable",
+        "smartTrunc"
+      ]
+    },
+    "cleanMarkdownText": {
+      "file": "src/engine/extractors.ts",
+      "line": 11,
+      "called_by": [
+        "for",
+        "if",
+        "parseMD",
+        "splitFeat"
+      ]
+    },
+    "clearAll": {
+      "file": "src/storage/ProjectStorage.ts",
+      "line": 266,
+      "calls": [
+        "getStorage",
+        "removeItem"
+      ]
+    },
+    "closeBundle": {
+      "file": "vite.config.ts",
+      "line": 11,
+      "called_by": [
+        "githubPagesSpa"
+      ]
+    },
+    "constructor": {
+      "file": "src/ui/ErrorBoundary.tsx",
+      "line": 15,
+      "calls": [
+        "registerTheme"
+      ]
+    },
+    "deleteCustomTheme": {
+      "file": "src/renderer/themes/ThemeManager.ts",
+      "line": 356,
+      "calls": [
+        "setItem"
+      ]
+    },
+    "esc": {
+      "file": "src/engine/renderer.ts",
+      "line": 17,
+      "called_by": [
+        "for",
+        "generateAccessibleSummary",
+        "if",
+        "rFoot",
+        "rFootMobile",
+        "rHero",
+        "rHeroMobile",
+        "renderDesktopSVG",
+        "renderMobileSVG"
+      ]
+    },
+    "evaluateContrast": {
+      "file": "src/renderer/themes/contrast.ts",
+      "line": 66,
+      "calls": [
+        "getContrastRatio"
+      ]
+    },
+    "exportToSVG": {
+      "file": "src/export/CanvasExporter.ts",
+      "line": 124,
+      "calls": [
+        "scaleSVG"
+      ]
+    },
+    "extractMetrics": {
+      "file": "src/components/ArchitectureModal.tsx",
+      "line": 86,
+      "calls": [
+        "buildRuleSpec",
+        "mergeGHMeta"
+      ],
+      "called_by": [
+        "buildRuleSpec",
+        "classifySec",
+        "if"
+      ]
+    },
+    "extractMetricsFromBadges": {
+      "file": "src/components/ArchitectureModal.tsx",
+      "line": 87,
+      "calls": [
+        "buildRuleSpec",
+        "mergeGHMeta"
+      ],
+      "called_by": [
+        "buildRuleSpec",
+        "classifySec",
+        "if"
+      ]
+    },
+    "extractTechAdvanced": {
+      "file": "src/components/ArchitectureModal.tsx",
+      "line": 89,
+      "calls": [
+        "buildRuleSpec",
+        "mergeGHMeta"
+      ],
+      "called_by": [
+        "buildRuleSpec",
+        "classifySec"
+      ]
+    },
+    "fetchGitHubData": {
+      "file": "bin/cli.ts",
+      "line": 111,
+      "called_by": [
+        "for",
+        "if",
+        "runCLI"
+      ]
+    },
+    "fetchUrl": {
+      "file": "bin/cli.ts",
+      "line": 80,
+      "called_by": [
+        "if"
+      ]
+    },
+    "for": {
+      "file": "public/registerSW.js",
+      "line": 4,
+      "calls": [
+        "buildRuleSpec",
+        "classifySec",
+        "cleanMarkdownText",
+        "esc",
+        "fetchGitHubData",
+        "getFeatureIcon",
+        "getMetricIcon",
+        "getTechColor",
+        "parseMD",
+        "parseTable",
+        "rCB",
+        "rCBMobile",
+        "rCL",
+        "rCLMobile",
+        "rCallout",
+        "rCalloutMobile",
+        "rComparison",
+        "rComparisonMobile",
+        "rFeats",
+        "rFeatsMobile",
+        "rPS",
+        "rPSMobile",
+        "rStats",
+        "rStatsMobile",
+        "rSteps",
+        "rStepsMobile",
+        "rTech",
+        "rTechMobile",
+        "rTimeline",
+        "rTimelineMobile",
+        "renderSVG",
+        "trunc",
+        "unregister",
+        "wrapT"
+      ]
+    },
+    "formatNumber": {
+      "file": "src/engine/specBuilder.ts",
+      "line": 676,
+      "called_by": [
+        "if",
+        "mergeGHMeta"
+      ]
+    },
+    "generateAccessibleSummary": {
+      "file": "src/engine/renderer.ts",
+      "line": 53,
+      "calls": [
+        "esc"
+      ],
+      "called_by": [
+        "renderDesktopSVG",
+        "renderMobileSVG"
+      ]
+    },
+    "generateQRCodeSVG": {
+      "file": "src/engine/qr.ts",
+      "line": 14,
+      "called_by": [
+        "if",
+        "rFoot",
+        "rFootMobile"
+      ]
+    },
+    "getContrastRatio": {
+      "file": "src/engine/contrast.ts",
+      "line": 39,
+      "calls": [
+        "getRelativeLuminance",
+        "hexToRgb"
+      ],
+      "called_by": [
+        "auditThemeContrast",
+        "evaluateContrast"
+      ]
+    },
+    "getFeatureIcon": {
+      "file": "src/engine/icons.ts",
+      "line": 121,
+      "called_by": [
+        "for"
+      ]
+    },
+    "getMetricIcon": {
+      "file": "src/engine/icons.ts",
+      "line": 156,
+      "called_by": [
+        "for"
+      ]
+    },
+    "getRelativeLuminance": {
+      "file": "src/engine/contrast.ts",
+      "line": 28,
+      "called_by": [
+        "getContrastRatio"
+      ]
+    },
+    "getStorage": {
+      "file": "src/storage/ProjectStorage.ts",
+      "line": 54,
+      "calls": [
+        "removeItem",
+        "setItem"
+      ],
+      "called_by": [
+        "clearAll"
+      ]
+    },
+    "getSvgAnimationStyles": {
+      "file": "src/engine/renderer.ts",
+      "line": 95,
+      "called_by": [
+        "renderDesktopSVG",
+        "renderMobileSVG"
+      ]
+    },
+    "getTechColor": {
+      "file": "src/engine/icons.ts",
+      "line": 206,
+      "called_by": [
+        "for"
+      ]
+    },
+    "getTheme": {
+      "file": "src/engine/themes.ts",
+      "line": 242,
+      "called_by": [
+        "if",
+        "renderDesktopSVG",
+        "renderMobileSVG"
+      ]
+    },
+    "githubPagesSpa": {
+      "file": "vite.config.ts",
+      "line": 8,
+      "calls": [
+        "closeBundle"
+      ]
+    },
+    "hexToRgb": {
+      "file": "src/engine/contrast.ts",
+      "line": 6,
+      "called_by": [
+        "getContrastRatio"
+      ]
+    },
+    "if": {
+      "file": "public/sw.js",
+      "line": 16,
+      "calls": [
+        "buildRuleSpec",
+        "classifySec",
+        "cleanMarkdownText",
+        "esc",
+        "extractMetrics",
+        "extractMetricsFromBadges",
+        "fetchGitHubData",
+        "fetchUrl",
+        "formatNumber",
+        "generateQRCodeSVG",
+        "getTheme",
+        "mergeGHMeta",
+        "parseMD",
+        "parseTable",
+        "removeItem",
+        "renderMobileSVG",
+        "renderSVG",
+        "setItem",
+        "triggerHaptic",
+        "trunc",
+        "wrapT"
+      ]
+    },
+    "loadConfigFile": {
+      "file": "bin/cli.ts",
+      "line": 22,
+      "called_by": [
+        "runCLI"
+      ]
+    },
+    "mergeGHMeta": {
+      "file": "src/components/ArchitectureModal.tsx",
+      "line": 102,
+      "calls": [
+        "formatNumber",
+        "renderSVG"
+      ],
+      "called_by": [
+        "extractMetrics",
+        "extractMetricsFromBadges",
+        "extractTechAdvanced",
+        "if",
+        "splitFeat"
+      ]
+    },
+    "parseArgs": {
+      "file": "bin/cli.ts",
+      "line": 38,
+      "called_by": [
+        "runCLI"
+      ]
+    },
+    "parseMD": {
+      "file": "src/components/ArchitectureModal.tsx",
+      "line": 57,
+      "calls": [
+        "classifySec",
+        "cleanMarkdownText",
+        "parseTable"
+      ],
+      "called_by": [
+        "for",
+        "if",
+        "runCLI"
+      ]
+    },
+    "parseTable": {
+      "file": "src/components/ArchitectureModal.tsx",
+      "line": 58,
+      "calls": [
+        "classifySec"
+      ],
+      "called_by": [
+        "for",
+        "if",
+        "parseMD"
+      ]
+    },
+    "rCB": {
+      "file": "src/engine/renderer.ts",
+      "line": 885,
+      "called_by": [
+        "for",
+        "renderDesktopSVG",
+        "switch"
+      ]
+    },
+    "rCBMobile": {
+      "file": "src/engine/renderer.ts",
+      "line": 1568,
+      "called_by": [
+        "for",
+        "renderMobileSVG",
+        "switch"
+      ]
+    },
+    "rCL": {
+      "file": "src/engine/renderer.ts",
+      "line": 833,
+      "called_by": [
+        "for",
+        "renderDesktopSVG",
+        "switch"
+      ]
+    },
+    "rCLMobile": {
+      "file": "src/engine/renderer.ts",
+      "line": 1527,
+      "called_by": [
+        "for",
+        "renderMobileSVG",
+        "switch"
+      ]
+    },
+    "rCallout": {
+      "file": "src/engine/renderer.ts",
+      "line": 1022,
+      "called_by": [
+        "for",
+        "renderDesktopSVG",
+        "switch"
+      ]
+    },
+    "rCalloutMobile": {
+      "file": "src/engine/renderer.ts",
+      "line": 1687,
+      "called_by": [
+        "for",
+        "renderMobileSVG",
+        "switch"
+      ]
+    },
+    "rComparison": {
+      "file": "src/engine/renderer.ts",
+      "line": 954,
+      "called_by": [
+        "for",
+        "renderDesktopSVG",
+        "switch"
+      ]
+    },
+    "rComparisonMobile": {
+      "file": "src/engine/renderer.ts",
+      "line": 1637,
+      "called_by": [
+        "for",
+        "renderMobileSVG",
+        "switch"
+      ]
+    },
+    "rFeats": {
+      "file": "src/engine/renderer.ts",
+      "line": 626,
+      "called_by": [
+        "for",
+        "renderDesktopSVG",
+        "switch"
+      ]
+    },
+    "rFeatsMobile": {
+      "file": "src/engine/renderer.ts",
+      "line": 1361,
+      "called_by": [
+        "for",
+        "renderMobileSVG",
+        "switch"
+      ]
+    },
+    "rFoot": {
+      "file": "src/engine/renderer.ts",
+      "line": 1054,
+      "calls": [
+        "esc",
+        "generateQRCodeSVG",
+        "trunc"
+      ],
+      "called_by": [
+        "renderDesktopSVG"
+      ]
+    },
+    "rFootMobile": {
+      "file": "src/engine/renderer.ts",
+      "line": 1719,
+      "calls": [
+        "esc",
+        "generateQRCodeSVG"
+      ],
+      "called_by": [
+        "renderMobileSVG"
+      ]
+    },
+    "rHero": {
+      "file": "src/engine/renderer.ts",
+      "line": 367,
+      "calls": [
+        "esc",
+        "wrapT"
+      ],
+      "called_by": [
+        "renderDesktopSVG"
+      ]
+    },
+    "rHeroMobile": {
+      "file": "src/engine/renderer.ts",
+      "line": 1121,
+      "calls": [
+        "esc",
+        "wrapT"
+      ],
+      "called_by": [
+        "renderMobileSVG"
+      ]
+    },
+    "rPS": {
+      "file": "src/engine/renderer.ts",
+      "line": 524,
+      "called_by": [
+        "for",
+        "renderDesktopSVG",
+        "switch"
+      ]
+    },
+    "rPSMobile": {
+      "file": "src/engine/renderer.ts",
+      "line": 1270,
+      "called_by": [
+        "for",
+        "renderMobileSVG",
+        "switch"
+      ]
+    },
+    "rStats": {
+      "file": "src/engine/renderer.ts",
+      "line": 458,
+      "called_by": [
+        "for",
+        "renderDesktopSVG",
+        "switch"
+      ]
+    },
+    "rStatsMobile": {
+      "file": "src/engine/renderer.ts",
+      "line": 1208,
+      "called_by": [
+        "for",
+        "renderMobileSVG",
+        "switch"
+      ]
+    },
+    "rSteps": {
+      "file": "src/engine/renderer.ts",
+      "line": 771,
+      "called_by": [
+        "for",
+        "renderDesktopSVG",
+        "switch"
+      ]
+    },
+    "rStepsMobile": {
+      "file": "src/engine/renderer.ts",
+      "line": 1469,
+      "called_by": [
+        "for",
+        "renderMobileSVG",
+        "switch"
+      ]
+    },
+    "rTech": {
+      "file": "src/engine/renderer.ts",
+      "line": 731,
+      "called_by": [
+        "for",
+        "renderDesktopSVG",
+        "switch"
+      ]
+    },
+    "rTechMobile": {
+      "file": "src/engine/renderer.ts",
+      "line": 1429,
+      "called_by": [
+        "for",
+        "renderMobileSVG",
+        "switch"
+      ]
+    },
+    "rTimeline": {
+      "file": "src/engine/renderer.ts",
+      "line": 909,
+      "called_by": [
+        "for",
+        "renderDesktopSVG",
+        "switch"
+      ]
+    },
+    "rTimelineMobile": {
+      "file": "src/engine/renderer.ts",
+      "line": 1592,
+      "called_by": [
+        "for",
+        "renderMobileSVG",
+        "switch"
+      ]
+    },
+    "registerTheme": {
+      "file": "src/renderer/themes/ThemeManager.ts",
+      "line": 253,
+      "called_by": [
+        "constructor"
+      ]
+    },
+    "removeItem": {
+      "file": "src/storage/ProjectStorage.ts",
+      "line": 47,
+      "called_by": [
+        "clearAll",
+        "getStorage",
+        "if"
+      ]
+    },
+    "renderDesktopSVG": {
+      "file": "src/engine/renderer.ts",
+      "line": 140,
+      "calls": [
+        "esc",
+        "generateAccessibleSummary",
+        "getSvgAnimationStyles",
+        "getTheme",
+        "rCB",
+        "rCL",
+        "rCallout",
+        "rComparison",
+        "rFeats",
+        "rFoot",
+        "rHero",
+        "rPS",
+        "rStats",
+        "rSteps",
+        "rTech",
+        "rTimeline"
+      ],
+      "called_by": [
+        "renderSVG"
+      ]
+    },
+    "renderMobileSVG": {
+      "file": "src/engine/renderer.ts",
+      "line": 259,
+      "calls": [
+        "esc",
+        "generateAccessibleSummary",
+        "getSvgAnimationStyles",
+        "getTheme",
+        "rCBMobile",
+        "rCLMobile",
+        "rCalloutMobile",
+        "rComparisonMobile",
+        "rFeatsMobile",
+        "rFootMobile",
+        "rHeroMobile",
+        "rPSMobile",
+        "rStatsMobile",
+        "rStepsMobile",
+        "rTechMobile",
+        "rTimelineMobile"
+      ],
+      "called_by": [
+        "if",
+        "renderSVG"
+      ]
+    },
+    "renderSVG": {
+      "file": "src/components/ArchitectureModal.tsx",
+      "line": 114,
+      "calls": [
+        "renderDesktopSVG",
+        "renderMobileSVG"
+      ],
+      "called_by": [
+        "buildRuleSpec",
+        "for",
+        "if",
+        "mergeGHMeta",
+        "runCLI"
+      ]
+    },
+    "runCLI": {
+      "file": "bin/cli.ts",
+      "line": 148,
+      "calls": [
+        "buildRuleSpec",
+        "fetchGitHubData",
+        "loadConfigFile",
+        "parseArgs",
+        "parseMD",
+        "renderSVG"
+      ]
+    },
+    "saveCustomTheme": {
+      "file": "src/renderer/themes/ThemeManager.ts",
+      "line": 339,
+      "calls": [
+        "setItem"
+      ]
+    },
+    "scaleSVG": {
+      "file": "src/export/CanvasExporter.ts",
+      "line": 55,
+      "called_by": [
+        "exportToSVG"
+      ]
+    },
+    "setItem": {
+      "file": "src/storage/ProjectStorage.ts",
+      "line": 44,
+      "called_by": [
+        "deleteCustomTheme",
+        "getStorage",
+        "if",
+        "saveCustomTheme"
+      ]
+    },
+    "smartTrunc": {
+      "file": "src/components/ArchitectureModal.tsx",
+      "line": 59,
+      "calls": [
+        "classifySec"
+      ]
+    },
+    "splitFeat": {
+      "file": "src/components/ArchitectureModal.tsx",
+      "line": 88,
+      "calls": [
+        "buildRuleSpec",
+        "cleanMarkdownText",
+        "mergeGHMeta",
+        "trunc"
+      ],
+      "called_by": [
+        "buildRuleSpec",
+        "classifySec"
+      ]
+    },
+    "switch": {
+      "file": "src/components/GroundingModal.tsx",
+      "line": 40,
+      "calls": [
+        "rCB",
+        "rCBMobile",
+        "rCL",
+        "rCLMobile",
+        "rCallout",
+        "rCalloutMobile",
+        "rComparison",
+        "rComparisonMobile",
+        "rFeats",
+        "rFeatsMobile",
+        "rPS",
+        "rPSMobile",
+        "rStats",
+        "rStatsMobile",
+        "rSteps",
+        "rStepsMobile",
+        "rTech",
+        "rTechMobile",
+        "rTimeline",
+        "rTimelineMobile"
+      ]
+    },
+    "triggerHaptic": {
+      "file": "src/ui/haptics.ts",
+      "line": 5,
+      "called_by": [
+        "if"
+      ]
+    },
+    "trunc": {
+      "file": "src/engine/extractors.ts",
+      "line": 3,
+      "called_by": [
+        "buildRuleSpec",
+        "for",
+        "if",
+        "rFoot",
+        "splitFeat"
+      ]
+    },
+    "unregister": {
+      "file": "src/ui/KeyboardShortcuts.ts",
+      "line": 115,
+      "called_by": [
+        "for"
+      ]
+    },
+    "wrapT": {
+      "file": "src/engine/renderer.ts",
+      "line": 27,
+      "called_by": [
+        "for",
+        "if",
+        "rHero",
+        "rHeroMobile"
+      ]
+    }
+  }
+}

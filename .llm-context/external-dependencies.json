@@ -1,0 +1,78 @@
+{
+  "service": "gitinfographics",
+  "repository": "https://github.com/benneberg/gitinfographics",
+  "exposes": {
+    "api": [],
+    "events": [],
+    "types": [
+      "BadgeItem",
+      "CodeBlock",
+      "ColorBlindnessType",
+      "ComparisonRow",
+      "ContentListItem",
+      "ContrastAuditItem",
+      "ContrastResult",
+      "DensityConfig",
+      "DocSection",
+      "ExportFormat",
+      "ExportOptions",
+      "FeatureItem",
+      "FormatConfig",
+      "GenerationRecord",
+      "GitHubMeta",
+      "GroundingMetrics",
+      "IconOptions",
+      "ImageItem",
+      "InfographicSpec",
+      "LogoConfig",
+      "MetricItem",
+      "MobileTab",
+      "NestedListItem",
+      "ParsedDoc",
+      "Project",
+      "QROptions",
+      "RenderOptions",
+      "RenderResult",
+      "SampleReadme",
+      "SectionSource",
+      "SectionType",
+      "Shortcut",
+      "SmartRecommendation",
+      "SpecSection",
+      "StepItem",
+      "TableData",
+      "Theme",
+      "ThemeColors",
+      "ThemeConfig",
+      "ThemeContrastAudit",
+      "ThemeTypography",
+      "TimelineItem",
+      "ToastMessage",
+      "VariantMap",
+      "VisualDensity"
+    ]
+  },
+  "depends_on": {
+    "services": [
+      "api.github.com",
+      "raw.githubusercontent.com"
+    ],
+    "apis_consumed": [
+      "GET https://api.github.com/repos/${owner}/${repo}",
+      "GET https://api.github.com/repos/${owner}/${repo}/readme",
+      "GET https://raw.githubusercontent.com/${owner}/${repo}/${b}/README.md"
+    ],
+    "databases": [],
+    "message_queues": [],
+    "external_apis": [
+      "OpenAI"
+    ]
+  },
+  "tags": [
+    "frontend",
+    "javascript",
+    "typescript",
+    "ui"
+  ],
+  "detected_at": "2026-09-15 21:19 UTC"
+}

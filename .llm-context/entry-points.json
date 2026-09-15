@@ -1,0 +1,10 @@
+{
+  "main_files": [
+    "src/engine/index.ts"
+  ],
+  "server_files": [],
+  "cli_files": [
+    "bin/cli.ts"
+  ],
+  "test_suites": []
+}

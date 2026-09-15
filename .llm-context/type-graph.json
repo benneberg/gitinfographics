@@ -1,0 +1,331 @@
+{
+  "_meta": {
+    "generated": "2026-09-15 21:19 UTC",
+    "total_types": 45,
+    "note": "TypeScript type cross-reference. used_in lists files that explicitly import each type."
+  },
+  "types": {
+    "BadgeItem": {
+      "defined_in": "src/engine/types.ts",
+      "kind": "interface",
+      "used_in": [
+        "src/engine/extractors.ts"
+      ]
+    },
+    "CodeBlock": {
+      "defined_in": "src/engine/types.ts",
+      "kind": "interface",
+      "used_in": []
+    },
+    "ColorBlindnessType": {
+      "defined_in": "src/engine/contrast.ts",
+      "kind": "type",
+      "used_in": [
+        "src/App.tsx",
+        "src/components/ContrastModal.tsx",
+        "src/components/InfographicCanvas.tsx"
+      ]
+    },
+    "ComparisonRow": {
+      "defined_in": "src/engine/types.ts",
+      "kind": "interface",
+      "used_in": [
+        "src/engine/specBuilder.ts"
+      ]
+    },
+    "ContentListItem": {
+      "defined_in": "src/engine/types.ts",
+      "kind": "interface",
+      "used_in": []
+    },
+    "ContrastAuditItem": {
+      "defined_in": "src/engine/contrast.ts",
+      "kind": "interface",
+      "used_in": []
+    },
+    "ContrastResult": {
+      "defined_in": "src/renderer/themes/contrast.ts",
+      "kind": "interface",
+      "used_in": []
+    },
+    "DensityConfig": {
+      "defined_in": "src/engine/types.ts",
+      "kind": "interface",
+      "used_in": []
+    },
+    "DocSection": {
+      "defined_in": "src/engine/types.ts",
+      "kind": "interface",
+      "used_in": [
+        "src/engine/classifier.ts",
+        "src/engine/parser.ts",
+        "src/engine/specBuilder.ts"
+      ]
+    },
+    "ExportFormat": {
+      "defined_in": "src/export/CanvasExporter.ts",
+      "kind": "interface",
+      "used_in": []
+    },
+    "ExportOptions": {
+      "defined_in": "src/export/CanvasExporter.ts",
+      "kind": "interface",
+      "used_in": []
+    },
+    "FeatureItem": {
+      "defined_in": "src/engine/types.ts",
+      "kind": "interface",
+      "used_in": [
+        "src/engine/extractors.ts"
+      ]
+    },
+    "FormatConfig": {
+      "defined_in": "src/components/mobile/VisualFormatPicker.tsx",
+      "kind": "interface",
+      "used_in": []
+    },
+    "GenerationRecord": {
+      "defined_in": "src/storage/ProjectStorage.ts",
+      "kind": "interface",
+      "used_in": [
+        "src/components/ProjectsModal.tsx"
+      ]
+    },
+    "GitHubMeta": {
+      "defined_in": "src/engine/types.ts",
+      "kind": "interface",
+      "used_in": [
+        "bin/cli.ts",
+        "src/App.tsx",
+        "src/components/MarkdownEditor.tsx",
+        "src/components/mobile/FullScreenModalEditor.tsx",
+        "src/engine/github.ts",
+        "src/engine/samples.ts",
+        "src/engine/specBuilder.ts"
+      ]
+    },
+    "GroundingMetrics": {
+      "defined_in": "src/engine/types.ts",
+      "kind": "interface",
+      "used_in": [
+        "src/engine/specBuilder.ts"
+      ]
+    },
+    "IconOptions": {
+      "defined_in": "src/engine/icons.ts",
+      "kind": "interface",
+      "used_in": []
+    },
+    "ImageItem": {
+      "defined_in": "src/engine/types.ts",
+      "kind": "interface",
+      "used_in": []
+    },
+    "InfographicSpec": {
+      "defined_in": "src/engine/types.ts",
+      "kind": "interface",
+      "used_in": [
+        "bin/cli.ts",
+        "src/App.tsx",
+        "src/components/GroundingModal.tsx",
+        "src/components/InfographicCanvas.tsx",
+        "src/components/SectionControls.tsx",
+        "src/components/mobile/MobileExportSheet.tsx",
+        "src/engine/renderer.ts",
+        "src/engine/specBuilder.ts"
+      ]
+    },
+    "LogoConfig": {
+      "defined_in": "src/engine/types.ts",
+      "kind": "interface",
+      "used_in": [
+        "src/App.tsx",
+        "src/components/SectionControls.tsx"
+      ]
+    },
+    "MetricItem": {
+      "defined_in": "src/engine/types.ts",
+      "kind": "interface",
+      "used_in": [
+        "src/engine/extractors.ts",
+        "src/engine/specBuilder.ts"
+      ]
+    },
+    "MobileTab": {
+      "defined_in": "src/components/mobile/BottomNavigation.tsx",
+      "kind": "type",
+      "used_in": [
+        "src/App.tsx"
+      ]
+    },
+    "NestedListItem": {
+      "defined_in": "src/engine/types.ts",
+      "kind": "interface",
+      "used_in": []
+    },
+    "ParsedDoc": {
+      "defined_in": "src/engine/types.ts",
+      "kind": "interface",
+      "used_in": [
+        "src/components/MarkdownEditor.tsx",
+        "src/components/mobile/FullScreenModalEditor.tsx",
+        "src/engine/extractors.ts",
+        "src/engine/parser.ts",
+        "src/engine/specBuilder.ts"
+      ]
+    },
+    "Project": {
+      "defined_in": "src/storage/ProjectStorage.ts",
+      "kind": "interface",
+      "used_in": [
+        "src/App.tsx",
+        "src/components/ProjectsModal.tsx"
+      ]
+    },
+    "QROptions": {
+      "defined_in": "src/engine/qr.ts",
+      "kind": "interface",
+      "used_in": []
+    },
+    "RenderOptions": {
+      "defined_in": "src/engine/types.ts",
+      "kind": "interface",
+      "used_in": [
+        "src/engine/renderer.ts"
+      ]
+    },
+    "RenderResult": {
+      "defined_in": "src/engine/renderer.ts",
+      "kind": "interface",
+      "used_in": []
+    },
+    "SampleReadme": {
+      "defined_in": "src/engine/samples.ts",
+      "kind": "interface",
+      "used_in": [
+        "src/App.tsx",
+        "src/components/Header.tsx",
+        "src/components/mobile/FullScreenModalEditor.tsx",
+        "src/components/mobile/MobileInlineEditor.tsx",
+        "src/components/mobile/MobileTopRepoBar.tsx"
+      ]
+    },
+    "SectionSource": {
+      "defined_in": "src/engine/types.ts",
+      "kind": "interface",
+      "used_in": [
+        "src/engine/specBuilder.ts"
+      ]
+    },
+    "SectionType": {
+      "defined_in": "src/engine/types.ts",
+      "kind": "type",
+      "used_in": [
+        "src/engine/classifier.ts",
+        "src/engine/parser.ts",
+        "src/engine/specBuilder.ts"
+      ]
+    },
+    "Shortcut": {
+      "defined_in": "src/ui/KeyboardShortcuts.ts",
+      "kind": "interface",
+      "used_in": []
+    },
+    "SmartRecommendation": {
+      "defined_in": "src/engine/types.ts",
+      "kind": "interface",
+      "used_in": [
+        "src/App.tsx",
+        "src/components/GroundingModal.tsx",
+        "src/engine/specBuilder.ts"
+      ]
+    },
+    "SpecSection": {
+      "defined_in": "src/engine/types.ts",
+      "kind": "type",
+      "used_in": [
+        "src/components/GroundingModal.tsx",
+        "src/engine/renderer.ts",
+        "src/engine/specBuilder.ts"
+      ]
+    },
+    "StepItem": {
+      "defined_in": "src/engine/types.ts",
+      "kind": "interface",
+      "used_in": []
+    },
+    "TableData": {
+      "defined_in": "src/engine/types.ts",
+      "kind": "interface",
+      "used_in": [
+        "src/engine/parser.ts"
+      ]
+    },
+    "Theme": {
+      "defined_in": "src/renderer/themes/ThemeManager.ts",
+      "kind": "interface",
+      "used_in": []
+    },
+    "ThemeColors": {
+      "defined_in": "src/renderer/themes/ThemeManager.ts",
+      "kind": "interface",
+      "used_in": []
+    },
+    "ThemeConfig": {
+      "defined_in": "src/engine/types.ts",
+      "kind": "interface",
+      "used_in": [
+        "src/components/ContrastModal.tsx",
+        "src/engine/contrast.ts",
+        "src/engine/renderer.ts",
+        "src/engine/themes.ts"
+      ]
+    },
+    "ThemeContrastAudit": {
+      "defined_in": "src/engine/contrast.ts",
+      "kind": "interface",
+      "used_in": []
+    },
+    "ThemeTypography": {
+      "defined_in": "src/renderer/themes/ThemeManager.ts",
+      "kind": "interface",
+      "used_in": []
+    },
+    "TimelineItem": {
+      "defined_in": "src/engine/types.ts",
+      "kind": "interface",
+      "used_in": [
+        "src/engine/specBuilder.ts"
+      ]
+    },
+    "ToastMessage": {
+      "defined_in": "src/components/Toast.tsx",
+      "kind": "interface",
+      "used_in": [
+        "src/App.tsx"
+      ]
+    },
+    "VariantMap": {
+      "defined_in": "src/engine/types.ts",
+      "kind": "type",
+      "used_in": [
+        "bin/cli.ts",
+        "src/App.tsx",
+        "src/components/GroundingModal.tsx",
+        "src/components/SectionControls.tsx",
+        "src/engine/specBuilder.ts"
+      ]
+    },
+    "VisualDensity": {
+      "defined_in": "src/engine/types.ts",
+      "kind": "type",
+      "used_in": [
+        "src/App.tsx",
+        "src/components/DensitySelector.tsx",
+        "src/components/GroundingModal.tsx",
+        "src/components/SectionControls.tsx",
+        "src/engine/renderer.ts"
+      ]
+    }
+  }
+}
