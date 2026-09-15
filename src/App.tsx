@@ -10,7 +10,8 @@ import {
   fetchGitHubRepo,
   VariantMap,
   LogoConfig,
-  InfographicSpec
+  InfographicSpec,
+  VisualDensity
 } from './engine';
 import { getTheme, THEMES } from './engine/themes';
 import { ColorBlindnessType } from './engine/contrast';
@@ -138,6 +139,7 @@ export default function App() {
   const [sectionOrder, setSectionOrder] = useState<string[]>([]);
   const [animated, setAnimated] = useState<boolean>(false);
   const [compact, setCompact] = useState<boolean>(false);
+  const [density, setDensity] = useState<VisualDensity>('dense');
   const [colorBlindness, setColorBlindness] = useState<ColorBlindnessType>('normal');
 
   // UI Modals and Sheets
@@ -263,12 +265,13 @@ export default function App() {
         qrUrl,
         logo: logo || undefined,
         animated,
-        compact
+        compact,
+        density
       });
     } catch {
       return `<svg xmlns="http://www.w3.org/2000/svg" width="880" height="300"><text x="50" y="100">Render Error</text></svg>`;
     }
-  }, [finalSpec, theme, showQR, qrUrl, logo, animated, compact]);
+  }, [finalSpec, theme, showQR, qrUrl, logo, animated, compact, density]);
 
   const mobileSvgString = useMemo(() => {
     try {
@@ -278,12 +281,13 @@ export default function App() {
         qrUrl,
         logo: logo || undefined,
         animated,
-        compact
+        compact,
+        density
       });
     } catch {
       return `<svg xmlns="http://www.w3.org/2000/svg" width="400" height="300"><text x="30" y="80">Render Error</text></svg>`;
     }
-  }, [finalSpec, theme, showQR, qrUrl, logo, animated, compact]);
+  }, [finalSpec, theme, showQR, qrUrl, logo, animated, compact, density]);
 
   // Active SVG String based on context
   const activeSvgString = useMemo(() => {
@@ -688,6 +692,8 @@ export default function App() {
                   onToggleAnimated={setAnimated}
                   compact={compact}
                   onToggleCompact={setCompact}
+                  density={density}
+                  onDensityChange={setDensity}
                 />
               </div>
             </div>
@@ -938,6 +944,8 @@ export default function App() {
                     onToggleAnimated={setAnimated}
                     compact={compact}
                     onToggleCompact={setCompact}
+                    density={density}
+                    onDensityChange={setDensity}
                   />
                 </div>
               )}

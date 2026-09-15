@@ -42,6 +42,7 @@
 
 All migrated and finalized features have been moved into [README.md](./README.md).
 See Git commit history and documentation for implementation specifications:
+- ✅ **Visual Density Modes (Minimal, Balanced, Rich Studio)**: Three-tier density controls adjusting dot grids, semantic icons, micro-data viz rings, and badge chips across desktop and mobile.
 - ✅ **Clean Slide-in View & Export Drawers**: Replaced cluttered footer with slide-out control drawers and instant actions.
 - ✅ **Mobile-Native Inline Editor**: Same smooth inline tab UX as the Style tab, keeping bottom navigation visible and accessible.
 - ✅ **Dynamic Viewport Height (`100dvh`) & Safe-Area Inset Support**: Safari/Android address bar and home indicator compatibility.
