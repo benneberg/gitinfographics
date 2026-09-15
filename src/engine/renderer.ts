@@ -235,7 +235,7 @@ export function renderDesktopSVG(spec: InfographicSpec, tn?: string, options?: R
   const totalHeight = y + PAD;
   const accessibleSummary = generateAccessibleSummary(spec);
 
-  return `<svg xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svg-desktop-title" aria-describedby="svg-desktop-desc" viewBox="0 0 ${WIDTH} ${totalHeight}" width="100%" height="auto" preserveAspectRatio="xMidYMid meet" class="${isAnimated ? 'gig-animated' : ''}" style="max-width: 100%; height: auto; display: block; background-color:${t.bg}; border-radius: 16px;">
+  return `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" role="img" aria-labelledby="svg-desktop-title" aria-describedby="svg-desktop-desc" viewBox="0 0 ${WIDTH} ${totalHeight}" width="100%" height="auto" preserveAspectRatio="xMidYMid meet" class="${isAnimated ? 'gig-animated' : ''}" style="max-width: 100%; height: auto; display: block; background-color:${t.bg}; border-radius: 16px;">
   <title id="svg-desktop-title">${esc(spec.title)} - Infographic</title>
   <desc id="svg-desktop-desc">${accessibleSummary}</desc>
   ${defs}
@@ -351,7 +351,7 @@ export function renderMobileSVG(spec: InfographicSpec, tn?: string, options?: Re
   const totalHeight = y + (isCompact ? 12 : MOBILE_PAD);
   const accessibleSummary = generateAccessibleSummary(spec);
 
-  return `<svg xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svg-mobile-title" aria-describedby="svg-mobile-desc" viewBox="0 0 ${MOBILE_WIDTH} ${totalHeight}" width="100%" height="auto" preserveAspectRatio="xMidYMid meet" class="${isAnimated ? 'gig-animated' : ''}" style="max-width: 100%; height: auto; display: block; background-color:${t.bg}; border-radius: 16px;">
+  return `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" role="img" aria-labelledby="svg-mobile-title" aria-describedby="svg-mobile-desc" viewBox="0 0 ${MOBILE_WIDTH} ${totalHeight}" width="100%" height="auto" preserveAspectRatio="xMidYMid meet" class="${isAnimated ? 'gig-animated' : ''}" style="max-width: 100%; height: auto; display: block; background-color:${t.bg}; border-radius: 16px;">
   <title id="svg-mobile-title">${esc(spec.title)} - Mobile Infographic</title>
   <desc id="svg-mobile-desc">${accessibleSummary}</desc>
   ${defs}
@@ -1057,6 +1057,8 @@ export function rFoot(t: ThemeConfig, y: number, options?: RenderOptions, spec?:
   const repoUrl = options?.qrUrl || spec?.meta?.url || (spec?.meta?.owner && spec?.meta?.repo ? `https://github.com/${spec.meta.owner}/${spec.meta.repo}` : '');
   const showQR = options?.showQR && repoUrl;
 
+  const gitInfoGraphicsUrl = 'https://github.com/benneberg/gitinfographics';
+
   if (showQR) {
     const h = 76;
     const qrSize = 54;
@@ -1066,7 +1068,9 @@ export function rFoot(t: ThemeConfig, y: number, options?: RenderOptions, spec?:
 
     const svg = `<g id="sec-footer" class="font-sans">
     <line x1="${PAD}" y1="${y}" x2="${PAD + CW}" y2="${y}" stroke="${t.cardBorder}" stroke-width="1"/>
-    <text x="${PAD}" y="${y + 26}" font-size="11" font-weight="600" fill="${t.text}">Generated with GitInfoGraphics • Rule-Based Infographic Studio</text>
+    <a href="${gitInfoGraphicsUrl}" xlink:href="${gitInfoGraphicsUrl}" target="_blank" rel="noopener noreferrer" style="cursor: pointer;">
+      <text x="${PAD}" y="${y + 26}" font-size="11" font-weight="600" fill="${t.text}">Generated with GitInfoGraphics</text>
+    </a>
     <text x="${PAD}" y="${y + 44}" font-size="11" font-weight="500" fill="${t.textMuted}">${esc(repoUrl)}</text>
     <text x="${PAD}" y="${y + 60}" font-size="10" font-weight="500" fill="${t.accent}">Scan QR to inspect repository on GitHub</text>
     ${qrSvg}
@@ -1075,30 +1079,35 @@ export function rFoot(t: ThemeConfig, y: number, options?: RenderOptions, spec?:
   }
 
   const h = densityConfig.showBadges ? 56 : 48;
-  const displayUrl = repoUrl ? repoUrl.replace(/^https?:\/\//, '') : 'github.com/benneberg/infographic-studio';
+  const displayUrl = repoUrl ? repoUrl.replace(/^https?:\/\//, '') : 'github.com/benneberg/gitinfographics';
+  const targetRepoUrl = repoUrl || gitInfoGraphicsUrl;
 
   let svg = `<g id="sec-footer" class="font-sans">
     <line x1="${PAD}" y1="${y}" x2="${PAD + CW}" y2="${y}" stroke="${t.cardBorder}" stroke-width="1"/>
-    <text x="${PAD}" y="${y + 32}" font-size="11" font-weight="500" fill="${t.textMuted}">Generated with GitInfoGraphics • ${t.name} Edition</text>
+    <a href="${gitInfoGraphicsUrl}" xlink:href="${gitInfoGraphicsUrl}" target="_blank" rel="noopener noreferrer" style="cursor: pointer;">
+      <text x="${PAD}" y="${y + 32}" font-size="11" font-weight="500" fill="${t.textMuted}">Generated with GitInfoGraphics</text>
+    </a>
   `;
 
   if (densityConfig.showBadges) {
     const pillW = 280;
     const pillX = PAD + CW - pillW;
     svg += `
-    <g transform="translate(${pillX}, ${y + 16})">
-      <rect width="${pillW}" height="30" rx="15" fill="${t.cardBg}" stroke="${t.cardBorder}" stroke-width="1" filter="url(#softShadow)"/>
-      <g transform="translate(14, 7) scale(0.68)" fill="${t.text}">
-        <path d="${SVG_PATHS['github']}"/>
+    <a href="${targetRepoUrl}" xlink:href="${targetRepoUrl}" target="_blank" rel="noopener noreferrer" style="cursor: pointer;">
+      <g transform="translate(${pillX}, ${y + 16})">
+        <rect width="${pillW}" height="30" rx="15" fill="${t.cardBg}" stroke="${t.cardBorder}" stroke-width="1" filter="url(#softShadow)"/>
+        <g transform="translate(14, 7) scale(0.68)" fill="${t.text}">
+          <path d="${SVG_PATHS['github']}"/>
+        </g>
+        <text x="${pillW / 2}" y="19" text-anchor="middle" font-family="'Fira Code', monospace" font-size="10.5" font-weight="600" fill="${t.accent}">${esc(trunc(displayUrl, 28))}</text>
+        <g transform="translate(${pillW - 24}, 8) scale(0.6)" fill="#F59E0B">
+          <path d="${SVG_PATHS['star']}"/>
+        </g>
       </g>
-      <text x="${pillW / 2}" y="19" text-anchor="middle" font-family="'Fira Code', monospace" font-size="10.5" font-weight="600" fill="${t.accent}">${esc(trunc(displayUrl, 28))}</text>
-      <g transform="translate(${pillW - 24}, 8) scale(0.6)" fill="#F59E0B">
-        <path d="${SVG_PATHS['star']}"/>
-      </g>
-    </g>
+    </a>
     `;
   } else {
-    svg += `<text x="${PAD + CW}" y="${y + 32}" text-anchor="end" font-size="11" font-weight="600" fill="${t.accent}">${esc(displayUrl)}</text>`;
+    svg += `<a href="${targetRepoUrl}" xlink:href="${targetRepoUrl}" target="_blank" rel="noopener noreferrer" style="cursor: pointer;"><text x="${PAD + CW}" y="${y + 32}" text-anchor="end" font-size="11" font-weight="600" fill="${t.accent}">${esc(displayUrl)}</text></a>`;
   }
 
   svg += `</g>`;
@@ -1711,6 +1720,7 @@ export function rFootMobile(t: ThemeConfig, y: number, options?: RenderOptions, 
   const repoUrl = options?.qrUrl || spec?.meta?.url || (spec?.meta?.owner && spec?.meta?.repo ? `https://github.com/${spec.meta.owner}/${spec.meta.repo}` : '');
   const showQR = options?.showQR && repoUrl;
   const midX = MOBILE_PAD + MOBILE_CW / 2;
+  const gitInfoGraphicsUrl = 'https://github.com/benneberg/gitinfographics';
 
   if (showQR) {
     const h = 110;
@@ -1722,18 +1732,27 @@ export function rFootMobile(t: ThemeConfig, y: number, options?: RenderOptions, 
     const svg = `<g id="sec-footer-mobile" class="font-sans">
     <line x1="${MOBILE_PAD}" y1="${y}" x2="${MOBILE_PAD + MOBILE_CW}" y2="${y}" stroke="${t.cardBorder}" stroke-width="1"/>
     ${qrSvg}
-    <text x="${midX}" y="${y + 78}" text-anchor="middle" font-size="10" font-weight="500" fill="${t.textMuted}">Generated with GitInfoGraphics • Mobile Edition</text>
-    <text x="${midX}" y="${y + 96}" text-anchor="middle" font-size="10.5" font-weight="600" fill="${t.accent}">${esc(repoUrl.replace(/^https?:\/\//, ''))}</text>
+    <a href="${gitInfoGraphicsUrl}" xlink:href="${gitInfoGraphicsUrl}" target="_blank" rel="noopener noreferrer" style="cursor: pointer;">
+      <text x="${midX}" y="${y + 78}" text-anchor="middle" font-size="10" font-weight="500" fill="${t.textMuted}">Generated with GitInfoGraphics</text>
+    </a>
+    <a href="${repoUrl}" xlink:href="${repoUrl}" target="_blank" rel="noopener noreferrer" style="cursor: pointer;">
+      <text x="${midX}" y="${y + 96}" text-anchor="middle" font-size="10.5" font-weight="600" fill="${t.accent}">${esc(repoUrl.replace(/^https?:\/\//, ''))}</text>
+    </a>
   </g>`;
     return { svg, height: h };
   }
 
   const h = 54;
-  const displayUrl = repoUrl ? repoUrl.replace(/^https?:\/\//, '') : 'github.com/benneberg/infographic-studio';
+  const displayUrl = repoUrl ? repoUrl.replace(/^https?:\/\//, '') : 'github.com/benneberg/gitinfographics';
+  const targetRepoUrl = repoUrl || gitInfoGraphicsUrl;
   const svg = `<g id="sec-footer-mobile" class="font-sans">
     <line x1="${MOBILE_PAD}" y1="${y}" x2="${MOBILE_PAD + MOBILE_CW}" y2="${y}" stroke="${t.cardBorder}" stroke-width="1"/>
-    <text x="${midX}" y="${y + 22}" text-anchor="middle" font-size="10" font-weight="500" fill="${t.textMuted}">Generated with GitInfoGraphics • Mobile Edition</text>
-    <text x="${midX}" y="${y + 38}" text-anchor="middle" font-size="10.5" font-weight="600" fill="${t.accent}">${esc(displayUrl)}</text>
+    <a href="${gitInfoGraphicsUrl}" xlink:href="${gitInfoGraphicsUrl}" target="_blank" rel="noopener noreferrer" style="cursor: pointer;">
+      <text x="${midX}" y="${y + 22}" text-anchor="middle" font-size="10" font-weight="500" fill="${t.textMuted}">Generated with GitInfoGraphics</text>
+    </a>
+    <a href="${targetRepoUrl}" xlink:href="${targetRepoUrl}" target="_blank" rel="noopener noreferrer" style="cursor: pointer;">
+      <text x="${midX}" y="${y + 38}" text-anchor="middle" font-size="10.5" font-weight="600" fill="${t.accent}">${esc(displayUrl)}</text>
+    </a>
   </g>`;
 
   return { svg, height: h };

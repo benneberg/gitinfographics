@@ -182,5 +182,26 @@ describe('renderSVG', () => {
     expect(svg).toContain('font-size="12"'); // matrix title font
     expect(svg).toContain('font-size="10.5"'); // matrix description font
   });
+
+  it('renders correct footer with linked GitInfoGraphics repository in desktop and mobile', () => {
+    const minimalSpec: InfographicSpec = {
+      title: 'Sample Tool',
+      subtitle: 'Sample Subtitle',
+      sections: []
+    };
+
+    const desktopSvg = renderSVG(minimalSpec, 'scandi-minimal', { layout: 'desktop' });
+    expect(desktopSvg).toContain('Generated with GitInfoGraphics');
+    expect(desktopSvg).toContain('href="https://github.com/benneberg/gitinfographics"');
+    expect(desktopSvg).toContain('github.com/benneberg/gitinfographics');
+    expect(desktopSvg).not.toContain('infographic-studio');
+
+    const mobileSvg = renderSVG(minimalSpec, 'scandi-minimal', { layout: 'mobile' });
+    expect(mobileSvg).toContain('Generated with GitInfoGraphics');
+    expect(mobileSvg).toContain('href="https://github.com/benneberg/gitinfographics"');
+    expect(mobileSvg).toContain('github.com/benneberg/gitinfographics');
+    expect(mobileSvg).not.toContain('infographic-studio');
+    expect(mobileSvg).not.toContain('Mobile Edition');
+  });
 });
 

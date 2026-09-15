@@ -12,10 +12,10 @@ export interface SampleReadme {
 export const SAMPLE_READMES: SampleReadme[] = [
   {
     id: 'infographic-studio',
-    name: 'Infographic Studio (Current Repo)',
-    repo: 'benneberg/infographic-studio',
+    name: 'GitInfoGraphics (Current Repo)',
+    repo: 'benneberg/gitinfographics',
     description: 'Rule-based client-side engine and studio for turning Markdown into vector infographics.',
-    markdown: `# Infographic Studio
+    markdown: `# GitInfoGraphics
 Transform messy GitHub READMEs into crisp, beautiful, informative SVG infographics.
 
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
@@ -27,7 +27,7 @@ Transform messy GitHub READMEs into crisp, beautiful, informative SVG infographi
 Developers invest weeks into building great open-source tools, but their README files are often wall-to-wall text. Casual visitors drop off in seconds without grasping the core architecture or value proposition.
 
 ## The Solution
-Infographic Studio scans Markdown documentation deterministically, classifies structural patterns, mines performance metrics, and renders dynamic vector infographics ready for GitHub READMEs and CI/CD pipelines.
+GitInfoGraphics scans Markdown documentation deterministically, classifies structural patterns, mines performance metrics, and renders dynamic vector infographics ready for GitHub READMEs and CI/CD pipelines.
 
 ## Key Features
 - **100% Client-Side & Deterministic**: Zero server lag, instant SVG rendering with zero telemetry.
