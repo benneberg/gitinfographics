@@ -148,5 +148,39 @@ describe('renderSVG', () => {
     expect(svg).toContain('aria-labelledby="svg-desktop-title"');
     expect(svg).toContain('aria-describedby="svg-desktop-desc"');
   });
+
+  it('renders 4-column Grid Matrix layout with compact cards and responsive icon scaling', () => {
+    const matrixSpec: InfographicSpec = {
+      title: 'Matrix Framework',
+      subtitle: 'Eight high performance primitives',
+      sections: [
+        {
+          id: 'features-matrix',
+          type: 'features',
+          title: 'Modular Primitives',
+          columns: 4,
+          items: [
+            { title: 'Core VM', description: 'Bytecode VM' },
+            { title: 'Garbage Collector', description: 'Zero pause' },
+            { title: 'JIT Compiler', description: 'DynASM engine' },
+            { title: 'Async Loop', description: 'IOCP / epoll' },
+            { title: 'Type Checker', description: 'Linear types' },
+            { title: 'Macro Engine', description: 'Hygienic AST' },
+            { title: 'Package Mgr', description: 'Decentralized' },
+            { title: 'CLI Tooling', description: 'Native binary' }
+          ]
+        }
+      ]
+    };
+
+    const svg = renderSVG(matrixSpec, 'scandi-minimal');
+    expect(svg).toContain('id="sec-features"');
+    expect(svg).toContain('GRID MATRIX CAPABILITIES');
+    expect(svg).toContain('Core VM');
+    expect(svg).toContain('CLI Tooling');
+    // Verify 4-column cards rendered across grid rows
+    expect(svg).toContain('font-size="12"'); // matrix title font
+    expect(svg).toContain('font-size="10.5"'); // matrix description font
+  });
 });
 

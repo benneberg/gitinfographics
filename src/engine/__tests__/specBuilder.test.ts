@@ -87,4 +87,68 @@ A brief tool overview that explains how this utility performs stream manipulatio
     expect(spec.sections.length).toBeGreaterThanOrEqual(1);
     expect(spec.sections[0].type).toBe('content-block');
   });
+
+  it('calculates grounding metrics and attaches source attribution to sections', () => {
+    const md = `# StreamEngine
+Superfast pipeline runner.
+
+## Problem
+Processing unindexed real-time logs consumes too much CPU and takes forever.
+
+## Solution
+StreamEngine provides lockless ring-buffers for parallelized ingestion.
+
+## Key Features
+- Zero Configuration: Works right out of the box with zero setup.
+- Pure Vector Graphics: Renders resolution-independent SVG illustrations.
+- Dynamic Themes: Multiple palettes from dark mode to Scandinavian minimal.
+- Client Side Only: Zero network dependencies or telemetry.
+
+## Tech Stack
+Rust, Tokio, WebAssembly, Docker
+`;
+    const doc = parseMD(md);
+    const spec = buildRuleSpec(doc);
+
+    expect(spec.grounding).toBeDefined();
+    expect(spec.grounding?.coveragePercent).toBeGreaterThan(0);
+    expect(spec.grounding?.averageConfidence).toBeGreaterThanOrEqual(80);
+    expect(spec.grounding?.recommendation).toBeDefined();
+
+    // Check that sections have source attribution
+    const ps = spec.sections.find((s) => s.type === 'problem-solution');
+    expect(ps).toBeDefined();
+    expect(ps?.source).toBeDefined();
+    expect(ps?.source?.confidence).toBeGreaterThan(80);
+
+    const feat = spec.sections.find((s) => s.type === 'features');
+    expect(feat).toBeDefined();
+    expect(feat?.source?.sourceType).toContain('Parser');
+  });
+
+  it('detects Grid Matrix Layout when feature count is dense and variant 2 enables 4 columns', () => {
+    const md = `# MatrixTool
+Multi-tool suite.
+
+## Features
+- Feature A: First capability item
+- Feature B: Second capability item
+- Feature C: Third capability item
+- Feature D: Fourth capability item
+- Feature E: Fifth capability item
+- Feature F: Sixth capability item
+- Feature G: Seventh capability item
+- Feature H: Eighth capability item
+`;
+    const doc = parseMD(md);
+    const spec = buildRuleSpec(doc, { features: 2 });
+
+    expect(spec.grounding?.recommendation.layoutType).toBe('feature-grid');
+    expect(spec.grounding?.recommendation.label).toBe('Grid Matrix Layout');
+
+    const featSec = spec.sections.find((s) => s.type === 'features') as any;
+    expect(featSec).toBeDefined();
+    expect(featSec.columns).toBe(4);
+    expect(featSec.items.length).toBe(8);
+  });
 });

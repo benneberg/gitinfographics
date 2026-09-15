@@ -15,7 +15,8 @@ import {
   Compass,
   FolderOpen,
   Share2,
-  Keyboard
+  Keyboard,
+  ShieldCheck
 } from 'lucide-react';
 import { THEMES } from '../engine/themes';
 import { SAMPLE_READMES, SampleReadme } from '../engine/samples';
@@ -36,6 +37,8 @@ interface HeaderProps {
   onOpenProjectsModal?: () => void;
   onOpenShareModal?: () => void;
   onOpenShortcutsModal?: () => void;
+  onOpenGroundingModal?: () => void;
+  groundingCoverage?: number;
   currentFormat: string;
   onFormatChange: (format: string) => void;
 }
@@ -57,7 +60,9 @@ export const Header: React.FC<HeaderProps> = ({
   onOpenOnboarding,
   onOpenProjectsModal,
   onOpenShareModal,
-  onOpenShortcutsModal
+  onOpenShortcutsModal,
+  onOpenGroundingModal,
+  groundingCoverage
 }) => {
   const [repoInput, setRepoInput] = useState('');
 
@@ -198,6 +203,18 @@ export const Header: React.FC<HeaderProps> = ({
             >
               <Share2 className="w-3.5 h-3.5 text-stone-500" />
               <span className="hidden sm:inline">Share</span>
+            </button>
+          )}
+
+          {/* Grounding & Verification */}
+          {onOpenGroundingModal && (
+            <button
+              onClick={onOpenGroundingModal}
+              className="flex items-center gap-1.5 min-h-[36px] px-2.5 py-1 bg-white hover:bg-emerald-50/60 border border-emerald-200/80 rounded-lg text-xs font-medium text-emerald-800 shadow-2xs transition-colors shrink-0"
+              title="Inspect grounding audit & smart layout recommendation"
+            >
+              <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
+              <span className="font-semibold">{groundingCoverage != null ? `${groundingCoverage}% Grounded` : 'Grounding'}</span>
             </button>
           )}
 

@@ -363,6 +363,16 @@ export const SectionControls: React.FC<SectionControlsProps> = ({
                           >
                             2 Cols (4 max)
                           </button>
+                          <button
+                            onClick={() => onVariantChange('features', 2)}
+                            className={`px-2 py-0.5 text-[11px] font-medium rounded transition-colors ${
+                              (variants['features'] || 0) % 3 === 2
+                                ? 'bg-stone-900 text-white shadow-2xs'
+                                : 'bg-white border border-stone-200 text-stone-600 hover:bg-stone-50'
+                            }`}
+                          >
+                            4-Col Matrix
+                          </button>
                         </div>
                       </div>
                     )}
@@ -429,6 +439,20 @@ export const SectionControls: React.FC<SectionControlsProps> = ({
 
                     {sec.type === 'steps' && (
                       <span className="text-stone-500">{sec.items.length} sequence steps</span>
+                    )}
+
+                    {sec.type === 'timeline' && (
+                      <span className="text-stone-500">{sec.items.length} chronological milestones</span>
+                    )}
+
+                    {sec.type === 'comparison' && (
+                      <span className="text-stone-500">{sec.rows.length} comparison rows vs alternatives</span>
+                    )}
+
+                    {sec.type === 'callout' && (
+                      <span className="text-stone-500 truncate max-w-[220px]">
+                        {sec.author ? `Quote by ${sec.author}` : 'Blockquote highlight card'}
+                      </span>
                     )}
                   </div>
                 )}

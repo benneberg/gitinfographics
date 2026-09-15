@@ -638,23 +638,26 @@ export function rFeats(
   const density = options?.density || 'dense';
   const densityConfig = DENSITY_CONFIG[density] || DENSITY_CONFIG.dense;
   const cols = s.columns || (s.items.length <= 4 ? 2 : 3);
-  const g = 14;
+  const g = cols === 4 ? 10 : 14;
   const cw = (CW - g * (cols - 1)) / cols;
-  const baseCardH = 92;
+  const isMatrix = cols >= 4;
+  const baseCardH = isMatrix ? 86 : 92;
   const rows = Math.ceil(s.items.length / cols);
 
+  const wrapWidth = cols === 4 ? 22 : cols === 2 ? 42 : 30;
   let maxDescLines = 2;
   s.items.forEach((it) => {
     if (it.description) {
-      maxDescLines = Math.max(maxDescLines, wrapT(it.description, cols === 2 ? 42 : 30).length);
+      maxDescLines = Math.max(maxDescLines, wrapT(it.description, wrapWidth).length);
     }
   });
 
-  const ch = baseCardH + Math.max(0, (maxDescLines - 2) * 18);
+  const lineH = isMatrix ? 15 : 18;
+  const ch = baseCardH + Math.max(0, (maxDescLines - 2) * lineH);
   const h = 34 + rows * ch + (rows - 1) * g;
 
   let svg = `<g id="sec-features" class="font-sans">
-    <text x="${PAD}" y="${y + 16}" font-family="'Fira Code', monospace" font-size="11" font-weight="700" fill="${t.textMuted}" letter-spacing="1.5">CORE CAPABILITIES</text>
+    <text x="${PAD}" y="${y + 16}" font-family="'Fira Code', monospace" font-size="11" font-weight="700" fill="${t.textMuted}" letter-spacing="1.5">${isMatrix ? 'GRID MATRIX CAPABILITIES' : 'CORE CAPABILITIES'}</text>
     <text x="${PAD + CW}" y="${y + 16}" text-anchor="end" font-family="'Fira Code', monospace" font-size="11" font-weight="700" fill="${t.accent}" letter-spacing="1.5">${s.items.length} MODULES</text>
   `;
 
@@ -668,35 +671,52 @@ export function rFeats(
 
     svg += `
     <g class="gig-card-anim gig-interactive" transform="translate(${cx}, ${cy})">
-      <rect width="${cw}" height="${ch}" rx="12" fill="${t.cardBg}" stroke="${t.cardBorder}" stroke-width="1" filter="url(#softShadow)"/>
+      <rect width="${cw}" height="${ch}" rx="${isMatrix ? 9 : 12}" fill="${t.cardBg}" stroke="${t.cardBorder}" stroke-width="1" filter="url(#softShadow)"/>
     `;
 
     if (densityConfig.showIcons) {
+      const iconBoxSize = isMatrix ? 26 : 36;
+      const iconBoxPad = isMatrix ? 10 : 16;
+      const textX = isMatrix ? 44 : 62;
+      const textY = isMatrix ? 23 : 28;
+      const titleFont = isMatrix ? 12 : 14;
+      const descFont = isMatrix ? 10.5 : 12;
+      const descStartY = isMatrix ? 38 : 48;
+      const descLineSpacing = isMatrix ? 14 : 17;
+
       svg += `
       <!-- Left icon container box -->
-      <rect x="16" y="16" width="36" height="36" rx="8" fill="${t.badgeBg}" stroke="${t.cardBorder}" stroke-width="1"/>
-      <g transform="translate(23, 23) scale(0.9)" stroke="${t.accent}" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="${iconBoxPad}" y="${iconBoxPad}" width="${iconBoxSize}" height="${iconBoxSize}" rx="${isMatrix ? 6 : 8}" fill="${t.badgeBg}" stroke="${t.cardBorder}" stroke-width="1"/>
+      <g transform="translate(${iconBoxPad + (isMatrix ? 5 : 7)}, ${iconBoxPad + (isMatrix ? 5 : 7)}) scale(${isMatrix ? 0.65 : 0.9})" stroke="${t.accent}" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <path d="${SVG_PATHS[iconName] || SVG_PATHS['check-circle']}"/>
       </g>
-      <text x="62" y="28" font-size="14" font-weight="700" fill="${t.text}">${esc(trunc(it.title, cols === 2 ? 40 : 26))}</text>
+      <text x="${textX}" y="${textY}" font-size="${titleFont}" font-weight="700" fill="${t.text}">${esc(trunc(it.title, cols === 4 ? 18 : cols === 2 ? 40 : 26))}</text>
       `;
 
       if (it.description) {
-        const dl = wrapT(it.description, cols === 2 ? 42 : 30).slice(0, 4);
+        const dl = wrapT(it.description, wrapWidth).slice(0, 4);
         for (let li = 0; li < dl.length; li++) {
-          svg += `<text x="62" y="${48 + li * 17}" font-size="12" font-weight="400" fill="${t.textMuted}">${esc(dl[li])}</text>`;
+          svg += `<text x="${textX}" y="${descStartY + li * descLineSpacing}" font-size="${descFont}" font-weight="400" fill="${t.textMuted}">${esc(dl[li])}</text>`;
         }
       }
     } else {
+      const dotX = isMatrix ? 12 : 18;
+      const textX = isMatrix ? 22 : 30;
+      const textY = isMatrix ? 22 : 26;
+      const titleFont = isMatrix ? 12 : 13.5;
+      const descFont = isMatrix ? 10.5 : 12;
+      const descStartY = isMatrix ? 38 : 46;
+      const descLineSpacing = isMatrix ? 14 : 17;
+
       svg += `
-      <circle cx="18" cy="22" r="3" fill="${t.accent}"/>
-      <text x="30" y="26" font-size="13.5" font-weight="700" fill="${t.text}">${esc(trunc(it.title, cols === 2 ? 46 : 32))}</text>
+      <circle cx="${dotX}" cy="${textY - 4}" r="${isMatrix ? 2.5 : 3}" fill="${t.accent}"/>
+      <text x="${textX}" y="${textY}" font-size="${titleFont}" font-weight="700" fill="${t.text}">${esc(trunc(it.title, cols === 4 ? 22 : cols === 2 ? 46 : 32))}</text>
       `;
 
       if (it.description) {
-        const dl = wrapT(it.description, cols === 2 ? 48 : 36).slice(0, 4);
+        const dl = wrapT(it.description, cols === 4 ? 24 : cols === 2 ? 48 : 36).slice(0, 4);
         for (let li = 0; li < dl.length; li++) {
-          svg += `<text x="30" y="${46 + li * 17}" font-size="12" font-weight="400" fill="${t.textMuted}">${esc(dl[li])}</text>`;
+          svg += `<text x="${textX}" y="${descStartY + li * descLineSpacing}" font-size="${descFont}" font-weight="400" fill="${t.textMuted}">${esc(dl[li])}</text>`;
         }
       }
     }

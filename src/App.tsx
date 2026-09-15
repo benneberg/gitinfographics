@@ -11,7 +11,8 @@ import {
   VariantMap,
   LogoConfig,
   InfographicSpec,
-  VisualDensity
+  VisualDensity,
+  SmartRecommendation
 } from './engine';
 import { getTheme, THEMES } from './engine/themes';
 import { ColorBlindnessType } from './engine/contrast';
@@ -46,6 +47,7 @@ import { ArchitectureModal } from './components/ArchitectureModal';
 import { InfoModal } from './components/InfoModal';
 import { ContrastModal } from './components/ContrastModal';
 import { ShortcutsModal } from './components/ShortcutsModal';
+import { GroundingModal } from './components/GroundingModal';
 
 import {
   Sparkles,
@@ -156,6 +158,7 @@ export default function App() {
   const [infoModalOpen, setInfoModalOpen] = useState(false);
   const [shortcutsModalOpen, setShortcutsModalOpen] = useState(false);
   const [contrastModalOpen, setContrastModalOpen] = useState(false);
+  const [groundingModalOpen, setGroundingModalOpen] = useState(false);
 
   // Notifications & History
   const [history, setHistory] = useState<any[]>([]);
@@ -171,6 +174,17 @@ export default function App() {
     setToasts((prev) => [...prev, { id, message, type }]);
     setTimeout(() => setToasts((prev) => prev.filter((t) => t.id !== id)), 3000);
   }, []);
+
+  // Apply Smart Recommendation handler
+  const handleApplyRecommendation = useCallback((rec: SmartRecommendation) => {
+    if (rec.suggestedDensity) {
+      setDensity(rec.suggestedDensity);
+    }
+    if (rec.suggestedVariants) {
+      setVariants((prev) => ({ ...prev, ...rec.suggestedVariants }));
+    }
+    addToast(`Applied ${rec.label} (${rec.suggestedDensity} density)`, 'success');
+  }, [addToast]);
 
   // Initial Load from LocalStorage
   useEffect(() => {
@@ -555,6 +569,8 @@ export default function App() {
           onOpenProjectsModal={() => setProjectsModalOpen(true)}
           onOpenShareModal={() => setShareModalOpen(true)}
           onOpenShortcutsModal={() => setShortcutsModalOpen(true)}
+          onOpenGroundingModal={() => setGroundingModalOpen(true)}
+          groundingCoverage={finalSpec.grounding?.coveragePercent}
         />
       </div>
 
@@ -1228,6 +1244,14 @@ export default function App() {
         currentTheme={getTheme(theme)}
         colorBlindness={colorBlindness}
         onColorBlindnessChange={setColorBlindness}
+      />
+
+      {/* Grounding & Content Traceability Modal */}
+      <GroundingModal
+        isOpen={groundingModalOpen}
+        onClose={() => setGroundingModalOpen(false)}
+        spec={finalSpec}
+        onApplyRecommendation={handleApplyRecommendation}
       />
 
       {/* Toast Container */}

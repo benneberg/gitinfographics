@@ -7,7 +7,11 @@ import {
   SectionType,
   MetricItem,
   TimelineItem,
-  ComparisonRow
+  ComparisonRow,
+  SpecSection,
+  SectionSource,
+  SmartRecommendation,
+  GroundingMetrics
 } from './types';
 import { classifySec } from './classifier';
 import {
@@ -17,6 +21,78 @@ import {
   extractTechAdvanced,
   trunc
 } from './extractors';
+
+/**
+ * Heuristic detector choosing the ideal visual layout based on repository characteristics.
+ */
+export function detectSmartLayout(
+  doc: ParsedDoc,
+  ghMeta?: GitHubMeta | null,
+  sections?: SpecSection[]
+): SmartRecommendation {
+  const secList = sections || [];
+  const hasTimeline = secList.some((s) => s.type === 'timeline');
+  const hasComparison = secList.some((s) => s.type === 'comparison');
+  const featureSec = secList.find((s) => s.type === 'features');
+  const featureCount = featureSec && 'items' in featureSec ? featureSec.items.length : 0;
+  const statsSec = secList.find((s) => s.type === 'stats');
+  const statsCount = statsSec && 'items' in statsSec ? statsSec.items.length : 0;
+  const stepsSec = secList.find((s) => s.type === 'steps');
+  const stepsCount = stepsSec && 'items' in stepsSec ? stepsSec.items.length : 0;
+
+  if (featureCount >= 6 || (hasComparison && featureCount >= 4)) {
+    return {
+      layoutType: 'feature-grid',
+      label: 'Grid Matrix Layout',
+      confidence: 95,
+      reason: `Dense feature set detected (${featureCount} capabilities). 4-column matrix grid maximizes scan density without vertical scrolling.`,
+      suggestedDensity: 'dense',
+      suggestedVariants: { features: 2 }
+    };
+  }
+
+  if (hasTimeline) {
+    return {
+      layoutType: 'timeline',
+      label: 'Roadmap Timeline Layout',
+      confidence: 92,
+      reason: 'Structured release chronology and milestones detected. Timeline layout provides clear progression visibility.',
+      suggestedDensity: 'medium',
+      suggestedVariants: { timeline: 0 }
+    };
+  }
+
+  if (statsCount >= 4 || (ghMeta && (ghMeta.stars > 1000 || ghMeta.forks > 100))) {
+    return {
+      layoutType: 'stats-metric',
+      label: 'Performance Metric Focus',
+      confidence: 90,
+      reason: 'Rich quantitative telemetry and repository benchmarks detected. Highlights KPI stats for immediate social proof.',
+      suggestedDensity: 'dense',
+      suggestedVariants: { stats: 0 }
+    };
+  }
+
+  if (stepsCount >= 3 && secList.length <= 4) {
+    return {
+      layoutType: 'compact-cli',
+      label: 'Workflow Quick-Start Focus',
+      confidence: 88,
+      reason: 'Streamlined developer workflow with sequential terminal setup commands.',
+      suggestedDensity: 'medium',
+      suggestedVariants: { features: 1, 'problem-solution': 1 }
+    };
+  }
+
+  return {
+    layoutType: 'balanced-studio',
+    label: 'Balanced Studio Layout',
+    confidence: 86,
+    reason: 'Harmonious multi-tier layout distributing value proposition, architecture, and technology stack.',
+    suggestedDensity: 'medium',
+    suggestedVariants: { features: 0, stats: 0 }
+  };
+}
 
 /**
  * 5. Intelligent Spec Builder
@@ -76,21 +152,42 @@ export function buildRuleSpec(
       problem: trunc(probText || 'A common challenge in this domain...', v === 0 ? 180 : v === 1 ? 120 : 200),
       solution: trunc(solText || 'This project provides a modern solution.', v === 0 ? 180 : v === 1 ? 120 : 200),
       problemTitle: prob ? prob.title : 'The Problem',
-      solutionTitle: sol ? sol.title : 'The Solution'
+      solutionTitle: sol ? sol.title : 'The Solution',
+      source: {
+        sectionTitle: prob?.title || sol?.title || 'Problem / Solution',
+        sourceType: 'Semantic Classifier',
+        lineIndex: prob?.lineIndex ?? sol?.lineIndex,
+        confidence: prob && sol ? 94 : 85,
+        signalReason: `Matched problem and solution statements (${probText.length + solText.length} characters analyzed)`
+      }
     });
   } else if (probText.length > 60) {
     spec.sections.push({
       id: 'content-block',
       type: 'content-block',
       title: prob ? prob.title : 'Challenge',
-      text: trunc(probText, 300)
+      text: trunc(probText, 300),
+      source: {
+        sectionTitle: prob?.title || 'Challenge',
+        sourceType: 'Semantic Classifier',
+        lineIndex: prob?.lineIndex,
+        confidence: 84,
+        signalReason: 'Single problem statement block extracted'
+      }
     });
   } else if (solText.length > 60) {
     spec.sections.push({
       id: 'content-block',
       type: 'content-block',
       title: sol ? sol.title : 'Solution',
-      text: trunc(solText, 300)
+      text: trunc(solText, 300),
+      source: {
+        sectionTitle: sol?.title || 'Solution',
+        sourceType: 'Semantic Classifier',
+        lineIndex: sol?.lineIndex,
+        confidence: 84,
+        signalReason: 'Single solution statement block extracted'
+      }
     });
   }
 
@@ -124,7 +221,14 @@ export function buildRuleSpec(
     spec.sections.push({
       id: 'stats',
       type: 'stats',
-      items: metrics.slice(0, v === 0 ? 4 : 3)
+      items: metrics.slice(0, v === 0 ? 4 : 3),
+      source: {
+        sectionTitle: mSec?.title || (doc.badges?.length ? 'Badges & Benchmark Metrics' : 'Quantitative Metrics'),
+        sourceType: 'Quantitative Telemetry Miner',
+        lineIndex: mSec?.lineIndex,
+        confidence: doc.badges?.length || mSec ? 95 : 86,
+        signalReason: `Extracted ${metrics.length} numeric benchmark indicators with units`
+      }
     });
   }
 
@@ -155,25 +259,40 @@ export function buildRuleSpec(
 
   if (featSrc && (featSrc.lists || []).length >= minFeats) {
     const v = ((vmap && vmap['features']) || 0) % 3;
-    const cnt = v === 0 ? 6 : v === 1 ? 4 : 3;
-    const cols = v === 1 ? 2 : 3;
+    const cnt = v === 0 ? 6 : v === 1 ? 4 : 8;
+    const cols = v === 1 ? 2 : v === 2 ? 4 : 3;
     spec.sections.push({
       id: 'features',
       type: 'features',
       title: featSrc.title,
       columns: cols,
-      items: featSrc.lists.slice(0, cnt).map((f) => splitFeat(f))
+      items: featSrc.lists.slice(0, cnt).map((f) => splitFeat(f)),
+      source: {
+        sectionTitle: featSrc.title,
+        sourceType: v === 2 ? 'Grid Matrix Capability Parser' : 'Capability List Parser',
+        lineIndex: featSrc.lineIndex,
+        confidence: Math.min(98, 82 + featSrc.lists.length * 2),
+        signalReason: `Extracted ${featSrc.lists.length} bullet capability points into ${cols}-column layout`
+      }
     });
   }
 
   // Tech stack
   const techs = extractTechAdvanced(doc);
   if (techs.length >= minTech) {
+    const tSec = find('tech-stack');
     spec.sections.push({
       id: 'tech-stack',
       type: 'tech-stack',
       title: 'Tech Stack',
-      items: techs.slice(0, 12)
+      items: techs.slice(0, 12),
+      source: {
+        sectionTitle: tSec?.title || 'Built With / Tech Stack',
+        sourceType: 'Ecosystem Technology Profiler',
+        lineIndex: tSec?.lineIndex,
+        confidence: 93,
+        signalReason: `Identified ${techs.length} curated framework tokens and runtime tools`
+      }
     });
   }
 
@@ -195,7 +314,14 @@ export function buildRuleSpec(
       items: stepsSec.lists.slice(0, 5).map((s, idx) => {
         const sp = splitFeat(s);
         return { step: idx + 1, title: sp.title, description: sp.description };
-      })
+      }),
+      source: {
+        sectionTitle: stepsSec.title,
+        sourceType: 'Sequential Workflow Extractor',
+        lineIndex: stepsSec.lineIndex,
+        confidence: 91,
+        signalReason: `Parsed ${stepsSec.lists.length} execution setup commands and instructions`
+      }
     });
   }
 
@@ -206,7 +332,14 @@ export function buildRuleSpec(
       id: 'content-block',
       type: 'content-block',
       title: arch.title,
-      text: trunc(arch.rawText, 350)
+      text: trunc(arch.rawText, 350),
+      source: {
+        sectionTitle: arch.title,
+        sourceType: 'Architecture Overview Parser',
+        lineIndex: arch.lineIndex,
+        confidence: 89,
+        signalReason: 'System architecture narrative and design principles'
+      }
     });
   }
 
@@ -224,7 +357,14 @@ export function buildRuleSpec(
         id: 'content-list',
         type: 'content-list',
         title: api.title,
-        items: items.slice(0, 6)
+        items: items.slice(0, 6),
+        source: {
+          sectionTitle: api.title,
+          sourceType: 'API Endpoint / Interface Extractor',
+          lineIndex: api.lineIndex,
+          confidence: 88,
+          signalReason: `Extracted ${items.length} interface methods and routes`
+        }
       });
     }
   }
@@ -260,7 +400,14 @@ export function buildRuleSpec(
         id: 'timeline',
         type: 'timeline',
         title: roadSec.title || 'Roadmap & Milestones',
-        items: tItems
+        items: tItems,
+        source: {
+          sectionTitle: roadSec.title || 'Roadmap',
+          sourceType: 'Milestone Timeline Parser',
+          lineIndex: roadSec.lineIndex,
+          confidence: 92,
+          signalReason: `Extracted ${tItems.length} sequential chronological milestones`
+        }
       });
     }
   }
@@ -295,7 +442,14 @@ export function buildRuleSpec(
           trunc(table.header[1] || 'This Project', 18),
           trunc(table.header[2] || 'Alternatives', 18)
         ],
-        rows
+        rows,
+        source: {
+          sectionTitle: compSec.title || 'Feature Comparison',
+          sourceType: 'Tabular Comparison Miner',
+          lineIndex: compSec.lineIndex,
+          confidence: 96,
+          signalReason: `Mined ${rows.length} tabular competitive comparison features`
+        }
       });
     }
   }
@@ -316,7 +470,14 @@ export function buildRuleSpec(
           title: /note|tip|quote|highlight/i.test(s.title) ? s.title : undefined,
           text: trunc(text, 220),
           author: author ? trunc(author, 40) : undefined,
-          calloutType: 'quote'
+          calloutType: 'quote',
+          source: {
+            sectionTitle: s.title || 'Blockquote Highlight',
+            sourceType: 'Blockquote Miner',
+            lineIndex: s.lineIndex,
+            confidence: 88,
+            signalReason: 'Highlighted pullquote or maintainer testimonial'
+          }
         });
         break;
       }
@@ -337,7 +498,14 @@ export function buildRuleSpec(
           id: id,
           type: 'content-block',
           title: s.title,
-          text: trunc(s.rawText, 320)
+          text: trunc(s.rawText, 320),
+          source: {
+            sectionTitle: s.title,
+            sourceType: 'Markdown Text Block',
+            lineIndex: s.lineIndex,
+            confidence: 80,
+            signalReason: 'Secondary descriptive text passage'
+          }
         });
         if (spec.sections.length >= 5) break;
       }
@@ -352,14 +520,26 @@ export function buildRuleSpec(
         id: 'about',
         type: 'content-block',
         title: 'About',
-        text: trunc(allText, 400)
+        text: trunc(allText, 400),
+        source: {
+          sectionTitle: 'About',
+          sourceType: 'Document Text Aggregator',
+          confidence: 75,
+          signalReason: 'Fallback general summary'
+        }
       });
     } else if (doc.subtitle) {
       spec.sections.push({
         id: 'about',
         type: 'content-block',
         title: 'About',
-        text: doc.subtitle
+        text: doc.subtitle,
+        source: {
+          sectionTitle: 'Tagline',
+          sourceType: 'Subtitle Extractor',
+          confidence: 75,
+          signalReason: 'Header subtitle summary'
+        }
       });
     }
   }
@@ -368,6 +548,26 @@ export function buildRuleSpec(
   if (ghMeta) {
     mergeGHMeta(spec, ghMeta);
   }
+
+  // Calculate Grounding & Traceability Metrics
+  const contributingSections = spec.sections.filter((s) => s.source != null).length;
+  const totalParsedSections = Math.max(1, doc.sections?.length || 1);
+  const coveragePercent = Math.min(100, Math.round((contributingSections / totalParsedSections) * 100));
+  const confidences = spec.sections.map((s) => s.source?.confidence || 85);
+  const averageConfidence = confidences.length > 0
+    ? Math.round(confidences.reduce((a, b) => a + b, 0) / confidences.length)
+    : 85;
+
+  const recommendation = detectSmartLayout(doc, ghMeta, spec.sections);
+  spec.grounding = {
+    coveragePercent,
+    sourceDensity: coveragePercent >= 70 ? 'comprehensive' : coveragePercent >= 40 ? 'balanced' : 'compact',
+    totalSourceLines: (doc.sections || []).reduce((acc, s) => acc + (s.totalLinesHint || (s.rawText || '').split('\n').length), 0),
+    contributingSections,
+    totalParsedSections,
+    averageConfidence,
+    recommendation
+  };
 
   return spec;
 }
@@ -386,7 +586,7 @@ export function mergeGHMeta(spec: InfographicSpec, ghMeta: GitHubMeta): Infograp
 
   // Find or create stats section
   let statsSec = spec.sections.find((s) => s.id === 'stats' && s.type === 'stats') as
-    | { id: string; type: 'stats'; items: MetricItem[] }
+    | { id: string; type: 'stats'; items: MetricItem[]; source?: SectionSource }
     | undefined;
 
   const ghMetrics: MetricItem[] = [];
@@ -422,12 +622,26 @@ export function mergeGHMeta(spec: InfographicSpec, ghMeta: GitHubMeta): Infograp
       const existingLabels = new Set(statsSec.items.map((it) => it.label.toLowerCase()));
       const filteredGH = ghMetrics.filter((m) => !existingLabels.has(m.label.toLowerCase()));
       statsSec.items = [...filteredGH, ...statsSec.items].slice(0, 4);
+      if (!statsSec.source) {
+        statsSec.source = {
+          sectionTitle: 'Repository Telemetry & Benchmarks',
+          sourceType: 'GitHub REST API & Parser',
+          confidence: 97,
+          signalReason: 'Combined GitHub repository stats with parsed benchmarks'
+        };
+      }
     } else {
       // Insert stats right after problem-solution or at top
-      const newSec = {
+      const newSec: SpecSection = {
         id: 'stats',
         type: 'stats' as const,
-        items: ghMetrics.slice(0, 4)
+        items: ghMetrics.slice(0, 4),
+        source: {
+          sectionTitle: 'GitHub Repository Telemetry',
+          sourceType: 'GitHub REST API Miner',
+          confidence: 98,
+          signalReason: `Live repository telemetry (${ghMetrics.map((m) => `${m.value} ${m.label}`).join(', ')})`
+        }
       };
       const psIndex = spec.sections.findIndex((s) => s.type === 'problem-solution');
       if (psIndex >= 0) {

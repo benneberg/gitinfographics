@@ -102,6 +102,14 @@ export interface LogoConfig {
   size: number;
 }
 
+export interface SectionSource {
+  sectionTitle?: string;
+  sourceType: string;
+  lineIndex?: number;
+  confidence: number; // 0 to 100
+  signalReason: string;
+}
+
 export type SpecSection =
   | {
       id: string;
@@ -110,11 +118,13 @@ export type SpecSection =
       solution: string;
       problemTitle: string;
       solutionTitle: string;
+      source?: SectionSource;
     }
   | {
       id: string;
       type: 'stats';
       items: MetricItem[];
+      source?: SectionSource;
     }
   | {
       id: string;
@@ -122,36 +132,42 @@ export type SpecSection =
       title: string;
       columns: number;
       items: FeatureItem[];
+      source?: SectionSource;
     }
   | {
       id: string;
       type: 'tech-stack';
       title: string;
       items: string[];
+      source?: SectionSource;
     }
   | {
       id: string;
       type: 'steps';
       title: string;
       items: StepItem[];
+      source?: SectionSource;
     }
   | {
       id: string;
       type: 'content-list';
       title: string;
       items: ContentListItem[];
+      source?: SectionSource;
     }
   | {
       id: string;
       type: 'content-block';
       title: string;
       text: string;
+      source?: SectionSource;
     }
   | {
       id: string;
       type: 'timeline';
       title: string;
       items: TimelineItem[];
+      source?: SectionSource;
     }
   | {
       id: string;
@@ -159,6 +175,7 @@ export type SpecSection =
       title: string;
       headers: [string, string, string];
       rows: ComparisonRow[];
+      source?: SectionSource;
     }
   | {
       id: string;
@@ -167,7 +184,27 @@ export type SpecSection =
       text: string;
       author?: string;
       calloutType?: 'quote' | 'tip' | 'warning' | 'info';
+      source?: SectionSource;
     };
+
+export interface SmartRecommendation {
+  layoutType: 'balanced-studio' | 'feature-grid' | 'timeline' | 'compact-cli' | 'stats-metric';
+  label: string;
+  confidence: number;
+  reason: string;
+  suggestedDensity: VisualDensity;
+  suggestedVariants: VariantMap;
+}
+
+export interface GroundingMetrics {
+  coveragePercent: number;
+  sourceDensity: 'compact' | 'balanced' | 'comprehensive';
+  totalSourceLines: number;
+  contributingSections: number;
+  totalParsedSections: number;
+  averageConfidence: number;
+  recommendation: SmartRecommendation;
+}
 
 export interface InfographicSpec {
   title: string;
@@ -175,6 +212,7 @@ export interface InfographicSpec {
   sections: SpecSection[];
   meta?: GitHubMeta;
   logo?: LogoConfig;
+  grounding?: GroundingMetrics;
 }
 
 export interface GitHubMeta {

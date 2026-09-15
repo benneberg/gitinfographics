@@ -58,6 +58,23 @@ Built with modern web standards and lightweight primitives:
 - < 18ms generation latency for 10,000-line Markdown documents
 - 0 dependencies in core rendering module
 - 40% improvement in repository bounce rate
+
+## Feature Comparison
+| Feature | Infographic Studio | Static Badges / Shields | Manual Figma Design |
+| :--- | :--- | :--- | :--- |
+| Zero-Config Generation | Yes | Yes | No |
+| Dynamic Metric Mining | Yes | No | No |
+| Automated CI/CD Action | Yes | Limited | No |
+| Multi-Column Grid Layouts | Yes | No | Yes |
+| Offline & Client-Side | Yes | Yes | No |
+
+## Release Roadmap
+- v1.0 — Heuristic Markdown parser and vector layout engine
+- v2.0 — GitHub Actions CI/CD automation & SVG optimization pipeline
+- v3.0 — Interactive studio, custom themes, and visual density controls
+- v3.5 — Smart layout auto-detection & 4-column matrix grid
+
+> "Infographic Studio transformed our repository engagement. Visitors understand our architecture in three seconds." — Open Source Maintainer
 `
   },
   {

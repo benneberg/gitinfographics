@@ -10,20 +10,20 @@ import { DocSection, SectionType } from './types';
  * - security / testing now map cleanly into content sections.
  */
 export const SEC_PATTERNS: Record<SectionType, RegExp> = {
-  problem: /\b(problem|pain\s*point|challenge|why\s+(we|this)|motivation|gap|frustrat|struggle|issue|difficult|bottleneck)\b/i,
-  solution: /\b(solution|approach|how\s+(we|it)\s+work|what\s+we\s+built|our\s+approach|resolution|fix|answer|product)\b/i,
-  features: /\b(feature|capability|highlight|what\s+(it|you)\s+(does|can)|key\s+(capabilit|feature)|functionality|benefit|advantage|what\'s\s+included)\b/i,
-  'tech-stack': /\b(tech\s*stack|built\s*with|dependencies|powered\s*by|technolog|under\s*the\s*hood|stack|requirement|prerequisite|system\s+requirement)\b/i,
-  'getting-started': /\b(install|setup|quick\s*start|getting\s*started|prerequisite|how\s+to\s+(install|run|start)|build|compile|development)\b/i,
+  problem: /\b(problems?|pain\s*points?|challenges?|why\s+(we|this)|motivation|gaps?|frustrat\w*|struggles?|issues?|difficult\w*|bottlenecks?)\b/i,
+  solution: /\b(solutions?|approaches|approach|how\s+(we|it)\s+works?|what\s+we\s+built|our\s+approach|resolutions?|fixes|fix|answers?|products?)\b/i,
+  features: /\b(features?|capabilities|capability|highlights?|what\s+(it|you)\s+(does|can)|key\s+(capabilities|capability|features?)|functionalities|functionality|benefits?|advantages?|what\'s\s+included)\b/i,
+  'tech-stack': /\b(tech\s*stack|built\s*with|dependencies|powered\s*by|technolog\w*|under\s*the\s*hood|stack|requirements?|prerequisites?|system\s+requirements?)\b/i,
+  'getting-started': /\b(install\w*|setup|quick\s*start|getting\s*started|prerequisites?|how\s+to\s+(install|run|start)|build|compile|development)\b/i,
   architecture: /\b(architecture|design|structure|component\s*overview|system\s*design|diagram|how\s+it\s+works|overview|platform)\b/i,
-  api: /\b(api|endpoint|route|request|response|http|graphql|rest|swagger|openapi|sdk|client)\b/i,
-  usage: /\b(usage|example|how\s+to\s+use|basic|tutorial|guide|demo|sample|snippet|playground)\b/i,
-  contributing: /\b(contribut|develop|guideline|pull\s+request|pr|code\s+of\s+conduct|commit|cla)\b/i,
-  roadmap: /\b(roadmap|plan|future|next\s+step|coming|todo|upcoming|milestone|release|changelog|version)\b/i,
-  metrics: /\b(benchmark|performance|metric|stat|by\s+the\s+number|result|speed|latency|throughput|efficiency|scale|kpi)\b/i,
-  security: /\b(security|auth|authenticat|authoriz|encrypt|vulnerability|cve|safe|protect|oauth|jwt|ssl|tls|permission)\b/i,
-  testing: /\b(test|spec|coverage|jest|cypress|playwright|vitest|unit|e2e|integration|qa)\b/i,
-  license: /\b(license|licence|copyright|mit|apache|gpl|bsd|copying|legal)\b/i,
+  api: /\b(api|apis|endpoint|endpoints|routes?|requests?|responses?|http|graphql|rest|swagger|openapi|sdk|sdks|client|clients)\b/i,
+  usage: /\b(usage|examples?|how\s+to\s+use|basic|tutorials?|guides?|demos?|samples?|snippets?|playground)\b/i,
+  contributing: /\b(contribut\w*|develop\w*|guidelines?|pull\s+requests?|pr|prs|code\s+of\s+conduct|commits?|cla)\b/i,
+  roadmap: /\b(roadmaps?|plans?|future|next\s+steps?|coming|todo|upcoming|milestones?|releases?|changelogs?|versions?)\b/i,
+  metrics: /\b(benchmarks?|performance|metrics?|stats?|by\s+the\s+numbers?|results?|speed|latency|throughput|efficiency|scale|kpis?)\b/i,
+  security: /\b(security|auth|authenticat\w*|authoriz\w*|encrypt\w*|vulnerabilit\w*|cve|safe|protect\w*|oauth|jwt|ssl|tls|permissions?)\b/i,
+  testing: /\b(tests?|testing|specs?|coverage|jest|cypress|playwright|vitest|unit|e2e|integration|qa)\b/i,
+  license: /\b(license|licenses|licence|licences|copyright|mit|apache|gpl|bsd|copying|legal)\b/i,
   generic: /(?!)/ // never matches directly
 };
 

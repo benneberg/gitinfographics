@@ -7,11 +7,11 @@
 ## 🎯 Active Backlog & Future Capabilities
 
 ### 1. Advanced Layout Options
-- [ ] **Timeline Layout**: Specialized visual timeline renderer for changelogs, release histories, and roadmaps.
-- [ ] **Comparison Table**: Side-by-side comparative feature matrix.
-- [ ] **Callout & Highlight Cards**: Stylized blockquote cards for testimonials, quotes, or key takeaways.
-- [ ] **Grid Matrix Layout**: Expandable grid layout for dense feature lists.
-- [ ] **Smart Layout Auto-Detection**: Heuristic detector choosing the ideal visual layout based on repository characteristics.
+- [x] **Timeline Layout**: Specialized visual timeline renderer for changelogs, release histories, and roadmaps.
+- [x] **Comparison Table**: Side-by-side comparative feature matrix.
+- [x] **Callout & Highlight Cards**: Stylized blockquote cards for testimonials, quotes, or key takeaways.
+- [x] **Grid Matrix Layout**: Expandable 4-column grid layout for dense feature lists with responsive card sizing.
+- [x] **Smart Layout Auto-Detection**: Heuristic detector choosing the ideal visual layout based on repository characteristics and confidence scoring.
 
 ### 2. Module Decoupling & Ecosystem
 - [ ] **Standalone Engine Modules**:
@@ -22,9 +22,9 @@
 - [ ] **Monorepo Setup**: Transition to pnpm workspace architecture.
 
 ### 3. Content Grounding & Verification
-- [ ] **Source Traceability**: Highlight contributing markdown sections per visual card.
-- [ ] **Source Density Indicator**: Visual meter showing markdown coverage.
-- [ ] **Confidence Scoring**: Confidence metrics on extracted heuristics and statistics.
+- [x] **Source Traceability**: Deterministic traceability matrix linking infographic cards to source markdown blocks.
+- [x] **Source Density Indicator**: Visual meter showing markdown coverage and content volume.
+- [x] **Confidence Scoring**: Heuristic confidence metrics on classified sections and extracted telemetry.
 
 ### 4. Collaboration & Custom Templates
 - [ ] **Custom Template JSON Schema**: User-customizable and shareable layout templates.
