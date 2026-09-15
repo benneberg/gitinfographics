@@ -50,7 +50,14 @@ jobs:
           echo
           echo "Generated files:"
           find .llm-context -type f | sort
-
+          
+      - name: Initialize CCC workspace
+        run: |
+          ccc workspace init
+          echo
+          echo "Workspace files:"
+          find . -maxdepth 2 -name "ccc-workspace.yml" -o -name ".ccc*" | sort
+          
       - name: Test task-oriented context
         run: |
           set +e
