@@ -51,6 +51,7 @@ jobs:
         with:
           name: ccc-context-${{ github.sha }}
           path: .llm-context/
+          include-hidden-files: true
           if-no-files-found: error
           retention-days: 7
     
