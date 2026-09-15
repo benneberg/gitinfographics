@@ -46,6 +46,14 @@ jobs:
           echo "=== Generated files ==="
           find . -maxdepth 4 -type f | sort
 
+      - name: Upload CCC context
+        uses: actions/upload-artifact@v4
+        with:
+          name: ccc-context-${{ github.sha }}
+          path: .llm-context/
+          if-no-files-found: error
+          retention-days: 7
+    
       - name: Verify CCC output
         run: |
           test -d .llm-context
