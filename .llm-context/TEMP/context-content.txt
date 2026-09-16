@@ -1,7 +1,0 @@
-
-============================================================
-  ccc context-for: 'add support for a new README content type'
-  Workspace: gitinfographics (3 services)
-  Budget: ~8,000 tokens  |  Depth: 1
-============================================================
-

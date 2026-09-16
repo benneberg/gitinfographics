@@ -1,7 +1,0 @@
-
-============================================================
-  ccc context-for: 'add a new infographic layout'
-  Workspace: gitinfographics (3 services)
-  Budget: ~8,000 tokens  |  Depth: 1
-============================================================
-
