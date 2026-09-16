@@ -1,0 +1,14 @@
+Traceback (most recent call last):
+  File "/opt/hostedtoolcache/Python/3.12.14/x64/bin/ccc", line 6, in <module>
+    sys.exit(main())
+             ^^^^^^
+  File "/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/site-packages/ccc/cli.py", line 692, in main
+    return _handle_context_for(args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/site-packages/ccc/cli.py", line 347, in _handle_context_for
+    results = resolve_intent(manifest, task, depth=depth)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/site-packages/ccc/task_context.py", line 141, in resolve_intent
+    "type": svc.type or "",
+            ^^^^^^^^
+AttributeError: 'ServiceConfig' object has no attribute 'type'
