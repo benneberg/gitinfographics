@@ -1,8 +1,8 @@
 {
   "_meta": {
-    "generated": "2026-09-15 21:19 UTC",
-    "total_files": 72,
-    "scored_files": 72,
+    "generated": "2026-09-16 03:55 UTC",
+    "total_files": 99,
+    "scored_files": 99,
     "weights": {
       "fan_in": 0.4,
       "recency": 0.25,
@@ -13,1012 +13,1390 @@
   },
   "files": [
     {
-      "path": "src/engine/types.ts",
-      "score": 0.7429,
-      "imported_by_count": 22,
+      "path": "packages/parser/src/types.ts",
+      "score": 0.8738,
+      "imported_by_count": 36,
       "days_since_modified": 0.0,
       "pattern_hits": 0,
       "factors": {
         "fan_in": 1.0,
-        "recency": 0.5,
+        "recency": 1.0,
         "pattern_density": 0.5,
-        "size": 0.929
+        "size": 0.988
       },
       "rank": 1
     },
     {
-      "path": "src/ui/haptics.ts",
-      "score": 0.5862,
-      "imported_by_count": 13,
+      "path": "packages/renderer/src/types.ts",
+      "score": 0.8726,
+      "imported_by_count": 36,
       "days_since_modified": 0.0,
       "pattern_hits": 0,
       "factors": {
-        "fan_in": 0.591,
-        "recency": 0.5,
+        "fan_in": 1.0,
+        "recency": 1.0,
         "pattern_density": 0.5,
-        "size": 0.998
+        "size": 0.976
       },
       "rank": 2
     },
     {
-      "path": "src/engine/themes.ts",
-      "score": 0.4512,
-      "imported_by_count": 6,
+      "path": "packages/analyzer/src/types.ts",
+      "score": 0.8705,
+      "imported_by_count": 36,
       "days_since_modified": 0.0,
       "pattern_hits": 0,
       "factors": {
-        "fan_in": 0.273,
-        "recency": 0.5,
+        "fan_in": 1.0,
+        "recency": 1.0,
         "pattern_density": 0.5,
-        "size": 0.921
+        "size": 0.955
       },
       "rank": 3
     },
     {
-      "path": "src/engine/extractors.ts",
-      "score": 0.4451,
-      "imported_by_count": 6,
-      "days_since_modified": 0.0,
+      "path": "src/engine/types.ts",
+      "score": 0.856,
+      "imported_by_count": 36,
+      "days_since_modified": 0.4,
       "pattern_hits": 0,
       "factors": {
-        "fan_in": 0.273,
-        "recency": 0.5,
+        "fan_in": 1.0,
+        "recency": 0.953,
         "pattern_density": 0.5,
-        "size": 0.86
+        "size": 0.926
       },
       "rank": 4
     },
     {
-      "path": "src/renderer/themes/contrast.ts",
-      "score": 0.4363,
-      "imported_by_count": 5,
+      "path": "src/engine/parser.ts",
+      "score": 0.6313,
+      "imported_by_count": 15,
       "days_since_modified": 0.0,
       "pattern_hits": 0,
       "factors": {
-        "fan_in": 0.227,
-        "recency": 0.5,
+        "fan_in": 0.417,
+        "recency": 1.0,
         "pattern_density": 0.5,
-        "size": 0.954
+        "size": 0.896
       },
       "rank": 5
     },
     {
-      "path": "src/engine/contrast.ts",
-      "score": 0.4362,
-      "imported_by_count": 5,
+      "path": "packages/parser/src/parser.ts",
+      "score": 0.63,
+      "imported_by_count": 15,
       "days_since_modified": 0.0,
       "pattern_hits": 0,
       "factors": {
-        "fan_in": 0.227,
-        "recency": 0.5,
+        "fan_in": 0.417,
+        "recency": 1.0,
         "pattern_density": 0.5,
-        "size": 0.953
+        "size": 0.883
       },
       "rank": 6
     },
     {
-      "path": "src/engine/samples.ts",
-      "score": 0.4328,
-      "imported_by_count": 5,
+      "path": "src/ui/haptics.ts",
+      "score": 0.619,
+      "imported_by_count": 13,
       "days_since_modified": 0.0,
       "pattern_hits": 0,
       "factors": {
-        "fan_in": 0.227,
-        "recency": 0.5,
+        "fan_in": 0.361,
+        "recency": 1.0,
         "pattern_density": 0.5,
-        "size": 0.919
+        "size": 0.995
       },
       "rank": 7
     },
     {
-      "path": "src/engine/classifier.ts",
-      "score": 0.4158,
-      "imported_by_count": 4,
+      "path": "packages/analyzer/src/extractors.ts",
+      "score": 0.5621,
+      "imported_by_count": 9,
       "days_since_modified": 0.0,
       "pattern_hits": 0,
       "factors": {
-        "fan_in": 0.182,
-        "recency": 0.5,
+        "fan_in": 0.25,
+        "recency": 1.0,
         "pattern_density": 0.5,
-        "size": 0.931
+        "size": 0.871
       },
       "rank": 8
     },
     {
-      "path": "src/engine/parser.ts",
-      "score": 0.4126,
-      "imported_by_count": 4,
-      "days_since_modified": 0.0,
+      "path": "src/engine/extractors.ts",
+      "score": 0.5578,
+      "imported_by_count": 9,
+      "days_since_modified": 0.1,
       "pattern_hits": 0,
       "factors": {
-        "fan_in": 0.182,
-        "recency": 0.5,
+        "fan_in": 0.25,
+        "recency": 0.988,
         "pattern_density": 0.5,
-        "size": 0.899
+        "size": 0.857
       },
       "rank": 9
     },
     {
-      "path": "src/ui/KeyboardShortcuts.ts",
-      "score": 0.399,
-      "imported_by_count": 3,
+      "path": "packages/renderer/src/themes.ts",
+      "score": 0.5557,
+      "imported_by_count": 8,
       "days_since_modified": 0.0,
       "pattern_hits": 0,
       "factors": {
-        "fan_in": 0.136,
-        "recency": 0.5,
+        "fan_in": 0.222,
+        "recency": 1.0,
         "pattern_density": 0.5,
-        "size": 0.944
+        "size": 0.918
       },
       "rank": 10
     },
     {
-      "path": "src/storage/ProjectStorage.ts",
-      "score": 0.3956,
-      "imported_by_count": 3,
+      "path": "packages/analyzer/src/classifier.ts",
+      "score": 0.546,
+      "imported_by_count": 7,
       "days_since_modified": 0.0,
       "pattern_hits": 0,
       "factors": {
-        "fan_in": 0.136,
-        "recency": 0.5,
+        "fan_in": 0.194,
+        "recency": 1.0,
         "pattern_density": 0.5,
-        "size": 0.91
+        "size": 0.932
       },
       "rank": 11
     },
     {
-      "path": "src/renderer/themes/ThemeManager.ts",
-      "score": 0.3918,
-      "imported_by_count": 3,
+      "path": "src/renderer/themes/contrast.ts",
+      "score": 0.5368,
+      "imported_by_count": 6,
       "days_since_modified": 0.0,
       "pattern_hits": 0,
       "factors": {
-        "fan_in": 0.136,
-        "recency": 0.5,
+        "fan_in": 0.167,
+        "recency": 1.0,
         "pattern_density": 0.5,
-        "size": 0.873
+        "size": 0.951
       },
       "rank": 12
     },
     {
-      "path": "src/engine/qr.ts",
-      "score": 0.3848,
-      "imported_by_count": 2,
+      "path": "packages/renderer/src/contrast.ts",
+      "score": 0.5367,
+      "imported_by_count": 6,
       "days_since_modified": 0.0,
       "pattern_hits": 0,
       "factors": {
-        "fan_in": 0.091,
-        "recency": 0.5,
+        "fan_in": 0.167,
+        "recency": 1.0,
         "pattern_density": 0.5,
-        "size": 0.984
+        "size": 0.95
       },
       "rank": 13
     },
     {
-      "path": "src/export/CanvasExporter.ts",
-      "score": 0.3802,
-      "imported_by_count": 2,
+      "path": "src/engine/contrast.ts",
+      "score": 0.5367,
+      "imported_by_count": 6,
       "days_since_modified": 0.0,
       "pattern_hits": 0,
       "factors": {
-        "fan_in": 0.091,
-        "recency": 0.5,
+        "fan_in": 0.167,
+        "recency": 1.0,
         "pattern_density": 0.5,
-        "size": 0.938
+        "size": 0.95
       },
       "rank": 14
     },
     {
-      "path": "src/components/mobile/VisualFormatPicker.tsx",
-      "score": 0.3798,
-      "imported_by_count": 2,
-      "days_since_modified": 0.0,
+      "path": "src/engine/classifier.ts",
+      "score": 0.534,
+      "imported_by_count": 7,
+      "days_since_modified": 0.4,
       "pattern_hits": 0,
       "factors": {
-        "fan_in": 0.091,
-        "recency": 0.5,
+        "fan_in": 0.194,
+        "recency": 0.953,
         "pattern_density": 0.5,
-        "size": 0.935
+        "size": 0.928
       },
       "rank": 15
     },
     {
-      "path": "src/engine/specBuilder.ts",
-      "score": 0.3752,
-      "imported_by_count": 3,
-      "days_since_modified": 0.0,
-      "pattern_hits": 0,
-      "factors": {
-        "fan_in": 0.136,
-        "recency": 0.5,
-        "pattern_density": 0.5,
-        "size": 0.706
-      },
-      "rank": 16
-    },
-    {
-      "path": "src/engine/workflowTemplate.ts",
-      "score": 0.3698,
-      "imported_by_count": 2,
-      "days_since_modified": 0.0,
-      "pattern_hits": 0,
-      "factors": {
-        "fan_in": 0.091,
-        "recency": 0.5,
-        "pattern_density": 0.5,
-        "size": 0.834
-      },
-      "rank": 17
-    },
-    {
-      "path": "src/engine/index.ts",
-      "score": 0.3682,
-      "imported_by_count": 1,
-      "days_since_modified": 0.0,
-      "pattern_hits": 0,
-      "factors": {
-        "fan_in": 0.045,
-        "recency": 0.5,
-        "pattern_density": 0.5,
-        "size": 1.0
-      },
-      "rank": 18
-    },
-    {
-      "path": "src/ui/useOnlineStatus.ts",
-      "score": 0.3677,
-      "imported_by_count": 1,
-      "days_since_modified": 0.0,
-      "pattern_hits": 0,
-      "factors": {
-        "fan_in": 0.045,
-        "recency": 0.5,
-        "pattern_density": 0.5,
-        "size": 0.996
-      },
-      "rank": 19
-    },
-    {
-      "path": "src/components/Toast.tsx",
-      "score": 0.3666,
-      "imported_by_count": 1,
-      "days_since_modified": 0.0,
-      "pattern_hits": 0,
-      "factors": {
-        "fan_in": 0.045,
-        "recency": 0.5,
-        "pattern_density": 0.5,
-        "size": 0.984
-      },
-      "rank": 20
-    },
-    {
-      "path": "src/ui/usePWAInstall.ts",
-      "score": 0.3661,
-      "imported_by_count": 1,
-      "days_since_modified": 0.0,
-      "pattern_hits": 0,
-      "factors": {
-        "fan_in": 0.045,
-        "recency": 0.5,
-        "pattern_density": 0.5,
-        "size": 0.979
-      },
-      "rank": 21
-    },
-    {
-      "path": "src/ui/ErrorBoundary.tsx",
-      "score": 0.365,
-      "imported_by_count": 1,
-      "days_since_modified": 0.0,
-      "pattern_hits": 0,
-      "factors": {
-        "fan_in": 0.045,
-        "recency": 0.5,
-        "pattern_density": 0.5,
-        "size": 0.969
-      },
-      "rank": 22
-    },
-    {
-      "path": "src/components/mobile/BottomNavigation.tsx",
-      "score": 0.3647,
-      "imported_by_count": 1,
-      "days_since_modified": 0.0,
-      "pattern_hits": 0,
-      "factors": {
-        "fan_in": 0.045,
-        "recency": 0.5,
-        "pattern_density": 0.5,
-        "size": 0.965
-      },
-      "rank": 23
-    },
-    {
-      "path": "src/components/ErrorBoundary.tsx",
-      "score": 0.3644,
-      "imported_by_count": 1,
-      "days_since_modified": 0.0,
-      "pattern_hits": 0,
-      "factors": {
-        "fan_in": 0.045,
-        "recency": 0.5,
-        "pattern_density": 0.5,
-        "size": 0.963
-      },
-      "rank": 24
-    },
-    {
-      "path": "src/engine/github.ts",
-      "score": 0.3635,
-      "imported_by_count": 1,
-      "days_since_modified": 0.0,
-      "pattern_hits": 0,
-      "factors": {
-        "fan_in": 0.045,
-        "recency": 0.5,
-        "pattern_density": 0.5,
-        "size": 0.953
-      },
-      "rank": 25
-    },
-    {
-      "path": "src/components/DensitySelector.tsx",
-      "score": 0.3625,
-      "imported_by_count": 1,
-      "days_since_modified": 0.0,
-      "pattern_hits": 0,
-      "factors": {
-        "fan_in": 0.045,
-        "recency": 0.5,
-        "pattern_density": 0.5,
-        "size": 0.944
-      },
-      "rank": 26
-    },
-    {
-      "path": "src/components/ShortcutsModal.tsx",
-      "score": 0.3622,
-      "imported_by_count": 1,
-      "days_since_modified": 0.0,
-      "pattern_hits": 0,
-      "factors": {
-        "fan_in": 0.045,
-        "recency": 0.5,
-        "pattern_density": 0.5,
-        "size": 0.94
-      },
-      "rank": 27
-    },
-    {
-      "path": "src/components/mobile/MobileFab.tsx",
-      "score": 0.362,
-      "imported_by_count": 1,
-      "days_since_modified": 0.0,
-      "pattern_hits": 0,
-      "factors": {
-        "fan_in": 0.045,
-        "recency": 0.5,
-        "pattern_density": 0.5,
-        "size": 0.938
-      },
-      "rank": 28
-    },
-    {
-      "path": "src/components/mobile/MobileTopRepoBar.tsx",
-      "score": 0.3619,
-      "imported_by_count": 1,
-      "days_since_modified": 0.0,
-      "pattern_hits": 0,
-      "factors": {
-        "fan_in": 0.045,
-        "recency": 0.5,
-        "pattern_density": 0.5,
-        "size": 0.937
-      },
-      "rank": 29
-    },
-    {
-      "path": "src/components/mobile/MobileActionSheet.tsx",
-      "score": 0.3619,
-      "imported_by_count": 1,
-      "days_since_modified": 0.0,
-      "pattern_hits": 0,
-      "factors": {
-        "fan_in": 0.045,
-        "recency": 0.5,
-        "pattern_density": 0.5,
-        "size": 0.938
-      },
-      "rank": 30
-    },
-    {
-      "path": "src/components/mobile/ThemeCarousel.tsx",
-      "score": 0.361,
-      "imported_by_count": 1,
-      "days_since_modified": 0.0,
-      "pattern_hits": 0,
-      "factors": {
-        "fan_in": 0.045,
-        "recency": 0.5,
-        "pattern_density": 0.5,
-        "size": 0.928
-      },
-      "rank": 31
-    },
-    {
-      "path": "src/components/WorkflowModal.tsx",
-      "score": 0.3606,
-      "imported_by_count": 1,
-      "days_since_modified": 0.0,
-      "pattern_hits": 0,
-      "factors": {
-        "fan_in": 0.045,
-        "recency": 0.5,
-        "pattern_density": 0.5,
-        "size": 0.924
-      },
-      "rank": 32
-    },
-    {
-      "path": "src/components/MarkdownEditor.tsx",
-      "score": 0.3602,
-      "imported_by_count": 1,
-      "days_since_modified": 0.0,
-      "pattern_hits": 0,
-      "factors": {
-        "fan_in": 0.045,
-        "recency": 0.5,
-        "pattern_density": 0.5,
-        "size": 0.92
-      },
-      "rank": 33
-    },
-    {
-      "path": "src/components/mobile/MobileCoachMarks.tsx",
-      "score": 0.3599,
-      "imported_by_count": 1,
-      "days_since_modified": 0.0,
-      "pattern_hits": 0,
-      "factors": {
-        "fan_in": 0.045,
-        "recency": 0.5,
-        "pattern_density": 0.5,
-        "size": 0.918
-      },
-      "rank": 34
-    },
-    {
-      "path": "src/components/ContrastModal.tsx",
-      "score": 0.358,
-      "imported_by_count": 1,
-      "days_since_modified": 0.0,
-      "pattern_hits": 0,
-      "factors": {
-        "fan_in": 0.045,
-        "recency": 0.5,
-        "pattern_density": 0.5,
-        "size": 0.898
-      },
-      "rank": 35
-    },
-    {
-      "path": "src/components/ShareModal.tsx",
-      "score": 0.3579,
-      "imported_by_count": 1,
-      "days_since_modified": 0.0,
-      "pattern_hits": 0,
-      "factors": {
-        "fan_in": 0.045,
-        "recency": 0.5,
-        "pattern_density": 0.5,
-        "size": 0.897
-      },
-      "rank": 36
-    },
-    {
-      "path": "src/engine/icons.ts",
-      "score": 0.3576,
-      "imported_by_count": 1,
-      "days_since_modified": 0.0,
-      "pattern_hits": 0,
-      "factors": {
-        "fan_in": 0.045,
-        "recency": 0.5,
-        "pattern_density": 0.5,
-        "size": 0.894
-      },
-      "rank": 37
-    },
-    {
-      "path": "src/components/mobile/FullScreenModalEditor.tsx",
-      "score": 0.3562,
-      "imported_by_count": 1,
-      "days_since_modified": 0.0,
-      "pattern_hits": 0,
-      "factors": {
-        "fan_in": 0.045,
-        "recency": 0.5,
-        "pattern_density": 0.5,
-        "size": 0.88
-      },
-      "rank": 38
-    },
-    {
-      "path": "src/App.tsx",
-      "score": 0.356,
+      "path": "packages/analyzer/src/index.ts",
+      "score": 0.5194,
       "imported_by_count": 4,
       "days_since_modified": 0.0,
       "pattern_hits": 0,
       "factors": {
-        "fan_in": 0.182,
-        "recency": 0.5,
+        "fan_in": 0.111,
+        "recency": 1.0,
         "pattern_density": 0.5,
-        "size": 0.333
+        "size": 0.999
+      },
+      "rank": 16
+    },
+    {
+      "path": "packages/parser/src/index.ts",
+      "score": 0.5194,
+      "imported_by_count": 4,
+      "days_since_modified": 0.0,
+      "pattern_hits": 0,
+      "factors": {
+        "fan_in": 0.111,
+        "recency": 1.0,
+        "pattern_density": 0.5,
+        "size": 1.0
+      },
+      "rank": 17
+    },
+    {
+      "path": "packages/renderer/src/index.ts",
+      "score": 0.5193,
+      "imported_by_count": 4,
+      "days_since_modified": 0.0,
+      "pattern_hits": 0,
+      "factors": {
+        "fan_in": 0.111,
+        "recency": 1.0,
+        "pattern_density": 0.5,
+        "size": 0.999
+      },
+      "rank": 18
+    },
+    {
+      "path": "src/engine/index.ts",
+      "score": 0.5191,
+      "imported_by_count": 4,
+      "days_since_modified": 0.0,
+      "pattern_hits": 0,
+      "factors": {
+        "fan_in": 0.111,
+        "recency": 1.0,
+        "pattern_density": 0.5,
+        "size": 0.997
+      },
+      "rank": 19
+    },
+    {
+      "path": "packages/renderer/src/qr.ts",
+      "score": 0.5176,
+      "imported_by_count": 4,
+      "days_since_modified": 0.0,
+      "pattern_hits": 0,
+      "factors": {
+        "fan_in": 0.111,
+        "recency": 1.0,
+        "pattern_density": 0.5,
+        "size": 0.982
+      },
+      "rank": 20
+    },
+    {
+      "path": "src/engine/qr.ts",
+      "score": 0.5176,
+      "imported_by_count": 4,
+      "days_since_modified": 0.0,
+      "pattern_hits": 0,
+      "factors": {
+        "fan_in": 0.111,
+        "recency": 1.0,
+        "pattern_density": 0.5,
+        "size": 0.982
+      },
+      "rank": 21
+    },
+    {
+      "path": "src/engine/samples.ts",
+      "score": 0.5106,
+      "imported_by_count": 5,
+      "days_since_modified": 0.4,
+      "pattern_hits": 0,
+      "factors": {
+        "fan_in": 0.139,
+        "recency": 0.953,
+        "pattern_density": 0.5,
+        "size": 0.916
+      },
+      "rank": 22
+    },
+    {
+      "path": "packages/analyzer/src/specBuilder.ts",
+      "score": 0.501,
+      "imported_by_count": 5,
+      "days_since_modified": 0.0,
+      "pattern_hits": 0,
+      "factors": {
+        "fan_in": 0.139,
+        "recency": 1.0,
+        "pattern_density": 0.5,
+        "size": 0.705
+      },
+      "rank": 23
+    },
+    {
+      "path": "packages/renderer/src/icons.ts",
+      "score": 0.4975,
+      "imported_by_count": 3,
+      "days_since_modified": 0.0,
+      "pattern_hits": 0,
+      "factors": {
+        "fan_in": 0.083,
+        "recency": 1.0,
+        "pattern_density": 0.5,
+        "size": 0.892
+      },
+      "rank": 24
+    },
+    {
+      "path": "src/engine/icons.ts",
+      "score": 0.4975,
+      "imported_by_count": 3,
+      "days_since_modified": 0.0,
+      "pattern_hits": 0,
+      "factors": {
+        "fan_in": 0.083,
+        "recency": 1.0,
+        "pattern_density": 0.5,
+        "size": 0.892
+      },
+      "rank": 25
+    },
+    {
+      "path": "src/export/CanvasExporter.ts",
+      "score": 0.4908,
+      "imported_by_count": 2,
+      "days_since_modified": 0.0,
+      "pattern_hits": 0,
+      "factors": {
+        "fan_in": 0.056,
+        "recency": 1.0,
+        "pattern_density": 0.5,
+        "size": 0.936
+      },
+      "rank": 26
+    },
+    {
+      "path": "src/engine/specBuilder.ts",
+      "score": 0.4894,
+      "imported_by_count": 5,
+      "days_since_modified": 0.4,
+      "pattern_hits": 0,
+      "factors": {
+        "fan_in": 0.139,
+        "recency": 0.953,
+        "pattern_density": 0.5,
+        "size": 0.704
+      },
+      "rank": 27
+    },
+    {
+      "path": "src/ui/useOnlineStatus.ts",
+      "score": 0.4854,
+      "imported_by_count": 1,
+      "days_since_modified": 0.0,
+      "pattern_hits": 0,
+      "factors": {
+        "fan_in": 0.028,
+        "recency": 1.0,
+        "pattern_density": 0.5,
+        "size": 0.993
+      },
+      "rank": 28
+    },
+    {
+      "path": "src/components/Toast.tsx",
+      "score": 0.4842,
+      "imported_by_count": 1,
+      "days_since_modified": 0.0,
+      "pattern_hits": 0,
+      "factors": {
+        "fan_in": 0.028,
+        "recency": 1.0,
+        "pattern_density": 0.5,
+        "size": 0.981
+      },
+      "rank": 29
+    },
+    {
+      "path": "src/ui/usePWAInstall.ts",
+      "score": 0.4838,
+      "imported_by_count": 1,
+      "days_since_modified": 0.0,
+      "pattern_hits": 0,
+      "factors": {
+        "fan_in": 0.028,
+        "recency": 1.0,
+        "pattern_density": 0.5,
+        "size": 0.977
+      },
+      "rank": 30
+    },
+    {
+      "path": "src/ui/ErrorBoundary.tsx",
+      "score": 0.4827,
+      "imported_by_count": 1,
+      "days_since_modified": 0.0,
+      "pattern_hits": 0,
+      "factors": {
+        "fan_in": 0.028,
+        "recency": 1.0,
+        "pattern_density": 0.5,
+        "size": 0.966
+      },
+      "rank": 31
+    },
+    {
+      "path": "src/components/mobile/BottomNavigation.tsx",
+      "score": 0.4824,
+      "imported_by_count": 1,
+      "days_since_modified": 0.0,
+      "pattern_hits": 0,
+      "factors": {
+        "fan_in": 0.028,
+        "recency": 1.0,
+        "pattern_density": 0.5,
+        "size": 0.962
+      },
+      "rank": 32
+    },
+    {
+      "path": "src/components/ErrorBoundary.tsx",
+      "score": 0.4821,
+      "imported_by_count": 1,
+      "days_since_modified": 0.0,
+      "pattern_hits": 0,
+      "factors": {
+        "fan_in": 0.028,
+        "recency": 1.0,
+        "pattern_density": 0.5,
+        "size": 0.96
+      },
+      "rank": 33
+    },
+    {
+      "path": "src/engine/github.ts",
+      "score": 0.4812,
+      "imported_by_count": 1,
+      "days_since_modified": 0.0,
+      "pattern_hits": 0,
+      "factors": {
+        "fan_in": 0.028,
+        "recency": 1.0,
+        "pattern_density": 0.5,
+        "size": 0.951
+      },
+      "rank": 34
+    },
+    {
+      "path": "src/engine/workflowTemplate.ts",
+      "score": 0.4804,
+      "imported_by_count": 2,
+      "days_since_modified": 0.0,
+      "pattern_hits": 0,
+      "factors": {
+        "fan_in": 0.056,
+        "recency": 1.0,
+        "pattern_density": 0.5,
+        "size": 0.832
+      },
+      "rank": 35
+    },
+    {
+      "path": "src/components/DensitySelector.tsx",
+      "score": 0.4802,
+      "imported_by_count": 1,
+      "days_since_modified": 0.0,
+      "pattern_hits": 0,
+      "factors": {
+        "fan_in": 0.028,
+        "recency": 1.0,
+        "pattern_density": 0.5,
+        "size": 0.941
+      },
+      "rank": 36
+    },
+    {
+      "path": "src/components/mobile/MobileTopRepoBar.tsx",
+      "score": 0.4796,
+      "imported_by_count": 1,
+      "days_since_modified": 0.0,
+      "pattern_hits": 0,
+      "factors": {
+        "fan_in": 0.028,
+        "recency": 1.0,
+        "pattern_density": 0.5,
+        "size": 0.935
+      },
+      "rank": 37
+    },
+    {
+      "path": "src/components/mobile/MobileFab.tsx",
+      "score": 0.4796,
+      "imported_by_count": 1,
+      "days_since_modified": 0.0,
+      "pattern_hits": 0,
+      "factors": {
+        "fan_in": 0.028,
+        "recency": 1.0,
+        "pattern_density": 0.5,
+        "size": 0.935
+      },
+      "rank": 38
+    },
+    {
+      "path": "src/components/mobile/MobileActionSheet.tsx",
+      "score": 0.4796,
+      "imported_by_count": 1,
+      "days_since_modified": 0.0,
+      "pattern_hits": 0,
+      "factors": {
+        "fan_in": 0.028,
+        "recency": 1.0,
+        "pattern_density": 0.5,
+        "size": 0.935
       },
       "rank": 39
     },
     {
-      "path": "src/components/ArchitectureModal.tsx",
-      "score": 0.3556,
+      "path": "src/components/mobile/ThemeCarousel.tsx",
+      "score": 0.4787,
       "imported_by_count": 1,
       "days_since_modified": 0.0,
       "pattern_hits": 0,
       "factors": {
-        "fan_in": 0.045,
-        "recency": 0.5,
+        "fan_in": 0.028,
+        "recency": 1.0,
         "pattern_density": 0.5,
-        "size": 0.874
+        "size": 0.926
       },
       "rank": 40
     },
     {
-      "path": "src/components/mobile/MobileInlineEditor.tsx",
-      "score": 0.3551,
+      "path": "src/components/mobile/MobileCoachMarks.tsx",
+      "score": 0.4776,
       "imported_by_count": 1,
       "days_since_modified": 0.0,
       "pattern_hits": 0,
       "factors": {
-        "fan_in": 0.045,
-        "recency": 0.5,
+        "fan_in": 0.028,
+        "recency": 1.0,
         "pattern_density": 0.5,
-        "size": 0.869
+        "size": 0.915
       },
       "rank": 41
     },
     {
-      "path": "src/components/GroundingModal.tsx",
-      "score": 0.3548,
-      "imported_by_count": 1,
+      "path": "packages/parser/src/index.d.ts",
+      "score": 0.475,
+      "imported_by_count": 0,
       "days_since_modified": 0.0,
       "pattern_hits": 0,
       "factors": {
-        "fan_in": 0.045,
-        "recency": 0.5,
+        "fan_in": 0.0,
+        "recency": 1.0,
         "pattern_density": 0.5,
-        "size": 0.866
+        "size": 1.0
       },
       "rank": 42
     },
     {
-      "path": "src/components/Header.tsx",
-      "score": 0.3545,
-      "imported_by_count": 1,
+      "path": "packages/analyzer/src/index.d.ts",
+      "score": 0.4749,
+      "imported_by_count": 0,
       "days_since_modified": 0.0,
       "pattern_hits": 0,
       "factors": {
-        "fan_in": 0.045,
-        "recency": 0.5,
+        "fan_in": 0.0,
+        "recency": 1.0,
         "pattern_density": 0.5,
-        "size": 0.863
+        "size": 0.999
       },
       "rank": 43
     },
     {
-      "path": "src/components/mobile/MobileExportSheet.tsx",
-      "score": 0.3541,
-      "imported_by_count": 1,
+      "path": "packages/analyzer/src/classifier.d.ts",
+      "score": 0.4747,
+      "imported_by_count": 0,
       "days_since_modified": 0.0,
       "pattern_hits": 0,
       "factors": {
-        "fan_in": 0.045,
-        "recency": 0.5,
+        "fan_in": 0.0,
+        "recency": 1.0,
         "pattern_density": 0.5,
-        "size": 0.859
+        "size": 0.997
       },
       "rank": 44
     },
     {
-      "path": "bin/cli.ts",
-      "score": 0.3522,
-      "imported_by_count": 1,
+      "path": "public/registerSW.js",
+      "score": 0.4747,
+      "imported_by_count": 0,
       "days_since_modified": 0.0,
       "pattern_hits": 0,
       "factors": {
-        "fan_in": 0.045,
-        "recency": 0.5,
+        "fan_in": 0.0,
+        "recency": 1.0,
         "pattern_density": 0.5,
-        "size": 0.84
+        "size": 0.997
       },
       "rank": 45
     },
     {
-      "path": "src/components/ProjectsModal.tsx",
-      "score": 0.3513,
-      "imported_by_count": 1,
+      "path": "bin/gitinfographics.js",
+      "score": 0.4745,
+      "imported_by_count": 0,
       "days_since_modified": 0.0,
       "pattern_hits": 0,
       "factors": {
-        "fan_in": 0.045,
-        "recency": 0.5,
+        "fan_in": 0.0,
+        "recency": 1.0,
         "pattern_density": 0.5,
-        "size": 0.832
+        "size": 0.995
       },
       "rank": 46
     },
     {
-      "path": "public/registerSW.js",
-      "score": 0.35,
+      "path": "src/engine/__tests__/qr.test.ts",
+      "score": 0.4742,
       "imported_by_count": 0,
       "days_since_modified": 0.0,
       "pattern_hits": 0,
       "factors": {
         "fan_in": 0.0,
-        "recency": 0.5,
+        "recency": 1.0,
         "pattern_density": 0.5,
-        "size": 1.0
+        "size": 0.992
       },
       "rank": 47
     },
     {
-      "path": "src/main.tsx",
-      "score": 0.3499,
+      "path": "public/sw.js",
+      "score": 0.4741,
       "imported_by_count": 0,
       "days_since_modified": 0.0,
       "pattern_hits": 0,
       "factors": {
         "fan_in": 0.0,
-        "recency": 0.5,
+        "recency": 1.0,
         "pattern_density": 0.5,
-        "size": 0.999
+        "size": 0.991
       },
       "rank": 48
     },
     {
-      "path": "src/__tests__/App.test.tsx",
-      "score": 0.3498,
+      "path": "src/ui/OfflineIndicator.tsx",
+      "score": 0.4741,
       "imported_by_count": 0,
       "days_since_modified": 0.0,
       "pattern_hits": 0,
       "factors": {
         "fan_in": 0.0,
-        "recency": 0.5,
+        "recency": 1.0,
         "pattern_density": 0.5,
-        "size": 0.998
+        "size": 0.991
       },
       "rank": 49
     },
     {
-      "path": "bin/gitinfographics.js",
-      "score": 0.3498,
+      "path": "packages/analyzer/src/specBuilder.d.ts",
+      "score": 0.4739,
       "imported_by_count": 0,
       "days_since_modified": 0.0,
       "pattern_hits": 0,
       "factors": {
         "fan_in": 0.0,
-        "recency": 0.5,
+        "recency": 1.0,
         "pattern_density": 0.5,
-        "size": 0.998
+        "size": 0.989
       },
       "rank": 50
     },
     {
-      "path": "public/sw.js",
-      "score": 0.3494,
+      "path": "packages/analyzer/src/extractors.d.ts",
+      "score": 0.4737,
       "imported_by_count": 0,
       "days_since_modified": 0.0,
       "pattern_hits": 0,
       "factors": {
         "fan_in": 0.0,
-        "recency": 0.5,
+        "recency": 1.0,
         "pattern_density": 0.5,
-        "size": 0.994
+        "size": 0.987
       },
       "rank": 51
     },
     {
-      "path": "src/ui/OfflineIndicator.tsx",
-      "score": 0.3494,
+      "path": "packages/parser/src/parser.d.ts",
+      "score": 0.4737,
       "imported_by_count": 0,
       "days_since_modified": 0.0,
       "pattern_hits": 0,
       "factors": {
         "fan_in": 0.0,
-        "recency": 0.5,
+        "recency": 1.0,
         "pattern_density": 0.5,
-        "size": 0.994
+        "size": 0.987
       },
       "rank": 52
     },
     {
-      "path": "src/engine/__tests__/qr.test.ts",
-      "score": 0.3494,
+      "path": "packages/parser/src/types.d.ts",
+      "score": 0.4737,
       "imported_by_count": 0,
       "days_since_modified": 0.0,
       "pattern_hits": 0,
       "factors": {
         "fan_in": 0.0,
-        "recency": 0.5,
+        "recency": 1.0,
         "pattern_density": 0.5,
-        "size": 0.994
+        "size": 0.987
       },
       "rank": 53
     },
     {
-      "path": "vite.config.ts",
-      "score": 0.3486,
+      "path": "src/renderer/themes/__tests__/contrast.test.ts",
+      "score": 0.4731,
       "imported_by_count": 0,
       "days_since_modified": 0.0,
       "pattern_hits": 0,
       "factors": {
         "fan_in": 0.0,
-        "recency": 0.5,
+        "recency": 1.0,
         "pattern_density": 0.5,
-        "size": 0.986
+        "size": 0.981
       },
       "rank": 54
     },
     {
       "path": "src/export/__tests__/CanvasExporter.test.ts",
-      "score": 0.3483,
+      "score": 0.473,
       "imported_by_count": 0,
       "days_since_modified": 0.0,
       "pattern_hits": 0,
       "factors": {
         "fan_in": 0.0,
-        "recency": 0.5,
+        "recency": 1.0,
         "pattern_density": 0.5,
-        "size": 0.983
+        "size": 0.98
       },
       "rank": 55
     },
     {
-      "path": "src/renderer/themes/__tests__/contrast.test.ts",
-      "score": 0.3483,
+      "path": "src/renderer/themes/__tests__/ThemeManager.test.ts",
+      "score": 0.473,
       "imported_by_count": 0,
       "days_since_modified": 0.0,
       "pattern_hits": 0,
       "factors": {
         "fan_in": 0.0,
-        "recency": 0.5,
+        "recency": 1.0,
         "pattern_density": 0.5,
-        "size": 0.983
+        "size": 0.98
       },
       "rank": 56
     },
     {
-      "path": "src/renderer/themes/__tests__/ThemeManager.test.ts",
-      "score": 0.3483,
+      "path": "packages/parser/src/__tests__/parser.test.ts",
+      "score": 0.4729,
       "imported_by_count": 0,
       "days_since_modified": 0.0,
       "pattern_hits": 0,
       "factors": {
         "fan_in": 0.0,
-        "recency": 0.5,
+        "recency": 1.0,
         "pattern_density": 0.5,
-        "size": 0.983
+        "size": 0.979
       },
       "rank": 57
     },
     {
       "path": "src/ui/__tests__/KeyboardShortcuts.test.ts",
-      "score": 0.348,
+      "score": 0.4728,
       "imported_by_count": 0,
       "days_since_modified": 0.0,
       "pattern_hits": 0,
       "factors": {
         "fan_in": 0.0,
-        "recency": 0.5,
+        "recency": 1.0,
         "pattern_density": 0.5,
-        "size": 0.98
+        "size": 0.978
       },
       "rank": 58
     },
     {
-      "path": "src/engine/__tests__/contrast.test.ts",
-      "score": 0.3478,
-      "imported_by_count": 0,
+      "path": "src/components/mobile/MobileInlineEditor.tsx",
+      "score": 0.4728,
+      "imported_by_count": 1,
       "days_since_modified": 0.0,
       "pattern_hits": 0,
       "factors": {
-        "fan_in": 0.0,
-        "recency": 0.5,
+        "fan_in": 0.028,
+        "recency": 1.0,
         "pattern_density": 0.5,
-        "size": 0.978
+        "size": 0.866
       },
       "rank": 59
     },
     {
-      "path": "bin/__tests__/cli.test.ts",
-      "score": 0.3475,
+      "path": "src/engine/__tests__/contrast.test.ts",
+      "score": 0.4725,
       "imported_by_count": 0,
       "days_since_modified": 0.0,
       "pattern_hits": 0,
       "factors": {
         "fan_in": 0.0,
-        "recency": 0.5,
+        "recency": 1.0,
         "pattern_density": 0.5,
         "size": 0.975
       },
       "rank": 60
     },
     {
-      "path": "src/storage/__tests__/ProjectStorage.test.ts",
-      "score": 0.3472,
-      "imported_by_count": 0,
+      "path": "src/components/GroundingModal.tsx",
+      "score": 0.4725,
+      "imported_by_count": 1,
       "days_since_modified": 0.0,
       "pattern_hits": 0,
       "factors": {
-        "fan_in": 0.0,
-        "recency": 0.5,
+        "fan_in": 0.028,
+        "recency": 1.0,
         "pattern_density": 0.5,
-        "size": 0.972
+        "size": 0.864
       },
       "rank": 61
     },
     {
-      "path": "src/engine/__tests__/classifier.test.ts",
-      "score": 0.3472,
+      "path": "bin/__tests__/cli.test.ts",
+      "score": 0.4723,
       "imported_by_count": 0,
       "days_since_modified": 0.0,
       "pattern_hits": 0,
       "factors": {
         "fan_in": 0.0,
-        "recency": 0.5,
+        "recency": 1.0,
         "pattern_density": 0.5,
-        "size": 0.972
+        "size": 0.973
       },
       "rank": 62
     },
     {
-      "path": "src/engine/__tests__/parser.test.ts",
-      "score": 0.3469,
+      "path": "packages/renderer/src/__tests__/renderer.test.ts",
+      "score": 0.4722,
       "imported_by_count": 0,
       "days_since_modified": 0.0,
       "pattern_hits": 0,
       "factors": {
         "fan_in": 0.0,
-        "recency": 0.5,
+        "recency": 1.0,
         "pattern_density": 0.5,
-        "size": 0.969
+        "size": 0.972
       },
       "rank": 63
     },
     {
-      "path": "src/ui/PWAInstallButton.tsx",
-      "score": 0.3457,
+      "path": "packages/analyzer/src/__tests__/analyzer.test.ts",
+      "score": 0.472,
       "imported_by_count": 0,
       "days_since_modified": 0.0,
       "pattern_hits": 0,
       "factors": {
         "fan_in": 0.0,
-        "recency": 0.5,
+        "recency": 1.0,
         "pattern_density": 0.5,
-        "size": 0.957
+        "size": 0.97
       },
       "rank": 64
     },
     {
-      "path": "src/engine/__tests__/extractors.test.ts",
-      "score": 0.3448,
+      "path": "src/storage/__tests__/ProjectStorage.test.ts",
+      "score": 0.472,
       "imported_by_count": 0,
       "days_since_modified": 0.0,
       "pattern_hits": 0,
       "factors": {
         "fan_in": 0.0,
-        "recency": 0.5,
+        "recency": 1.0,
         "pattern_density": 0.5,
-        "size": 0.948
+        "size": 0.97
       },
       "rank": 65
     },
     {
-      "path": "src/engine/__tests__/specBuilder.test.ts",
-      "score": 0.3437,
+      "path": "src/engine/__tests__/classifier.test.ts",
+      "score": 0.4719,
       "imported_by_count": 0,
       "days_since_modified": 0.0,
       "pattern_hits": 0,
       "factors": {
         "fan_in": 0.0,
-        "recency": 0.5,
+        "recency": 1.0,
         "pattern_density": 0.5,
-        "size": 0.937
+        "size": 0.969
       },
       "rank": 66
     },
     {
-      "path": "src/engine/__tests__/renderer.test.ts",
-      "score": 0.3404,
+      "path": "src/engine/__tests__/parser.test.ts",
+      "score": 0.4716,
       "imported_by_count": 0,
       "days_since_modified": 0.0,
       "pattern_hits": 0,
       "factors": {
         "fan_in": 0.0,
-        "recency": 0.5,
+        "recency": 1.0,
         "pattern_density": 0.5,
-        "size": 0.904
+        "size": 0.966
       },
       "rank": 67
     },
     {
-      "path": "src/components/SectionControls.tsx",
-      "score": 0.3367,
-      "imported_by_count": 1,
-      "days_since_modified": 0.0,
-      "pattern_hits": 0,
-      "factors": {
-        "fan_in": 0.045,
-        "recency": 0.5,
-        "pattern_density": 0.5,
-        "size": 0.685
-      },
-      "rank": 68
-    },
-    {
-      "path": "src/components/OnboardingModal.tsx",
-      "score": 0.3311,
+      "path": "packages/analyzer/src/types.d.ts",
+      "score": 0.4706,
       "imported_by_count": 0,
       "days_since_modified": 0.0,
       "pattern_hits": 0,
       "factors": {
         "fan_in": 0.0,
-        "recency": 0.5,
+        "recency": 1.0,
         "pattern_density": 0.5,
-        "size": 0.811
+        "size": 0.956
+      },
+      "rank": 68
+    },
+    {
+      "path": "src/ui/PWAInstallButton.tsx",
+      "score": 0.4704,
+      "imported_by_count": 0,
+      "days_since_modified": 0.0,
+      "pattern_hits": 0,
+      "factors": {
+        "fan_in": 0.0,
+        "recency": 1.0,
+        "pattern_density": 0.5,
+        "size": 0.954
       },
       "rank": 69
     },
     {
-      "path": "src/components/InfoModal.tsx",
-      "score": 0.3268,
-      "imported_by_count": 1,
-      "days_since_modified": 0.0,
+      "path": "vite.config.ts",
+      "score": 0.47,
+      "imported_by_count": 0,
+      "days_since_modified": 0.1,
       "pattern_hits": 0,
       "factors": {
-        "fan_in": 0.045,
-        "recency": 0.5,
+        "fan_in": 0.0,
+        "recency": 0.988,
         "pattern_density": 0.5,
-        "size": 0.586
+        "size": 0.979
       },
       "rank": 70
     },
     {
-      "path": "src/components/InfographicCanvas.tsx",
-      "score": 0.3136,
+      "path": "bin/cli.ts",
+      "score": 0.4699,
       "imported_by_count": 1,
       "days_since_modified": 0.0,
       "pattern_hits": 0,
       "factors": {
-        "fan_in": 0.045,
-        "recency": 0.5,
+        "fan_in": 0.028,
+        "recency": 1.0,
         "pattern_density": 0.5,
-        "size": 0.454
+        "size": 0.837
       },
       "rank": 71
     },
     {
-      "path": "src/engine/renderer.ts",
-      "score": 0.3045,
-      "imported_by_count": 3,
+      "path": "src/engine/__tests__/extractors.test.ts",
+      "score": 0.4696,
+      "imported_by_count": 0,
       "days_since_modified": 0.0,
       "pattern_hits": 0,
       "factors": {
-        "fan_in": 0.136,
-        "recency": 0.5,
+        "fan_in": 0.0,
+        "recency": 1.0,
+        "pattern_density": 0.5,
+        "size": 0.946
+      },
+      "rank": 72
+    },
+    {
+      "path": ".llm-context/types-extracted.ts",
+      "score": 0.4623,
+      "imported_by_count": 0,
+      "days_since_modified": 0.0,
+      "pattern_hits": 0,
+      "factors": {
+        "fan_in": 0.0,
+        "recency": 1.0,
+        "pattern_density": 0.5,
+        "size": 0.873
+      },
+      "rank": 73
+    },
+    {
+      "path": "src/components/Header.tsx",
+      "score": 0.4605,
+      "imported_by_count": 1,
+      "days_since_modified": 0.4,
+      "pattern_hits": 0,
+      "factors": {
+        "fan_in": 0.028,
+        "recency": 0.953,
+        "pattern_density": 0.5,
+        "size": 0.861
+      },
+      "rank": 74
+    },
+    {
+      "path": "src/engine/__tests__/specBuilder.test.ts",
+      "score": 0.4568,
+      "imported_by_count": 0,
+      "days_since_modified": 0.4,
+      "pattern_hits": 0,
+      "factors": {
+        "fan_in": 0.0,
+        "recency": 0.953,
+        "pattern_density": 0.5,
+        "size": 0.935
+      },
+      "rank": 75
+    },
+    {
+      "path": "src/components/OnboardingModal.tsx",
+      "score": 0.4559,
+      "imported_by_count": 0,
+      "days_since_modified": 0.0,
+      "pattern_hits": 0,
+      "factors": {
+        "fan_in": 0.0,
+        "recency": 1.0,
+        "pattern_density": 0.5,
+        "size": 0.809
+      },
+      "rank": 76
+    },
+    {
+      "path": "src/engine/__tests__/renderer.test.ts",
+      "score": 0.4536,
+      "imported_by_count": 0,
+      "days_since_modified": 0.4,
+      "pattern_hits": 0,
+      "factors": {
+        "fan_in": 0.0,
+        "recency": 0.953,
+        "pattern_density": 0.5,
+        "size": 0.902
+      },
+      "rank": 77
+    },
+    {
+      "path": "src/components/SectionControls.tsx",
+      "score": 0.4428,
+      "imported_by_count": 1,
+      "days_since_modified": 0.4,
+      "pattern_hits": 0,
+      "factors": {
+        "fan_in": 0.028,
+        "recency": 0.953,
+        "pattern_density": 0.5,
+        "size": 0.683
+      },
+      "rank": 78
+    },
+    {
+      "path": "src/App.tsx",
+      "score": 0.441,
+      "imported_by_count": 4,
+      "days_since_modified": 0.4,
+      "pattern_hits": 0,
+      "factors": {
+        "fan_in": 0.111,
+        "recency": 0.953,
+        "pattern_density": 0.5,
+        "size": 0.332
+      },
+      "rank": 79
+    },
+    {
+      "path": "src/components/mobile/VisualFormatPicker.tsx",
+      "score": 0.4381,
+      "imported_by_count": 2,
+      "days_since_modified": 1.8,
+      "pattern_hits": 0,
+      "factors": {
+        "fan_in": 0.056,
+        "recency": 0.791,
+        "pattern_density": 0.5,
+        "size": 0.932
+      },
+      "rank": 80
+    },
+    {
+      "path": "src/components/ShortcutsModal.tsx",
+      "score": 0.4276,
+      "imported_by_count": 1,
+      "days_since_modified": 1.8,
+      "pattern_hits": 0,
+      "factors": {
+        "fan_in": 0.028,
+        "recency": 0.791,
+        "pattern_density": 0.5,
+        "size": 0.938
+      },
+      "rank": 81
+    },
+    {
+      "path": "src/components/WorkflowModal.tsx",
+      "score": 0.426,
+      "imported_by_count": 1,
+      "days_since_modified": 1.8,
+      "pattern_hits": 0,
+      "factors": {
+        "fan_in": 0.028,
+        "recency": 0.791,
+        "pattern_density": 0.5,
+        "size": 0.922
+      },
+      "rank": 82
+    },
+    {
+      "path": "src/components/MarkdownEditor.tsx",
+      "score": 0.4256,
+      "imported_by_count": 1,
+      "days_since_modified": 1.8,
+      "pattern_hits": 0,
+      "factors": {
+        "fan_in": 0.028,
+        "recency": 0.791,
+        "pattern_density": 0.5,
+        "size": 0.918
+      },
+      "rank": 83
+    },
+    {
+      "path": "src/components/ContrastModal.tsx",
+      "score": 0.4233,
+      "imported_by_count": 1,
+      "days_since_modified": 1.8,
+      "pattern_hits": 0,
+      "factors": {
+        "fan_in": 0.028,
+        "recency": 0.791,
+        "pattern_density": 0.5,
+        "size": 0.895
+      },
+      "rank": 84
+    },
+    {
+      "path": "src/components/ShareModal.tsx",
+      "score": 0.4233,
+      "imported_by_count": 1,
+      "days_since_modified": 1.8,
+      "pattern_hits": 0,
+      "factors": {
+        "fan_in": 0.028,
+        "recency": 0.791,
+        "pattern_density": 0.5,
+        "size": 0.895
+      },
+      "rank": 85
+    },
+    {
+      "path": "src/__tests__/App.test.tsx",
+      "score": 0.4222,
+      "imported_by_count": 0,
+      "days_since_modified": 1.8,
+      "pattern_hits": 0,
+      "factors": {
+        "fan_in": 0.0,
+        "recency": 0.791,
+        "pattern_density": 0.5,
+        "size": 0.995
+      },
+      "rank": 86
+    },
+    {
+      "path": "src/components/mobile/FullScreenModalEditor.tsx",
+      "score": 0.4216,
+      "imported_by_count": 1,
+      "days_since_modified": 1.8,
+      "pattern_hits": 0,
+      "factors": {
+        "fan_in": 0.028,
+        "recency": 0.791,
+        "pattern_density": 0.5,
+        "size": 0.878
+      },
+      "rank": 87
+    },
+    {
+      "path": "src/components/ArchitectureModal.tsx",
+      "score": 0.421,
+      "imported_by_count": 1,
+      "days_since_modified": 1.8,
+      "pattern_hits": 0,
+      "factors": {
+        "fan_in": 0.028,
+        "recency": 0.791,
+        "pattern_density": 0.5,
+        "size": 0.872
+      },
+      "rank": 88
+    },
+    {
+      "path": "src/components/mobile/MobileExportSheet.tsx",
+      "score": 0.4195,
+      "imported_by_count": 1,
+      "days_since_modified": 1.8,
+      "pattern_hits": 0,
+      "factors": {
+        "fan_in": 0.028,
+        "recency": 0.791,
+        "pattern_density": 0.5,
+        "size": 0.857
+      },
+      "rank": 89
+    },
+    {
+      "path": "packages/renderer/src/renderer.ts",
+      "score": 0.4194,
+      "imported_by_count": 4,
+      "days_since_modified": 0.0,
+      "pattern_hits": 0,
+      "factors": {
+        "fan_in": 0.111,
+        "recency": 1.0,
         "pattern_density": 0.5,
         "size": 0.0
       },
-      "rank": 72
+      "rank": 90
+    },
+    {
+      "path": "src/components/ProjectsModal.tsx",
+      "score": 0.4167,
+      "imported_by_count": 1,
+      "days_since_modified": 1.8,
+      "pattern_hits": 0,
+      "factors": {
+        "fan_in": 0.028,
+        "recency": 0.791,
+        "pattern_density": 0.5,
+        "size": 0.829
+      },
+      "rank": 91
+    },
+    {
+      "path": "src/engine/renderer.ts",
+      "score": 0.4078,
+      "imported_by_count": 4,
+      "days_since_modified": 0.4,
+      "pattern_hits": 0,
+      "factors": {
+        "fan_in": 0.111,
+        "recency": 0.953,
+        "pattern_density": 0.5,
+        "size": 0.0
+      },
+      "rank": 92
+    },
+    {
+      "path": "src/components/InfoModal.tsx",
+      "score": 0.3923,
+      "imported_by_count": 1,
+      "days_since_modified": 1.8,
+      "pattern_hits": 0,
+      "factors": {
+        "fan_in": 0.028,
+        "recency": 0.791,
+        "pattern_density": 0.5,
+        "size": 0.585
+      },
+      "rank": 93
+    },
+    {
+      "path": "src/components/InfographicCanvas.tsx",
+      "score": 0.3791,
+      "imported_by_count": 1,
+      "days_since_modified": 1.8,
+      "pattern_hits": 0,
+      "factors": {
+        "fan_in": 0.028,
+        "recency": 0.791,
+        "pattern_density": 0.5,
+        "size": 0.453
+      },
+      "rank": 94
+    },
+    {
+      "path": "src/engine/themes.ts",
+      "score": 0.3057,
+      "imported_by_count": 8,
+      "days_since_modified": 8.6,
+      "pattern_hits": 0,
+      "factors": {
+        "fan_in": 0.222,
+        "recency": 0.0,
+        "pattern_density": 0.5,
+        "size": 0.918
+      },
+      "rank": 95
+    },
+    {
+      "path": "src/storage/ProjectStorage.ts",
+      "score": 0.3044,
+      "imported_by_count": 3,
+      "days_since_modified": 6.7,
+      "pattern_hits": 0,
+      "factors": {
+        "fan_in": 0.083,
+        "recency": 0.221,
+        "pattern_density": 0.5,
+        "size": 0.908
+      },
+      "rank": 96
+    },
+    {
+      "path": "src/renderer/themes/ThemeManager.ts",
+      "score": 0.3006,
+      "imported_by_count": 3,
+      "days_since_modified": 6.7,
+      "pattern_hits": 0,
+      "factors": {
+        "fan_in": 0.083,
+        "recency": 0.221,
+        "pattern_density": 0.5,
+        "size": 0.871
+      },
+      "rank": 97
+    },
+    {
+      "path": "src/main.tsx",
+      "score": 0.2799,
+      "imported_by_count": 0,
+      "days_since_modified": 6.7,
+      "pattern_hits": 0,
+      "factors": {
+        "fan_in": 0.0,
+        "recency": 0.221,
+        "pattern_density": 0.5,
+        "size": 0.996
+      },
+      "rank": 98
+    },
+    {
+      "path": "src/ui/KeyboardShortcuts.ts",
+      "score": 0.2525,
+      "imported_by_count": 3,
+      "days_since_modified": 8.6,
+      "pattern_hits": 0,
+      "factors": {
+        "fan_in": 0.083,
+        "recency": 0.0,
+        "pattern_density": 0.5,
+        "size": 0.942
+      },
+      "rank": 99
     }
   ]
 }

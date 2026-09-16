@@ -1,16 +1,24 @@
 {
   "_meta": {
-    "generated": "2026-09-15 21:19 UTC",
+    "generated": "2026-09-16 03:55 UTC",
     "note": "Read this file first to decide which artifacts to include in your context window. estimated_tokens is chars/4 \u2014 a rough guide only. recommended_for lists task types each artifact is most useful for."
   },
   "artifacts": [
     {
-      "filename": "call-graph.json",
-      "size_bytes": 16759,
-      "estimated_tokens": 4189,
+      "filename": "ai-observations.md",
+      "size_bytes": 493,
+      "estimated_tokens": 123,
       "description": "Generated artifact",
       "recommended_for": [],
-      "last_updated": 1789507172.132657
+      "last_updated": 1789530919.1756835
+    },
+    {
+      "filename": "call-graph.json",
+      "size_bytes": 16969,
+      "estimated_tokens": 4242,
+      "description": "Generated artifact",
+      "recommended_for": [],
+      "last_updated": 1789530921.9592223
     },
     {
       "filename": "capabilities.json",
@@ -22,15 +30,15 @@
         "capabilities",
         "domain"
       ],
-      "last_updated": 1789507172.6852436
+      "last_updated": 1789530919.1758995
     },
     {
       "filename": "change-surface.json",
-      "size_bytes": 23470,
-      "estimated_tokens": 5867,
+      "size_bytes": 32249,
+      "estimated_tokens": 8062,
       "description": "Generated artifact",
       "recommended_for": [],
-      "last_updated": 1789507172.238089
+      "last_updated": 1789530922.1842217
     },
     {
       "filename": "dependency-graph.md",
@@ -38,7 +46,7 @@
       "estimated_tokens": 22,
       "description": "Generated artifact",
       "recommended_for": [],
-      "last_updated": 1789507172.1690886
+      "last_updated": 1789530922.140826
     },
     {
       "filename": "dependency-graph.txt",
@@ -50,15 +58,15 @@
         "impact-analysis",
         "refactoring"
       ],
-      "last_updated": 1789507172.0260875
+      "last_updated": 1789530922.064222
     },
     {
       "filename": "entry-points.json",
-      "size_bytes": 133,
-      "estimated_tokens": 33,
+      "size_bytes": 245,
+      "estimated_tokens": 61,
       "description": "Generated artifact",
       "recommended_for": [],
-      "last_updated": 1789507172.098088
+      "last_updated": 1789530921.9382224
     },
     {
       "filename": "env-shape.txt",
@@ -70,7 +78,7 @@
         "deployment",
         "environment"
       ],
-      "last_updated": 1789507172.259727
+      "last_updated": 1789530922.21951
     },
     {
       "filename": "external-dependencies.json",
@@ -82,78 +90,90 @@
         "integration",
         "architecture"
       ],
-      "last_updated": 1789507172.6813796
+      "last_updated": 1789530922.7851462
     },
     {
       "filename": "package.json",
-      "size_bytes": 1280,
-      "estimated_tokens": 320,
+      "size_bytes": 1440,
+      "estimated_tokens": 360,
       "description": "Generated artifact",
       "recommended_for": [],
-      "last_updated": 1789507172.260114
+      "last_updated": 1789530922.2200966
     },
     {
       "filename": "public-api.txt",
-      "size_bytes": 9999,
-      "estimated_tokens": 2499,
+      "size_bytes": 17237,
+      "estimated_tokens": 4309,
       "description": "Public-facing API surface extracted from source",
       "recommended_for": [
         "api",
         "integration"
       ],
-      "last_updated": 1789507172.0540876
+      "last_updated": 1789530921.8542225
+    },
+    {
+      "filename": "recent-changes.txt",
+      "size_bytes": 730,
+      "estimated_tokens": 182,
+      "description": "Recent git commit history",
+      "recommended_for": [
+        "changelog",
+        "context",
+        "recent"
+      ],
+      "last_updated": 1789530922.2388914
     },
     {
       "filename": "recent-commits.txt",
-      "size_bytes": 59,
-      "estimated_tokens": 14,
+      "size_bytes": 743,
+      "estimated_tokens": 185,
       "description": "Generated artifact",
       "recommended_for": [],
-      "last_updated": 1789507172.2623239
+      "last_updated": 1789530922.223721
     },
     {
       "filename": "symbol-index.json",
-      "size_bytes": 17937,
-      "estimated_tokens": 4484,
+      "size_bytes": 18356,
+      "estimated_tokens": 4589,
       "description": "All public functions, classes, types with file locations",
       "recommended_for": [
         "symbol-lookup",
         "function-search",
         "refactoring"
       ],
-      "last_updated": 1789507171.9880872
+      "last_updated": 1789530922.015222
     },
     {
       "filename": "tree.txt",
-      "size_bytes": 4112,
-      "estimated_tokens": 1028,
+      "size_bytes": 6849,
+      "estimated_tokens": 1712,
       "description": "Full directory structure of the repository",
       "recommended_for": [
         "navigation",
         "structure"
       ],
-      "last_updated": 1789507171.942087
+      "last_updated": 1789530921.639223
     },
     {
       "filename": "type-graph.json",
-      "size_bytes": 8488,
-      "estimated_tokens": 2122,
+      "size_bytes": 10933,
+      "estimated_tokens": 2733,
       "description": "Generated artifact",
       "recommended_for": [],
-      "last_updated": 1789507172.2496886
+      "last_updated": 1789530922.1971722
     },
     {
       "filename": "types-extracted.ts",
-      "size_bytes": 10104,
-      "estimated_tokens": 2526,
+      "size_bytes": 34800,
+      "estimated_tokens": 8700,
       "description": "TypeScript type definitions and interfaces",
       "recommended_for": [
         "types",
         "schema",
         "typescript"
       ],
-      "last_updated": 1789507172.158382
+      "last_updated": 1789530922.0378852
     }
   ],
-  "total_estimated_tokens": 25075
+  "total_estimated_tokens": 37251
 }

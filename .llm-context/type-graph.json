@@ -1,24 +1,26 @@
 {
   "_meta": {
-    "generated": "2026-09-15 21:19 UTC",
+    "generated": "2026-09-16 03:55 UTC",
     "total_types": 45,
     "note": "TypeScript type cross-reference. used_in lists files that explicitly import each type."
   },
   "types": {
     "BadgeItem": {
-      "defined_in": "src/engine/types.ts",
+      "defined_in": ".llm-context/types-extracted.ts",
       "kind": "interface",
       "used_in": [
+        "packages/analyzer/src/extractors.d.ts",
+        "packages/analyzer/src/extractors.ts",
         "src/engine/extractors.ts"
       ]
     },
     "CodeBlock": {
-      "defined_in": "src/engine/types.ts",
+      "defined_in": ".llm-context/types-extracted.ts",
       "kind": "interface",
       "used_in": []
     },
     "ColorBlindnessType": {
-      "defined_in": "src/engine/contrast.ts",
+      "defined_in": ".llm-context/types-extracted.ts",
       "kind": "type",
       "used_in": [
         "src/App.tsx",
@@ -27,55 +29,62 @@
       ]
     },
     "ComparisonRow": {
-      "defined_in": "src/engine/types.ts",
+      "defined_in": ".llm-context/types-extracted.ts",
       "kind": "interface",
       "used_in": [
+        "packages/analyzer/src/specBuilder.ts",
         "src/engine/specBuilder.ts"
       ]
     },
     "ContentListItem": {
-      "defined_in": "src/engine/types.ts",
+      "defined_in": ".llm-context/types-extracted.ts",
       "kind": "interface",
       "used_in": []
     },
     "ContrastAuditItem": {
-      "defined_in": "src/engine/contrast.ts",
+      "defined_in": ".llm-context/types-extracted.ts",
       "kind": "interface",
       "used_in": []
     },
     "ContrastResult": {
-      "defined_in": "src/renderer/themes/contrast.ts",
+      "defined_in": ".llm-context/types-extracted.ts",
       "kind": "interface",
       "used_in": []
     },
     "DensityConfig": {
-      "defined_in": "src/engine/types.ts",
+      "defined_in": ".llm-context/types-extracted.ts",
       "kind": "interface",
       "used_in": []
     },
     "DocSection": {
-      "defined_in": "src/engine/types.ts",
+      "defined_in": ".llm-context/types-extracted.ts",
       "kind": "interface",
       "used_in": [
+        "packages/analyzer/src/classifier.d.ts",
+        "packages/analyzer/src/classifier.ts",
+        "packages/analyzer/src/specBuilder.ts",
+        "packages/parser/src/parser.ts",
         "src/engine/classifier.ts",
         "src/engine/parser.ts",
         "src/engine/specBuilder.ts"
       ]
     },
     "ExportFormat": {
-      "defined_in": "src/export/CanvasExporter.ts",
+      "defined_in": ".llm-context/types-extracted.ts",
       "kind": "interface",
       "used_in": []
     },
     "ExportOptions": {
-      "defined_in": "src/export/CanvasExporter.ts",
+      "defined_in": ".llm-context/types-extracted.ts",
       "kind": "interface",
       "used_in": []
     },
     "FeatureItem": {
-      "defined_in": "src/engine/types.ts",
+      "defined_in": ".llm-context/types-extracted.ts",
       "kind": "interface",
       "used_in": [
+        "packages/analyzer/src/extractors.d.ts",
+        "packages/analyzer/src/extractors.ts",
         "src/engine/extractors.ts"
       ]
     },
@@ -85,17 +94,19 @@
       "used_in": []
     },
     "GenerationRecord": {
-      "defined_in": "src/storage/ProjectStorage.ts",
+      "defined_in": ".llm-context/types-extracted.ts",
       "kind": "interface",
       "used_in": [
         "src/components/ProjectsModal.tsx"
       ]
     },
     "GitHubMeta": {
-      "defined_in": "src/engine/types.ts",
+      "defined_in": ".llm-context/types-extracted.ts",
       "kind": "interface",
       "used_in": [
         "bin/cli.ts",
+        "packages/analyzer/src/specBuilder.d.ts",
+        "packages/analyzer/src/specBuilder.ts",
         "src/App.tsx",
         "src/components/MarkdownEditor.tsx",
         "src/components/mobile/FullScreenModalEditor.tsx",
@@ -105,27 +116,30 @@
       ]
     },
     "GroundingMetrics": {
-      "defined_in": "src/engine/types.ts",
+      "defined_in": ".llm-context/types-extracted.ts",
       "kind": "interface",
       "used_in": [
         "src/engine/specBuilder.ts"
       ]
     },
     "IconOptions": {
-      "defined_in": "src/engine/icons.ts",
+      "defined_in": ".llm-context/types-extracted.ts",
       "kind": "interface",
       "used_in": []
     },
     "ImageItem": {
-      "defined_in": "src/engine/types.ts",
+      "defined_in": ".llm-context/types-extracted.ts",
       "kind": "interface",
       "used_in": []
     },
     "InfographicSpec": {
-      "defined_in": "src/engine/types.ts",
+      "defined_in": ".llm-context/types-extracted.ts",
       "kind": "interface",
       "used_in": [
         "bin/cli.ts",
+        "packages/analyzer/src/specBuilder.d.ts",
+        "packages/analyzer/src/specBuilder.ts",
+        "packages/renderer/src/renderer.ts",
         "src/App.tsx",
         "src/components/GroundingModal.tsx",
         "src/components/InfographicCanvas.tsx",
@@ -136,7 +150,7 @@
       ]
     },
     "LogoConfig": {
-      "defined_in": "src/engine/types.ts",
+      "defined_in": ".llm-context/types-extracted.ts",
       "kind": "interface",
       "used_in": [
         "src/App.tsx",
@@ -144,9 +158,12 @@
       ]
     },
     "MetricItem": {
-      "defined_in": "src/engine/types.ts",
+      "defined_in": ".llm-context/types-extracted.ts",
       "kind": "interface",
       "used_in": [
+        "packages/analyzer/src/extractors.d.ts",
+        "packages/analyzer/src/extractors.ts",
+        "packages/analyzer/src/specBuilder.ts",
         "src/engine/extractors.ts",
         "src/engine/specBuilder.ts"
       ]
@@ -159,14 +176,20 @@
       ]
     },
     "NestedListItem": {
-      "defined_in": "src/engine/types.ts",
+      "defined_in": ".llm-context/types-extracted.ts",
       "kind": "interface",
       "used_in": []
     },
     "ParsedDoc": {
-      "defined_in": "src/engine/types.ts",
+      "defined_in": ".llm-context/types-extracted.ts",
       "kind": "interface",
       "used_in": [
+        "packages/analyzer/src/extractors.d.ts",
+        "packages/analyzer/src/extractors.ts",
+        "packages/analyzer/src/specBuilder.d.ts",
+        "packages/analyzer/src/specBuilder.ts",
+        "packages/parser/src/parser.d.ts",
+        "packages/parser/src/parser.ts",
         "src/components/MarkdownEditor.tsx",
         "src/components/mobile/FullScreenModalEditor.tsx",
         "src/engine/extractors.ts",
@@ -175,7 +198,7 @@
       ]
     },
     "Project": {
-      "defined_in": "src/storage/ProjectStorage.ts",
+      "defined_in": ".llm-context/types-extracted.ts",
       "kind": "interface",
       "used_in": [
         "src/App.tsx",
@@ -183,24 +206,25 @@
       ]
     },
     "QROptions": {
-      "defined_in": "src/engine/qr.ts",
+      "defined_in": ".llm-context/types-extracted.ts",
       "kind": "interface",
       "used_in": []
     },
     "RenderOptions": {
-      "defined_in": "src/engine/types.ts",
+      "defined_in": ".llm-context/types-extracted.ts",
       "kind": "interface",
       "used_in": [
+        "packages/renderer/src/renderer.ts",
         "src/engine/renderer.ts"
       ]
     },
     "RenderResult": {
-      "defined_in": "src/engine/renderer.ts",
+      "defined_in": ".llm-context/types-extracted.ts",
       "kind": "interface",
       "used_in": []
     },
     "SampleReadme": {
-      "defined_in": "src/engine/samples.ts",
+      "defined_in": ".llm-context/types-extracted.ts",
       "kind": "interface",
       "used_in": [
         "src/App.tsx",
@@ -211,70 +235,86 @@
       ]
     },
     "SectionSource": {
-      "defined_in": "src/engine/types.ts",
+      "defined_in": ".llm-context/types-extracted.ts",
       "kind": "interface",
       "used_in": [
+        "packages/analyzer/src/specBuilder.ts",
         "src/engine/specBuilder.ts"
       ]
     },
     "SectionType": {
-      "defined_in": "src/engine/types.ts",
+      "defined_in": ".llm-context/types-extracted.ts",
       "kind": "type",
       "used_in": [
+        "packages/analyzer/src/classifier.d.ts",
+        "packages/analyzer/src/classifier.ts",
+        "packages/analyzer/src/specBuilder.ts",
+        "packages/parser/src/parser.d.ts",
+        "packages/parser/src/parser.ts",
         "src/engine/classifier.ts",
         "src/engine/parser.ts",
         "src/engine/specBuilder.ts"
       ]
     },
     "Shortcut": {
-      "defined_in": "src/ui/KeyboardShortcuts.ts",
+      "defined_in": ".llm-context/types-extracted.ts",
       "kind": "interface",
       "used_in": []
     },
     "SmartRecommendation": {
-      "defined_in": "src/engine/types.ts",
+      "defined_in": ".llm-context/types-extracted.ts",
       "kind": "interface",
       "used_in": [
+        "packages/analyzer/src/specBuilder.d.ts",
+        "packages/analyzer/src/specBuilder.ts",
         "src/App.tsx",
         "src/components/GroundingModal.tsx",
         "src/engine/specBuilder.ts"
       ]
     },
     "SpecSection": {
-      "defined_in": "src/engine/types.ts",
+      "defined_in": ".llm-context/types-extracted.ts",
       "kind": "type",
       "used_in": [
+        "packages/analyzer/src/specBuilder.d.ts",
+        "packages/analyzer/src/specBuilder.ts",
+        "packages/renderer/src/renderer.ts",
         "src/components/GroundingModal.tsx",
         "src/engine/renderer.ts",
         "src/engine/specBuilder.ts"
       ]
     },
     "StepItem": {
-      "defined_in": "src/engine/types.ts",
+      "defined_in": ".llm-context/types-extracted.ts",
       "kind": "interface",
       "used_in": []
     },
     "TableData": {
-      "defined_in": "src/engine/types.ts",
+      "defined_in": ".llm-context/types-extracted.ts",
       "kind": "interface",
       "used_in": [
+        "packages/parser/src/parser.d.ts",
+        "packages/parser/src/parser.ts",
         "src/engine/parser.ts"
       ]
     },
     "Theme": {
-      "defined_in": "src/renderer/themes/ThemeManager.ts",
+      "defined_in": ".llm-context/types-extracted.ts",
       "kind": "interface",
       "used_in": []
     },
     "ThemeColors": {
-      "defined_in": "src/renderer/themes/ThemeManager.ts",
+      "defined_in": ".llm-context/types-extracted.ts",
       "kind": "interface",
       "used_in": []
     },
     "ThemeConfig": {
-      "defined_in": "src/engine/types.ts",
+      "defined_in": ".llm-context/types-extracted.ts",
       "kind": "interface",
       "used_in": [
+        "packages/renderer/src/contrast.ts",
+        "packages/renderer/src/renderer.ts",
+        "packages/renderer/src/themes.ts",
         "src/components/ContrastModal.tsx",
         "src/engine/contrast.ts",
         "src/engine/renderer.ts",
@@ -282,19 +322,20 @@
       ]
     },
     "ThemeContrastAudit": {
-      "defined_in": "src/engine/contrast.ts",
+      "defined_in": ".llm-context/types-extracted.ts",
       "kind": "interface",
       "used_in": []
     },
     "ThemeTypography": {
-      "defined_in": "src/renderer/themes/ThemeManager.ts",
+      "defined_in": ".llm-context/types-extracted.ts",
       "kind": "interface",
       "used_in": []
     },
     "TimelineItem": {
-      "defined_in": "src/engine/types.ts",
+      "defined_in": ".llm-context/types-extracted.ts",
       "kind": "interface",
       "used_in": [
+        "packages/analyzer/src/specBuilder.ts",
         "src/engine/specBuilder.ts"
       ]
     },
@@ -306,10 +347,12 @@
       ]
     },
     "VariantMap": {
-      "defined_in": "src/engine/types.ts",
+      "defined_in": ".llm-context/types-extracted.ts",
       "kind": "type",
       "used_in": [
         "bin/cli.ts",
+        "packages/analyzer/src/specBuilder.d.ts",
+        "packages/analyzer/src/specBuilder.ts",
         "src/App.tsx",
         "src/components/GroundingModal.tsx",
         "src/components/SectionControls.tsx",
@@ -317,9 +360,10 @@
       ]
     },
     "VisualDensity": {
-      "defined_in": "src/engine/types.ts",
+      "defined_in": ".llm-context/types-extracted.ts",
       "kind": "type",
       "used_in": [
+        "packages/renderer/src/renderer.ts",
         "src/App.tsx",
         "src/components/DensitySelector.tsx",
         "src/components/GroundingModal.tsx",

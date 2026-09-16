@@ -1,1 +1,20 @@
+69b0555 Update ccc.yml
+097a851 Delete .llm-context/TEMP directory
+851c21a Add files via upload
+89363b5 Delete .llm-context/TEMP/txt.txt
+9be6581 Add files via upload
+3013b20 Create txt.txt
+f40d179 build: enable npm workspaces and optimize CI
+692357a Update ccc.yml
+742fcb9 feat(repo): transition to pnpm monorepo structure
+070e170 Update ccc.yml
+695ac73 Improve context-for command structure in ccc.yml
+15eddbf Enhance context generation with error handling
+38a28b4 Update ccc.yml
+0f8eb30 Delete .llm-context/txt.txt
+9e97a50 Add files via upload
+7e83b07 Create txt.txt
 51018c2 Add include-hidden-files option to upload-artifact
+d570977 Add artifact upload for CCC context
+452f4fa Update ccc.yml
+f70fc34 Upgrade setup-python action to version 6

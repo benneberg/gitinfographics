@@ -1,8 +1,8 @@
 {
   "_meta": {
-    "generated": "2026-09-15 21:19 UTC",
-    "total_functions": 99,
-    "connected_functions": 76,
+    "generated": "2026-09-16 03:55 UTC",
+    "total_functions": 100,
+    "connected_functions": 77,
     "depth": 2,
     "note": "Shows which functions call which others (2-level depth). Only includes functions with at least one internal connection. Use with symbol-index.json to trace call paths."
   },
@@ -84,6 +84,14 @@
       "line": 15,
       "calls": [
         "registerTheme"
+      ]
+    },
+    "defaultClassify": {
+      "file": "packages/parser/src/parser.ts",
+      "line": 298,
+      "called_by": [
+        "for",
+        "if"
       ]
     },
     "deleteCustomTheme": {
@@ -183,6 +191,7 @@
         "buildRuleSpec",
         "classifySec",
         "cleanMarkdownText",
+        "defaultClassify",
         "esc",
         "fetchGitHubData",
         "getFeatureIcon",
@@ -333,6 +342,7 @@
         "buildRuleSpec",
         "classifySec",
         "cleanMarkdownText",
+        "defaultClassify",
         "esc",
         "extractMetrics",
         "extractMetricsFromBadges",

@@ -1,5 +1,8 @@
 {
   "main_files": [
+    "packages/analyzer/src/index.ts",
+    "packages/renderer/src/index.ts",
+    "packages/parser/src/index.ts",
     "src/engine/index.ts"
   ],
   "server_files": [],

@@ -1,163 +1,83 @@
 {
   "_meta": {
-    "generated": "2026-09-15 21:19 UTC",
+    "generated": "2026-09-16 03:55 UTC",
     "total_symbols": 152
   },
   "symbols": {
-    "MemoryStorage": {
-      "file": "src/storage/ProjectStorage.ts",
-      "line": 39,
-      "kind": "class"
-    },
-    "ProjectStorage": {
-      "file": "src/storage/ProjectStorage.ts",
-      "line": 66,
-      "kind": "class"
-    },
-    "GenerationRecord": {
-      "file": "src/storage/ProjectStorage.ts",
-      "line": 6,
+    "MetricItem": {
+      "file": ".llm-context/types-extracted.ts",
+      "line": 163,
       "kind": "interface"
     },
-    "Project": {
-      "file": "src/storage/ProjectStorage.ts",
-      "line": 20,
+    "FeatureItem": {
+      "file": ".llm-context/types-extracted.ts",
+      "line": 169,
       "kind": "interface"
     },
-    "CanvasExporter": {
-      "file": "src/export/CanvasExporter.ts",
-      "line": 26,
-      "kind": "class"
-    },
-    "ExportFormat": {
-      "file": "src/export/CanvasExporter.ts",
-      "line": 3,
+    "StepItem": {
+      "file": ".llm-context/types-extracted.ts",
+      "line": 175,
       "kind": "interface"
     },
-    "ExportOptions": {
-      "file": "src/export/CanvasExporter.ts",
-      "line": 20,
+    "ContentListItem": {
+      "file": ".llm-context/types-extracted.ts",
+      "line": 181,
       "kind": "interface"
     },
-    "ContrastResult": {
-      "file": "src/renderer/themes/contrast.ts",
-      "line": 3,
+    "TimelineItem": {
+      "file": ".llm-context/types-extracted.ts",
+      "line": 186,
       "kind": "interface"
     },
-    "ThemeContrastAudit": {
-      "file": "src/engine/contrast.ts",
-      "line": 60,
+    "ComparisonRow": {
+      "file": ".llm-context/types-extracted.ts",
+      "line": 193,
       "kind": "interface"
     },
-    "hexToRgb": {
-      "file": "src/engine/contrast.ts",
-      "line": 6,
-      "kind": "function"
-    },
-    "getRelativeLuminance": {
-      "file": "src/engine/contrast.ts",
-      "line": 28,
-      "kind": "function"
-    },
-    "getContrastRatio": {
-      "file": "src/engine/contrast.ts",
-      "line": 39,
-      "kind": "function"
-    },
-    "evaluateContrast": {
-      "file": "src/renderer/themes/contrast.ts",
-      "line": 66,
-      "kind": "function"
-    },
-    "auditTheme": {
-      "file": "src/renderer/themes/contrast.ts",
-      "line": 80,
-      "kind": "function"
-    },
-    "ThemeManager": {
-      "file": "src/renderer/themes/ThemeManager.ts",
-      "line": 240,
-      "kind": "class"
-    },
-    "ThemeColors": {
-      "file": "src/renderer/themes/ThemeManager.ts",
-      "line": 3,
+    "LogoConfig": {
+      "file": ".llm-context/types-extracted.ts",
+      "line": 200,
       "kind": "interface"
     },
-    "ThemeTypography": {
-      "file": "src/renderer/themes/ThemeManager.ts",
-      "line": 16,
+    "SectionSource": {
+      "file": ".llm-context/types-extracted.ts",
+      "line": 207,
       "kind": "interface"
     },
-    "Theme": {
-      "file": "src/renderer/themes/ThemeManager.ts",
-      "line": 37,
+    "SmartRecommendation": {
+      "file": ".llm-context/types-extracted.ts",
+      "line": 221,
       "kind": "interface"
     },
-    "triggerHaptic": {
-      "file": "src/ui/haptics.ts",
-      "line": 5,
-      "kind": "function"
-    },
-    "useOnlineStatus": {
-      "file": "src/ui/useOnlineStatus.ts",
-      "line": 3,
-      "kind": "function"
-    },
-    "BeforeInstallPromptEvent": {
-      "file": "src/ui/usePWAInstall.ts",
-      "line": 3,
+    "GroundingMetrics": {
+      "file": ".llm-context/types-extracted.ts",
+      "line": 231,
       "kind": "interface"
     },
-    "usePWAInstall": {
-      "file": "src/ui/usePWAInstall.ts",
-      "line": 8,
-      "kind": "function"
-    },
-    "KeyboardShortcuts": {
-      "file": "src/ui/KeyboardShortcuts.ts",
-      "line": 10,
-      "kind": "class"
-    },
-    "Shortcut": {
-      "file": "src/ui/KeyboardShortcuts.ts",
-      "line": 3,
+    "InfographicSpec": {
+      "file": ".llm-context/types-extracted.ts",
+      "line": 242,
       "kind": "interface"
     },
-    "parseRepoUrl": {
-      "file": "src/engine/github.ts",
-      "line": 3,
-      "kind": "function"
-    },
-    "fetchGitHubRepo": {
-      "file": "src/engine/github.ts",
-      "line": 22,
-      "kind": "function"
-    },
-    "fetchGitHubRepoData": {
-      "file": "src/engine/github.ts",
-      "line": 34,
-      "kind": "function"
-    },
-    "SecItem": {
-      "file": "src/engine/parser.ts",
-      "line": 215,
+    "GitHubMeta": {
+      "file": ".llm-context/types-extracted.ts",
+      "line": 252,
       "kind": "interface"
     },
-    "parseMD": {
-      "file": "src/components/ArchitectureModal.tsx",
-      "line": 57,
-      "kind": "function"
+    "SpecSection": {
+      "file": ".llm-context/types-extracted.ts",
+      "line": 216,
+      "kind": "type"
     },
-    "parseTable": {
-      "file": "src/components/ArchitectureModal.tsx",
-      "line": 58,
-      "kind": "function"
+    "VisualDensity": {
+      "file": ".llm-context/types-extracted.ts",
+      "line": 292,
+      "kind": "type"
     },
-    "smartTrunc": {
-      "file": "src/components/ArchitectureModal.tsx",
-      "line": 59,
-      "kind": "function"
+    "VariantMap": {
+      "file": ".llm-context/types-extracted.ts",
+      "line": 289,
+      "kind": "type"
     },
     "methods": {
       "file": "src/engine/specBuilder.ts",
@@ -184,9 +104,39 @@
       "line": 73,
       "kind": "function"
     },
+    "MetricPattern": {
+      "file": "src/engine/extractors.ts",
+      "line": 50,
+      "kind": "interface"
+    },
+    "trunc": {
+      "file": "src/engine/extractors.ts",
+      "line": 3,
+      "kind": "function"
+    },
+    "extractMetrics": {
+      "file": "src/components/ArchitectureModal.tsx",
+      "line": 86,
+      "kind": "function"
+    },
+    "extractMetricsFromBadges": {
+      "file": "src/components/ArchitectureModal.tsx",
+      "line": 87,
+      "kind": "function"
+    },
+    "splitFeat": {
+      "file": "src/components/ArchitectureModal.tsx",
+      "line": 88,
+      "kind": "function"
+    },
+    "extractTechAdvanced": {
+      "file": "src/components/ArchitectureModal.tsx",
+      "line": 89,
+      "kind": "function"
+    },
     "IconOptions": {
-      "file": "src/engine/icons.ts",
-      "line": 6,
+      "file": ".llm-context/types-extracted.ts",
+      "line": 57,
       "kind": "interface"
     },
     "renderSvgIcon": {
@@ -219,69 +169,44 @@
       "line": 206,
       "kind": "function"
     },
-    "support": {
-      "file": "src/engine/samples.ts",
-      "line": 104,
-      "kind": "class"
-    },
-    "SampleReadme": {
-      "file": "src/engine/samples.ts",
-      "line": 3,
+    "ContrastAuditItem": {
+      "file": ".llm-context/types-extracted.ts",
+      "line": 34,
       "kind": "interface"
     },
-    "ContrastAuditItem": {
-      "file": "src/engine/contrast.ts",
-      "line": 50,
+    "ThemeContrastAudit": {
+      "file": ".llm-context/types-extracted.ts",
+      "line": 386,
       "kind": "interface"
     },
     "ColorBlindnessType": {
-      "file": "src/engine/contrast.ts",
-      "line": 115,
+      "file": ".llm-context/types-extracted.ts",
+      "line": 52,
       "kind": "type"
+    },
+    "hexToRgb": {
+      "file": "src/engine/contrast.ts",
+      "line": 6,
+      "kind": "function"
+    },
+    "getRelativeLuminance": {
+      "file": "src/engine/contrast.ts",
+      "line": 28,
+      "kind": "function"
+    },
+    "getContrastRatio": {
+      "file": "src/engine/contrast.ts",
+      "line": 39,
+      "kind": "function"
     },
     "auditThemeContrast": {
       "file": "src/engine/contrast.ts",
       "line": 71,
       "kind": "function"
     },
-    "MetricPattern": {
-      "file": "src/engine/extractors.ts",
-      "line": 50,
-      "kind": "interface"
-    },
-    "trunc": {
-      "file": "src/engine/extractors.ts",
-      "line": 3,
-      "kind": "function"
-    },
-    "cleanMarkdownText": {
-      "file": "src/engine/extractors.ts",
-      "line": 11,
-      "kind": "function"
-    },
-    "extractMetrics": {
-      "file": "src/components/ArchitectureModal.tsx",
-      "line": 86,
-      "kind": "function"
-    },
-    "extractMetricsFromBadges": {
-      "file": "src/components/ArchitectureModal.tsx",
-      "line": 87,
-      "kind": "function"
-    },
-    "splitFeat": {
-      "file": "src/components/ArchitectureModal.tsx",
-      "line": 88,
-      "kind": "function"
-    },
-    "extractTechAdvanced": {
-      "file": "src/components/ArchitectureModal.tsx",
-      "line": 89,
-      "kind": "function"
-    },
     "QROptions": {
-      "file": "src/engine/qr.ts",
-      "line": 3,
+      "file": ".llm-context/types-extracted.ts",
+      "line": 66,
       "kind": "interface"
     },
     "generateQRCodeSVG": {
@@ -289,135 +214,20 @@
       "line": 14,
       "kind": "function"
     },
-    "TableData": {
-      "file": "src/engine/types.ts",
-      "line": 1,
-      "kind": "interface"
-    },
-    "CodeBlock": {
-      "file": "src/engine/types.ts",
-      "line": 6,
-      "kind": "interface"
-    },
-    "BadgeItem": {
-      "file": "src/engine/types.ts",
-      "line": 11,
-      "kind": "interface"
-    },
-    "ImageItem": {
-      "file": "src/engine/types.ts",
-      "line": 16,
-      "kind": "interface"
-    },
-    "NestedListItem": {
-      "file": "src/engine/types.ts",
-      "line": 21,
-      "kind": "interface"
-    },
-    "DocSection": {
-      "file": "src/engine/types.ts",
-      "line": 26,
-      "kind": "interface"
-    },
-    "ParsedDoc": {
-      "file": "src/engine/types.ts",
-      "line": 41,
-      "kind": "interface"
-    },
-    "MetricItem": {
-      "file": "src/engine/types.ts",
-      "line": 66,
-      "kind": "interface"
-    },
-    "FeatureItem": {
-      "file": "src/engine/types.ts",
-      "line": 71,
-      "kind": "interface"
-    },
-    "StepItem": {
-      "file": "src/engine/types.ts",
-      "line": 76,
-      "kind": "interface"
-    },
-    "ContentListItem": {
-      "file": "src/engine/types.ts",
-      "line": 82,
-      "kind": "interface"
-    },
-    "TimelineItem": {
-      "file": "src/engine/types.ts",
-      "line": 87,
-      "kind": "interface"
-    },
-    "ComparisonRow": {
-      "file": "src/engine/types.ts",
-      "line": 93,
-      "kind": "interface"
-    },
-    "LogoConfig": {
-      "file": "src/engine/types.ts",
-      "line": 99,
-      "kind": "interface"
-    },
-    "SectionSource": {
-      "file": "src/engine/types.ts",
-      "line": 105,
-      "kind": "interface"
-    },
-    "SmartRecommendation": {
-      "file": "src/engine/types.ts",
-      "line": 190,
-      "kind": "interface"
-    },
-    "GroundingMetrics": {
-      "file": "src/engine/types.ts",
-      "line": 199,
-      "kind": "interface"
-    },
-    "InfographicSpec": {
-      "file": "src/engine/types.ts",
-      "line": 209,
-      "kind": "interface"
-    },
-    "GitHubMeta": {
-      "file": "src/engine/types.ts",
-      "line": 218,
-      "kind": "interface"
-    },
     "ThemeConfig": {
-      "file": "src/engine/types.ts",
-      "line": 233,
+      "file": ".llm-context/types-extracted.ts",
+      "line": 268,
       "kind": "interface"
     },
     "DensityConfig": {
-      "file": "src/engine/types.ts",
-      "line": 257,
+      "file": ".llm-context/types-extracted.ts",
+      "line": 295,
       "kind": "interface"
     },
     "RenderOptions": {
-      "file": "src/engine/types.ts",
-      "line": 289,
+      "file": ".llm-context/types-extracted.ts",
+      "line": 303,
       "kind": "interface"
-    },
-    "SectionType": {
-      "file": "src/engine/types.ts",
-      "line": 49,
-      "kind": "type"
-    },
-    "SpecSection": {
-      "file": "src/engine/types.ts",
-      "line": 113,
-      "kind": "type"
-    },
-    "VariantMap": {
-      "file": "src/engine/types.ts",
-      "line": 253,
-      "kind": "type"
-    },
-    "VisualDensity": {
-      "file": "src/engine/types.ts",
-      "line": 255,
-      "kind": "type"
     },
     "getTheme": {
       "file": "src/engine/themes.ts",
@@ -425,8 +235,8 @@
       "kind": "function"
     },
     "RenderResult": {
-      "file": "src/engine/renderer.ts",
-      "line": 48,
+      "file": ".llm-context/types-extracted.ts",
+      "line": 74,
       "kind": "interface"
     },
     "esc": {
@@ -584,6 +394,196 @@
       "line": 1719,
       "kind": "function"
     },
+    "TableData": {
+      "file": ".llm-context/types-extracted.ts",
+      "line": 93,
+      "kind": "interface"
+    },
+    "CodeBlock": {
+      "file": ".llm-context/types-extracted.ts",
+      "line": 99,
+      "kind": "interface"
+    },
+    "BadgeItem": {
+      "file": ".llm-context/types-extracted.ts",
+      "line": 104,
+      "kind": "interface"
+    },
+    "ImageItem": {
+      "file": ".llm-context/types-extracted.ts",
+      "line": 110,
+      "kind": "interface"
+    },
+    "NestedListItem": {
+      "file": ".llm-context/types-extracted.ts",
+      "line": 115,
+      "kind": "interface"
+    },
+    "DocSection": {
+      "file": ".llm-context/types-extracted.ts",
+      "line": 120,
+      "kind": "interface"
+    },
+    "ParsedDoc": {
+      "file": ".llm-context/types-extracted.ts",
+      "line": 136,
+      "kind": "interface"
+    },
+    "SectionType": {
+      "file": ".llm-context/types-extracted.ts",
+      "line": 145,
+      "kind": "type"
+    },
+    "SecItem": {
+      "file": "src/engine/parser.ts",
+      "line": 215,
+      "kind": "interface"
+    },
+    "cleanMarkdownText": {
+      "file": "src/engine/extractors.ts",
+      "line": 11,
+      "kind": "function"
+    },
+    "parseMD": {
+      "file": "src/components/ArchitectureModal.tsx",
+      "line": 57,
+      "kind": "function"
+    },
+    "parseTable": {
+      "file": "src/components/ArchitectureModal.tsx",
+      "line": 58,
+      "kind": "function"
+    },
+    "smartTrunc": {
+      "file": "src/components/ArchitectureModal.tsx",
+      "line": 59,
+      "kind": "function"
+    },
+    "MemoryStorage": {
+      "file": "src/storage/ProjectStorage.ts",
+      "line": 39,
+      "kind": "class"
+    },
+    "ProjectStorage": {
+      "file": "src/storage/ProjectStorage.ts",
+      "line": 66,
+      "kind": "class"
+    },
+    "GenerationRecord": {
+      "file": ".llm-context/types-extracted.ts",
+      "line": 401,
+      "kind": "interface"
+    },
+    "Project": {
+      "file": ".llm-context/types-extracted.ts",
+      "line": 416,
+      "kind": "interface"
+    },
+    "CanvasExporter": {
+      "file": "src/export/CanvasExporter.ts",
+      "line": 26,
+      "kind": "class"
+    },
+    "ExportFormat": {
+      "file": ".llm-context/types-extracted.ts",
+      "line": 317,
+      "kind": "interface"
+    },
+    "ExportOptions": {
+      "file": ".llm-context/types-extracted.ts",
+      "line": 324,
+      "kind": "interface"
+    },
+    "ContrastResult": {
+      "file": ".llm-context/types-extracted.ts",
+      "line": 378,
+      "kind": "interface"
+    },
+    "evaluateContrast": {
+      "file": "src/renderer/themes/contrast.ts",
+      "line": 66,
+      "kind": "function"
+    },
+    "auditTheme": {
+      "file": "src/renderer/themes/contrast.ts",
+      "line": 80,
+      "kind": "function"
+    },
+    "ThemeManager": {
+      "file": "src/renderer/themes/ThemeManager.ts",
+      "line": 240,
+      "kind": "class"
+    },
+    "ThemeColors": {
+      "file": ".llm-context/types-extracted.ts",
+      "line": 332,
+      "kind": "interface"
+    },
+    "ThemeTypography": {
+      "file": ".llm-context/types-extracted.ts",
+      "line": 345,
+      "kind": "interface"
+    },
+    "Theme": {
+      "file": ".llm-context/types-extracted.ts",
+      "line": 366,
+      "kind": "interface"
+    },
+    "triggerHaptic": {
+      "file": "src/ui/haptics.ts",
+      "line": 5,
+      "kind": "function"
+    },
+    "useOnlineStatus": {
+      "file": "src/ui/useOnlineStatus.ts",
+      "line": 3,
+      "kind": "function"
+    },
+    "BeforeInstallPromptEvent": {
+      "file": "src/ui/usePWAInstall.ts",
+      "line": 3,
+      "kind": "interface"
+    },
+    "usePWAInstall": {
+      "file": "src/ui/usePWAInstall.ts",
+      "line": 8,
+      "kind": "function"
+    },
+    "KeyboardShortcuts": {
+      "file": "src/ui/KeyboardShortcuts.ts",
+      "line": 10,
+      "kind": "class"
+    },
+    "Shortcut": {
+      "file": ".llm-context/types-extracted.ts",
+      "line": 438,
+      "kind": "interface"
+    },
+    "parseRepoUrl": {
+      "file": "src/engine/github.ts",
+      "line": 3,
+      "kind": "function"
+    },
+    "fetchGitHubRepo": {
+      "file": "src/engine/github.ts",
+      "line": 22,
+      "kind": "function"
+    },
+    "fetchGitHubRepoData": {
+      "file": "src/engine/github.ts",
+      "line": 34,
+      "kind": "function"
+    },
+    "support": {
+      "file": "src/engine/samples.ts",
+      "line": 104,
+      "kind": "class"
+    },
+    "SampleReadme": {
+      "file": ".llm-context/types-extracted.ts",
+      "line": 81,
+      "kind": "interface"
+    },
     "CLIConfig": {
       "file": "bin/cli.ts",
       "line": 10,
@@ -593,6 +593,21 @@
       "file": "bin/cli.ts",
       "line": 148,
       "kind": "function"
+    },
+    "ToastMessage": {
+      "file": "src/components/Toast.tsx",
+      "line": 4,
+      "kind": "interface"
+    },
+    "FormatConfig": {
+      "file": "src/components/mobile/VisualFormatPicker.tsx",
+      "line": 5,
+      "kind": "interface"
+    },
+    "MobileTab": {
+      "file": "src/components/mobile/BottomNavigation.tsx",
+      "line": 5,
+      "kind": "type"
     },
     "ErrorBoundary": {
       "file": "src/components/ErrorBoundary.tsx",
@@ -679,11 +694,6 @@
       "line": 24,
       "kind": "interface"
     },
-    "ToastMessage": {
-      "file": "src/components/Toast.tsx",
-      "line": 4,
-      "kind": "interface"
-    },
     "ToastProps": {
       "file": "src/components/Toast.tsx",
       "line": 10,
@@ -724,11 +734,6 @@
       "line": 15,
       "kind": "interface"
     },
-    "FormatConfig": {
-      "file": "src/components/mobile/VisualFormatPicker.tsx",
-      "line": 5,
-      "kind": "interface"
-    },
     "VisualFormatPickerProps": {
       "file": "src/components/mobile/VisualFormatPicker.tsx",
       "line": 79,
@@ -748,11 +753,6 @@
       "file": "src/components/mobile/BottomNavigation.tsx",
       "line": 7,
       "kind": "interface"
-    },
-    "MobileTab": {
-      "file": "src/components/mobile/BottomNavigation.tsx",
-      "line": 5,
-      "kind": "type"
     },
     "MobileCoachMarksProps": {
       "file": "src/components/mobile/MobileCoachMarks.tsx",

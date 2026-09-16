@@ -1,0 +1,14 @@
+ .github/workflows/ccc.yml         |   99 +---
+ .llm-context/TEMP/txt.txt         |    1 -
+ .llm-context/call-graph.json      |   16 +-
+ .llm-context/change-surface.json  | 1146 ++++++++++++++++++++++++-------------
+ .llm-context/dependency-graph.txt |    2 +-
+ .llm-context/entry-points.json    |    3 +
+ .llm-context/package.json         |    5 +
+ .llm-context/public-api.txt       |  236 +++++++-
+ .llm-context/recent-commits.txt   |   19 +
+ .llm-context/symbol-index.json    |  630 ++++++++++----------
+ .llm-context/tree.txt             |  108 +++-
+ .llm-context/type-graph.json      |  130 +++--
+ .llm-context/types-extracted.ts   |  896 ++++++++++++++++++++++++++++-
+ 13 files changed, 2428 insertions(+), 863 deletions(-)
