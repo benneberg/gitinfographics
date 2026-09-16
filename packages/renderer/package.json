@@ -19,8 +19,8 @@
     "LICENSE"
   ],
   "dependencies": {
-    "@gitinfographics/parser": "workspace:*",
-    "@gitinfographics/analyzer": "workspace:*",
+    "@gitinfographics/parser": "^1.0.0",
+    "@gitinfographics/analyzer": "^1.0.0",
     "qrcode": "^1.5.4"
   },
   "devDependencies": {
