@@ -29,9 +29,9 @@ jobs:
       - name: Install CCC
         run: |
           python -m pip install --upgrade pip
-          - name: Install CCC from current main
-           run: |
-            pip install "git+https://github.com/benneberg/contextcompiler.git@main"
+      - name: Install CCC from current main
+        run: |
+          pip install "git+https://github.com/benneberg/contextcompiler.git@main"
 
       - name: Show CCC version
         run: |
