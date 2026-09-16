@@ -1,20 +1,20 @@
 {
   "version": "4",
-  "generated_at": "2026-09-16 04:07 UTC",
+  "generated_at": "2026-09-16 08:35 UTC",
   "project_fingerprint": "4d0b73e046444d32",
   "files": {
     "tree.txt": {
-      "hash": "58de3b8d2e1be745",
-      "size": 6911,
-      "generated_at": "2026-09-16 04:07 UTC",
+      "hash": "704c6987539fae2b",
+      "size": 6913,
+      "generated_at": "2026-09-16 08:35 UTC",
       "source_files": [],
       "source_hashes": [],
       "strategy": "always"
     },
     "public-api.txt": {
-      "hash": "86abefbccd1e1999",
+      "hash": "3daf9c266b27c218",
       "size": 17237,
-      "generated_at": "2026-09-16 04:07 UTC",
+      "generated_at": "2026-09-16 08:35 UTC",
       "source_files": [
         "packages/analyzer/src/specBuilder.ts",
         "packages/analyzer/src/classifier.ts",
@@ -71,28 +71,10 @@
       ],
       "strategy": "if-changed"
     },
-    "entry-points.json": {
-      "hash": "35b5bbe6aa2f5e43",
-      "size": 245,
-      "generated_at": "2026-09-16 04:07 UTC",
-      "source_files": [
-        "packages/analyzer/src/index.ts",
-        "packages/renderer/src/index.ts",
-        "packages/parser/src/index.ts",
-        "src/engine/index.ts"
-      ],
-      "source_hashes": [
-        "06698a683f8d",
-        "43b62da4a07a",
-        "896023810666",
-        "eec67f14a4f0"
-      ],
-      "strategy": "if-changed"
-    },
     "symbol-index.json": {
-      "hash": "c0230912d5bb0c15",
-      "size": 18393,
-      "generated_at": "2026-09-16 04:07 UTC",
+      "hash": "5658098d53198d92",
+      "size": 49501,
+      "generated_at": "2026-09-16 08:35 UTC",
       "source_files": [
         "vite.config.ts",
         "packages/analyzer/src/index.d.ts",
@@ -222,7 +204,7 @@
         "9184c356023d",
         "fbf126aa0fbd",
         "edc14350f558",
-        "78bf1c7ce58a",
+        "109087895503",
         "663ce2ab36ab",
         "4450a1fa979b",
         "57a8df0d4ca5",
@@ -257,10 +239,68 @@
       ],
       "strategy": "if-changed"
     },
+    "types-extracted.ts": {
+      "hash": "b5a2b4d9d0135036",
+      "size": 55478,
+      "generated_at": "2026-09-16 08:35 UTC",
+      "source_files": [
+        "packages/analyzer/src/types.d.ts",
+        "packages/analyzer/src/types.ts",
+        "packages/renderer/src/icons.ts",
+        "packages/renderer/src/contrast.ts",
+        "packages/renderer/src/qr.ts",
+        "packages/renderer/src/types.ts",
+        "packages/renderer/src/renderer.ts",
+        "packages/parser/src/types.d.ts",
+        "packages/parser/src/types.ts",
+        "src/storage/ProjectStorage.ts",
+        "src/export/CanvasExporter.ts",
+        "src/renderer/themes/contrast.ts",
+        "src/renderer/themes/ThemeManager.ts",
+        "src/ui/KeyboardShortcuts.ts",
+        "src/engine/icons.ts",
+        "src/engine/samples.ts",
+        "src/engine/contrast.ts",
+        "src/engine/qr.ts",
+        "src/engine/types.ts",
+        "src/engine/renderer.ts",
+        ".llm-context/types-extracted.ts",
+        "src/components/Toast.tsx",
+        "src/components/mobile/VisualFormatPicker.tsx",
+        "src/components/mobile/BottomNavigation.tsx"
+      ],
+      "source_hashes": [
+        "2f1f35c330b6",
+        "4b40c3ef824f",
+        "2ec2ac8bae71",
+        "43dc30ee260c",
+        "05287dfe054a",
+        "b09d4ca004d3",
+        "f518941fe2a8",
+        "0cb99d60afc2",
+        "450e50e877df",
+        "c6a4ec909699",
+        "c6fe9943c48a",
+        "5c9dfcbfea03",
+        "a7269f127d01",
+        "6fa8e1fe5c6f",
+        "2ec2ac8bae71",
+        "c7733bd2c8d1",
+        "43dc30ee260c",
+        "05287dfe054a",
+        "79efa30c54fa",
+        "fbf126aa0fbd",
+        "bcf06c5655a1",
+        "9b3879eb5f64",
+        "f52935023036",
+        "92d889aaaa22"
+      ],
+      "strategy": "if-changed"
+    },
     "dependency-graph.txt": {
-      "hash": "e299ec20df790135",
-      "size": 127,
-      "generated_at": "2026-09-16 04:07 UTC",
+      "hash": "da48a6c59c6875c8",
+      "size": 5106,
+      "generated_at": "2026-09-16 08:35 UTC",
       "source_files": [
         "public/sw.js",
         "public/registerSW.js",
@@ -429,7 +469,7 @@
         "464d5ff99ff6",
         "edc14350f558",
         "04df50510658",
-        "78bf1c7ce58a",
+        "bcf06c5655a1",
         "663ce2ab36ab",
         "4450a1fa979b",
         "57a8df0d4ca5",
@@ -465,68 +505,10 @@
       ],
       "strategy": "if-changed"
     },
-    "types-extracted.ts": {
-      "hash": "26c671c6de2416af",
-      "size": 58048,
-      "generated_at": "2026-09-16 04:07 UTC",
-      "source_files": [
-        "packages/analyzer/src/types.d.ts",
-        "packages/analyzer/src/types.ts",
-        "packages/renderer/src/icons.ts",
-        "packages/renderer/src/contrast.ts",
-        "packages/renderer/src/qr.ts",
-        "packages/renderer/src/types.ts",
-        "packages/renderer/src/renderer.ts",
-        "packages/parser/src/types.d.ts",
-        "packages/parser/src/types.ts",
-        "src/storage/ProjectStorage.ts",
-        "src/export/CanvasExporter.ts",
-        "src/renderer/themes/contrast.ts",
-        "src/renderer/themes/ThemeManager.ts",
-        "src/ui/KeyboardShortcuts.ts",
-        "src/engine/icons.ts",
-        "src/engine/samples.ts",
-        "src/engine/contrast.ts",
-        "src/engine/qr.ts",
-        "src/engine/types.ts",
-        "src/engine/renderer.ts",
-        ".llm-context/types-extracted.ts",
-        "src/components/Toast.tsx",
-        "src/components/mobile/VisualFormatPicker.tsx",
-        "src/components/mobile/BottomNavigation.tsx"
-      ],
-      "source_hashes": [
-        "2f1f35c330b6",
-        "4b40c3ef824f",
-        "2ec2ac8bae71",
-        "43dc30ee260c",
-        "05287dfe054a",
-        "b09d4ca004d3",
-        "f518941fe2a8",
-        "0cb99d60afc2",
-        "450e50e877df",
-        "c6a4ec909699",
-        "c6fe9943c48a",
-        "5c9dfcbfea03",
-        "a7269f127d01",
-        "6fa8e1fe5c6f",
-        "2ec2ac8bae71",
-        "c7733bd2c8d1",
-        "43dc30ee260c",
-        "05287dfe054a",
-        "79efa30c54fa",
-        "fbf126aa0fbd",
-        "109087895503",
-        "9b3879eb5f64",
-        "f52935023036",
-        "92d889aaaa22"
-      ],
-      "strategy": "if-changed"
-    },
     "call-graph.json": {
-      "hash": "a1243df647073c0a",
+      "hash": "5a8f6c5a79b0b4ba",
       "size": 16969,
-      "generated_at": "2026-09-16 04:07 UTC",
+      "generated_at": "2026-09-16 08:35 UTC",
       "source_files": [
         "vite.config.ts",
         "packages/analyzer/src/index.d.ts",
@@ -659,7 +641,7 @@
         "9184c356023d",
         "fbf126aa0fbd",
         "edc14350f558",
-        "109087895503",
+        "bcf06c5655a1",
         "663ce2ab36ab",
         "4450a1fa979b",
         "57a8df0d4ca5",
@@ -698,9 +680,9 @@
       "strategy": "always"
     },
     "dependency-graph.md": {
-      "hash": "b107868ac1b7859a",
-      "size": 88,
-      "generated_at": "2026-09-16 04:07 UTC",
+      "hash": "6c5743acf756a48f",
+      "size": 6717,
+      "generated_at": "2026-09-16 08:35 UTC",
       "source_files": [
         "public/sw.js",
         "public/registerSW.js",
@@ -869,7 +851,7 @@
         "464d5ff99ff6",
         "edc14350f558",
         "04df50510658",
-        "109087895503",
+        "bcf06c5655a1",
         "663ce2ab36ab",
         "4450a1fa979b",
         "57a8df0d4ca5",
@@ -906,9 +888,9 @@
       "strategy": "if-changed"
     },
     "change-surface.json": {
-      "hash": "17f0852bb953a183",
-      "size": 32250,
-      "generated_at": "2026-09-16 04:07 UTC",
+      "hash": "7c24c88ca9b81eca",
+      "size": 32238,
+      "generated_at": "2026-09-16 08:35 UTC",
       "source_files": [
         "vite.config.ts",
         "packages/analyzer/src/index.d.ts",
@@ -1109,14 +1091,14 @@
         "edc14350f558",
         "e8501d8364ac",
         "04df50510658",
-        "109087895503"
+        "bcf06c5655a1"
       ],
       "strategy": "always"
     },
     "type-graph.json": {
-      "hash": "3116bdda0f458135",
-      "size": 10933,
-      "generated_at": "2026-09-16 04:07 UTC",
+      "hash": "7f6666b903c3b7fc",
+      "size": 30428,
+      "generated_at": "2026-09-16 08:35 UTC",
       "source_files": [
         "vite.config.ts",
         "packages/analyzer/src/index.d.ts",
@@ -1279,7 +1261,7 @@
         "464d5ff99ff6",
         "edc14350f558",
         "04df50510658",
-        "109087895503",
+        "bcf06c5655a1",
         "663ce2ab36ab",
         "4450a1fa979b",
         "57a8df0d4ca5",
@@ -1318,7 +1300,7 @@
     "env-shape.txt": {
       "hash": "1aa8758f9847562b",
       "size": 430,
-      "generated_at": "2026-09-16 04:07 UTC",
+      "generated_at": "2026-09-16 08:35 UTC",
       "source_files": [
         ".env.example"
       ],
@@ -1330,7 +1312,7 @@
     "package.json": {
       "hash": "2b97a21cd9dd2d96",
       "size": 1440,
-      "generated_at": "2026-09-16 04:07 UTC",
+      "generated_at": "2026-09-16 08:35 UTC",
       "source_files": [
         "package.json"
       ],
@@ -1340,33 +1322,33 @@
       "strategy": "always"
     },
     "recent-commits.txt": {
-      "hash": "2b6e7cc48e40cf24",
-      "size": 723,
-      "generated_at": "2026-09-16 04:07 UTC",
+      "hash": "006c66265e69bc9d",
+      "size": 672,
+      "generated_at": "2026-09-16 08:35 UTC",
       "source_files": [],
       "source_hashes": [],
       "strategy": "always"
     },
     "recent-changes.txt": {
-      "hash": "2055612d4541c197",
-      "size": 1391,
-      "generated_at": "2026-09-16 04:07 UTC",
+      "hash": "1c9bee01dcc20f09",
+      "size": 1096,
+      "generated_at": "2026-09-16 08:35 UTC",
       "source_files": [],
       "source_hashes": [],
       "strategy": "always"
     },
     "external-dependencies.json": {
-      "hash": "326c1e76aabeed1a",
+      "hash": "a944cfc38925e860",
       "size": 1704,
-      "generated_at": "2026-09-16 04:07 UTC",
+      "generated_at": "2026-09-16 08:35 UTC",
       "source_files": [],
       "source_hashes": [],
       "strategy": "if-changed"
     },
     "capabilities.json": {
-      "hash": "a77e7ef298e84649",
-      "size": 5627,
-      "generated_at": "2026-09-16 04:07 UTC",
+      "hash": "5d628039e35b6732",
+      "size": 5636,
+      "generated_at": "2026-09-16 08:35 UTC",
       "source_files": [],
       "source_hashes": [],
       "strategy": "if-missing"
@@ -1374,7 +1356,7 @@
     "../LLM.md": {
       "hash": "a2ac951540702588",
       "size": 2662,
-      "generated_at": "2026-09-16 04:07 UTC",
+      "generated_at": "2026-09-16 08:35 UTC",
       "source_files": [],
       "source_hashes": [],
       "strategy": "always"
@@ -1382,7 +1364,7 @@
     "../ARCHITECTURE.md": {
       "hash": "ec0e423e6cebc184",
       "size": 412,
-      "generated_at": "2026-09-16 04:07 UTC",
+      "generated_at": "2026-09-16 08:35 UTC",
       "source_files": [],
       "source_hashes": [],
       "strategy": "if-missing"

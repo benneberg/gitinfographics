@@ -1,765 +1,1650 @@
 {
   "_meta": {
-    "generated": "2026-09-16 04:07 UTC",
-    "total_symbols": 152
+    "generated": "2026-09-16 08:35 UTC",
+    "total_symbols": 329
   },
   "symbols": {
-    "MetricItem": {
-      "file": ".llm-context/types-extracted.ts",
-      "line": 1021,
+    "packages/analyzer/src/types.d.ts::MetricItem": {
+      "file": "packages/analyzer/src/types.d.ts",
+      "line": 2,
       "kind": "interface"
     },
-    "FeatureItem": {
-      "file": ".llm-context/types-extracted.ts",
-      "line": 1027,
-      "kind": "interface"
-    },
-    "StepItem": {
-      "file": ".llm-context/types-extracted.ts",
-      "line": 1033,
-      "kind": "interface"
-    },
-    "ContentListItem": {
-      "file": ".llm-context/types-extracted.ts",
-      "line": 1039,
-      "kind": "interface"
-    },
-    "TimelineItem": {
-      "file": ".llm-context/types-extracted.ts",
-      "line": 1044,
-      "kind": "interface"
-    },
-    "ComparisonRow": {
-      "file": ".llm-context/types-extracted.ts",
-      "line": 1051,
-      "kind": "interface"
-    },
-    "LogoConfig": {
-      "file": ".llm-context/types-extracted.ts",
-      "line": 1058,
-      "kind": "interface"
-    },
-    "SectionSource": {
-      "file": ".llm-context/types-extracted.ts",
-      "line": 1065,
-      "kind": "interface"
-    },
-    "SmartRecommendation": {
-      "file": ".llm-context/types-extracted.ts",
-      "line": 1079,
-      "kind": "interface"
-    },
-    "GroundingMetrics": {
-      "file": ".llm-context/types-extracted.ts",
-      "line": 1089,
-      "kind": "interface"
-    },
-    "InfographicSpec": {
-      "file": ".llm-context/types-extracted.ts",
-      "line": 1100,
-      "kind": "interface"
-    },
-    "GitHubMeta": {
-      "file": ".llm-context/types-extracted.ts",
-      "line": 1110,
-      "kind": "interface"
-    },
-    "SpecSection": {
-      "file": ".llm-context/types-extracted.ts",
-      "line": 1074,
-      "kind": "type"
-    },
-    "VisualDensity": {
-      "file": ".llm-context/types-extracted.ts",
-      "line": 1150,
-      "kind": "type"
-    },
-    "VariantMap": {
-      "file": ".llm-context/types-extracted.ts",
-      "line": 1147,
-      "kind": "type"
-    },
-    "methods": {
-      "file": "src/engine/specBuilder.ts",
-      "line": 366,
-      "kind": "interface"
-    },
-    "detectSmartLayout": {
-      "file": "src/engine/specBuilder.ts",
-      "line": 28,
-      "kind": "function"
-    },
-    "buildRuleSpec": {
-      "file": "src/components/ArchitectureModal.tsx",
-      "line": 101,
-      "kind": "function"
-    },
-    "mergeGHMeta": {
-      "file": "src/components/ArchitectureModal.tsx",
-      "line": 102,
-      "kind": "function"
-    },
-    "classifySec": {
-      "file": "src/components/ArchitectureModal.tsx",
-      "line": 73,
-      "kind": "function"
-    },
-    "MetricPattern": {
-      "file": "src/engine/extractors.ts",
-      "line": 50,
-      "kind": "interface"
-    },
-    "trunc": {
-      "file": "src/engine/extractors.ts",
-      "line": 3,
-      "kind": "function"
-    },
-    "extractMetrics": {
-      "file": "src/components/ArchitectureModal.tsx",
-      "line": 86,
-      "kind": "function"
-    },
-    "extractMetricsFromBadges": {
-      "file": "src/components/ArchitectureModal.tsx",
-      "line": 87,
-      "kind": "function"
-    },
-    "splitFeat": {
-      "file": "src/components/ArchitectureModal.tsx",
-      "line": 88,
-      "kind": "function"
-    },
-    "extractTechAdvanced": {
-      "file": "src/components/ArchitectureModal.tsx",
-      "line": 89,
-      "kind": "function"
-    },
-    "IconOptions": {
-      "file": ".llm-context/types-extracted.ts",
-      "line": 915,
-      "kind": "interface"
-    },
-    "renderSvgIcon": {
-      "file": "src/engine/icons.ts",
-      "line": 61,
-      "kind": "function"
-    },
-    "renderIconPathGroup": {
-      "file": "src/engine/icons.ts",
-      "line": 77,
-      "kind": "function"
-    },
-    "getSectionIcon": {
-      "file": "src/engine/icons.ts",
-      "line": 95,
-      "kind": "function"
-    },
-    "getFeatureIcon": {
-      "file": "src/engine/icons.ts",
-      "line": 121,
-      "kind": "function"
-    },
-    "getMetricIcon": {
-      "file": "src/engine/icons.ts",
-      "line": 156,
-      "kind": "function"
-    },
-    "getTechColor": {
-      "file": "src/engine/icons.ts",
-      "line": 206,
-      "kind": "function"
-    },
-    "ContrastAuditItem": {
-      "file": ".llm-context/types-extracted.ts",
-      "line": 892,
-      "kind": "interface"
-    },
-    "ThemeContrastAudit": {
-      "file": ".llm-context/types-extracted.ts",
-      "line": 1244,
-      "kind": "interface"
-    },
-    "ColorBlindnessType": {
-      "file": ".llm-context/types-extracted.ts",
-      "line": 910,
-      "kind": "type"
-    },
-    "hexToRgb": {
-      "file": "src/engine/contrast.ts",
+    "packages/analyzer/src/types.d.ts::FeatureItem": {
+      "file": "packages/analyzer/src/types.d.ts",
       "line": 6,
-      "kind": "function"
-    },
-    "getRelativeLuminance": {
-      "file": "src/engine/contrast.ts",
-      "line": 28,
-      "kind": "function"
-    },
-    "getContrastRatio": {
-      "file": "src/engine/contrast.ts",
-      "line": 39,
-      "kind": "function"
-    },
-    "auditThemeContrast": {
-      "file": "src/engine/contrast.ts",
-      "line": 71,
-      "kind": "function"
-    },
-    "QROptions": {
-      "file": ".llm-context/types-extracted.ts",
-      "line": 924,
       "kind": "interface"
     },
-    "generateQRCodeSVG": {
-      "file": "src/engine/qr.ts",
-      "line": 14,
-      "kind": "function"
-    },
-    "ThemeConfig": {
-      "file": ".llm-context/types-extracted.ts",
-      "line": 1126,
+    "packages/analyzer/src/types.d.ts::StepItem": {
+      "file": "packages/analyzer/src/types.d.ts",
+      "line": 10,
       "kind": "interface"
     },
-    "DensityConfig": {
-      "file": ".llm-context/types-extracted.ts",
-      "line": 1153,
+    "packages/analyzer/src/types.d.ts::ContentListItem": {
+      "file": "packages/analyzer/src/types.d.ts",
+      "line": 15,
       "kind": "interface"
     },
-    "RenderOptions": {
-      "file": ".llm-context/types-extracted.ts",
-      "line": 1161,
+    "packages/analyzer/src/types.d.ts::TimelineItem": {
+      "file": "packages/analyzer/src/types.d.ts",
+      "line": 19,
       "kind": "interface"
     },
-    "getTheme": {
-      "file": "src/engine/themes.ts",
-      "line": 242,
-      "kind": "function"
-    },
-    "RenderResult": {
-      "file": ".llm-context/types-extracted.ts",
-      "line": 932,
+    "packages/analyzer/src/types.d.ts::ComparisonRow": {
+      "file": "packages/analyzer/src/types.d.ts",
+      "line": 24,
       "kind": "interface"
     },
-    "esc": {
-      "file": "src/engine/renderer.ts",
-      "line": 17,
-      "kind": "function"
+    "packages/analyzer/src/types.d.ts::LogoConfig": {
+      "file": "packages/analyzer/src/types.d.ts",
+      "line": 29,
+      "kind": "interface"
     },
-    "wrapT": {
-      "file": "src/engine/renderer.ts",
+    "packages/analyzer/src/types.d.ts::SectionSource": {
+      "file": "packages/analyzer/src/types.d.ts",
+      "line": 34,
+      "kind": "interface"
+    },
+    "packages/analyzer/src/types.d.ts::SmartRecommendation": {
+      "file": "packages/analyzer/src/types.d.ts",
+      "line": 109,
+      "kind": "interface"
+    },
+    "packages/analyzer/src/types.d.ts::GroundingMetrics": {
+      "file": "packages/analyzer/src/types.d.ts",
+      "line": 117,
+      "kind": "interface"
+    },
+    "packages/analyzer/src/types.d.ts::InfographicSpec": {
+      "file": "packages/analyzer/src/types.d.ts",
+      "line": 126,
+      "kind": "interface"
+    },
+    "packages/analyzer/src/types.d.ts::GitHubMeta": {
+      "file": "packages/analyzer/src/types.d.ts",
+      "line": 134,
+      "kind": "interface"
+    },
+    "packages/analyzer/src/types.d.ts::SpecSection": {
+      "file": "packages/analyzer/src/types.d.ts",
+      "line": 41,
+      "kind": "type"
+    },
+    "packages/analyzer/src/types.d.ts::VisualDensity": {
+      "file": "packages/analyzer/src/types.d.ts",
+      "line": 107,
+      "kind": "type"
+    },
+    "packages/analyzer/src/types.d.ts::VariantMap": {
+      "file": "packages/analyzer/src/types.d.ts",
+      "line": 108,
+      "kind": "type"
+    },
+    "packages/analyzer/src/specBuilder.ts::methods": {
+      "file": "packages/analyzer/src/specBuilder.ts",
+      "line": 365,
+      "kind": "interface"
+    },
+    "packages/analyzer/src/specBuilder.ts::detectSmartLayout": {
+      "file": "packages/analyzer/src/specBuilder.ts",
       "line": 27,
       "kind": "function"
     },
-    "generateAccessibleSummary": {
-      "file": "src/engine/renderer.ts",
-      "line": 53,
+    "packages/analyzer/src/specBuilder.ts::buildRuleSpec": {
+      "file": "packages/analyzer/src/specBuilder.ts",
+      "line": 100,
       "kind": "function"
     },
-    "renderSVG": {
-      "file": "src/components/ArchitectureModal.tsx",
-      "line": 114,
+    "packages/analyzer/src/specBuilder.ts::mergeGHMeta": {
+      "file": "packages/analyzer/src/specBuilder.ts",
+      "line": 578,
       "kind": "function"
     },
-    "getSvgAnimationStyles": {
-      "file": "src/engine/renderer.ts",
+    "packages/analyzer/src/classifier.ts::classifySec": {
+      "file": "packages/analyzer/src/classifier.ts",
+      "line": 21,
+      "kind": "function"
+    },
+    "packages/analyzer/src/extractors.ts::MetricPattern": {
+      "file": "packages/analyzer/src/extractors.ts",
+      "line": 21,
+      "kind": "interface"
+    },
+    "packages/analyzer/src/extractors.ts::trunc": {
+      "file": "packages/analyzer/src/extractors.ts",
+      "line": 6,
+      "kind": "function"
+    },
+    "packages/analyzer/src/extractors.ts::extractMetrics": {
+      "file": "packages/analyzer/src/extractors.ts",
+      "line": 17,
+      "kind": "function"
+    },
+    "packages/analyzer/src/extractors.ts::extractMetricsFromBadges": {
+      "file": "packages/analyzer/src/extractors.ts",
+      "line": 93,
+      "kind": "function"
+    },
+    "packages/analyzer/src/extractors.ts::splitFeat": {
+      "file": "packages/analyzer/src/extractors.ts",
+      "line": 117,
+      "kind": "function"
+    },
+    "packages/analyzer/src/extractors.ts::extractTechAdvanced": {
+      "file": "packages/analyzer/src/extractors.ts",
+      "line": 184,
+      "kind": "function"
+    },
+    "packages/analyzer/src/types.ts::MetricItem": {
+      "file": "packages/analyzer/src/types.ts",
+      "line": 12,
+      "kind": "interface"
+    },
+    "packages/analyzer/src/types.ts::FeatureItem": {
+      "file": "packages/analyzer/src/types.ts",
+      "line": 17,
+      "kind": "interface"
+    },
+    "packages/analyzer/src/types.ts::StepItem": {
+      "file": "packages/analyzer/src/types.ts",
+      "line": 22,
+      "kind": "interface"
+    },
+    "packages/analyzer/src/types.ts::ContentListItem": {
+      "file": "packages/analyzer/src/types.ts",
+      "line": 28,
+      "kind": "interface"
+    },
+    "packages/analyzer/src/types.ts::TimelineItem": {
+      "file": "packages/analyzer/src/types.ts",
+      "line": 33,
+      "kind": "interface"
+    },
+    "packages/analyzer/src/types.ts::ComparisonRow": {
+      "file": "packages/analyzer/src/types.ts",
+      "line": 39,
+      "kind": "interface"
+    },
+    "packages/analyzer/src/types.ts::LogoConfig": {
+      "file": "packages/analyzer/src/types.ts",
+      "line": 45,
+      "kind": "interface"
+    },
+    "packages/analyzer/src/types.ts::SectionSource": {
+      "file": "packages/analyzer/src/types.ts",
+      "line": 51,
+      "kind": "interface"
+    },
+    "packages/analyzer/src/types.ts::SmartRecommendation": {
+      "file": "packages/analyzer/src/types.ts",
+      "line": 139,
+      "kind": "interface"
+    },
+    "packages/analyzer/src/types.ts::GroundingMetrics": {
+      "file": "packages/analyzer/src/types.ts",
+      "line": 148,
+      "kind": "interface"
+    },
+    "packages/analyzer/src/types.ts::InfographicSpec": {
+      "file": "packages/analyzer/src/types.ts",
+      "line": 158,
+      "kind": "interface"
+    },
+    "packages/analyzer/src/types.ts::GitHubMeta": {
+      "file": "packages/analyzer/src/types.ts",
+      "line": 167,
+      "kind": "interface"
+    },
+    "packages/analyzer/src/types.ts::SpecSection": {
+      "file": "packages/analyzer/src/types.ts",
+      "line": 59,
+      "kind": "type"
+    },
+    "packages/analyzer/src/types.ts::VisualDensity": {
+      "file": "packages/analyzer/src/types.ts",
+      "line": 136,
+      "kind": "type"
+    },
+    "packages/analyzer/src/types.ts::VariantMap": {
+      "file": "packages/analyzer/src/types.ts",
+      "line": 137,
+      "kind": "type"
+    },
+    "packages/renderer/src/icons.ts::IconOptions": {
+      "file": "packages/renderer/src/icons.ts",
+      "line": 6,
+      "kind": "interface"
+    },
+    "packages/renderer/src/icons.ts::renderSvgIcon": {
+      "file": "packages/renderer/src/icons.ts",
+      "line": 61,
+      "kind": "function"
+    },
+    "packages/renderer/src/icons.ts::renderIconPathGroup": {
+      "file": "packages/renderer/src/icons.ts",
+      "line": 77,
+      "kind": "function"
+    },
+    "packages/renderer/src/icons.ts::getSectionIcon": {
+      "file": "packages/renderer/src/icons.ts",
       "line": 95,
       "kind": "function"
     },
-    "renderDesktopSVG": {
-      "file": "src/engine/renderer.ts",
+    "packages/renderer/src/icons.ts::getFeatureIcon": {
+      "file": "packages/renderer/src/icons.ts",
+      "line": 121,
+      "kind": "function"
+    },
+    "packages/renderer/src/icons.ts::getMetricIcon": {
+      "file": "packages/renderer/src/icons.ts",
+      "line": 156,
+      "kind": "function"
+    },
+    "packages/renderer/src/icons.ts::getTechColor": {
+      "file": "packages/renderer/src/icons.ts",
+      "line": 206,
+      "kind": "function"
+    },
+    "packages/renderer/src/contrast.ts::ContrastAuditItem": {
+      "file": "packages/renderer/src/contrast.ts",
+      "line": 50,
+      "kind": "interface"
+    },
+    "packages/renderer/src/contrast.ts::ThemeContrastAudit": {
+      "file": "packages/renderer/src/contrast.ts",
+      "line": 60,
+      "kind": "interface"
+    },
+    "packages/renderer/src/contrast.ts::ColorBlindnessType": {
+      "file": "packages/renderer/src/contrast.ts",
+      "line": 115,
+      "kind": "type"
+    },
+    "packages/renderer/src/contrast.ts::hexToRgb": {
+      "file": "packages/renderer/src/contrast.ts",
+      "line": 6,
+      "kind": "function"
+    },
+    "packages/renderer/src/contrast.ts::getRelativeLuminance": {
+      "file": "packages/renderer/src/contrast.ts",
+      "line": 28,
+      "kind": "function"
+    },
+    "packages/renderer/src/contrast.ts::getContrastRatio": {
+      "file": "packages/renderer/src/contrast.ts",
+      "line": 39,
+      "kind": "function"
+    },
+    "packages/renderer/src/contrast.ts::auditThemeContrast": {
+      "file": "packages/renderer/src/contrast.ts",
+      "line": 71,
+      "kind": "function"
+    },
+    "packages/renderer/src/qr.ts::QROptions": {
+      "file": "packages/renderer/src/qr.ts",
+      "line": 3,
+      "kind": "interface"
+    },
+    "packages/renderer/src/qr.ts::generateQRCodeSVG": {
+      "file": "packages/renderer/src/qr.ts",
+      "line": 14,
+      "kind": "function"
+    },
+    "packages/renderer/src/types.ts::ThemeConfig": {
+      "file": "packages/renderer/src/types.ts",
+      "line": 32,
+      "kind": "interface"
+    },
+    "packages/renderer/src/types.ts::DensityConfig": {
+      "file": "packages/renderer/src/types.ts",
+      "line": 52,
+      "kind": "interface"
+    },
+    "packages/renderer/src/types.ts::RenderOptions": {
+      "file": "packages/renderer/src/types.ts",
+      "line": 84,
+      "kind": "interface"
+    },
+    "packages/renderer/src/themes.ts::getTheme": {
+      "file": "packages/renderer/src/themes.ts",
+      "line": 242,
+      "kind": "function"
+    },
+    "packages/renderer/src/renderer.ts::RenderResult": {
+      "file": "packages/renderer/src/renderer.ts",
+      "line": 48,
+      "kind": "interface"
+    },
+    "packages/renderer/src/renderer.ts::esc": {
+      "file": "packages/renderer/src/renderer.ts",
+      "line": 17,
+      "kind": "function"
+    },
+    "packages/renderer/src/renderer.ts::wrapT": {
+      "file": "packages/renderer/src/renderer.ts",
+      "line": 27,
+      "kind": "function"
+    },
+    "packages/renderer/src/renderer.ts::generateAccessibleSummary": {
+      "file": "packages/renderer/src/renderer.ts",
+      "line": 53,
+      "kind": "function"
+    },
+    "packages/renderer/src/renderer.ts::renderSVG": {
+      "file": "packages/renderer/src/renderer.ts",
+      "line": 88,
+      "kind": "function"
+    },
+    "packages/renderer/src/renderer.ts::getSvgAnimationStyles": {
+      "file": "packages/renderer/src/renderer.ts",
+      "line": 95,
+      "kind": "function"
+    },
+    "packages/renderer/src/renderer.ts::renderDesktopSVG": {
+      "file": "packages/renderer/src/renderer.ts",
       "line": 140,
       "kind": "function"
     },
-    "renderMobileSVG": {
-      "file": "src/engine/renderer.ts",
+    "packages/renderer/src/renderer.ts::renderMobileSVG": {
+      "file": "packages/renderer/src/renderer.ts",
       "line": 259,
       "kind": "function"
     },
-    "rHero": {
-      "file": "src/engine/renderer.ts",
+    "packages/renderer/src/renderer.ts::rHero": {
+      "file": "packages/renderer/src/renderer.ts",
       "line": 367,
       "kind": "function"
     },
-    "rStats": {
-      "file": "src/engine/renderer.ts",
+    "packages/renderer/src/renderer.ts::rStats": {
+      "file": "packages/renderer/src/renderer.ts",
       "line": 458,
       "kind": "function"
     },
-    "rPS": {
-      "file": "src/engine/renderer.ts",
+    "packages/renderer/src/renderer.ts::rPS": {
+      "file": "packages/renderer/src/renderer.ts",
       "line": 524,
       "kind": "function"
     },
-    "rFeats": {
-      "file": "src/engine/renderer.ts",
+    "packages/renderer/src/renderer.ts::rFeats": {
+      "file": "packages/renderer/src/renderer.ts",
       "line": 626,
       "kind": "function"
     },
-    "rTech": {
-      "file": "src/engine/renderer.ts",
+    "packages/renderer/src/renderer.ts::rTech": {
+      "file": "packages/renderer/src/renderer.ts",
       "line": 731,
       "kind": "function"
     },
-    "rSteps": {
-      "file": "src/engine/renderer.ts",
+    "packages/renderer/src/renderer.ts::rSteps": {
+      "file": "packages/renderer/src/renderer.ts",
       "line": 771,
       "kind": "function"
     },
-    "rCL": {
-      "file": "src/engine/renderer.ts",
+    "packages/renderer/src/renderer.ts::rCL": {
+      "file": "packages/renderer/src/renderer.ts",
       "line": 833,
       "kind": "function"
     },
-    "rCB": {
-      "file": "src/engine/renderer.ts",
+    "packages/renderer/src/renderer.ts::rCB": {
+      "file": "packages/renderer/src/renderer.ts",
       "line": 885,
       "kind": "function"
     },
-    "rTimeline": {
-      "file": "src/engine/renderer.ts",
+    "packages/renderer/src/renderer.ts::rTimeline": {
+      "file": "packages/renderer/src/renderer.ts",
       "line": 909,
       "kind": "function"
     },
-    "rComparison": {
-      "file": "src/engine/renderer.ts",
+    "packages/renderer/src/renderer.ts::rComparison": {
+      "file": "packages/renderer/src/renderer.ts",
       "line": 954,
       "kind": "function"
     },
-    "rCallout": {
-      "file": "src/engine/renderer.ts",
+    "packages/renderer/src/renderer.ts::rCallout": {
+      "file": "packages/renderer/src/renderer.ts",
       "line": 1022,
       "kind": "function"
     },
-    "rFoot": {
-      "file": "src/engine/renderer.ts",
+    "packages/renderer/src/renderer.ts::rFoot": {
+      "file": "packages/renderer/src/renderer.ts",
       "line": 1054,
       "kind": "function"
     },
-    "rHeroMobile": {
-      "file": "src/engine/renderer.ts",
+    "packages/renderer/src/renderer.ts::rHeroMobile": {
+      "file": "packages/renderer/src/renderer.ts",
       "line": 1121,
       "kind": "function"
     },
-    "rStatsMobile": {
-      "file": "src/engine/renderer.ts",
+    "packages/renderer/src/renderer.ts::rStatsMobile": {
+      "file": "packages/renderer/src/renderer.ts",
       "line": 1208,
       "kind": "function"
     },
-    "rPSMobile": {
-      "file": "src/engine/renderer.ts",
+    "packages/renderer/src/renderer.ts::rPSMobile": {
+      "file": "packages/renderer/src/renderer.ts",
       "line": 1270,
       "kind": "function"
     },
-    "rFeatsMobile": {
-      "file": "src/engine/renderer.ts",
+    "packages/renderer/src/renderer.ts::rFeatsMobile": {
+      "file": "packages/renderer/src/renderer.ts",
       "line": 1361,
       "kind": "function"
     },
-    "rTechMobile": {
-      "file": "src/engine/renderer.ts",
+    "packages/renderer/src/renderer.ts::rTechMobile": {
+      "file": "packages/renderer/src/renderer.ts",
       "line": 1429,
       "kind": "function"
     },
-    "rStepsMobile": {
-      "file": "src/engine/renderer.ts",
+    "packages/renderer/src/renderer.ts::rStepsMobile": {
+      "file": "packages/renderer/src/renderer.ts",
       "line": 1469,
       "kind": "function"
     },
-    "rCLMobile": {
-      "file": "src/engine/renderer.ts",
+    "packages/renderer/src/renderer.ts::rCLMobile": {
+      "file": "packages/renderer/src/renderer.ts",
       "line": 1527,
       "kind": "function"
     },
-    "rCBMobile": {
-      "file": "src/engine/renderer.ts",
+    "packages/renderer/src/renderer.ts::rCBMobile": {
+      "file": "packages/renderer/src/renderer.ts",
       "line": 1568,
       "kind": "function"
     },
-    "rTimelineMobile": {
-      "file": "src/engine/renderer.ts",
+    "packages/renderer/src/renderer.ts::rTimelineMobile": {
+      "file": "packages/renderer/src/renderer.ts",
       "line": 1592,
       "kind": "function"
     },
-    "rComparisonMobile": {
-      "file": "src/engine/renderer.ts",
+    "packages/renderer/src/renderer.ts::rComparisonMobile": {
+      "file": "packages/renderer/src/renderer.ts",
       "line": 1637,
       "kind": "function"
     },
-    "rCalloutMobile": {
-      "file": "src/engine/renderer.ts",
+    "packages/renderer/src/renderer.ts::rCalloutMobile": {
+      "file": "packages/renderer/src/renderer.ts",
       "line": 1687,
       "kind": "function"
     },
-    "rFootMobile": {
-      "file": "src/engine/renderer.ts",
+    "packages/renderer/src/renderer.ts::rFootMobile": {
+      "file": "packages/renderer/src/renderer.ts",
       "line": 1719,
       "kind": "function"
     },
-    "TableData": {
-      "file": ".llm-context/types-extracted.ts",
-      "line": 951,
+    "packages/parser/src/types.d.ts::TableData": {
+      "file": "packages/parser/src/types.d.ts",
+      "line": 1,
       "kind": "interface"
     },
-    "CodeBlock": {
-      "file": ".llm-context/types-extracted.ts",
-      "line": 957,
+    "packages/parser/src/types.d.ts::CodeBlock": {
+      "file": "packages/parser/src/types.d.ts",
+      "line": 5,
       "kind": "interface"
     },
-    "BadgeItem": {
-      "file": ".llm-context/types-extracted.ts",
-      "line": 962,
+    "packages/parser/src/types.d.ts::BadgeItem": {
+      "file": "packages/parser/src/types.d.ts",
+      "line": 9,
       "kind": "interface"
     },
-    "ImageItem": {
-      "file": ".llm-context/types-extracted.ts",
-      "line": 968,
+    "packages/parser/src/types.d.ts::ImageItem": {
+      "file": "packages/parser/src/types.d.ts",
+      "line": 13,
       "kind": "interface"
     },
-    "NestedListItem": {
-      "file": ".llm-context/types-extracted.ts",
-      "line": 973,
+    "packages/parser/src/types.d.ts::NestedListItem": {
+      "file": "packages/parser/src/types.d.ts",
+      "line": 17,
       "kind": "interface"
     },
-    "DocSection": {
-      "file": ".llm-context/types-extracted.ts",
-      "line": 978,
+    "packages/parser/src/types.d.ts::DocSection": {
+      "file": "packages/parser/src/types.d.ts",
+      "line": 22,
       "kind": "interface"
     },
-    "ParsedDoc": {
-      "file": ".llm-context/types-extracted.ts",
-      "line": 994,
+    "packages/parser/src/types.d.ts::ParsedDoc": {
+      "file": "packages/parser/src/types.d.ts",
+      "line": 36,
       "kind": "interface"
     },
-    "SectionType": {
-      "file": ".llm-context/types-extracted.ts",
-      "line": 1003,
+    "packages/parser/src/types.d.ts::SectionType": {
+      "file": "packages/parser/src/types.d.ts",
+      "line": 21,
       "kind": "type"
     },
-    "SecItem": {
-      "file": "src/engine/parser.ts",
-      "line": 215,
+    "packages/parser/src/parser.ts::SecItem": {
+      "file": "packages/parser/src/parser.ts",
+      "line": 245,
       "kind": "interface"
     },
-    "cleanMarkdownText": {
-      "file": "src/engine/extractors.ts",
+    "packages/parser/src/parser.ts::cleanMarkdownText": {
+      "file": "packages/parser/src/parser.ts",
+      "line": 7,
+      "kind": "function"
+    },
+    "packages/parser/src/parser.ts::parseMD": {
+      "file": "packages/parser/src/parser.ts",
+      "line": 41,
+      "kind": "function"
+    },
+    "packages/parser/src/parser.ts::parseTable": {
+      "file": "packages/parser/src/parser.ts",
+      "line": 196,
+      "kind": "function"
+    },
+    "packages/parser/src/parser.ts::smartTrunc": {
+      "file": "packages/parser/src/parser.ts",
+      "line": 211,
+      "kind": "function"
+    },
+    "packages/parser/src/types.ts::TableData": {
+      "file": "packages/parser/src/types.ts",
+      "line": 1,
+      "kind": "interface"
+    },
+    "packages/parser/src/types.ts::CodeBlock": {
+      "file": "packages/parser/src/types.ts",
+      "line": 6,
+      "kind": "interface"
+    },
+    "packages/parser/src/types.ts::BadgeItem": {
+      "file": "packages/parser/src/types.ts",
       "line": 11,
-      "kind": "function"
+      "kind": "interface"
     },
-    "parseMD": {
-      "file": "src/components/ArchitectureModal.tsx",
-      "line": 57,
-      "kind": "function"
+    "packages/parser/src/types.ts::ImageItem": {
+      "file": "packages/parser/src/types.ts",
+      "line": 16,
+      "kind": "interface"
     },
-    "parseTable": {
-      "file": "src/components/ArchitectureModal.tsx",
+    "packages/parser/src/types.ts::NestedListItem": {
+      "file": "packages/parser/src/types.ts",
+      "line": 21,
+      "kind": "interface"
+    },
+    "packages/parser/src/types.ts::DocSection": {
+      "file": "packages/parser/src/types.ts",
+      "line": 43,
+      "kind": "interface"
+    },
+    "packages/parser/src/types.ts::ParsedDoc": {
+      "file": "packages/parser/src/types.ts",
       "line": 58,
-      "kind": "function"
+      "kind": "interface"
     },
-    "smartTrunc": {
-      "file": "src/components/ArchitectureModal.tsx",
-      "line": 59,
-      "kind": "function"
+    "packages/parser/src/types.ts::SectionType": {
+      "file": "packages/parser/src/types.ts",
+      "line": 26,
+      "kind": "type"
     },
-    "MemoryStorage": {
+    "src/storage/ProjectStorage.ts::MemoryStorage": {
       "file": "src/storage/ProjectStorage.ts",
       "line": 39,
       "kind": "class"
     },
-    "ProjectStorage": {
+    "src/storage/ProjectStorage.ts::ProjectStorage": {
       "file": "src/storage/ProjectStorage.ts",
       "line": 66,
       "kind": "class"
     },
-    "GenerationRecord": {
-      "file": ".llm-context/types-extracted.ts",
-      "line": 1259,
+    "src/storage/ProjectStorage.ts::GenerationRecord": {
+      "file": "src/storage/ProjectStorage.ts",
+      "line": 6,
       "kind": "interface"
     },
-    "Project": {
-      "file": ".llm-context/types-extracted.ts",
-      "line": 1274,
+    "src/storage/ProjectStorage.ts::Project": {
+      "file": "src/storage/ProjectStorage.ts",
+      "line": 20,
       "kind": "interface"
     },
-    "CanvasExporter": {
+    "src/export/CanvasExporter.ts::CanvasExporter": {
       "file": "src/export/CanvasExporter.ts",
       "line": 26,
       "kind": "class"
     },
-    "ExportFormat": {
-      "file": ".llm-context/types-extracted.ts",
-      "line": 1175,
+    "src/export/CanvasExporter.ts::ExportFormat": {
+      "file": "src/export/CanvasExporter.ts",
+      "line": 3,
       "kind": "interface"
     },
-    "ExportOptions": {
-      "file": ".llm-context/types-extracted.ts",
-      "line": 1182,
+    "src/export/CanvasExporter.ts::ExportOptions": {
+      "file": "src/export/CanvasExporter.ts",
+      "line": 20,
       "kind": "interface"
     },
-    "ContrastResult": {
-      "file": ".llm-context/types-extracted.ts",
-      "line": 1236,
+    "src/renderer/themes/contrast.ts::ContrastResult": {
+      "file": "src/renderer/themes/contrast.ts",
+      "line": 3,
       "kind": "interface"
     },
-    "evaluateContrast": {
+    "src/renderer/themes/contrast.ts::ThemeContrastAudit": {
+      "file": "src/renderer/themes/contrast.ts",
+      "line": 11,
+      "kind": "interface"
+    },
+    "src/renderer/themes/contrast.ts::hexToRgb": {
+      "file": "src/renderer/themes/contrast.ts",
+      "line": 27,
+      "kind": "function"
+    },
+    "src/renderer/themes/contrast.ts::getRelativeLuminance": {
+      "file": "src/renderer/themes/contrast.ts",
+      "line": 39,
+      "kind": "function"
+    },
+    "src/renderer/themes/contrast.ts::getContrastRatio": {
+      "file": "src/renderer/themes/contrast.ts",
+      "line": 50,
+      "kind": "function"
+    },
+    "src/renderer/themes/contrast.ts::evaluateContrast": {
       "file": "src/renderer/themes/contrast.ts",
       "line": 66,
       "kind": "function"
     },
-    "auditTheme": {
+    "src/renderer/themes/contrast.ts::auditTheme": {
       "file": "src/renderer/themes/contrast.ts",
       "line": 80,
       "kind": "function"
     },
-    "ThemeManager": {
+    "src/renderer/themes/ThemeManager.ts::ThemeManager": {
       "file": "src/renderer/themes/ThemeManager.ts",
       "line": 240,
       "kind": "class"
     },
-    "ThemeColors": {
-      "file": ".llm-context/types-extracted.ts",
-      "line": 1190,
+    "src/renderer/themes/ThemeManager.ts::ThemeColors": {
+      "file": "src/renderer/themes/ThemeManager.ts",
+      "line": 3,
       "kind": "interface"
     },
-    "ThemeTypography": {
-      "file": ".llm-context/types-extracted.ts",
-      "line": 1203,
+    "src/renderer/themes/ThemeManager.ts::ThemeTypography": {
+      "file": "src/renderer/themes/ThemeManager.ts",
+      "line": 16,
       "kind": "interface"
     },
-    "Theme": {
-      "file": ".llm-context/types-extracted.ts",
-      "line": 1224,
+    "src/renderer/themes/ThemeManager.ts::Theme": {
+      "file": "src/renderer/themes/ThemeManager.ts",
+      "line": 37,
       "kind": "interface"
     },
-    "triggerHaptic": {
+    "src/ui/haptics.ts::triggerHaptic": {
       "file": "src/ui/haptics.ts",
       "line": 5,
       "kind": "function"
     },
-    "useOnlineStatus": {
+    "src/ui/useOnlineStatus.ts::useOnlineStatus": {
       "file": "src/ui/useOnlineStatus.ts",
       "line": 3,
       "kind": "function"
     },
-    "BeforeInstallPromptEvent": {
+    "src/ui/usePWAInstall.ts::BeforeInstallPromptEvent": {
       "file": "src/ui/usePWAInstall.ts",
       "line": 3,
       "kind": "interface"
     },
-    "usePWAInstall": {
+    "src/ui/usePWAInstall.ts::usePWAInstall": {
       "file": "src/ui/usePWAInstall.ts",
       "line": 8,
       "kind": "function"
     },
-    "KeyboardShortcuts": {
+    "src/ui/KeyboardShortcuts.ts::KeyboardShortcuts": {
       "file": "src/ui/KeyboardShortcuts.ts",
       "line": 10,
       "kind": "class"
     },
-    "Shortcut": {
-      "file": ".llm-context/types-extracted.ts",
-      "line": 1296,
+    "src/ui/KeyboardShortcuts.ts::Shortcut": {
+      "file": "src/ui/KeyboardShortcuts.ts",
+      "line": 3,
       "kind": "interface"
     },
-    "parseRepoUrl": {
+    "src/engine/github.ts::parseRepoUrl": {
       "file": "src/engine/github.ts",
       "line": 3,
       "kind": "function"
     },
-    "fetchGitHubRepo": {
+    "src/engine/github.ts::fetchGitHubRepo": {
       "file": "src/engine/github.ts",
       "line": 22,
       "kind": "function"
     },
-    "fetchGitHubRepoData": {
+    "src/engine/github.ts::fetchGitHubRepoData": {
       "file": "src/engine/github.ts",
       "line": 34,
       "kind": "function"
     },
-    "support": {
+    "src/engine/parser.ts::SecItem": {
+      "file": "src/engine/parser.ts",
+      "line": 215,
+      "kind": "interface"
+    },
+    "src/engine/parser.ts::parseMD": {
+      "file": "src/engine/parser.ts",
+      "line": 14,
+      "kind": "function"
+    },
+    "src/engine/parser.ts::parseTable": {
+      "file": "src/engine/parser.ts",
+      "line": 169,
+      "kind": "function"
+    },
+    "src/engine/parser.ts::smartTrunc": {
+      "file": "src/engine/parser.ts",
+      "line": 185,
+      "kind": "function"
+    },
+    "src/engine/specBuilder.ts::methods": {
+      "file": "src/engine/specBuilder.ts",
+      "line": 366,
+      "kind": "interface"
+    },
+    "src/engine/specBuilder.ts::detectSmartLayout": {
+      "file": "src/engine/specBuilder.ts",
+      "line": 28,
+      "kind": "function"
+    },
+    "src/engine/specBuilder.ts::buildRuleSpec": {
+      "file": "src/engine/specBuilder.ts",
+      "line": 101,
+      "kind": "function"
+    },
+    "src/engine/specBuilder.ts::mergeGHMeta": {
+      "file": "src/engine/specBuilder.ts",
+      "line": 579,
+      "kind": "function"
+    },
+    "src/engine/classifier.ts::classifySec": {
+      "file": "src/engine/classifier.ts",
+      "line": 30,
+      "kind": "function"
+    },
+    "src/engine/icons.ts::IconOptions": {
+      "file": "src/engine/icons.ts",
+      "line": 6,
+      "kind": "interface"
+    },
+    "src/engine/icons.ts::renderSvgIcon": {
+      "file": "src/engine/icons.ts",
+      "line": 61,
+      "kind": "function"
+    },
+    "src/engine/icons.ts::renderIconPathGroup": {
+      "file": "src/engine/icons.ts",
+      "line": 77,
+      "kind": "function"
+    },
+    "src/engine/icons.ts::getSectionIcon": {
+      "file": "src/engine/icons.ts",
+      "line": 95,
+      "kind": "function"
+    },
+    "src/engine/icons.ts::getFeatureIcon": {
+      "file": "src/engine/icons.ts",
+      "line": 121,
+      "kind": "function"
+    },
+    "src/engine/icons.ts::getMetricIcon": {
+      "file": "src/engine/icons.ts",
+      "line": 156,
+      "kind": "function"
+    },
+    "src/engine/icons.ts::getTechColor": {
+      "file": "src/engine/icons.ts",
+      "line": 206,
+      "kind": "function"
+    },
+    "src/engine/samples.ts::support": {
       "file": "src/engine/samples.ts",
       "line": 104,
       "kind": "class"
     },
-    "SampleReadme": {
-      "file": ".llm-context/types-extracted.ts",
-      "line": 939,
+    "src/engine/samples.ts::SampleReadme": {
+      "file": "src/engine/samples.ts",
+      "line": 3,
       "kind": "interface"
     },
-    "CLIConfig": {
+    "src/engine/contrast.ts::ContrastAuditItem": {
+      "file": "src/engine/contrast.ts",
+      "line": 50,
+      "kind": "interface"
+    },
+    "src/engine/contrast.ts::ThemeContrastAudit": {
+      "file": "src/engine/contrast.ts",
+      "line": 60,
+      "kind": "interface"
+    },
+    "src/engine/contrast.ts::ColorBlindnessType": {
+      "file": "src/engine/contrast.ts",
+      "line": 115,
+      "kind": "type"
+    },
+    "src/engine/contrast.ts::hexToRgb": {
+      "file": "src/engine/contrast.ts",
+      "line": 6,
+      "kind": "function"
+    },
+    "src/engine/contrast.ts::getRelativeLuminance": {
+      "file": "src/engine/contrast.ts",
+      "line": 28,
+      "kind": "function"
+    },
+    "src/engine/contrast.ts::getContrastRatio": {
+      "file": "src/engine/contrast.ts",
+      "line": 39,
+      "kind": "function"
+    },
+    "src/engine/contrast.ts::auditThemeContrast": {
+      "file": "src/engine/contrast.ts",
+      "line": 71,
+      "kind": "function"
+    },
+    "src/engine/extractors.ts::MetricPattern": {
+      "file": "src/engine/extractors.ts",
+      "line": 50,
+      "kind": "interface"
+    },
+    "src/engine/extractors.ts::trunc": {
+      "file": "src/engine/extractors.ts",
+      "line": 3,
+      "kind": "function"
+    },
+    "src/engine/extractors.ts::cleanMarkdownText": {
+      "file": "src/engine/extractors.ts",
+      "line": 11,
+      "kind": "function"
+    },
+    "src/engine/extractors.ts::extractMetrics": {
+      "file": "src/engine/extractors.ts",
+      "line": 46,
+      "kind": "function"
+    },
+    "src/engine/extractors.ts::extractMetricsFromBadges": {
+      "file": "src/engine/extractors.ts",
+      "line": 122,
+      "kind": "function"
+    },
+    "src/engine/extractors.ts::splitFeat": {
+      "file": "src/engine/extractors.ts",
+      "line": 148,
+      "kind": "function"
+    },
+    "src/engine/extractors.ts::extractTechAdvanced": {
+      "file": "src/engine/extractors.ts",
+      "line": 215,
+      "kind": "function"
+    },
+    "src/engine/qr.ts::QROptions": {
+      "file": "src/engine/qr.ts",
+      "line": 3,
+      "kind": "interface"
+    },
+    "src/engine/qr.ts::generateQRCodeSVG": {
+      "file": "src/engine/qr.ts",
+      "line": 14,
+      "kind": "function"
+    },
+    "src/engine/types.ts::TableData": {
+      "file": "src/engine/types.ts",
+      "line": 1,
+      "kind": "interface"
+    },
+    "src/engine/types.ts::CodeBlock": {
+      "file": "src/engine/types.ts",
+      "line": 6,
+      "kind": "interface"
+    },
+    "src/engine/types.ts::BadgeItem": {
+      "file": "src/engine/types.ts",
+      "line": 11,
+      "kind": "interface"
+    },
+    "src/engine/types.ts::ImageItem": {
+      "file": "src/engine/types.ts",
+      "line": 16,
+      "kind": "interface"
+    },
+    "src/engine/types.ts::NestedListItem": {
+      "file": "src/engine/types.ts",
+      "line": 21,
+      "kind": "interface"
+    },
+    "src/engine/types.ts::DocSection": {
+      "file": "src/engine/types.ts",
+      "line": 26,
+      "kind": "interface"
+    },
+    "src/engine/types.ts::ParsedDoc": {
+      "file": "src/engine/types.ts",
+      "line": 41,
+      "kind": "interface"
+    },
+    "src/engine/types.ts::MetricItem": {
+      "file": "src/engine/types.ts",
+      "line": 66,
+      "kind": "interface"
+    },
+    "src/engine/types.ts::FeatureItem": {
+      "file": "src/engine/types.ts",
+      "line": 71,
+      "kind": "interface"
+    },
+    "src/engine/types.ts::StepItem": {
+      "file": "src/engine/types.ts",
+      "line": 76,
+      "kind": "interface"
+    },
+    "src/engine/types.ts::ContentListItem": {
+      "file": "src/engine/types.ts",
+      "line": 82,
+      "kind": "interface"
+    },
+    "src/engine/types.ts::TimelineItem": {
+      "file": "src/engine/types.ts",
+      "line": 87,
+      "kind": "interface"
+    },
+    "src/engine/types.ts::ComparisonRow": {
+      "file": "src/engine/types.ts",
+      "line": 93,
+      "kind": "interface"
+    },
+    "src/engine/types.ts::LogoConfig": {
+      "file": "src/engine/types.ts",
+      "line": 99,
+      "kind": "interface"
+    },
+    "src/engine/types.ts::SectionSource": {
+      "file": "src/engine/types.ts",
+      "line": 105,
+      "kind": "interface"
+    },
+    "src/engine/types.ts::SmartRecommendation": {
+      "file": "src/engine/types.ts",
+      "line": 190,
+      "kind": "interface"
+    },
+    "src/engine/types.ts::GroundingMetrics": {
+      "file": "src/engine/types.ts",
+      "line": 199,
+      "kind": "interface"
+    },
+    "src/engine/types.ts::InfographicSpec": {
+      "file": "src/engine/types.ts",
+      "line": 209,
+      "kind": "interface"
+    },
+    "src/engine/types.ts::GitHubMeta": {
+      "file": "src/engine/types.ts",
+      "line": 218,
+      "kind": "interface"
+    },
+    "src/engine/types.ts::ThemeConfig": {
+      "file": "src/engine/types.ts",
+      "line": 233,
+      "kind": "interface"
+    },
+    "src/engine/types.ts::DensityConfig": {
+      "file": "src/engine/types.ts",
+      "line": 257,
+      "kind": "interface"
+    },
+    "src/engine/types.ts::RenderOptions": {
+      "file": "src/engine/types.ts",
+      "line": 289,
+      "kind": "interface"
+    },
+    "src/engine/types.ts::SectionType": {
+      "file": "src/engine/types.ts",
+      "line": 49,
+      "kind": "type"
+    },
+    "src/engine/types.ts::SpecSection": {
+      "file": "src/engine/types.ts",
+      "line": 113,
+      "kind": "type"
+    },
+    "src/engine/types.ts::VariantMap": {
+      "file": "src/engine/types.ts",
+      "line": 253,
+      "kind": "type"
+    },
+    "src/engine/types.ts::VisualDensity": {
+      "file": "src/engine/types.ts",
+      "line": 255,
+      "kind": "type"
+    },
+    "src/engine/themes.ts::getTheme": {
+      "file": "src/engine/themes.ts",
+      "line": 242,
+      "kind": "function"
+    },
+    "src/engine/renderer.ts::RenderResult": {
+      "file": "src/engine/renderer.ts",
+      "line": 48,
+      "kind": "interface"
+    },
+    "src/engine/renderer.ts::esc": {
+      "file": "src/engine/renderer.ts",
+      "line": 17,
+      "kind": "function"
+    },
+    "src/engine/renderer.ts::wrapT": {
+      "file": "src/engine/renderer.ts",
+      "line": 27,
+      "kind": "function"
+    },
+    "src/engine/renderer.ts::generateAccessibleSummary": {
+      "file": "src/engine/renderer.ts",
+      "line": 53,
+      "kind": "function"
+    },
+    "src/engine/renderer.ts::renderSVG": {
+      "file": "src/engine/renderer.ts",
+      "line": 88,
+      "kind": "function"
+    },
+    "src/engine/renderer.ts::getSvgAnimationStyles": {
+      "file": "src/engine/renderer.ts",
+      "line": 95,
+      "kind": "function"
+    },
+    "src/engine/renderer.ts::renderDesktopSVG": {
+      "file": "src/engine/renderer.ts",
+      "line": 140,
+      "kind": "function"
+    },
+    "src/engine/renderer.ts::renderMobileSVG": {
+      "file": "src/engine/renderer.ts",
+      "line": 259,
+      "kind": "function"
+    },
+    "src/engine/renderer.ts::rHero": {
+      "file": "src/engine/renderer.ts",
+      "line": 367,
+      "kind": "function"
+    },
+    "src/engine/renderer.ts::rStats": {
+      "file": "src/engine/renderer.ts",
+      "line": 458,
+      "kind": "function"
+    },
+    "src/engine/renderer.ts::rPS": {
+      "file": "src/engine/renderer.ts",
+      "line": 524,
+      "kind": "function"
+    },
+    "src/engine/renderer.ts::rFeats": {
+      "file": "src/engine/renderer.ts",
+      "line": 626,
+      "kind": "function"
+    },
+    "src/engine/renderer.ts::rTech": {
+      "file": "src/engine/renderer.ts",
+      "line": 731,
+      "kind": "function"
+    },
+    "src/engine/renderer.ts::rSteps": {
+      "file": "src/engine/renderer.ts",
+      "line": 771,
+      "kind": "function"
+    },
+    "src/engine/renderer.ts::rCL": {
+      "file": "src/engine/renderer.ts",
+      "line": 833,
+      "kind": "function"
+    },
+    "src/engine/renderer.ts::rCB": {
+      "file": "src/engine/renderer.ts",
+      "line": 885,
+      "kind": "function"
+    },
+    "src/engine/renderer.ts::rTimeline": {
+      "file": "src/engine/renderer.ts",
+      "line": 909,
+      "kind": "function"
+    },
+    "src/engine/renderer.ts::rComparison": {
+      "file": "src/engine/renderer.ts",
+      "line": 954,
+      "kind": "function"
+    },
+    "src/engine/renderer.ts::rCallout": {
+      "file": "src/engine/renderer.ts",
+      "line": 1022,
+      "kind": "function"
+    },
+    "src/engine/renderer.ts::rFoot": {
+      "file": "src/engine/renderer.ts",
+      "line": 1054,
+      "kind": "function"
+    },
+    "src/engine/renderer.ts::rHeroMobile": {
+      "file": "src/engine/renderer.ts",
+      "line": 1121,
+      "kind": "function"
+    },
+    "src/engine/renderer.ts::rStatsMobile": {
+      "file": "src/engine/renderer.ts",
+      "line": 1208,
+      "kind": "function"
+    },
+    "src/engine/renderer.ts::rPSMobile": {
+      "file": "src/engine/renderer.ts",
+      "line": 1270,
+      "kind": "function"
+    },
+    "src/engine/renderer.ts::rFeatsMobile": {
+      "file": "src/engine/renderer.ts",
+      "line": 1361,
+      "kind": "function"
+    },
+    "src/engine/renderer.ts::rTechMobile": {
+      "file": "src/engine/renderer.ts",
+      "line": 1429,
+      "kind": "function"
+    },
+    "src/engine/renderer.ts::rStepsMobile": {
+      "file": "src/engine/renderer.ts",
+      "line": 1469,
+      "kind": "function"
+    },
+    "src/engine/renderer.ts::rCLMobile": {
+      "file": "src/engine/renderer.ts",
+      "line": 1527,
+      "kind": "function"
+    },
+    "src/engine/renderer.ts::rCBMobile": {
+      "file": "src/engine/renderer.ts",
+      "line": 1568,
+      "kind": "function"
+    },
+    "src/engine/renderer.ts::rTimelineMobile": {
+      "file": "src/engine/renderer.ts",
+      "line": 1592,
+      "kind": "function"
+    },
+    "src/engine/renderer.ts::rComparisonMobile": {
+      "file": "src/engine/renderer.ts",
+      "line": 1637,
+      "kind": "function"
+    },
+    "src/engine/renderer.ts::rCalloutMobile": {
+      "file": "src/engine/renderer.ts",
+      "line": 1687,
+      "kind": "function"
+    },
+    "src/engine/renderer.ts::rFootMobile": {
+      "file": "src/engine/renderer.ts",
+      "line": 1719,
+      "kind": "function"
+    },
+    "bin/cli.ts::CLIConfig": {
       "file": "bin/cli.ts",
       "line": 10,
       "kind": "interface"
     },
-    "runCLI": {
+    "bin/cli.ts::runCLI": {
       "file": "bin/cli.ts",
       "line": 148,
       "kind": "function"
     },
-    "ToastMessage": {
-      "file": "src/components/Toast.tsx",
-      "line": 4,
+    ".llm-context/types-extracted.ts::ToastMessage": {
+      "file": ".llm-context/types-extracted.ts",
+      "line": 1703,
       "kind": "interface"
     },
-    "FormatConfig": {
-      "file": "src/components/mobile/VisualFormatPicker.tsx",
-      "line": 5,
+    ".llm-context/types-extracted.ts::FormatConfig": {
+      "file": ".llm-context/types-extracted.ts",
+      "line": 1717,
       "kind": "interface"
     },
-    "MobileTab": {
-      "file": "src/components/mobile/BottomNavigation.tsx",
-      "line": 5,
+    ".llm-context/types-extracted.ts::ContrastAuditItem": {
+      "file": ".llm-context/types-extracted.ts",
+      "line": 1730,
+      "kind": "interface"
+    },
+    ".llm-context/types-extracted.ts::ThemeContrastAudit": {
+      "file": ".llm-context/types-extracted.ts",
+      "line": 2082,
+      "kind": "interface"
+    },
+    ".llm-context/types-extracted.ts::IconOptions": {
+      "file": ".llm-context/types-extracted.ts",
+      "line": 1753,
+      "kind": "interface"
+    },
+    ".llm-context/types-extracted.ts::QROptions": {
+      "file": ".llm-context/types-extracted.ts",
+      "line": 1762,
+      "kind": "interface"
+    },
+    ".llm-context/types-extracted.ts::RenderResult": {
+      "file": ".llm-context/types-extracted.ts",
+      "line": 1770,
+      "kind": "interface"
+    },
+    ".llm-context/types-extracted.ts::SampleReadme": {
+      "file": ".llm-context/types-extracted.ts",
+      "line": 1777,
+      "kind": "interface"
+    },
+    ".llm-context/types-extracted.ts::TableData": {
+      "file": ".llm-context/types-extracted.ts",
+      "line": 1789,
+      "kind": "interface"
+    },
+    ".llm-context/types-extracted.ts::CodeBlock": {
+      "file": ".llm-context/types-extracted.ts",
+      "line": 1795,
+      "kind": "interface"
+    },
+    ".llm-context/types-extracted.ts::BadgeItem": {
+      "file": ".llm-context/types-extracted.ts",
+      "line": 1800,
+      "kind": "interface"
+    },
+    ".llm-context/types-extracted.ts::ImageItem": {
+      "file": ".llm-context/types-extracted.ts",
+      "line": 1806,
+      "kind": "interface"
+    },
+    ".llm-context/types-extracted.ts::NestedListItem": {
+      "file": ".llm-context/types-extracted.ts",
+      "line": 1811,
+      "kind": "interface"
+    },
+    ".llm-context/types-extracted.ts::DocSection": {
+      "file": ".llm-context/types-extracted.ts",
+      "line": 1816,
+      "kind": "interface"
+    },
+    ".llm-context/types-extracted.ts::ParsedDoc": {
+      "file": ".llm-context/types-extracted.ts",
+      "line": 1832,
+      "kind": "interface"
+    },
+    ".llm-context/types-extracted.ts::MetricItem": {
+      "file": ".llm-context/types-extracted.ts",
+      "line": 1859,
+      "kind": "interface"
+    },
+    ".llm-context/types-extracted.ts::FeatureItem": {
+      "file": ".llm-context/types-extracted.ts",
+      "line": 1865,
+      "kind": "interface"
+    },
+    ".llm-context/types-extracted.ts::StepItem": {
+      "file": ".llm-context/types-extracted.ts",
+      "line": 1871,
+      "kind": "interface"
+    },
+    ".llm-context/types-extracted.ts::ContentListItem": {
+      "file": ".llm-context/types-extracted.ts",
+      "line": 1877,
+      "kind": "interface"
+    },
+    ".llm-context/types-extracted.ts::TimelineItem": {
+      "file": ".llm-context/types-extracted.ts",
+      "line": 1882,
+      "kind": "interface"
+    },
+    ".llm-context/types-extracted.ts::ComparisonRow": {
+      "file": ".llm-context/types-extracted.ts",
+      "line": 1889,
+      "kind": "interface"
+    },
+    ".llm-context/types-extracted.ts::LogoConfig": {
+      "file": ".llm-context/types-extracted.ts",
+      "line": 1896,
+      "kind": "interface"
+    },
+    ".llm-context/types-extracted.ts::SectionSource": {
+      "file": ".llm-context/types-extracted.ts",
+      "line": 1903,
+      "kind": "interface"
+    },
+    ".llm-context/types-extracted.ts::SmartRecommendation": {
+      "file": ".llm-context/types-extracted.ts",
+      "line": 1917,
+      "kind": "interface"
+    },
+    ".llm-context/types-extracted.ts::GroundingMetrics": {
+      "file": ".llm-context/types-extracted.ts",
+      "line": 1927,
+      "kind": "interface"
+    },
+    ".llm-context/types-extracted.ts::InfographicSpec": {
+      "file": ".llm-context/types-extracted.ts",
+      "line": 1938,
+      "kind": "interface"
+    },
+    ".llm-context/types-extracted.ts::GitHubMeta": {
+      "file": ".llm-context/types-extracted.ts",
+      "line": 1948,
+      "kind": "interface"
+    },
+    ".llm-context/types-extracted.ts::ThemeConfig": {
+      "file": ".llm-context/types-extracted.ts",
+      "line": 1964,
+      "kind": "interface"
+    },
+    ".llm-context/types-extracted.ts::DensityConfig": {
+      "file": ".llm-context/types-extracted.ts",
+      "line": 1991,
+      "kind": "interface"
+    },
+    ".llm-context/types-extracted.ts::RenderOptions": {
+      "file": ".llm-context/types-extracted.ts",
+      "line": 1999,
+      "kind": "interface"
+    },
+    ".llm-context/types-extracted.ts::ExportFormat": {
+      "file": ".llm-context/types-extracted.ts",
+      "line": 2013,
+      "kind": "interface"
+    },
+    ".llm-context/types-extracted.ts::ExportOptions": {
+      "file": ".llm-context/types-extracted.ts",
+      "line": 2020,
+      "kind": "interface"
+    },
+    ".llm-context/types-extracted.ts::ThemeColors": {
+      "file": ".llm-context/types-extracted.ts",
+      "line": 2028,
+      "kind": "interface"
+    },
+    ".llm-context/types-extracted.ts::ThemeTypography": {
+      "file": ".llm-context/types-extracted.ts",
+      "line": 2041,
+      "kind": "interface"
+    },
+    ".llm-context/types-extracted.ts::Theme": {
+      "file": ".llm-context/types-extracted.ts",
+      "line": 2062,
+      "kind": "interface"
+    },
+    ".llm-context/types-extracted.ts::ContrastResult": {
+      "file": ".llm-context/types-extracted.ts",
+      "line": 2074,
+      "kind": "interface"
+    },
+    ".llm-context/types-extracted.ts::GenerationRecord": {
+      "file": ".llm-context/types-extracted.ts",
+      "line": 2097,
+      "kind": "interface"
+    },
+    ".llm-context/types-extracted.ts::Project": {
+      "file": ".llm-context/types-extracted.ts",
+      "line": 2112,
+      "kind": "interface"
+    },
+    ".llm-context/types-extracted.ts::Shortcut": {
+      "file": ".llm-context/types-extracted.ts",
+      "line": 2134,
+      "kind": "interface"
+    },
+    ".llm-context/types-extracted.ts::MobileTab": {
+      "file": ".llm-context/types-extracted.ts",
+      "line": 1712,
       "kind": "type"
     },
-    "ErrorBoundary": {
-      "file": "src/components/ErrorBoundary.tsx",
+    ".llm-context/types-extracted.ts::ColorBlindnessType": {
+      "file": ".llm-context/types-extracted.ts",
+      "line": 1748,
+      "kind": "type"
+    },
+    ".llm-context/types-extracted.ts::SectionType": {
+      "file": ".llm-context/types-extracted.ts",
+      "line": 1841,
+      "kind": "type"
+    },
+    ".llm-context/types-extracted.ts::SpecSection": {
+      "file": ".llm-context/types-extracted.ts",
+      "line": 1912,
+      "kind": "type"
+    },
+    ".llm-context/types-extracted.ts::VariantMap": {
+      "file": ".llm-context/types-extracted.ts",
+      "line": 1985,
+      "kind": "type"
+    },
+    ".llm-context/types-extracted.ts::VisualDensity": {
+      "file": ".llm-context/types-extracted.ts",
+      "line": 1988,
+      "kind": "type"
+    },
+    "src/ui/ErrorBoundary.tsx::ErrorBoundary": {
+      "file": "src/ui/ErrorBoundary.tsx",
       "line": 14,
       "kind": "class"
     },
-    "Props": {
-      "file": "src/components/ErrorBoundary.tsx",
+    "src/ui/ErrorBoundary.tsx::Props": {
+      "file": "src/ui/ErrorBoundary.tsx",
       "line": 4,
       "kind": "interface"
     },
-    "State": {
-      "file": "src/components/ErrorBoundary.tsx",
-      "line": 8,
+    "src/ui/ErrorBoundary.tsx::State": {
+      "file": "src/ui/ErrorBoundary.tsx",
+      "line": 9,
       "kind": "interface"
     },
-    "ArchitectureModalProps": {
+    "src/components/ArchitectureModal.tsx::ArchitectureModalProps": {
       "file": "src/components/ArchitectureModal.tsx",
       "line": 15,
       "kind": "interface"
     },
-    "ContrastModalProps": {
+    "src/components/ArchitectureModal.tsx::parseMD": {
+      "file": "src/components/ArchitectureModal.tsx",
+      "line": 57,
+      "kind": "function"
+    },
+    "src/components/ArchitectureModal.tsx::parseTable": {
+      "file": "src/components/ArchitectureModal.tsx",
+      "line": 58,
+      "kind": "function"
+    },
+    "src/components/ArchitectureModal.tsx::smartTrunc": {
+      "file": "src/components/ArchitectureModal.tsx",
+      "line": 59,
+      "kind": "function"
+    },
+    "src/components/ArchitectureModal.tsx::classifySec": {
+      "file": "src/components/ArchitectureModal.tsx",
+      "line": 73,
+      "kind": "function"
+    },
+    "src/components/ArchitectureModal.tsx::extractMetrics": {
+      "file": "src/components/ArchitectureModal.tsx",
+      "line": 86,
+      "kind": "function"
+    },
+    "src/components/ArchitectureModal.tsx::extractMetricsFromBadges": {
+      "file": "src/components/ArchitectureModal.tsx",
+      "line": 87,
+      "kind": "function"
+    },
+    "src/components/ArchitectureModal.tsx::splitFeat": {
+      "file": "src/components/ArchitectureModal.tsx",
+      "line": 88,
+      "kind": "function"
+    },
+    "src/components/ArchitectureModal.tsx::extractTechAdvanced": {
+      "file": "src/components/ArchitectureModal.tsx",
+      "line": 89,
+      "kind": "function"
+    },
+    "src/components/ArchitectureModal.tsx::buildRuleSpec": {
+      "file": "src/components/ArchitectureModal.tsx",
+      "line": 101,
+      "kind": "function"
+    },
+    "src/components/ArchitectureModal.tsx::mergeGHMeta": {
+      "file": "src/components/ArchitectureModal.tsx",
+      "line": 102,
+      "kind": "function"
+    },
+    "src/components/ArchitectureModal.tsx::renderSVG": {
+      "file": "src/components/ArchitectureModal.tsx",
+      "line": 114,
+      "kind": "function"
+    },
+    "src/components/ContrastModal.tsx::ContrastModalProps": {
       "file": "src/components/ContrastModal.tsx",
       "line": 6,
       "kind": "interface"
     },
-    "SectionControlsProps": {
+    "src/components/SectionControls.tsx::SectionControlsProps": {
       "file": "src/components/SectionControls.tsx",
       "line": 27,
       "kind": "interface"
     },
-    "MarkdownEditorProps": {
+    "src/components/MarkdownEditor.tsx::MarkdownEditorProps": {
       "file": "src/components/MarkdownEditor.tsx",
       "line": 5,
       "kind": "interface"
     },
-    "InfoModalProps": {
+    "src/components/InfoModal.tsx::InfoModalProps": {
       "file": "src/components/InfoModal.tsx",
       "line": 23,
       "kind": "interface"
     },
-    "FaqItem": {
+    "src/components/InfoModal.tsx::FaqItem": {
       "file": "src/components/InfoModal.tsx",
       "line": 31,
       "kind": "interface"
     },
-    "DensitySelectorProps": {
+    "src/components/ErrorBoundary.tsx::ErrorBoundary": {
+      "file": "src/components/ErrorBoundary.tsx",
+      "line": 14,
+      "kind": "class"
+    },
+    "src/components/ErrorBoundary.tsx::Props": {
+      "file": "src/components/ErrorBoundary.tsx",
+      "line": 4,
+      "kind": "interface"
+    },
+    "src/components/ErrorBoundary.tsx::State": {
+      "file": "src/components/ErrorBoundary.tsx",
+      "line": 8,
+      "kind": "interface"
+    },
+    "src/components/DensitySelector.tsx::DensitySelectorProps": {
       "file": "src/components/DensitySelector.tsx",
       "line": 6,
       "kind": "interface"
     },
-    "ShortcutsModalProps": {
+    "src/components/ShortcutsModal.tsx::ShortcutsModalProps": {
       "file": "src/components/ShortcutsModal.tsx",
       "line": 5,
       "kind": "interface"
     },
-    "WorkflowModalProps": {
+    "src/components/WorkflowModal.tsx::WorkflowModalProps": {
       "file": "src/components/WorkflowModal.tsx",
       "line": 5,
       "kind": "interface"
     },
-    "GroundingModalProps": {
+    "src/components/GroundingModal.tsx::GroundingModalProps": {
       "file": "src/components/GroundingModal.tsx",
       "line": 21,
       "kind": "interface"
     },
-    "ProjectsModalProps": {
+    "src/components/ProjectsModal.tsx::ProjectsModalProps": {
       "file": "src/components/ProjectsModal.tsx",
       "line": 19,
       "kind": "interface"
     },
-    "ShareModalProps": {
+    "src/components/ShareModal.tsx::ShareModalProps": {
       "file": "src/components/ShareModal.tsx",
       "line": 4,
       "kind": "interface"
     },
-    "OnboardingModalProps": {
+    "src/components/OnboardingModal.tsx::OnboardingModalProps": {
       "file": "src/components/OnboardingModal.tsx",
       "line": 18,
       "kind": "interface"
     },
-    "StepData": {
+    "src/components/OnboardingModal.tsx::StepData": {
       "file": "src/components/OnboardingModal.tsx",
       "line": 24,
       "kind": "interface"
     },
-    "ToastProps": {
+    "src/components/Toast.tsx::ToastMessage": {
+      "file": "src/components/Toast.tsx",
+      "line": 4,
+      "kind": "interface"
+    },
+    "src/components/Toast.tsx::ToastProps": {
       "file": "src/components/Toast.tsx",
       "line": 10,
       "kind": "interface"
     },
-    "HeaderProps": {
+    "src/components/Header.tsx::HeaderProps": {
       "file": "src/components/Header.tsx",
       "line": 24,
       "kind": "interface"
     },
-    "InfographicCanvasProps": {
+    "src/components/InfographicCanvas.tsx::InfographicCanvasProps": {
       "file": "src/components/InfographicCanvas.tsx",
       "line": 32,
       "kind": "interface"
     },
-    "FullScreenModalEditorProps": {
+    "src/components/mobile/FullScreenModalEditor.tsx::FullScreenModalEditorProps": {
       "file": "src/components/mobile/FullScreenModalEditor.tsx",
       "line": 17,
       "kind": "interface"
     },
-    "MobileTopRepoBarProps": {
+    "src/components/mobile/MobileTopRepoBar.tsx::MobileTopRepoBarProps": {
       "file": "src/components/mobile/MobileTopRepoBar.tsx",
       "line": 6,
       "kind": "interface"
     },
-    "ThemeCarouselProps": {
+    "src/components/mobile/ThemeCarousel.tsx::ThemeCarouselProps": {
       "file": "src/components/mobile/ThemeCarousel.tsx",
       "line": 6,
       "kind": "interface"
     },
-    "MobileExportSheetProps": {
+    "src/components/mobile/MobileExportSheet.tsx::MobileExportSheetProps": {
       "file": "src/components/mobile/MobileExportSheet.tsx",
       "line": 20,
       "kind": "interface"
     },
-    "MobileFabProps": {
+    "src/components/mobile/MobileFab.tsx::MobileFabProps": {
       "file": "src/components/mobile/MobileFab.tsx",
       "line": 15,
       "kind": "interface"
     },
-    "VisualFormatPickerProps": {
+    "src/components/mobile/VisualFormatPicker.tsx::FormatConfig": {
+      "file": "src/components/mobile/VisualFormatPicker.tsx",
+      "line": 5,
+      "kind": "interface"
+    },
+    "src/components/mobile/VisualFormatPicker.tsx::VisualFormatPickerProps": {
       "file": "src/components/mobile/VisualFormatPicker.tsx",
       "line": 79,
       "kind": "interface"
     },
-    "MobileInlineEditorProps": {
+    "src/components/mobile/MobileInlineEditor.tsx::MobileInlineEditorProps": {
       "file": "src/components/mobile/MobileInlineEditor.tsx",
       "line": 20,
       "kind": "interface"
     },
-    "MobileActionSheetProps": {
+    "src/components/mobile/MobileActionSheet.tsx::MobileActionSheetProps": {
       "file": "src/components/mobile/MobileActionSheet.tsx",
       "line": 17,
       "kind": "interface"
     },
-    "BottomNavigationProps": {
+    "src/components/mobile/BottomNavigation.tsx::BottomNavigationProps": {
       "file": "src/components/mobile/BottomNavigation.tsx",
       "line": 7,
       "kind": "interface"
     },
-    "MobileCoachMarksProps": {
+    "src/components/mobile/BottomNavigation.tsx::MobileTab": {
+      "file": "src/components/mobile/BottomNavigation.tsx",
+      "line": 5,
+      "kind": "type"
+    },
+    "src/components/mobile/MobileCoachMarks.tsx::MobileCoachMarksProps": {
       "file": "src/components/mobile/MobileCoachMarks.tsx",
       "line": 15,
       "kind": "interface"
     },
-    "CoachStep": {
+    "src/components/mobile/MobileCoachMarks.tsx::CoachStep": {
       "file": "src/components/mobile/MobileCoachMarks.tsx",
       "line": 23,
       "kind": "interface"

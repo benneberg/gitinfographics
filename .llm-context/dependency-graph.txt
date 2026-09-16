@@ -1,7 +1,254 @@
 # Internal Dependency Graph
-# Generated: 2026-09-16 04:07 UTC
+# Generated: 2026-09-16 08:35 UTC
 
 ## JavaScript/TypeScript Imports
 
+bin/__tests__/cli.test.ts
+  -> ../cli
+
+bin/cli.ts
+  -> ../src/engine/parser
+  -> ../src/engine/specBuilder
+  -> ../src/engine/renderer
+  -> ../src/engine/types
+
+packages/analyzer/src/__tests__/analyzer.test.ts
+  -> ../index
+
+packages/analyzer/src/extractors.d.ts
+  -> ./types
+
+packages/analyzer/src/extractors.ts
+  -> ./types
+
+packages/analyzer/src/specBuilder.d.ts
+  -> ./types
+
+packages/analyzer/src/specBuilder.ts
+  -> ./types
+  -> ./classifier
+  -> ./extractors
+
+packages/parser/src/__tests__/parser.test.ts
+  -> ../index
+
+packages/parser/src/parser.d.ts
+  -> ./types
+
+packages/parser/src/parser.ts
+  -> ./types
+
+packages/renderer/src/__tests__/renderer.test.ts
+  -> ../index
+
+packages/renderer/src/contrast.ts
+  -> ./types
+
+packages/renderer/src/renderer.ts
+  -> ./types
+  -> ./themes
+  -> ./qr
+  -> ./icons
+
+packages/renderer/src/themes.ts
+  -> ./types
+
+src/App.tsx
+  -> ./engine
+  -> ./engine/themes
+  -> ./engine/contrast
+  -> ./storage/ProjectStorage
+  -> ./ui/KeyboardShortcuts
+  -> ./ui/haptics
+  -> ./components/Header
+  -> ./components/MarkdownEditor
+  -> ./components/SectionControls
+  -> ./components/InfographicCanvas
+  -> ./components/Toast
+  -> ./components/mobile/BottomNavigation
+  -> ./components/mobile/FullScreenModalEditor
+  -> ./components/mobile/MobileInlineEditor
+  -> ./components/mobile/MobileTopRepoBar
+  -> ./components/mobile/ThemeCarousel
+  -> ./components/mobile/VisualFormatPicker
+  -> ./components/mobile/MobileExportSheet
+  -> ./components/mobile/MobileActionSheet
+  -> ./components/mobile/MobileFab
+  -> ./components/mobile/MobileCoachMarks
+  -> ./components/ProjectsModal
+  -> ./components/ShareModal
+  -> ./components/WorkflowModal
+  -> ./components/ArchitectureModal
+  -> ./components/InfoModal
+  -> ./components/ContrastModal
+  -> ./components/ShortcutsModal
+  -> ./components/GroundingModal
+
+src/__tests__/App.test.tsx
+  -> ../App
+
+src/components/ContrastModal.tsx
+  -> ../engine/types
+  -> ../engine/contrast
+
+src/components/DensitySelector.tsx
+  -> ../engine/types
+  -> ../ui/haptics
+
+src/components/GroundingModal.tsx
+  -> ../engine/types
+
+src/components/Header.tsx
+  -> ../engine/themes
+  -> ../engine/samples
+
+src/components/InfographicCanvas.tsx
+  -> ../engine/types
+  -> ../engine/contrast
+  -> ../ui/haptics
+
+src/components/MarkdownEditor.tsx
+  -> ../engine/types
+
+src/components/ProjectsModal.tsx
+  -> ../storage/ProjectStorage
+
+src/components/SectionControls.tsx
+  -> ../engine/types
+  -> ./DensitySelector
+
+src/components/ShortcutsModal.tsx
+  -> ../ui/KeyboardShortcuts
+
+src/components/WorkflowModal.tsx
+  -> ../engine/workflowTemplate
+
+src/components/mobile/BottomNavigation.tsx
+  -> ../../ui/haptics
+
+src/components/mobile/FullScreenModalEditor.tsx
+  -> ../../engine/types
+  -> ../../engine/samples
+  -> ../../ui/haptics
+
+src/components/mobile/MobileActionSheet.tsx
+  -> ../../ui/haptics
+
+src/components/mobile/MobileCoachMarks.tsx
+  -> ../../ui/haptics
+
+src/components/mobile/MobileExportSheet.tsx
+  -> ./VisualFormatPicker
+  -> ../../engine/types
+  -> ../../ui/haptics
+
+src/components/mobile/MobileFab.tsx
+  -> ../../ui/haptics
+
+src/components/mobile/MobileInlineEditor.tsx
+  -> ../../engine/samples
+  -> ../../ui/haptics
+
+src/components/mobile/MobileTopRepoBar.tsx
+  -> ../../engine/samples
+  -> ../../ui/haptics
+
+src/components/mobile/ThemeCarousel.tsx
+  -> ../../engine/themes
+  -> ../../ui/haptics
+
+src/components/mobile/VisualFormatPicker.tsx
+  -> ../../ui/haptics
+
+src/engine/__tests__/classifier.test.ts
+  -> ../classifier
+
+src/engine/__tests__/contrast.test.ts
+  -> ../contrast
+  -> ../themes
+
+src/engine/__tests__/extractors.test.ts
+  -> ../extractors
+  -> ../types
+
+src/engine/__tests__/parser.test.ts
+  -> ../parser
+  -> ../extractors
+
+src/engine/__tests__/qr.test.ts
+  -> ../qr
+
+src/engine/__tests__/renderer.test.ts
+  -> ../renderer
+  -> ../types
+
+src/engine/__tests__/specBuilder.test.ts
+  -> ../specBuilder
+  -> ../parser
+  -> ../types
+
+src/engine/classifier.ts
+  -> ./types
+
+src/engine/contrast.ts
+  -> ./types
+
+src/engine/extractors.ts
+  -> ./types
+
+src/engine/github.ts
+  -> ./types
+
+src/engine/parser.ts
+  -> ./types
+  -> ./classifier
+  -> ./extractors
+
+src/engine/renderer.ts
+  -> ./types
+  -> ./themes
+  -> ./extractors
+  -> ./qr
+  -> ./icons
+
+src/engine/samples.ts
+  -> ./types
+
+src/engine/specBuilder.ts
+  -> ./types
+  -> ./classifier
+  -> ./extractors
+
+src/engine/themes.ts
+  -> ./types
+
+src/export/__tests__/CanvasExporter.test.ts
+  -> ../CanvasExporter
+
 src/main.tsx
+  -> ./App
+  -> ./components/ErrorBoundary
   -> ./index.css
+
+src/renderer/themes/__tests__/ThemeManager.test.ts
+  -> ../ThemeManager
+
+src/renderer/themes/__tests__/contrast.test.ts
+  -> ../contrast
+  -> ../ThemeManager
+
+src/storage/ProjectStorage.ts
+  -> ../export/CanvasExporter
+  -> ../renderer/themes/ThemeManager
+
+src/storage/__tests__/ProjectStorage.test.ts
+  -> ../ProjectStorage
+
+src/ui/OfflineIndicator.tsx
+  -> ./useOnlineStatus
+
+src/ui/PWAInstallButton.tsx
+  -> ./usePWAInstall
+
+src/ui/__tests__/KeyboardShortcuts.test.ts
+  -> ../KeyboardShortcuts

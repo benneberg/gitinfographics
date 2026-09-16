@@ -1,16 +1,16 @@
 # File Tree: gitinfographics
-# Generated: 2026-09-16 04:07 UTC
+# Generated: 2026-09-16 08:35 UTC
 # Files indexed: 165
 
 |-- .github/ (4 files)
 |   `-- workflows/ (4 files)
-|       |-- ccc.yml (1.9KB)
+|       |-- ccc.yml (2.0KB)
 |       |-- ci.yml (723B)
 |       |-- deploy.yml (1.2KB)
 |       `-- publish.yml (1.5KB)
 |-- .llm-context/ (20 files)
 |   |-- ai-observations.md (493B)
-|   |-- audit.log (90B)
+|   |-- audit.log (180B)
 |   |-- call-graph.json (16.6KB)
 |   |-- capabilities.json (5.5KB)
 |   |-- change-surface.json (31.5KB)
@@ -23,12 +23,12 @@
 |   |-- manifest.json (43.4KB)
 |   |-- package.json (1.4KB)
 |   |-- public-api.txt (16.8KB)
-|   |-- recent-changes.txt (730B)
-|   |-- recent-commits.txt (743B)
-|   |-- symbol-index.json (17.9KB)
+|   |-- recent-changes.txt (1.4KB)
+|   |-- recent-commits.txt (723B)
+|   |-- symbol-index.json (18.0KB)
 |   |-- tree.txt (6.7KB)
 |   |-- type-graph.json (10.7KB)
-|   `-- types-extracted.ts (34.0KB)
+|   `-- types-extracted.ts (56.7KB)
 |-- bin/ (3 files)
 |   |-- __tests__/ (1 files)
 |   |   `-- cli.test.ts (2.2KB)

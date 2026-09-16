@@ -1,5 +1,5 @@
 # Public API (function signatures)
-# Generated: 2026-09-16 04:07 UTC
+# Generated: 2026-09-16 08:35 UTC
 
 
 ## packages/analyzer/src/specBuilder.ts

@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generated": "2026-09-16 04:07 UTC",
+    "generated": "2026-09-16 08:35 UTC",
     "total_files": 99,
     "scored_files": 99,
     "weights": {
@@ -56,13 +56,13 @@
     },
     {
       "path": "src/engine/types.ts",
-      "score": 0.856,
+      "score": 0.8459,
       "imported_by_count": 36,
-      "days_since_modified": 0.4,
+      "days_since_modified": 0.6,
       "pattern_hits": 0,
       "factors": {
         "fan_in": 1.0,
-        "recency": 0.953,
+        "recency": 0.913,
         "pattern_density": 0.5,
         "size": 0.926
       },
@@ -139,18 +139,32 @@
       "rank": 9
     },
     {
+      "path": "src/engine/themes.ts",
+      "score": 0.5557,
+      "imported_by_count": 8,
+      "days_since_modified": 0.0,
+      "pattern_hits": 0,
+      "factors": {
+        "fan_in": 0.222,
+        "recency": 1.0,
+        "pattern_density": 0.5,
+        "size": 0.918
+      },
+      "rank": 10
+    },
+    {
       "path": "src/engine/extractors.ts",
-      "score": 0.5549,
+      "score": 0.5499,
       "imported_by_count": 9,
-      "days_since_modified": 0.2,
+      "days_since_modified": 0.3,
       "pattern_hits": 0,
       "factors": {
         "fan_in": 0.25,
-        "recency": 0.977,
+        "recency": 0.957,
         "pattern_density": 0.5,
         "size": 0.857
       },
-      "rank": 10
+      "rank": 11
     },
     {
       "path": "packages/analyzer/src/classifier.ts",
@@ -164,7 +178,7 @@
         "pattern_density": 0.5,
         "size": 0.932
       },
-      "rank": 11
+      "rank": 12
     },
     {
       "path": "src/renderer/themes/contrast.ts",
@@ -178,7 +192,7 @@
         "pattern_density": 0.5,
         "size": 0.951
       },
-      "rank": 12
+      "rank": 13
     },
     {
       "path": "packages/renderer/src/contrast.ts",
@@ -192,7 +206,7 @@
         "pattern_density": 0.5,
         "size": 0.95
       },
-      "rank": 13
+      "rank": 14
     },
     {
       "path": "src/engine/contrast.ts",
@@ -206,21 +220,21 @@
         "pattern_density": 0.5,
         "size": 0.95
       },
-      "rank": 14
+      "rank": 15
     },
     {
       "path": "src/engine/classifier.ts",
-      "score": 0.534,
+      "score": 0.5238,
       "imported_by_count": 7,
-      "days_since_modified": 0.4,
+      "days_since_modified": 0.6,
       "pattern_hits": 0,
       "factors": {
         "fan_in": 0.194,
-        "recency": 0.953,
+        "recency": 0.913,
         "pattern_density": 0.5,
         "size": 0.928
       },
-      "rank": 15
+      "rank": 16
     },
     {
       "path": "packages/analyzer/src/index.ts",
@@ -234,7 +248,7 @@
         "pattern_density": 0.5,
         "size": 0.999
       },
-      "rank": 16
+      "rank": 17
     },
     {
       "path": "packages/parser/src/index.ts",
@@ -248,7 +262,7 @@
         "pattern_density": 0.5,
         "size": 1.0
       },
-      "rank": 17
+      "rank": 18
     },
     {
       "path": "packages/renderer/src/index.ts",
@@ -262,7 +276,7 @@
         "pattern_density": 0.5,
         "size": 0.999
       },
-      "rank": 18
+      "rank": 19
     },
     {
       "path": "src/engine/index.ts",
@@ -276,7 +290,7 @@
         "pattern_density": 0.5,
         "size": 0.997
       },
-      "rank": 19
+      "rank": 20
     },
     {
       "path": "packages/renderer/src/qr.ts",
@@ -290,7 +304,7 @@
         "pattern_density": 0.5,
         "size": 0.982
       },
-      "rank": 20
+      "rank": 21
     },
     {
       "path": "src/engine/qr.ts",
@@ -304,21 +318,21 @@
         "pattern_density": 0.5,
         "size": 0.982
       },
-      "rank": 21
+      "rank": 22
     },
     {
-      "path": "src/engine/samples.ts",
-      "score": 0.5106,
-      "imported_by_count": 5,
-      "days_since_modified": 0.4,
+      "path": "src/ui/KeyboardShortcuts.ts",
+      "score": 0.5025,
+      "imported_by_count": 3,
+      "days_since_modified": 0.0,
       "pattern_hits": 0,
       "factors": {
-        "fan_in": 0.139,
-        "recency": 0.953,
+        "fan_in": 0.083,
+        "recency": 1.0,
         "pattern_density": 0.5,
-        "size": 0.916
+        "size": 0.942
       },
-      "rank": 22
+      "rank": 23
     },
     {
       "path": "packages/analyzer/src/specBuilder.ts",
@@ -332,7 +346,21 @@
         "pattern_density": 0.5,
         "size": 0.705
       },
-      "rank": 23
+      "rank": 24
+    },
+    {
+      "path": "src/engine/samples.ts",
+      "score": 0.5005,
+      "imported_by_count": 5,
+      "days_since_modified": 0.6,
+      "pattern_hits": 0,
+      "factors": {
+        "fan_in": 0.139,
+        "recency": 0.913,
+        "pattern_density": 0.5,
+        "size": 0.916
+      },
+      "rank": 25
     },
     {
       "path": "packages/renderer/src/icons.ts",
@@ -346,7 +374,7 @@
         "pattern_density": 0.5,
         "size": 0.892
       },
-      "rank": 24
+      "rank": 26
     },
     {
       "path": "src/engine/icons.ts",
@@ -360,7 +388,7 @@
         "pattern_density": 0.5,
         "size": 0.892
       },
-      "rank": 25
+      "rank": 27
     },
     {
       "path": "src/export/CanvasExporter.ts",
@@ -374,21 +402,7 @@
         "pattern_density": 0.5,
         "size": 0.936
       },
-      "rank": 26
-    },
-    {
-      "path": "src/engine/specBuilder.ts",
-      "score": 0.4894,
-      "imported_by_count": 5,
-      "days_since_modified": 0.4,
-      "pattern_hits": 0,
-      "factors": {
-        "fan_in": 0.139,
-        "recency": 0.953,
-        "pattern_density": 0.5,
-        "size": 0.704
-      },
-      "rank": 27
+      "rank": 28
     },
     {
       "path": "src/ui/useOnlineStatus.ts",
@@ -402,7 +416,7 @@
         "pattern_density": 0.5,
         "size": 0.993
       },
-      "rank": 28
+      "rank": 29
     },
     {
       "path": "src/components/Toast.tsx",
@@ -416,7 +430,7 @@
         "pattern_density": 0.5,
         "size": 0.981
       },
-      "rank": 29
+      "rank": 30
     },
     {
       "path": "src/ui/usePWAInstall.ts",
@@ -430,7 +444,7 @@
         "pattern_density": 0.5,
         "size": 0.977
       },
-      "rank": 30
+      "rank": 31
     },
     {
       "path": "src/ui/ErrorBoundary.tsx",
@@ -444,7 +458,7 @@
         "pattern_density": 0.5,
         "size": 0.966
       },
-      "rank": 31
+      "rank": 32
     },
     {
       "path": "src/components/mobile/BottomNavigation.tsx",
@@ -458,7 +472,7 @@
         "pattern_density": 0.5,
         "size": 0.962
       },
-      "rank": 32
+      "rank": 33
     },
     {
       "path": "src/components/ErrorBoundary.tsx",
@@ -472,7 +486,7 @@
         "pattern_density": 0.5,
         "size": 0.96
       },
-      "rank": 33
+      "rank": 34
     },
     {
       "path": "src/engine/github.ts",
@@ -486,7 +500,7 @@
         "pattern_density": 0.5,
         "size": 0.951
       },
-      "rank": 34
+      "rank": 35
     },
     {
       "path": "src/engine/workflowTemplate.ts",
@@ -500,7 +514,7 @@
         "pattern_density": 0.5,
         "size": 0.832
       },
-      "rank": 35
+      "rank": 36
     },
     {
       "path": "src/components/DensitySelector.tsx",
@@ -514,7 +528,7 @@
         "pattern_density": 0.5,
         "size": 0.941
       },
-      "rank": 36
+      "rank": 37
     },
     {
       "path": "src/components/mobile/MobileTopRepoBar.tsx",
@@ -528,7 +542,7 @@
         "pattern_density": 0.5,
         "size": 0.935
       },
-      "rank": 37
+      "rank": 38
     },
     {
       "path": "src/components/mobile/MobileFab.tsx",
@@ -542,7 +556,7 @@
         "pattern_density": 0.5,
         "size": 0.935
       },
-      "rank": 38
+      "rank": 39
     },
     {
       "path": "src/components/mobile/MobileActionSheet.tsx",
@@ -556,7 +570,21 @@
         "pattern_density": 0.5,
         "size": 0.935
       },
-      "rank": 39
+      "rank": 40
+    },
+    {
+      "path": "src/engine/specBuilder.ts",
+      "score": 0.4793,
+      "imported_by_count": 5,
+      "days_since_modified": 0.6,
+      "pattern_hits": 0,
+      "factors": {
+        "fan_in": 0.139,
+        "recency": 0.913,
+        "pattern_density": 0.5,
+        "size": 0.704
+      },
+      "rank": 41
     },
     {
       "path": "src/components/mobile/ThemeCarousel.tsx",
@@ -570,7 +598,7 @@
         "pattern_density": 0.5,
         "size": 0.926
       },
-      "rank": 40
+      "rank": 42
     },
     {
       "path": "src/components/mobile/MobileCoachMarks.tsx",
@@ -584,7 +612,7 @@
         "pattern_density": 0.5,
         "size": 0.915
       },
-      "rank": 41
+      "rank": 43
     },
     {
       "path": "packages/parser/src/index.d.ts",
@@ -598,7 +626,7 @@
         "pattern_density": 0.5,
         "size": 1.0
       },
-      "rank": 42
+      "rank": 44
     },
     {
       "path": "packages/analyzer/src/index.d.ts",
@@ -612,7 +640,7 @@
         "pattern_density": 0.5,
         "size": 0.999
       },
-      "rank": 43
+      "rank": 45
     },
     {
       "path": "packages/analyzer/src/classifier.d.ts",
@@ -626,7 +654,7 @@
         "pattern_density": 0.5,
         "size": 0.997
       },
-      "rank": 44
+      "rank": 46
     },
     {
       "path": "public/registerSW.js",
@@ -640,7 +668,7 @@
         "pattern_density": 0.5,
         "size": 0.997
       },
-      "rank": 45
+      "rank": 47
     },
     {
       "path": "bin/gitinfographics.js",
@@ -654,7 +682,7 @@
         "pattern_density": 0.5,
         "size": 0.995
       },
-      "rank": 46
+      "rank": 48
     },
     {
       "path": "src/engine/__tests__/qr.test.ts",
@@ -668,7 +696,7 @@
         "pattern_density": 0.5,
         "size": 0.992
       },
-      "rank": 47
+      "rank": 49
     },
     {
       "path": "public/sw.js",
@@ -682,7 +710,7 @@
         "pattern_density": 0.5,
         "size": 0.991
       },
-      "rank": 48
+      "rank": 50
     },
     {
       "path": "src/ui/OfflineIndicator.tsx",
@@ -696,7 +724,7 @@
         "pattern_density": 0.5,
         "size": 0.991
       },
-      "rank": 49
+      "rank": 51
     },
     {
       "path": "packages/analyzer/src/specBuilder.d.ts",
@@ -710,7 +738,7 @@
         "pattern_density": 0.5,
         "size": 0.989
       },
-      "rank": 50
+      "rank": 52
     },
     {
       "path": "packages/analyzer/src/extractors.d.ts",
@@ -724,7 +752,7 @@
         "pattern_density": 0.5,
         "size": 0.987
       },
-      "rank": 51
+      "rank": 53
     },
     {
       "path": "packages/parser/src/parser.d.ts",
@@ -738,7 +766,7 @@
         "pattern_density": 0.5,
         "size": 0.987
       },
-      "rank": 52
+      "rank": 54
     },
     {
       "path": "packages/parser/src/types.d.ts",
@@ -752,7 +780,7 @@
         "pattern_density": 0.5,
         "size": 0.987
       },
-      "rank": 53
+      "rank": 55
     },
     {
       "path": "src/renderer/themes/__tests__/contrast.test.ts",
@@ -766,7 +794,7 @@
         "pattern_density": 0.5,
         "size": 0.981
       },
-      "rank": 54
+      "rank": 56
     },
     {
       "path": "src/export/__tests__/CanvasExporter.test.ts",
@@ -780,7 +808,7 @@
         "pattern_density": 0.5,
         "size": 0.98
       },
-      "rank": 55
+      "rank": 57
     },
     {
       "path": "src/renderer/themes/__tests__/ThemeManager.test.ts",
@@ -794,7 +822,7 @@
         "pattern_density": 0.5,
         "size": 0.98
       },
-      "rank": 56
+      "rank": 58
     },
     {
       "path": "packages/parser/src/__tests__/parser.test.ts",
@@ -808,7 +836,7 @@
         "pattern_density": 0.5,
         "size": 0.979
       },
-      "rank": 57
+      "rank": 59
     },
     {
       "path": "src/ui/__tests__/KeyboardShortcuts.test.ts",
@@ -822,7 +850,7 @@
         "pattern_density": 0.5,
         "size": 0.978
       },
-      "rank": 58
+      "rank": 60
     },
     {
       "path": "src/components/mobile/MobileInlineEditor.tsx",
@@ -836,7 +864,7 @@
         "pattern_density": 0.5,
         "size": 0.866
       },
-      "rank": 59
+      "rank": 61
     },
     {
       "path": "src/engine/__tests__/contrast.test.ts",
@@ -850,7 +878,7 @@
         "pattern_density": 0.5,
         "size": 0.975
       },
-      "rank": 60
+      "rank": 62
     },
     {
       "path": "src/components/GroundingModal.tsx",
@@ -864,7 +892,7 @@
         "pattern_density": 0.5,
         "size": 0.864
       },
-      "rank": 61
+      "rank": 63
     },
     {
       "path": "bin/__tests__/cli.test.ts",
@@ -878,7 +906,7 @@
         "pattern_density": 0.5,
         "size": 0.973
       },
-      "rank": 62
+      "rank": 64
     },
     {
       "path": "packages/renderer/src/__tests__/renderer.test.ts",
@@ -892,7 +920,7 @@
         "pattern_density": 0.5,
         "size": 0.972
       },
-      "rank": 63
+      "rank": 65
     },
     {
       "path": "packages/analyzer/src/__tests__/analyzer.test.ts",
@@ -906,7 +934,7 @@
         "pattern_density": 0.5,
         "size": 0.97
       },
-      "rank": 64
+      "rank": 66
     },
     {
       "path": "src/storage/__tests__/ProjectStorage.test.ts",
@@ -920,7 +948,7 @@
         "pattern_density": 0.5,
         "size": 0.97
       },
-      "rank": 65
+      "rank": 67
     },
     {
       "path": "src/engine/__tests__/classifier.test.ts",
@@ -934,7 +962,7 @@
         "pattern_density": 0.5,
         "size": 0.969
       },
-      "rank": 66
+      "rank": 68
     },
     {
       "path": "src/engine/__tests__/parser.test.ts",
@@ -948,7 +976,7 @@
         "pattern_density": 0.5,
         "size": 0.966
       },
-      "rank": 67
+      "rank": 69
     },
     {
       "path": "packages/analyzer/src/types.d.ts",
@@ -962,7 +990,7 @@
         "pattern_density": 0.5,
         "size": 0.956
       },
-      "rank": 68
+      "rank": 70
     },
     {
       "path": "src/ui/PWAInstallButton.tsx",
@@ -976,7 +1004,7 @@
         "pattern_density": 0.5,
         "size": 0.954
       },
-      "rank": 69
+      "rank": 71
     },
     {
       "path": "bin/cli.ts",
@@ -990,7 +1018,7 @@
         "pattern_density": 0.5,
         "size": 0.837
       },
-      "rank": 70
+      "rank": 72
     },
     {
       "path": "src/engine/__tests__/extractors.test.ts",
@@ -1004,47 +1032,19 @@
         "pattern_density": 0.5,
         "size": 0.946
       },
-      "rank": 71
-    },
-    {
-      "path": "vite.config.ts",
-      "score": 0.4671,
-      "imported_by_count": 0,
-      "days_since_modified": 0.2,
-      "pattern_hits": 0,
-      "factors": {
-        "fan_in": 0.0,
-        "recency": 0.977,
-        "pattern_density": 0.5,
-        "size": 0.979
-      },
-      "rank": 72
-    },
-    {
-      "path": "src/components/Header.tsx",
-      "score": 0.4605,
-      "imported_by_count": 1,
-      "days_since_modified": 0.4,
-      "pattern_hits": 0,
-      "factors": {
-        "fan_in": 0.028,
-        "recency": 0.953,
-        "pattern_density": 0.5,
-        "size": 0.861
-      },
       "rank": 73
     },
     {
-      "path": "src/engine/__tests__/specBuilder.test.ts",
-      "score": 0.4568,
+      "path": "vite.config.ts",
+      "score": 0.4621,
       "imported_by_count": 0,
-      "days_since_modified": 0.4,
+      "days_since_modified": 0.3,
       "pattern_hits": 0,
       "factors": {
         "fan_in": 0.0,
-        "recency": 0.953,
+        "recency": 0.957,
         "pattern_density": 0.5,
-        "size": 0.935
+        "size": 0.979
       },
       "rank": 74
     },
@@ -1063,186 +1063,74 @@
       "rank": 75
     },
     {
-      "path": "src/engine/__tests__/renderer.test.ts",
-      "score": 0.4536,
-      "imported_by_count": 0,
-      "days_since_modified": 0.4,
+      "path": "src/components/Header.tsx",
+      "score": 0.4504,
+      "imported_by_count": 1,
+      "days_since_modified": 0.6,
       "pattern_hits": 0,
       "factors": {
-        "fan_in": 0.0,
-        "recency": 0.953,
+        "fan_in": 0.028,
+        "recency": 0.913,
         "pattern_density": 0.5,
-        "size": 0.902
+        "size": 0.861
       },
       "rank": 76
     },
     {
-      "path": "src/components/SectionControls.tsx",
-      "score": 0.4428,
-      "imported_by_count": 1,
-      "days_since_modified": 0.4,
+      "path": "src/engine/__tests__/specBuilder.test.ts",
+      "score": 0.4467,
+      "imported_by_count": 0,
+      "days_since_modified": 0.6,
       "pattern_hits": 0,
       "factors": {
-        "fan_in": 0.028,
-        "recency": 0.953,
+        "fan_in": 0.0,
+        "recency": 0.913,
         "pattern_density": 0.5,
-        "size": 0.683
+        "size": 0.935
       },
       "rank": 77
     },
     {
-      "path": "src/App.tsx",
-      "score": 0.441,
-      "imported_by_count": 4,
-      "days_since_modified": 0.4,
+      "path": "src/engine/__tests__/renderer.test.ts",
+      "score": 0.4435,
+      "imported_by_count": 0,
+      "days_since_modified": 0.6,
       "pattern_hits": 0,
       "factors": {
-        "fan_in": 0.111,
-        "recency": 0.953,
+        "fan_in": 0.0,
+        "recency": 0.913,
         "pattern_density": 0.5,
-        "size": 0.332
+        "size": 0.902
       },
       "rank": 78
     },
     {
-      "path": "src/components/mobile/VisualFormatPicker.tsx",
-      "score": 0.4381,
-      "imported_by_count": 2,
-      "days_since_modified": 1.8,
+      "path": "src/components/SectionControls.tsx",
+      "score": 0.4327,
+      "imported_by_count": 1,
+      "days_since_modified": 0.6,
       "pattern_hits": 0,
       "factors": {
-        "fan_in": 0.056,
-        "recency": 0.791,
+        "fan_in": 0.028,
+        "recency": 0.913,
         "pattern_density": 0.5,
-        "size": 0.932
+        "size": 0.683
       },
       "rank": 79
     },
     {
-      "path": ".llm-context/types-extracted.ts",
-      "score": 0.4311,
-      "imported_by_count": 0,
-      "days_since_modified": 0.0,
+      "path": "src/App.tsx",
+      "score": 0.4309,
+      "imported_by_count": 4,
+      "days_since_modified": 0.6,
       "pattern_hits": 0,
       "factors": {
-        "fan_in": 0.0,
-        "recency": 1.0,
+        "fan_in": 0.111,
+        "recency": 0.913,
         "pattern_density": 0.5,
-        "size": 0.561
+        "size": 0.332
       },
       "rank": 80
-    },
-    {
-      "path": "src/components/ShortcutsModal.tsx",
-      "score": 0.4276,
-      "imported_by_count": 1,
-      "days_since_modified": 1.8,
-      "pattern_hits": 0,
-      "factors": {
-        "fan_in": 0.028,
-        "recency": 0.791,
-        "pattern_density": 0.5,
-        "size": 0.938
-      },
-      "rank": 81
-    },
-    {
-      "path": "src/components/WorkflowModal.tsx",
-      "score": 0.426,
-      "imported_by_count": 1,
-      "days_since_modified": 1.8,
-      "pattern_hits": 0,
-      "factors": {
-        "fan_in": 0.028,
-        "recency": 0.791,
-        "pattern_density": 0.5,
-        "size": 0.922
-      },
-      "rank": 82
-    },
-    {
-      "path": "src/components/MarkdownEditor.tsx",
-      "score": 0.4256,
-      "imported_by_count": 1,
-      "days_since_modified": 1.8,
-      "pattern_hits": 0,
-      "factors": {
-        "fan_in": 0.028,
-        "recency": 0.791,
-        "pattern_density": 0.5,
-        "size": 0.918
-      },
-      "rank": 83
-    },
-    {
-      "path": "src/components/ContrastModal.tsx",
-      "score": 0.4233,
-      "imported_by_count": 1,
-      "days_since_modified": 1.8,
-      "pattern_hits": 0,
-      "factors": {
-        "fan_in": 0.028,
-        "recency": 0.791,
-        "pattern_density": 0.5,
-        "size": 0.895
-      },
-      "rank": 84
-    },
-    {
-      "path": "src/components/ShareModal.tsx",
-      "score": 0.4233,
-      "imported_by_count": 1,
-      "days_since_modified": 1.8,
-      "pattern_hits": 0,
-      "factors": {
-        "fan_in": 0.028,
-        "recency": 0.791,
-        "pattern_density": 0.5,
-        "size": 0.895
-      },
-      "rank": 85
-    },
-    {
-      "path": "src/__tests__/App.test.tsx",
-      "score": 0.4222,
-      "imported_by_count": 0,
-      "days_since_modified": 1.8,
-      "pattern_hits": 0,
-      "factors": {
-        "fan_in": 0.0,
-        "recency": 0.791,
-        "pattern_density": 0.5,
-        "size": 0.995
-      },
-      "rank": 86
-    },
-    {
-      "path": "src/components/mobile/FullScreenModalEditor.tsx",
-      "score": 0.4216,
-      "imported_by_count": 1,
-      "days_since_modified": 1.8,
-      "pattern_hits": 0,
-      "factors": {
-        "fan_in": 0.028,
-        "recency": 0.791,
-        "pattern_density": 0.5,
-        "size": 0.878
-      },
-      "rank": 87
-    },
-    {
-      "path": "src/components/ArchitectureModal.tsx",
-      "score": 0.421,
-      "imported_by_count": 1,
-      "days_since_modified": 1.8,
-      "pattern_hits": 0,
-      "factors": {
-        "fan_in": 0.028,
-        "recency": 0.791,
-        "pattern_density": 0.5,
-        "size": 0.872
-      },
-      "rank": 88
     },
     {
       "path": "packages/renderer/src/renderer.ts",
@@ -1256,31 +1144,143 @@
         "pattern_density": 0.5,
         "size": 0.0
       },
-      "rank": 89
+      "rank": 81
     },
     {
-      "path": "src/components/ProjectsModal.tsx",
-      "score": 0.4167,
+      "path": "src/components/mobile/VisualFormatPicker.tsx",
+      "score": 0.418,
+      "imported_by_count": 2,
+      "days_since_modified": 2.0,
+      "pattern_hits": 0,
+      "factors": {
+        "fan_in": 0.056,
+        "recency": 0.71,
+        "pattern_density": 0.5,
+        "size": 0.932
+      },
+      "rank": 82
+    },
+    {
+      "path": "src/components/ShortcutsModal.tsx",
+      "score": 0.4074,
       "imported_by_count": 1,
-      "days_since_modified": 1.8,
+      "days_since_modified": 2.0,
       "pattern_hits": 0,
       "factors": {
         "fan_in": 0.028,
-        "recency": 0.791,
+        "recency": 0.71,
         "pattern_density": 0.5,
-        "size": 0.829
+        "size": 0.938
+      },
+      "rank": 83
+    },
+    {
+      "path": "src/components/WorkflowModal.tsx",
+      "score": 0.4058,
+      "imported_by_count": 1,
+      "days_since_modified": 2.0,
+      "pattern_hits": 0,
+      "factors": {
+        "fan_in": 0.028,
+        "recency": 0.71,
+        "pattern_density": 0.5,
+        "size": 0.922
+      },
+      "rank": 84
+    },
+    {
+      "path": "src/components/MarkdownEditor.tsx",
+      "score": 0.4054,
+      "imported_by_count": 1,
+      "days_since_modified": 2.0,
+      "pattern_hits": 0,
+      "factors": {
+        "fan_in": 0.028,
+        "recency": 0.71,
+        "pattern_density": 0.5,
+        "size": 0.918
+      },
+      "rank": 85
+    },
+    {
+      "path": "src/components/ContrastModal.tsx",
+      "score": 0.4032,
+      "imported_by_count": 1,
+      "days_since_modified": 2.0,
+      "pattern_hits": 0,
+      "factors": {
+        "fan_in": 0.028,
+        "recency": 0.71,
+        "pattern_density": 0.5,
+        "size": 0.895
+      },
+      "rank": 86
+    },
+    {
+      "path": "src/components/ShareModal.tsx",
+      "score": 0.4031,
+      "imported_by_count": 1,
+      "days_since_modified": 2.0,
+      "pattern_hits": 0,
+      "factors": {
+        "fan_in": 0.028,
+        "recency": 0.71,
+        "pattern_density": 0.5,
+        "size": 0.895
+      },
+      "rank": 87
+    },
+    {
+      "path": "src/__tests__/App.test.tsx",
+      "score": 0.4021,
+      "imported_by_count": 0,
+      "days_since_modified": 2.0,
+      "pattern_hits": 0,
+      "factors": {
+        "fan_in": 0.0,
+        "recency": 0.71,
+        "pattern_density": 0.5,
+        "size": 0.995
+      },
+      "rank": 88
+    },
+    {
+      "path": "src/components/mobile/FullScreenModalEditor.tsx",
+      "score": 0.4014,
+      "imported_by_count": 1,
+      "days_since_modified": 2.0,
+      "pattern_hits": 0,
+      "factors": {
+        "fan_in": 0.028,
+        "recency": 0.71,
+        "pattern_density": 0.5,
+        "size": 0.878
+      },
+      "rank": 89
+    },
+    {
+      "path": "src/components/ArchitectureModal.tsx",
+      "score": 0.4009,
+      "imported_by_count": 1,
+      "days_since_modified": 2.0,
+      "pattern_hits": 0,
+      "factors": {
+        "fan_in": 0.028,
+        "recency": 0.71,
+        "pattern_density": 0.5,
+        "size": 0.872
       },
       "rank": 90
     },
     {
       "path": "src/components/mobile/MobileExportSheet.tsx",
-      "score": 0.4165,
+      "score": 0.3993,
       "imported_by_count": 1,
-      "days_since_modified": 1.9,
+      "days_since_modified": 2.0,
       "pattern_hits": 0,
       "factors": {
         "fan_in": 0.028,
-        "recency": 0.779,
+        "recency": 0.71,
         "pattern_density": 0.5,
         "size": 0.857
       },
@@ -1288,113 +1288,113 @@
     },
     {
       "path": "src/engine/renderer.ts",
-      "score": 0.4078,
+      "score": 0.3977,
       "imported_by_count": 4,
-      "days_since_modified": 0.4,
+      "days_since_modified": 0.6,
       "pattern_hits": 0,
       "factors": {
         "fan_in": 0.111,
-        "recency": 0.953,
+        "recency": 0.913,
         "pattern_density": 0.5,
         "size": 0.0
       },
       "rank": 92
     },
     {
-      "path": "src/components/InfoModal.tsx",
-      "score": 0.3923,
+      "path": "src/components/ProjectsModal.tsx",
+      "score": 0.3966,
       "imported_by_count": 1,
-      "days_since_modified": 1.8,
+      "days_since_modified": 2.0,
       "pattern_hits": 0,
       "factors": {
         "fan_in": 0.028,
-        "recency": 0.791,
+        "recency": 0.71,
         "pattern_density": 0.5,
-        "size": 0.585
+        "size": 0.829
       },
       "rank": 93
     },
     {
-      "path": "src/components/InfographicCanvas.tsx",
-      "score": 0.3791,
-      "imported_by_count": 1,
-      "days_since_modified": 1.8,
+      "path": ".llm-context/types-extracted.ts",
+      "score": 0.3944,
+      "imported_by_count": 0,
+      "days_since_modified": 0.2,
       "pattern_hits": 0,
       "factors": {
-        "fan_in": 0.028,
-        "recency": 0.791,
+        "fan_in": 0.0,
+        "recency": 0.971,
         "pattern_density": 0.5,
-        "size": 0.453
+        "size": 0.267
       },
       "rank": 94
     },
     {
-      "path": "src/engine/themes.ts",
-      "score": 0.3057,
-      "imported_by_count": 8,
-      "days_since_modified": 8.6,
+      "path": "src/components/InfoModal.tsx",
+      "score": 0.3721,
+      "imported_by_count": 1,
+      "days_since_modified": 2.0,
       "pattern_hits": 0,
       "factors": {
-        "fan_in": 0.222,
-        "recency": 0.0,
+        "fan_in": 0.028,
+        "recency": 0.71,
         "pattern_density": 0.5,
-        "size": 0.918
+        "size": 0.585
       },
       "rank": 95
     },
     {
-      "path": "src/storage/ProjectStorage.ts",
-      "score": 0.3015,
-      "imported_by_count": 3,
-      "days_since_modified": 6.8,
+      "path": "src/components/InfographicCanvas.tsx",
+      "score": 0.3589,
+      "imported_by_count": 1,
+      "days_since_modified": 2.0,
       "pattern_hits": 0,
       "factors": {
-        "fan_in": 0.083,
-        "recency": 0.209,
+        "fan_in": 0.028,
+        "recency": 0.71,
         "pattern_density": 0.5,
-        "size": 0.908
+        "size": 0.453
       },
       "rank": 96
     },
     {
-      "path": "src/renderer/themes/ThemeManager.ts",
-      "score": 0.2977,
+      "path": "src/storage/ProjectStorage.ts",
+      "score": 0.2491,
       "imported_by_count": 3,
-      "days_since_modified": 6.8,
-      "pattern_hits": 0,
-      "factors": {
-        "fan_in": 0.083,
-        "recency": 0.209,
-        "pattern_density": 0.5,
-        "size": 0.871
-      },
-      "rank": 97
-    },
-    {
-      "path": "src/main.tsx",
-      "score": 0.277,
-      "imported_by_count": 0,
-      "days_since_modified": 6.8,
-      "pattern_hits": 0,
-      "factors": {
-        "fan_in": 0.0,
-        "recency": 0.209,
-        "pattern_density": 0.5,
-        "size": 0.996
-      },
-      "rank": 98
-    },
-    {
-      "path": "src/ui/KeyboardShortcuts.ts",
-      "score": 0.2525,
-      "imported_by_count": 3,
-      "days_since_modified": 8.6,
+      "days_since_modified": 6.9,
       "pattern_hits": 0,
       "factors": {
         "fan_in": 0.083,
         "recency": 0.0,
         "pattern_density": 0.5,
-        "size": 0.942
+        "size": 0.908
+      },
+      "rank": 97
+    },
+    {
+      "path": "src/renderer/themes/ThemeManager.ts",
+      "score": 0.2454,
+      "imported_by_count": 3,
+      "days_since_modified": 6.9,
+      "pattern_hits": 0,
+      "factors": {
+        "fan_in": 0.083,
+        "recency": 0.0,
+        "pattern_density": 0.5,
+        "size": 0.871
+      },
+      "rank": 98
+    },
+    {
+      "path": "src/main.tsx",
+      "score": 0.2246,
+      "imported_by_count": 0,
+      "days_since_modified": 6.9,
+      "pattern_hits": 0,
+      "factors": {
+        "fan_in": 0.0,
+        "recency": 0.0,
+        "pattern_density": 0.5,
+        "size": 0.996
       },
       "rank": 99
     }

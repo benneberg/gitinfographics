@@ -1,375 +1,989 @@
 {
   "_meta": {
-    "generated": "2026-09-16 04:07 UTC",
-    "total_types": 45,
-    "note": "TypeScript type cross-reference. used_in lists files that explicitly import each type."
+    "generated": "2026-09-16 08:35 UTC",
+    "total_types": 146,
+    "note": "TypeScript type cross-reference. used_in lists files that explicitly import each type through a resolvable relative import."
   },
   "types": {
-    "BadgeItem": {
-      "defined_in": ".llm-context/types-extracted.ts",
-      "kind": "interface",
-      "used_in": [
-        "packages/analyzer/src/extractors.d.ts",
-        "packages/analyzer/src/extractors.ts",
-        "src/engine/extractors.ts"
-      ]
-    },
-    "CodeBlock": {
+    ".llm-context/types-extracted.ts::BadgeItem": {
+      "name": "BadgeItem",
       "defined_in": ".llm-context/types-extracted.ts",
       "kind": "interface",
       "used_in": []
     },
-    "ColorBlindnessType": {
+    ".llm-context/types-extracted.ts::CodeBlock": {
+      "name": "CodeBlock",
+      "defined_in": ".llm-context/types-extracted.ts",
+      "kind": "interface",
+      "used_in": []
+    },
+    ".llm-context/types-extracted.ts::ColorBlindnessType": {
+      "name": "ColorBlindnessType",
       "defined_in": ".llm-context/types-extracted.ts",
       "kind": "type",
+      "used_in": []
+    },
+    ".llm-context/types-extracted.ts::ComparisonRow": {
+      "name": "ComparisonRow",
+      "defined_in": ".llm-context/types-extracted.ts",
+      "kind": "interface",
+      "used_in": []
+    },
+    ".llm-context/types-extracted.ts::ContentListItem": {
+      "name": "ContentListItem",
+      "defined_in": ".llm-context/types-extracted.ts",
+      "kind": "interface",
+      "used_in": []
+    },
+    ".llm-context/types-extracted.ts::ContrastAuditItem": {
+      "name": "ContrastAuditItem",
+      "defined_in": ".llm-context/types-extracted.ts",
+      "kind": "interface",
+      "used_in": []
+    },
+    ".llm-context/types-extracted.ts::ContrastResult": {
+      "name": "ContrastResult",
+      "defined_in": ".llm-context/types-extracted.ts",
+      "kind": "interface",
+      "used_in": []
+    },
+    ".llm-context/types-extracted.ts::DensityConfig": {
+      "name": "DensityConfig",
+      "defined_in": ".llm-context/types-extracted.ts",
+      "kind": "interface",
+      "used_in": []
+    },
+    ".llm-context/types-extracted.ts::DocSection": {
+      "name": "DocSection",
+      "defined_in": ".llm-context/types-extracted.ts",
+      "kind": "interface",
+      "used_in": []
+    },
+    ".llm-context/types-extracted.ts::ExportFormat": {
+      "name": "ExportFormat",
+      "defined_in": ".llm-context/types-extracted.ts",
+      "kind": "interface",
+      "used_in": []
+    },
+    ".llm-context/types-extracted.ts::ExportOptions": {
+      "name": "ExportOptions",
+      "defined_in": ".llm-context/types-extracted.ts",
+      "kind": "interface",
+      "used_in": []
+    },
+    ".llm-context/types-extracted.ts::FeatureItem": {
+      "name": "FeatureItem",
+      "defined_in": ".llm-context/types-extracted.ts",
+      "kind": "interface",
+      "used_in": []
+    },
+    ".llm-context/types-extracted.ts::FormatConfig": {
+      "name": "FormatConfig",
+      "defined_in": ".llm-context/types-extracted.ts",
+      "kind": "interface",
+      "used_in": []
+    },
+    ".llm-context/types-extracted.ts::GenerationRecord": {
+      "name": "GenerationRecord",
+      "defined_in": ".llm-context/types-extracted.ts",
+      "kind": "interface",
+      "used_in": []
+    },
+    ".llm-context/types-extracted.ts::GitHubMeta": {
+      "name": "GitHubMeta",
+      "defined_in": ".llm-context/types-extracted.ts",
+      "kind": "interface",
+      "used_in": []
+    },
+    ".llm-context/types-extracted.ts::GroundingMetrics": {
+      "name": "GroundingMetrics",
+      "defined_in": ".llm-context/types-extracted.ts",
+      "kind": "interface",
+      "used_in": []
+    },
+    ".llm-context/types-extracted.ts::IconOptions": {
+      "name": "IconOptions",
+      "defined_in": ".llm-context/types-extracted.ts",
+      "kind": "interface",
+      "used_in": []
+    },
+    ".llm-context/types-extracted.ts::ImageItem": {
+      "name": "ImageItem",
+      "defined_in": ".llm-context/types-extracted.ts",
+      "kind": "interface",
+      "used_in": []
+    },
+    ".llm-context/types-extracted.ts::InfographicSpec": {
+      "name": "InfographicSpec",
+      "defined_in": ".llm-context/types-extracted.ts",
+      "kind": "interface",
+      "used_in": []
+    },
+    ".llm-context/types-extracted.ts::LogoConfig": {
+      "name": "LogoConfig",
+      "defined_in": ".llm-context/types-extracted.ts",
+      "kind": "interface",
+      "used_in": []
+    },
+    ".llm-context/types-extracted.ts::MetricItem": {
+      "name": "MetricItem",
+      "defined_in": ".llm-context/types-extracted.ts",
+      "kind": "interface",
+      "used_in": []
+    },
+    ".llm-context/types-extracted.ts::MobileTab": {
+      "name": "MobileTab",
+      "defined_in": ".llm-context/types-extracted.ts",
+      "kind": "type",
+      "used_in": []
+    },
+    ".llm-context/types-extracted.ts::NestedListItem": {
+      "name": "NestedListItem",
+      "defined_in": ".llm-context/types-extracted.ts",
+      "kind": "interface",
+      "used_in": []
+    },
+    ".llm-context/types-extracted.ts::ParsedDoc": {
+      "name": "ParsedDoc",
+      "defined_in": ".llm-context/types-extracted.ts",
+      "kind": "interface",
+      "used_in": []
+    },
+    ".llm-context/types-extracted.ts::Project": {
+      "name": "Project",
+      "defined_in": ".llm-context/types-extracted.ts",
+      "kind": "interface",
+      "used_in": []
+    },
+    ".llm-context/types-extracted.ts::QROptions": {
+      "name": "QROptions",
+      "defined_in": ".llm-context/types-extracted.ts",
+      "kind": "interface",
+      "used_in": []
+    },
+    ".llm-context/types-extracted.ts::RenderOptions": {
+      "name": "RenderOptions",
+      "defined_in": ".llm-context/types-extracted.ts",
+      "kind": "interface",
+      "used_in": []
+    },
+    ".llm-context/types-extracted.ts::RenderResult": {
+      "name": "RenderResult",
+      "defined_in": ".llm-context/types-extracted.ts",
+      "kind": "interface",
+      "used_in": []
+    },
+    ".llm-context/types-extracted.ts::SampleReadme": {
+      "name": "SampleReadme",
+      "defined_in": ".llm-context/types-extracted.ts",
+      "kind": "interface",
+      "used_in": []
+    },
+    ".llm-context/types-extracted.ts::SectionSource": {
+      "name": "SectionSource",
+      "defined_in": ".llm-context/types-extracted.ts",
+      "kind": "interface",
+      "used_in": []
+    },
+    ".llm-context/types-extracted.ts::SectionType": {
+      "name": "SectionType",
+      "defined_in": ".llm-context/types-extracted.ts",
+      "kind": "type",
+      "used_in": []
+    },
+    ".llm-context/types-extracted.ts::Shortcut": {
+      "name": "Shortcut",
+      "defined_in": ".llm-context/types-extracted.ts",
+      "kind": "interface",
+      "used_in": []
+    },
+    ".llm-context/types-extracted.ts::SmartRecommendation": {
+      "name": "SmartRecommendation",
+      "defined_in": ".llm-context/types-extracted.ts",
+      "kind": "interface",
+      "used_in": []
+    },
+    ".llm-context/types-extracted.ts::SpecSection": {
+      "name": "SpecSection",
+      "defined_in": ".llm-context/types-extracted.ts",
+      "kind": "type",
+      "used_in": []
+    },
+    ".llm-context/types-extracted.ts::StepItem": {
+      "name": "StepItem",
+      "defined_in": ".llm-context/types-extracted.ts",
+      "kind": "interface",
+      "used_in": []
+    },
+    ".llm-context/types-extracted.ts::TableData": {
+      "name": "TableData",
+      "defined_in": ".llm-context/types-extracted.ts",
+      "kind": "interface",
+      "used_in": []
+    },
+    ".llm-context/types-extracted.ts::Theme": {
+      "name": "Theme",
+      "defined_in": ".llm-context/types-extracted.ts",
+      "kind": "interface",
+      "used_in": []
+    },
+    ".llm-context/types-extracted.ts::ThemeColors": {
+      "name": "ThemeColors",
+      "defined_in": ".llm-context/types-extracted.ts",
+      "kind": "interface",
+      "used_in": []
+    },
+    ".llm-context/types-extracted.ts::ThemeConfig": {
+      "name": "ThemeConfig",
+      "defined_in": ".llm-context/types-extracted.ts",
+      "kind": "interface",
+      "used_in": []
+    },
+    ".llm-context/types-extracted.ts::ThemeContrastAudit": {
+      "name": "ThemeContrastAudit",
+      "defined_in": ".llm-context/types-extracted.ts",
+      "kind": "interface",
+      "used_in": []
+    },
+    ".llm-context/types-extracted.ts::ThemeTypography": {
+      "name": "ThemeTypography",
+      "defined_in": ".llm-context/types-extracted.ts",
+      "kind": "interface",
+      "used_in": []
+    },
+    ".llm-context/types-extracted.ts::TimelineItem": {
+      "name": "TimelineItem",
+      "defined_in": ".llm-context/types-extracted.ts",
+      "kind": "interface",
+      "used_in": []
+    },
+    ".llm-context/types-extracted.ts::ToastMessage": {
+      "name": "ToastMessage",
+      "defined_in": ".llm-context/types-extracted.ts",
+      "kind": "interface",
+      "used_in": []
+    },
+    ".llm-context/types-extracted.ts::VariantMap": {
+      "name": "VariantMap",
+      "defined_in": ".llm-context/types-extracted.ts",
+      "kind": "type",
+      "used_in": []
+    },
+    ".llm-context/types-extracted.ts::VisualDensity": {
+      "name": "VisualDensity",
+      "defined_in": ".llm-context/types-extracted.ts",
+      "kind": "type",
+      "used_in": []
+    },
+    "packages/analyzer/src/types.d.ts::ComparisonRow": {
+      "name": "ComparisonRow",
+      "defined_in": "packages/analyzer/src/types.d.ts",
+      "kind": "interface",
+      "used_in": []
+    },
+    "packages/analyzer/src/types.d.ts::ContentListItem": {
+      "name": "ContentListItem",
+      "defined_in": "packages/analyzer/src/types.d.ts",
+      "kind": "interface",
+      "used_in": []
+    },
+    "packages/analyzer/src/types.d.ts::FeatureItem": {
+      "name": "FeatureItem",
+      "defined_in": "packages/analyzer/src/types.d.ts",
+      "kind": "interface",
+      "used_in": []
+    },
+    "packages/analyzer/src/types.d.ts::GitHubMeta": {
+      "name": "GitHubMeta",
+      "defined_in": "packages/analyzer/src/types.d.ts",
+      "kind": "interface",
+      "used_in": []
+    },
+    "packages/analyzer/src/types.d.ts::GroundingMetrics": {
+      "name": "GroundingMetrics",
+      "defined_in": "packages/analyzer/src/types.d.ts",
+      "kind": "interface",
+      "used_in": []
+    },
+    "packages/analyzer/src/types.d.ts::InfographicSpec": {
+      "name": "InfographicSpec",
+      "defined_in": "packages/analyzer/src/types.d.ts",
+      "kind": "interface",
+      "used_in": []
+    },
+    "packages/analyzer/src/types.d.ts::LogoConfig": {
+      "name": "LogoConfig",
+      "defined_in": "packages/analyzer/src/types.d.ts",
+      "kind": "interface",
+      "used_in": []
+    },
+    "packages/analyzer/src/types.d.ts::MetricItem": {
+      "name": "MetricItem",
+      "defined_in": "packages/analyzer/src/types.d.ts",
+      "kind": "interface",
+      "used_in": []
+    },
+    "packages/analyzer/src/types.d.ts::SectionSource": {
+      "name": "SectionSource",
+      "defined_in": "packages/analyzer/src/types.d.ts",
+      "kind": "interface",
+      "used_in": []
+    },
+    "packages/analyzer/src/types.d.ts::SmartRecommendation": {
+      "name": "SmartRecommendation",
+      "defined_in": "packages/analyzer/src/types.d.ts",
+      "kind": "interface",
+      "used_in": []
+    },
+    "packages/analyzer/src/types.d.ts::SpecSection": {
+      "name": "SpecSection",
+      "defined_in": "packages/analyzer/src/types.d.ts",
+      "kind": "type",
+      "used_in": []
+    },
+    "packages/analyzer/src/types.d.ts::StepItem": {
+      "name": "StepItem",
+      "defined_in": "packages/analyzer/src/types.d.ts",
+      "kind": "interface",
+      "used_in": []
+    },
+    "packages/analyzer/src/types.d.ts::TimelineItem": {
+      "name": "TimelineItem",
+      "defined_in": "packages/analyzer/src/types.d.ts",
+      "kind": "interface",
+      "used_in": []
+    },
+    "packages/analyzer/src/types.d.ts::VariantMap": {
+      "name": "VariantMap",
+      "defined_in": "packages/analyzer/src/types.d.ts",
+      "kind": "type",
+      "used_in": []
+    },
+    "packages/analyzer/src/types.d.ts::VisualDensity": {
+      "name": "VisualDensity",
+      "defined_in": "packages/analyzer/src/types.d.ts",
+      "kind": "type",
+      "used_in": []
+    },
+    "packages/analyzer/src/types.ts::ComparisonRow": {
+      "name": "ComparisonRow",
+      "defined_in": "packages/analyzer/src/types.ts",
+      "kind": "interface",
       "used_in": [
-        "src/App.tsx",
-        "src/components/ContrastModal.tsx",
-        "src/components/InfographicCanvas.tsx"
+        "packages/analyzer/src/specBuilder.ts"
       ]
     },
-    "ComparisonRow": {
-      "defined_in": ".llm-context/types-extracted.ts",
+    "packages/analyzer/src/types.ts::ContentListItem": {
+      "name": "ContentListItem",
+      "defined_in": "packages/analyzer/src/types.ts",
+      "kind": "interface",
+      "used_in": []
+    },
+    "packages/analyzer/src/types.ts::FeatureItem": {
+      "name": "FeatureItem",
+      "defined_in": "packages/analyzer/src/types.ts",
       "kind": "interface",
       "used_in": [
-        "packages/analyzer/src/specBuilder.ts",
-        "src/engine/specBuilder.ts"
+        "packages/analyzer/src/extractors.d.ts",
+        "packages/analyzer/src/extractors.ts"
       ]
     },
-    "ContentListItem": {
-      "defined_in": ".llm-context/types-extracted.ts",
-      "kind": "interface",
-      "used_in": []
-    },
-    "ContrastAuditItem": {
-      "defined_in": ".llm-context/types-extracted.ts",
-      "kind": "interface",
-      "used_in": []
-    },
-    "ContrastResult": {
-      "defined_in": ".llm-context/types-extracted.ts",
-      "kind": "interface",
-      "used_in": []
-    },
-    "DensityConfig": {
-      "defined_in": ".llm-context/types-extracted.ts",
-      "kind": "interface",
-      "used_in": []
-    },
-    "DocSection": {
-      "defined_in": ".llm-context/types-extracted.ts",
+    "packages/analyzer/src/types.ts::GitHubMeta": {
+      "name": "GitHubMeta",
+      "defined_in": "packages/analyzer/src/types.ts",
       "kind": "interface",
       "used_in": [
-        "packages/analyzer/src/classifier.d.ts",
-        "packages/analyzer/src/classifier.ts",
-        "packages/analyzer/src/specBuilder.ts",
-        "packages/parser/src/parser.ts",
-        "src/engine/classifier.ts",
-        "src/engine/parser.ts",
-        "src/engine/specBuilder.ts"
+        "packages/analyzer/src/specBuilder.d.ts",
+        "packages/analyzer/src/specBuilder.ts"
       ]
     },
-    "ExportFormat": {
-      "defined_in": ".llm-context/types-extracted.ts",
+    "packages/analyzer/src/types.ts::GroundingMetrics": {
+      "name": "GroundingMetrics",
+      "defined_in": "packages/analyzer/src/types.ts",
       "kind": "interface",
       "used_in": []
     },
-    "ExportOptions": {
-      "defined_in": ".llm-context/types-extracted.ts",
+    "packages/analyzer/src/types.ts::InfographicSpec": {
+      "name": "InfographicSpec",
+      "defined_in": "packages/analyzer/src/types.ts",
+      "kind": "interface",
+      "used_in": [
+        "packages/analyzer/src/specBuilder.d.ts",
+        "packages/analyzer/src/specBuilder.ts"
+      ]
+    },
+    "packages/analyzer/src/types.ts::LogoConfig": {
+      "name": "LogoConfig",
+      "defined_in": "packages/analyzer/src/types.ts",
       "kind": "interface",
       "used_in": []
     },
-    "FeatureItem": {
-      "defined_in": ".llm-context/types-extracted.ts",
+    "packages/analyzer/src/types.ts::MetricItem": {
+      "name": "MetricItem",
+      "defined_in": "packages/analyzer/src/types.ts",
       "kind": "interface",
       "used_in": [
         "packages/analyzer/src/extractors.d.ts",
         "packages/analyzer/src/extractors.ts",
-        "src/engine/extractors.ts"
+        "packages/analyzer/src/specBuilder.ts"
       ]
     },
-    "FormatConfig": {
-      "defined_in": "src/components/mobile/VisualFormatPicker.tsx",
-      "kind": "interface",
-      "used_in": []
-    },
-    "GenerationRecord": {
-      "defined_in": ".llm-context/types-extracted.ts",
+    "packages/analyzer/src/types.ts::SectionSource": {
+      "name": "SectionSource",
+      "defined_in": "packages/analyzer/src/types.ts",
       "kind": "interface",
       "used_in": [
-        "src/components/ProjectsModal.tsx"
+        "packages/analyzer/src/specBuilder.ts"
       ]
     },
-    "GitHubMeta": {
-      "defined_in": ".llm-context/types-extracted.ts",
+    "packages/analyzer/src/types.ts::SmartRecommendation": {
+      "name": "SmartRecommendation",
+      "defined_in": "packages/analyzer/src/types.ts",
       "kind": "interface",
       "used_in": [
-        "bin/cli.ts",
         "packages/analyzer/src/specBuilder.d.ts",
-        "packages/analyzer/src/specBuilder.ts",
-        "src/App.tsx",
-        "src/components/MarkdownEditor.tsx",
-        "src/components/mobile/FullScreenModalEditor.tsx",
-        "src/engine/github.ts",
-        "src/engine/samples.ts",
-        "src/engine/specBuilder.ts"
+        "packages/analyzer/src/specBuilder.ts"
       ]
     },
-    "GroundingMetrics": {
-      "defined_in": ".llm-context/types-extracted.ts",
-      "kind": "interface",
-      "used_in": [
-        "src/engine/specBuilder.ts"
-      ]
-    },
-    "IconOptions": {
-      "defined_in": ".llm-context/types-extracted.ts",
-      "kind": "interface",
-      "used_in": []
-    },
-    "ImageItem": {
-      "defined_in": ".llm-context/types-extracted.ts",
-      "kind": "interface",
-      "used_in": []
-    },
-    "InfographicSpec": {
-      "defined_in": ".llm-context/types-extracted.ts",
-      "kind": "interface",
-      "used_in": [
-        "bin/cli.ts",
-        "packages/analyzer/src/specBuilder.d.ts",
-        "packages/analyzer/src/specBuilder.ts",
-        "packages/renderer/src/renderer.ts",
-        "src/App.tsx",
-        "src/components/GroundingModal.tsx",
-        "src/components/InfographicCanvas.tsx",
-        "src/components/SectionControls.tsx",
-        "src/components/mobile/MobileExportSheet.tsx",
-        "src/engine/renderer.ts",
-        "src/engine/specBuilder.ts"
-      ]
-    },
-    "LogoConfig": {
-      "defined_in": ".llm-context/types-extracted.ts",
-      "kind": "interface",
-      "used_in": [
-        "src/App.tsx",
-        "src/components/SectionControls.tsx"
-      ]
-    },
-    "MetricItem": {
-      "defined_in": ".llm-context/types-extracted.ts",
-      "kind": "interface",
-      "used_in": [
-        "packages/analyzer/src/extractors.d.ts",
-        "packages/analyzer/src/extractors.ts",
-        "packages/analyzer/src/specBuilder.ts",
-        "src/engine/extractors.ts",
-        "src/engine/specBuilder.ts"
-      ]
-    },
-    "MobileTab": {
-      "defined_in": "src/components/mobile/BottomNavigation.tsx",
+    "packages/analyzer/src/types.ts::SpecSection": {
+      "name": "SpecSection",
+      "defined_in": "packages/analyzer/src/types.ts",
       "kind": "type",
       "used_in": [
-        "src/App.tsx"
+        "packages/analyzer/src/specBuilder.d.ts",
+        "packages/analyzer/src/specBuilder.ts"
       ]
     },
-    "NestedListItem": {
-      "defined_in": ".llm-context/types-extracted.ts",
+    "packages/analyzer/src/types.ts::StepItem": {
+      "name": "StepItem",
+      "defined_in": "packages/analyzer/src/types.ts",
       "kind": "interface",
       "used_in": []
     },
-    "ParsedDoc": {
-      "defined_in": ".llm-context/types-extracted.ts",
+    "packages/analyzer/src/types.ts::TimelineItem": {
+      "name": "TimelineItem",
+      "defined_in": "packages/analyzer/src/types.ts",
       "kind": "interface",
       "used_in": [
-        "packages/analyzer/src/extractors.d.ts",
-        "packages/analyzer/src/extractors.ts",
+        "packages/analyzer/src/specBuilder.ts"
+      ]
+    },
+    "packages/analyzer/src/types.ts::VariantMap": {
+      "name": "VariantMap",
+      "defined_in": "packages/analyzer/src/types.ts",
+      "kind": "type",
+      "used_in": [
         "packages/analyzer/src/specBuilder.d.ts",
-        "packages/analyzer/src/specBuilder.ts",
+        "packages/analyzer/src/specBuilder.ts"
+      ]
+    },
+    "packages/analyzer/src/types.ts::VisualDensity": {
+      "name": "VisualDensity",
+      "defined_in": "packages/analyzer/src/types.ts",
+      "kind": "type",
+      "used_in": []
+    },
+    "packages/parser/src/types.d.ts::BadgeItem": {
+      "name": "BadgeItem",
+      "defined_in": "packages/parser/src/types.d.ts",
+      "kind": "interface",
+      "used_in": []
+    },
+    "packages/parser/src/types.d.ts::CodeBlock": {
+      "name": "CodeBlock",
+      "defined_in": "packages/parser/src/types.d.ts",
+      "kind": "interface",
+      "used_in": []
+    },
+    "packages/parser/src/types.d.ts::DocSection": {
+      "name": "DocSection",
+      "defined_in": "packages/parser/src/types.d.ts",
+      "kind": "interface",
+      "used_in": []
+    },
+    "packages/parser/src/types.d.ts::ImageItem": {
+      "name": "ImageItem",
+      "defined_in": "packages/parser/src/types.d.ts",
+      "kind": "interface",
+      "used_in": []
+    },
+    "packages/parser/src/types.d.ts::NestedListItem": {
+      "name": "NestedListItem",
+      "defined_in": "packages/parser/src/types.d.ts",
+      "kind": "interface",
+      "used_in": []
+    },
+    "packages/parser/src/types.d.ts::ParsedDoc": {
+      "name": "ParsedDoc",
+      "defined_in": "packages/parser/src/types.d.ts",
+      "kind": "interface",
+      "used_in": []
+    },
+    "packages/parser/src/types.d.ts::SectionType": {
+      "name": "SectionType",
+      "defined_in": "packages/parser/src/types.d.ts",
+      "kind": "type",
+      "used_in": []
+    },
+    "packages/parser/src/types.d.ts::TableData": {
+      "name": "TableData",
+      "defined_in": "packages/parser/src/types.d.ts",
+      "kind": "interface",
+      "used_in": []
+    },
+    "packages/parser/src/types.ts::BadgeItem": {
+      "name": "BadgeItem",
+      "defined_in": "packages/parser/src/types.ts",
+      "kind": "interface",
+      "used_in": []
+    },
+    "packages/parser/src/types.ts::CodeBlock": {
+      "name": "CodeBlock",
+      "defined_in": "packages/parser/src/types.ts",
+      "kind": "interface",
+      "used_in": []
+    },
+    "packages/parser/src/types.ts::DocSection": {
+      "name": "DocSection",
+      "defined_in": "packages/parser/src/types.ts",
+      "kind": "interface",
+      "used_in": [
+        "packages/parser/src/parser.ts"
+      ]
+    },
+    "packages/parser/src/types.ts::ImageItem": {
+      "name": "ImageItem",
+      "defined_in": "packages/parser/src/types.ts",
+      "kind": "interface",
+      "used_in": []
+    },
+    "packages/parser/src/types.ts::NestedListItem": {
+      "name": "NestedListItem",
+      "defined_in": "packages/parser/src/types.ts",
+      "kind": "interface",
+      "used_in": []
+    },
+    "packages/parser/src/types.ts::ParsedDoc": {
+      "name": "ParsedDoc",
+      "defined_in": "packages/parser/src/types.ts",
+      "kind": "interface",
+      "used_in": [
         "packages/parser/src/parser.d.ts",
-        "packages/parser/src/parser.ts",
-        "src/components/MarkdownEditor.tsx",
-        "src/components/mobile/FullScreenModalEditor.tsx",
-        "src/engine/extractors.ts",
-        "src/engine/parser.ts",
-        "src/engine/specBuilder.ts"
+        "packages/parser/src/parser.ts"
       ]
     },
-    "Project": {
-      "defined_in": ".llm-context/types-extracted.ts",
-      "kind": "interface",
-      "used_in": [
-        "src/App.tsx",
-        "src/components/ProjectsModal.tsx"
-      ]
-    },
-    "QROptions": {
-      "defined_in": ".llm-context/types-extracted.ts",
-      "kind": "interface",
-      "used_in": []
-    },
-    "RenderOptions": {
-      "defined_in": ".llm-context/types-extracted.ts",
-      "kind": "interface",
-      "used_in": [
-        "packages/renderer/src/renderer.ts",
-        "src/engine/renderer.ts"
-      ]
-    },
-    "RenderResult": {
-      "defined_in": ".llm-context/types-extracted.ts",
-      "kind": "interface",
-      "used_in": []
-    },
-    "SampleReadme": {
-      "defined_in": ".llm-context/types-extracted.ts",
-      "kind": "interface",
-      "used_in": [
-        "src/App.tsx",
-        "src/components/Header.tsx",
-        "src/components/mobile/FullScreenModalEditor.tsx",
-        "src/components/mobile/MobileInlineEditor.tsx",
-        "src/components/mobile/MobileTopRepoBar.tsx"
-      ]
-    },
-    "SectionSource": {
-      "defined_in": ".llm-context/types-extracted.ts",
-      "kind": "interface",
-      "used_in": [
-        "packages/analyzer/src/specBuilder.ts",
-        "src/engine/specBuilder.ts"
-      ]
-    },
-    "SectionType": {
-      "defined_in": ".llm-context/types-extracted.ts",
+    "packages/parser/src/types.ts::SectionType": {
+      "name": "SectionType",
+      "defined_in": "packages/parser/src/types.ts",
       "kind": "type",
       "used_in": [
-        "packages/analyzer/src/classifier.d.ts",
-        "packages/analyzer/src/classifier.ts",
-        "packages/analyzer/src/specBuilder.ts",
         "packages/parser/src/parser.d.ts",
-        "packages/parser/src/parser.ts",
-        "src/engine/classifier.ts",
-        "src/engine/parser.ts",
-        "src/engine/specBuilder.ts"
+        "packages/parser/src/parser.ts"
       ]
     },
-    "Shortcut": {
-      "defined_in": ".llm-context/types-extracted.ts",
-      "kind": "interface",
-      "used_in": []
-    },
-    "SmartRecommendation": {
-      "defined_in": ".llm-context/types-extracted.ts",
-      "kind": "interface",
-      "used_in": [
-        "packages/analyzer/src/specBuilder.d.ts",
-        "packages/analyzer/src/specBuilder.ts",
-        "src/App.tsx",
-        "src/components/GroundingModal.tsx",
-        "src/engine/specBuilder.ts"
-      ]
-    },
-    "SpecSection": {
-      "defined_in": ".llm-context/types-extracted.ts",
-      "kind": "type",
-      "used_in": [
-        "packages/analyzer/src/specBuilder.d.ts",
-        "packages/analyzer/src/specBuilder.ts",
-        "packages/renderer/src/renderer.ts",
-        "src/components/GroundingModal.tsx",
-        "src/engine/renderer.ts",
-        "src/engine/specBuilder.ts"
-      ]
-    },
-    "StepItem": {
-      "defined_in": ".llm-context/types-extracted.ts",
-      "kind": "interface",
-      "used_in": []
-    },
-    "TableData": {
-      "defined_in": ".llm-context/types-extracted.ts",
+    "packages/parser/src/types.ts::TableData": {
+      "name": "TableData",
+      "defined_in": "packages/parser/src/types.ts",
       "kind": "interface",
       "used_in": [
         "packages/parser/src/parser.d.ts",
-        "packages/parser/src/parser.ts",
-        "src/engine/parser.ts"
+        "packages/parser/src/parser.ts"
       ]
     },
-    "Theme": {
-      "defined_in": ".llm-context/types-extracted.ts",
+    "packages/renderer/src/contrast.ts::ColorBlindnessType": {
+      "name": "ColorBlindnessType",
+      "defined_in": "packages/renderer/src/contrast.ts",
+      "kind": "type",
+      "used_in": []
+    },
+    "packages/renderer/src/contrast.ts::ContrastAuditItem": {
+      "name": "ContrastAuditItem",
+      "defined_in": "packages/renderer/src/contrast.ts",
       "kind": "interface",
       "used_in": []
     },
-    "ThemeColors": {
-      "defined_in": ".llm-context/types-extracted.ts",
+    "packages/renderer/src/contrast.ts::ThemeContrastAudit": {
+      "name": "ThemeContrastAudit",
+      "defined_in": "packages/renderer/src/contrast.ts",
       "kind": "interface",
       "used_in": []
     },
-    "ThemeConfig": {
-      "defined_in": ".llm-context/types-extracted.ts",
+    "packages/renderer/src/icons.ts::IconOptions": {
+      "name": "IconOptions",
+      "defined_in": "packages/renderer/src/icons.ts",
+      "kind": "interface",
+      "used_in": []
+    },
+    "packages/renderer/src/qr.ts::QROptions": {
+      "name": "QROptions",
+      "defined_in": "packages/renderer/src/qr.ts",
+      "kind": "interface",
+      "used_in": []
+    },
+    "packages/renderer/src/renderer.ts::RenderResult": {
+      "name": "RenderResult",
+      "defined_in": "packages/renderer/src/renderer.ts",
+      "kind": "interface",
+      "used_in": []
+    },
+    "packages/renderer/src/types.ts::DensityConfig": {
+      "name": "DensityConfig",
+      "defined_in": "packages/renderer/src/types.ts",
+      "kind": "interface",
+      "used_in": []
+    },
+    "packages/renderer/src/types.ts::RenderOptions": {
+      "name": "RenderOptions",
+      "defined_in": "packages/renderer/src/types.ts",
+      "kind": "interface",
+      "used_in": [
+        "packages/renderer/src/renderer.ts"
+      ]
+    },
+    "packages/renderer/src/types.ts::ThemeConfig": {
+      "name": "ThemeConfig",
+      "defined_in": "packages/renderer/src/types.ts",
       "kind": "interface",
       "used_in": [
         "packages/renderer/src/contrast.ts",
         "packages/renderer/src/renderer.ts",
-        "packages/renderer/src/themes.ts",
-        "src/components/ContrastModal.tsx",
-        "src/engine/contrast.ts",
-        "src/engine/renderer.ts",
-        "src/engine/themes.ts"
+        "packages/renderer/src/themes.ts"
       ]
     },
-    "ThemeContrastAudit": {
-      "defined_in": ".llm-context/types-extracted.ts",
-      "kind": "interface",
-      "used_in": []
-    },
-    "ThemeTypography": {
-      "defined_in": ".llm-context/types-extracted.ts",
-      "kind": "interface",
-      "used_in": []
-    },
-    "TimelineItem": {
-      "defined_in": ".llm-context/types-extracted.ts",
-      "kind": "interface",
-      "used_in": [
-        "packages/analyzer/src/specBuilder.ts",
-        "src/engine/specBuilder.ts"
-      ]
-    },
-    "ToastMessage": {
+    "src/components/Toast.tsx::ToastMessage": {
+      "name": "ToastMessage",
       "defined_in": "src/components/Toast.tsx",
       "kind": "interface",
       "used_in": [
         "src/App.tsx"
       ]
     },
-    "VariantMap": {
-      "defined_in": ".llm-context/types-extracted.ts",
+    "src/components/mobile/BottomNavigation.tsx::MobileTab": {
+      "name": "MobileTab",
+      "defined_in": "src/components/mobile/BottomNavigation.tsx",
       "kind": "type",
       "used_in": [
-        "bin/cli.ts",
-        "packages/analyzer/src/specBuilder.d.ts",
-        "packages/analyzer/src/specBuilder.ts",
-        "src/App.tsx",
-        "src/components/GroundingModal.tsx",
-        "src/components/SectionControls.tsx",
+        "src/App.tsx"
+      ]
+    },
+    "src/components/mobile/VisualFormatPicker.tsx::FormatConfig": {
+      "name": "FormatConfig",
+      "defined_in": "src/components/mobile/VisualFormatPicker.tsx",
+      "kind": "interface",
+      "used_in": []
+    },
+    "src/engine/contrast.ts::ColorBlindnessType": {
+      "name": "ColorBlindnessType",
+      "defined_in": "src/engine/contrast.ts",
+      "kind": "type",
+      "used_in": [
+        "src/App.tsx"
+      ]
+    },
+    "src/engine/contrast.ts::ContrastAuditItem": {
+      "name": "ContrastAuditItem",
+      "defined_in": "src/engine/contrast.ts",
+      "kind": "interface",
+      "used_in": []
+    },
+    "src/engine/contrast.ts::ThemeContrastAudit": {
+      "name": "ThemeContrastAudit",
+      "defined_in": "src/engine/contrast.ts",
+      "kind": "interface",
+      "used_in": []
+    },
+    "src/engine/icons.ts::IconOptions": {
+      "name": "IconOptions",
+      "defined_in": "src/engine/icons.ts",
+      "kind": "interface",
+      "used_in": []
+    },
+    "src/engine/qr.ts::QROptions": {
+      "name": "QROptions",
+      "defined_in": "src/engine/qr.ts",
+      "kind": "interface",
+      "used_in": []
+    },
+    "src/engine/renderer.ts::RenderResult": {
+      "name": "RenderResult",
+      "defined_in": "src/engine/renderer.ts",
+      "kind": "interface",
+      "used_in": []
+    },
+    "src/engine/samples.ts::SampleReadme": {
+      "name": "SampleReadme",
+      "defined_in": "src/engine/samples.ts",
+      "kind": "interface",
+      "used_in": []
+    },
+    "src/engine/types.ts::BadgeItem": {
+      "name": "BadgeItem",
+      "defined_in": "src/engine/types.ts",
+      "kind": "interface",
+      "used_in": [
+        "src/engine/extractors.ts"
+      ]
+    },
+    "src/engine/types.ts::CodeBlock": {
+      "name": "CodeBlock",
+      "defined_in": "src/engine/types.ts",
+      "kind": "interface",
+      "used_in": []
+    },
+    "src/engine/types.ts::ComparisonRow": {
+      "name": "ComparisonRow",
+      "defined_in": "src/engine/types.ts",
+      "kind": "interface",
+      "used_in": [
         "src/engine/specBuilder.ts"
       ]
     },
-    "VisualDensity": {
-      "defined_in": ".llm-context/types-extracted.ts",
-      "kind": "type",
+    "src/engine/types.ts::ContentListItem": {
+      "name": "ContentListItem",
+      "defined_in": "src/engine/types.ts",
+      "kind": "interface",
+      "used_in": []
+    },
+    "src/engine/types.ts::DensityConfig": {
+      "name": "DensityConfig",
+      "defined_in": "src/engine/types.ts",
+      "kind": "interface",
+      "used_in": []
+    },
+    "src/engine/types.ts::DocSection": {
+      "name": "DocSection",
+      "defined_in": "src/engine/types.ts",
+      "kind": "interface",
       "used_in": [
-        "packages/renderer/src/renderer.ts",
-        "src/App.tsx",
-        "src/components/DensitySelector.tsx",
-        "src/components/GroundingModal.tsx",
-        "src/components/SectionControls.tsx",
+        "src/engine/classifier.ts",
+        "src/engine/parser.ts",
+        "src/engine/specBuilder.ts"
+      ]
+    },
+    "src/engine/types.ts::FeatureItem": {
+      "name": "FeatureItem",
+      "defined_in": "src/engine/types.ts",
+      "kind": "interface",
+      "used_in": [
+        "src/engine/extractors.ts"
+      ]
+    },
+    "src/engine/types.ts::GitHubMeta": {
+      "name": "GitHubMeta",
+      "defined_in": "src/engine/types.ts",
+      "kind": "interface",
+      "used_in": [
+        "src/engine/github.ts",
+        "src/engine/samples.ts",
+        "src/engine/specBuilder.ts"
+      ]
+    },
+    "src/engine/types.ts::GroundingMetrics": {
+      "name": "GroundingMetrics",
+      "defined_in": "src/engine/types.ts",
+      "kind": "interface",
+      "used_in": [
+        "src/engine/specBuilder.ts"
+      ]
+    },
+    "src/engine/types.ts::ImageItem": {
+      "name": "ImageItem",
+      "defined_in": "src/engine/types.ts",
+      "kind": "interface",
+      "used_in": []
+    },
+    "src/engine/types.ts::InfographicSpec": {
+      "name": "InfographicSpec",
+      "defined_in": "src/engine/types.ts",
+      "kind": "interface",
+      "used_in": [
+        "src/engine/renderer.ts",
+        "src/engine/specBuilder.ts"
+      ]
+    },
+    "src/engine/types.ts::LogoConfig": {
+      "name": "LogoConfig",
+      "defined_in": "src/engine/types.ts",
+      "kind": "interface",
+      "used_in": []
+    },
+    "src/engine/types.ts::MetricItem": {
+      "name": "MetricItem",
+      "defined_in": "src/engine/types.ts",
+      "kind": "interface",
+      "used_in": [
+        "src/engine/extractors.ts",
+        "src/engine/specBuilder.ts"
+      ]
+    },
+    "src/engine/types.ts::NestedListItem": {
+      "name": "NestedListItem",
+      "defined_in": "src/engine/types.ts",
+      "kind": "interface",
+      "used_in": []
+    },
+    "src/engine/types.ts::ParsedDoc": {
+      "name": "ParsedDoc",
+      "defined_in": "src/engine/types.ts",
+      "kind": "interface",
+      "used_in": [
+        "src/engine/extractors.ts",
+        "src/engine/parser.ts",
+        "src/engine/specBuilder.ts"
+      ]
+    },
+    "src/engine/types.ts::RenderOptions": {
+      "name": "RenderOptions",
+      "defined_in": "src/engine/types.ts",
+      "kind": "interface",
+      "used_in": [
         "src/engine/renderer.ts"
       ]
+    },
+    "src/engine/types.ts::SectionSource": {
+      "name": "SectionSource",
+      "defined_in": "src/engine/types.ts",
+      "kind": "interface",
+      "used_in": [
+        "src/engine/specBuilder.ts"
+      ]
+    },
+    "src/engine/types.ts::SectionType": {
+      "name": "SectionType",
+      "defined_in": "src/engine/types.ts",
+      "kind": "type",
+      "used_in": [
+        "src/engine/classifier.ts",
+        "src/engine/parser.ts",
+        "src/engine/specBuilder.ts"
+      ]
+    },
+    "src/engine/types.ts::SmartRecommendation": {
+      "name": "SmartRecommendation",
+      "defined_in": "src/engine/types.ts",
+      "kind": "interface",
+      "used_in": [
+        "src/engine/specBuilder.ts"
+      ]
+    },
+    "src/engine/types.ts::SpecSection": {
+      "name": "SpecSection",
+      "defined_in": "src/engine/types.ts",
+      "kind": "type",
+      "used_in": [
+        "src/engine/renderer.ts",
+        "src/engine/specBuilder.ts"
+      ]
+    },
+    "src/engine/types.ts::StepItem": {
+      "name": "StepItem",
+      "defined_in": "src/engine/types.ts",
+      "kind": "interface",
+      "used_in": []
+    },
+    "src/engine/types.ts::TableData": {
+      "name": "TableData",
+      "defined_in": "src/engine/types.ts",
+      "kind": "interface",
+      "used_in": [
+        "src/engine/parser.ts"
+      ]
+    },
+    "src/engine/types.ts::ThemeConfig": {
+      "name": "ThemeConfig",
+      "defined_in": "src/engine/types.ts",
+      "kind": "interface",
+      "used_in": [
+        "src/engine/contrast.ts",
+        "src/engine/renderer.ts",
+        "src/engine/themes.ts"
+      ]
+    },
+    "src/engine/types.ts::TimelineItem": {
+      "name": "TimelineItem",
+      "defined_in": "src/engine/types.ts",
+      "kind": "interface",
+      "used_in": [
+        "src/engine/specBuilder.ts"
+      ]
+    },
+    "src/engine/types.ts::VariantMap": {
+      "name": "VariantMap",
+      "defined_in": "src/engine/types.ts",
+      "kind": "type",
+      "used_in": [
+        "src/engine/specBuilder.ts"
+      ]
+    },
+    "src/engine/types.ts::VisualDensity": {
+      "name": "VisualDensity",
+      "defined_in": "src/engine/types.ts",
+      "kind": "type",
+      "used_in": [
+        "src/engine/renderer.ts"
+      ]
+    },
+    "src/export/CanvasExporter.ts::ExportFormat": {
+      "name": "ExportFormat",
+      "defined_in": "src/export/CanvasExporter.ts",
+      "kind": "interface",
+      "used_in": []
+    },
+    "src/export/CanvasExporter.ts::ExportOptions": {
+      "name": "ExportOptions",
+      "defined_in": "src/export/CanvasExporter.ts",
+      "kind": "interface",
+      "used_in": []
+    },
+    "src/renderer/themes/ThemeManager.ts::Theme": {
+      "name": "Theme",
+      "defined_in": "src/renderer/themes/ThemeManager.ts",
+      "kind": "interface",
+      "used_in": []
+    },
+    "src/renderer/themes/ThemeManager.ts::ThemeColors": {
+      "name": "ThemeColors",
+      "defined_in": "src/renderer/themes/ThemeManager.ts",
+      "kind": "interface",
+      "used_in": []
+    },
+    "src/renderer/themes/ThemeManager.ts::ThemeTypography": {
+      "name": "ThemeTypography",
+      "defined_in": "src/renderer/themes/ThemeManager.ts",
+      "kind": "interface",
+      "used_in": []
+    },
+    "src/renderer/themes/contrast.ts::ContrastResult": {
+      "name": "ContrastResult",
+      "defined_in": "src/renderer/themes/contrast.ts",
+      "kind": "interface",
+      "used_in": []
+    },
+    "src/renderer/themes/contrast.ts::ThemeContrastAudit": {
+      "name": "ThemeContrastAudit",
+      "defined_in": "src/renderer/themes/contrast.ts",
+      "kind": "interface",
+      "used_in": []
+    },
+    "src/storage/ProjectStorage.ts::GenerationRecord": {
+      "name": "GenerationRecord",
+      "defined_in": "src/storage/ProjectStorage.ts",
+      "kind": "interface",
+      "used_in": []
+    },
+    "src/storage/ProjectStorage.ts::Project": {
+      "name": "Project",
+      "defined_in": "src/storage/ProjectStorage.ts",
+      "kind": "interface",
+      "used_in": [
+        "src/App.tsx"
+      ]
+    },
+    "src/ui/KeyboardShortcuts.ts::Shortcut": {
+      "name": "Shortcut",
+      "defined_in": "src/ui/KeyboardShortcuts.ts",
+      "kind": "interface",
+      "used_in": []
     }
   }
 }
