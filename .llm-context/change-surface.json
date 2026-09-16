@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generated": "2026-09-16 03:55 UTC",
+    "generated": "2026-09-16 04:07 UTC",
     "total_files": 99,
     "scored_files": 99,
     "weights": {
@@ -125,20 +125,6 @@
       "rank": 8
     },
     {
-      "path": "src/engine/extractors.ts",
-      "score": 0.5578,
-      "imported_by_count": 9,
-      "days_since_modified": 0.1,
-      "pattern_hits": 0,
-      "factors": {
-        "fan_in": 0.25,
-        "recency": 0.988,
-        "pattern_density": 0.5,
-        "size": 0.857
-      },
-      "rank": 9
-    },
-    {
       "path": "packages/renderer/src/themes.ts",
       "score": 0.5557,
       "imported_by_count": 8,
@@ -149,6 +135,20 @@
         "recency": 1.0,
         "pattern_density": 0.5,
         "size": 0.918
+      },
+      "rank": 9
+    },
+    {
+      "path": "src/engine/extractors.ts",
+      "score": 0.5549,
+      "imported_by_count": 9,
+      "days_since_modified": 0.2,
+      "pattern_hits": 0,
+      "factors": {
+        "fan_in": 0.25,
+        "recency": 0.977,
+        "pattern_density": 0.5,
+        "size": 0.857
       },
       "rank": 10
     },
@@ -979,20 +979,6 @@
       "rank": 69
     },
     {
-      "path": "vite.config.ts",
-      "score": 0.47,
-      "imported_by_count": 0,
-      "days_since_modified": 0.1,
-      "pattern_hits": 0,
-      "factors": {
-        "fan_in": 0.0,
-        "recency": 0.988,
-        "pattern_density": 0.5,
-        "size": 0.979
-      },
-      "rank": 70
-    },
-    {
       "path": "bin/cli.ts",
       "score": 0.4699,
       "imported_by_count": 1,
@@ -1004,7 +990,7 @@
         "pattern_density": 0.5,
         "size": 0.837
       },
-      "rank": 71
+      "rank": 70
     },
     {
       "path": "src/engine/__tests__/extractors.test.ts",
@@ -1018,21 +1004,21 @@
         "pattern_density": 0.5,
         "size": 0.946
       },
-      "rank": 72
+      "rank": 71
     },
     {
-      "path": ".llm-context/types-extracted.ts",
-      "score": 0.4623,
+      "path": "vite.config.ts",
+      "score": 0.4671,
       "imported_by_count": 0,
-      "days_since_modified": 0.0,
+      "days_since_modified": 0.2,
       "pattern_hits": 0,
       "factors": {
         "fan_in": 0.0,
-        "recency": 1.0,
+        "recency": 0.977,
         "pattern_density": 0.5,
-        "size": 0.873
+        "size": 0.979
       },
-      "rank": 73
+      "rank": 72
     },
     {
       "path": "src/components/Header.tsx",
@@ -1046,7 +1032,7 @@
         "pattern_density": 0.5,
         "size": 0.861
       },
-      "rank": 74
+      "rank": 73
     },
     {
       "path": "src/engine/__tests__/specBuilder.test.ts",
@@ -1060,7 +1046,7 @@
         "pattern_density": 0.5,
         "size": 0.935
       },
-      "rank": 75
+      "rank": 74
     },
     {
       "path": "src/components/OnboardingModal.tsx",
@@ -1074,7 +1060,7 @@
         "pattern_density": 0.5,
         "size": 0.809
       },
-      "rank": 76
+      "rank": 75
     },
     {
       "path": "src/engine/__tests__/renderer.test.ts",
@@ -1088,7 +1074,7 @@
         "pattern_density": 0.5,
         "size": 0.902
       },
-      "rank": 77
+      "rank": 76
     },
     {
       "path": "src/components/SectionControls.tsx",
@@ -1102,7 +1088,7 @@
         "pattern_density": 0.5,
         "size": 0.683
       },
-      "rank": 78
+      "rank": 77
     },
     {
       "path": "src/App.tsx",
@@ -1116,7 +1102,7 @@
         "pattern_density": 0.5,
         "size": 0.332
       },
-      "rank": 79
+      "rank": 78
     },
     {
       "path": "src/components/mobile/VisualFormatPicker.tsx",
@@ -1129,6 +1115,20 @@
         "recency": 0.791,
         "pattern_density": 0.5,
         "size": 0.932
+      },
+      "rank": 79
+    },
+    {
+      "path": ".llm-context/types-extracted.ts",
+      "score": 0.4311,
+      "imported_by_count": 0,
+      "days_since_modified": 0.0,
+      "pattern_hits": 0,
+      "factors": {
+        "fan_in": 0.0,
+        "recency": 1.0,
+        "pattern_density": 0.5,
+        "size": 0.561
       },
       "rank": 80
     },
@@ -1245,20 +1245,6 @@
       "rank": 88
     },
     {
-      "path": "src/components/mobile/MobileExportSheet.tsx",
-      "score": 0.4195,
-      "imported_by_count": 1,
-      "days_since_modified": 1.8,
-      "pattern_hits": 0,
-      "factors": {
-        "fan_in": 0.028,
-        "recency": 0.791,
-        "pattern_density": 0.5,
-        "size": 0.857
-      },
-      "rank": 89
-    },
-    {
       "path": "packages/renderer/src/renderer.ts",
       "score": 0.4194,
       "imported_by_count": 4,
@@ -1270,7 +1256,7 @@
         "pattern_density": 0.5,
         "size": 0.0
       },
-      "rank": 90
+      "rank": 89
     },
     {
       "path": "src/components/ProjectsModal.tsx",
@@ -1283,6 +1269,20 @@
         "recency": 0.791,
         "pattern_density": 0.5,
         "size": 0.829
+      },
+      "rank": 90
+    },
+    {
+      "path": "src/components/mobile/MobileExportSheet.tsx",
+      "score": 0.4165,
+      "imported_by_count": 1,
+      "days_since_modified": 1.9,
+      "pattern_hits": 0,
+      "factors": {
+        "fan_in": 0.028,
+        "recency": 0.779,
+        "pattern_density": 0.5,
+        "size": 0.857
       },
       "rank": 91
     },
@@ -1344,13 +1344,13 @@
     },
     {
       "path": "src/storage/ProjectStorage.ts",
-      "score": 0.3044,
+      "score": 0.3015,
       "imported_by_count": 3,
-      "days_since_modified": 6.7,
+      "days_since_modified": 6.8,
       "pattern_hits": 0,
       "factors": {
         "fan_in": 0.083,
-        "recency": 0.221,
+        "recency": 0.209,
         "pattern_density": 0.5,
         "size": 0.908
       },
@@ -1358,13 +1358,13 @@
     },
     {
       "path": "src/renderer/themes/ThemeManager.ts",
-      "score": 0.3006,
+      "score": 0.2977,
       "imported_by_count": 3,
-      "days_since_modified": 6.7,
+      "days_since_modified": 6.8,
       "pattern_hits": 0,
       "factors": {
         "fan_in": 0.083,
-        "recency": 0.221,
+        "recency": 0.209,
         "pattern_density": 0.5,
         "size": 0.871
       },
@@ -1372,13 +1372,13 @@
     },
     {
       "path": "src/main.tsx",
-      "score": 0.2799,
+      "score": 0.277,
       "imported_by_count": 0,
-      "days_since_modified": 6.7,
+      "days_since_modified": 6.8,
       "pattern_hits": 0,
       "factors": {
         "fan_in": 0.0,
-        "recency": 0.221,
+        "recency": 0.209,
         "pattern_density": 0.5,
         "size": 0.996
       },
