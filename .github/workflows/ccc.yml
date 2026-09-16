@@ -38,7 +38,7 @@ jobs:
 
       - name: Generate repository context
         run: |
-          ccc
+          ccc --force
 
       - name: Verify generated context
         shell: bash
