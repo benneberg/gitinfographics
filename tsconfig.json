@@ -18,6 +18,15 @@
     "paths": {
       "@/*": [
         "./*"
+      ],
+      "@gitinfographics/parser": [
+        "./packages/parser/src/index.ts"
+      ],
+      "@gitinfographics/analyzer": [
+        "./packages/analyzer/src/index.ts"
+      ],
+      "@gitinfographics/renderer": [
+        "./packages/renderer/src/index.ts"
       ]
     },
     "allowImportingTsExtensions": true,

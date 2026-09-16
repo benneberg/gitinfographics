@@ -1,0 +1,59 @@
+{
+  "name": "@gitinfographics/renderer",
+  "version": "1.0.0",
+  "description": "Zero-DOM Scandinavian minimalist SVG infographic vector rendering engine with dual-viewport reflow.",
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "dependencies": {
+    "@gitinfographics/parser": "workspace:*",
+    "@gitinfographics/analyzer": "workspace:*",
+    "qrcode": "^1.5.4"
+  },
+  "devDependencies": {
+    "@types/qrcode": "^1.5.6"
+  },
+  "scripts": {
+    "build": "node ../../scripts/build-package.mjs renderer",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/benneberg/gitinfographics.git",
+    "directory": "packages/renderer"
+  },
+  "homepage": "https://github.com/benneberg/gitinfographics#readme",
+  "bugs": {
+    "url": "https://github.com/benneberg/gitinfographics/issues"
+  },
+  "keywords": [
+    "svg",
+    "renderer",
+    "vector",
+    "infographic",
+    "scandinavian",
+    "minimalism",
+    "zero-dom",
+    "gitinfographics",
+    "qr-code"
+  ],
+  "author": "benneberg",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  }
+}

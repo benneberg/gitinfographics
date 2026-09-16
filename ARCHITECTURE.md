@@ -132,12 +132,36 @@ Transforms parsed data into a structured `InfographicSpec` schema:
 
 ---
 
-## Directory Structure
+## Directory & Monorepo Structure
 
 ```
 ├── .github/
 │   └── workflows/
-│       └── ci.yml               # Automated CI (lint, test, build)
+│       ├── ci.yml               # Automated CI (lint, test, build)
+│       ├── deploy.yml           # GitHub Pages deployment
+│       ├── ccc.yml              # Context Compiler automation
+│       └── publish.yml          # Automated NPM publishing with provenance
+├── packages/                    # Decoupled Standalone Zero-DOM Core Modules
+│   ├── parser/                  # @gitinfographics/parser
+│   │   ├── src/                 # Tokenizer, table/code parsers, truncation
+│   │   ├── dist/                # Bundled ESM, CJS, and TypeScript .d.ts
+│   │   ├── package.json         # Standalone package definition
+│   │   └── README.md
+│   ├── analyzer/                # @gitinfographics/analyzer
+│   │   ├── src/                 # Classifier, metric miners, tech profiler, spec builder
+│   │   ├── dist/                # Bundled ESM, CJS, and TypeScript .d.ts
+│   │   ├── package.json         # Standalone package definition
+│   │   └── README.md
+│   └── renderer/                # @gitinfographics/renderer
+│       ├── src/                 # Scandinavian SVG engine, reflow, themes, QR, WCAG audit
+│       ├── dist/                # Bundled ESM, CJS, and TypeScript .d.ts
+│       ├── package.json         # Standalone package definition
+│       └── README.md
+├── scripts/
+│   ├── build-package.mjs        # Per-package bundler & d.ts generator
+│   ├── build-all-packages.mjs   # Monorepo build coordinator
+│   └── verify-packages.mjs      # Pre-publish tarball & packaging verifier
+├── pnpm-workspace.yaml          # PNPM workspace definition
 ├── public/                      # Static assets & web font links
 ├── src/
 │   ├── components/              # UI layer (React 19 + Tailwind CSS)
@@ -151,35 +175,22 @@ Transforms parsed data into a structured `InfographicSpec` schema:
 │   │   ├── ShortcutsModal.tsx   # Keyboard shortcuts cheat sheet modal
 │   │   ├── InfoModal.tsx        # Comprehensive user manual & FAQ modal
 │   │   └── Header.tsx           # GitHub repo import & actions toolbar
-│   ├── engine/                  # Headless, zero-DOM core engine
-│   │   ├── __tests__/           # Vitest unit test suite (48 tests passing)
-│   │   │   ├── parser.test.ts
-│   │   │   ├── classifier.test.ts
-│   │   │   ├── extractors.test.ts
-│   │   │   ├── specBuilder.test.ts
-│   │   │   ├── renderer.test.ts
-│   │   │   └── qr.test.ts
-│   │   ├── parser.ts            # Markdown tokenizer & table/code parsers
-│   │   ├── classifier.ts        # 14-category heuristic classifier
-│   │   ├── extractors.ts        # Metric, feature, tech, and badge miners
-│   │   ├── specBuilder.ts       # Layout specification builder
-│   │   ├── renderer.ts          # Desktop (880px) & Mobile (400px) SVG renderers
+│   ├── engine/                  # Studio engine facade (re-exports decoupled packages)
+│   │   ├── parser.ts            # Facade delegating to @gitinfographics/parser
+│   │   ├── classifier.ts        # Facade delegating to @gitinfographics/analyzer
+│   │   ├── extractors.ts        # Facade delegating to @gitinfographics/analyzer
+│   │   ├── specBuilder.ts       # Facade delegating to @gitinfographics/analyzer
+│   │   ├── renderer.ts          # Facade delegating to @gitinfographics/renderer
 │   │   ├── qr.ts                # Deterministic vector QR code SVG generator
 │   │   ├── github.ts            # GitHub REST API client & rate-limit handler
 │   │   ├── themes.ts            # Scandinavian & classic color tokens
-│   │   ├── types.ts             # TypeScript domain interfaces
-│   │   └── workflowTemplate.ts  # GitHub Actions YAML builder
+│   │   └── types.ts             # Domain interfaces & re-exports
 │   ├── export/                  # Canvas & format export subsystems
-│   │   └── CanvasExporter.ts    # Multi-format preset definitions & canvas exporter
-│   ├── renderer/themes/         # Theme manager and palette definitions
-│   │   └── ThemeManager.ts      # Theme registry and validation
 │   ├── storage/                 # Project persistence & generation history
-│   │   └── ProjectStorage.ts    # LocalStorage CRUD & generation tracking
 │   ├── ui/                      # Interaction managers
-│   │   └── KeyboardShortcuts.ts # Global keyboard shortcut manager
 │   ├── App.tsx                  # Studio coordinator
 │   └── main.tsx                 # React entry point
-├── package.json                 # Project dependencies & test scripts
+├── package.json                 # Monorepo root configuration & scripts
 ├── TODO.md                      # Feature backlog & migration tracking
 ├── REPOSITORY_STATUS.md         # Repository audit report
 └── README.md                    # Project overview & quickstart

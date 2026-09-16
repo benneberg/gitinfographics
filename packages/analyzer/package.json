@@ -1,0 +1,52 @@
+{
+  "name": "@gitinfographics/analyzer",
+  "version": "1.0.0",
+  "description": "Heuristic classifier, metric miner, and infographic specification builder for developer documentation.",
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "dependencies": {
+    "@gitinfographics/parser": "workspace:*"
+  },
+  "scripts": {
+    "build": "node ../../scripts/build-package.mjs analyzer",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/benneberg/gitinfographics.git",
+    "directory": "packages/analyzer"
+  },
+  "homepage": "https://github.com/benneberg/gitinfographics#readme",
+  "bugs": {
+    "url": "https://github.com/benneberg/gitinfographics/issues"
+  },
+  "keywords": [
+    "analyzer",
+    "classifier",
+    "metrics",
+    "heuristics",
+    "infographic",
+    "gitinfographics",
+    "zero-dom"
+  ],
+  "author": "benneberg",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  }
+}

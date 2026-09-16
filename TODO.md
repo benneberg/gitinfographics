@@ -14,12 +14,12 @@
 - [x] **Smart Layout Auto-Detection**: Heuristic detector choosing the ideal visual layout based on repository characteristics and confidence scoring.
 
 ### 2. Module Decoupling & Ecosystem
-- [ ] **Standalone Engine Modules**:
-  - [ ] `@gitinfographics/parser`
-  - [ ] `@gitinfographics/analyzer`
-  - [ ] `@gitinfographics/renderer`
-- [ ] **NPM Publishing**: Publish standalone zero-DOM core packages to npm registry.
-- [ ] **Monorepo Setup**: Transition to pnpm workspace architecture.
+- [x] **Standalone Engine Modules**:
+  - [x] `@gitinfographics/parser`: Zero-DOM markdown tokenization, table/code block extraction, badge mining, and smart truncation.
+  - [x] `@gitinfographics/analyzer`: Heuristic classification, quantitative telemetry mining, tech profiler, and infographic layout specification builder.
+  - [x] `@gitinfographics/renderer`: Zero-DOM Scandinavian minimalist SVG vector engine, dual-viewport reflow, themes, WCAG contrast auditor, and vector QR generator.
+- [x] **NPM Publishing**: Automated release and workflow dispatch pipeline (`.github/workflows/publish.yml`) with build artifacts and dry-run pack validation.
+- [x] **Monorepo Setup**: Transitioned to pnpm workspace architecture (`pnpm-workspace.yaml`, `packages/*`, and monorepo scripts).
 
 ### 3. Content Grounding & Verification
 - [x] **Source Traceability**: Deterministic traceability matrix linking infographic cards to source markdown blocks.

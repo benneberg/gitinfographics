@@ -1,4 +1,7 @@
 import { BadgeItem, FeatureItem, MetricItem, ParsedDoc } from './types';
+import { cleanMarkdownText } from '@gitinfographics/parser';
+
+export { cleanMarkdownText };
 
 export function trunc(s: string, max: number): string {
   if (!s) return '';
@@ -6,42 +9,10 @@ export function trunc(s: string, max: number): string {
 }
 
 /**
- * Strips markdown links, bold, italics, code fences, blockquotes, bullets, and URLs
- */
-export function cleanMarkdownText(s: string): string {
-  if (!s) return '';
-  return s
-    // Strip leading blockquotes
-    .replace(/^>+\s*/, '')
-    // Strip markdown links [label](url) -> label
-    .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
-    // Strip bare angle links <https://...>
-    .replace(/<https?:\/\/[^>]+>/g, '')
-    // Strip bold & italic markers
-    .replace(/\*\*([^*]+)\*\*/g, '$1')
-    .replace(/\*([^*]+)\*/g, '$1')
-    .replace(/__([^_]+)__/g, '$1')
-    .replace(/_([^_]+)_/g, '$1')
-    // Strip inline code `code` -> code
-    .replace(/`([^`]+)`/g, '$1')
-    // Strip leading list bullet chars or checkboxes (requires space so **bold is preserved)
-    .replace(/^(\s*[-*+•]|\s*\d+\.)\s+/, '')
-    .replace(/^\[[ xX]\]\s*/, '')
-    // Clean any stray asterisks
-    .replace(/\*+/g, '')
-    // Clean redundant spaces
-    .replace(/\s+/g, ' ')
-    .trim();
-}
-
-/**
- * 3. Advanced Metric Extraction
- * Refinements:
- * - Cleaner canonical labels.
- * - Better number normalization.
- * - Range / “X per Y” / multiplier support.
+ * Advanced Metric Extraction:
+ * - 14 regex metric miners (percentages, counts, latencies, multipliers, versions).
  * - Label normalization for deduplication.
- * - Strict rejection of false positives (e.g. "0 Increase", bare numbers).
+ * - Rejection of false positives.
  */
 export function extractMetrics(text: string): MetricItem[] {
   if (!text) return [];
@@ -117,7 +88,7 @@ export function extractMetrics(text: string): MetricItem[] {
 }
 
 /**
- * 9. Badge -> metric mining
+ * Badge -> metric mining (shields.io, coverage badges, etc.)
  */
 export function extractMetricsFromBadges(badges: BadgeItem[]): MetricItem[] {
   const metrics: MetricItem[] = [];
@@ -141,9 +112,7 @@ export function extractMetricsFromBadges(badges: BadgeItem[]): MetricItem[] {
 }
 
 /**
- * 4. Smarter Feature Extraction
- * Extracts clean title & description from bold, links, bullets, colons, checkboxes
- * Strips all markdown syntax so titles like `[PURPOSE.md](./PURPOSE.md)` become clean `PURPOSE.md`.
+ * Feature Extraction: Extracts clean title & description from bold, links, bullets, colons, checkboxes.
  */
 export function splitFeat(text: string): FeatureItem {
   if (!text) return { title: '', description: '' };
@@ -209,7 +178,7 @@ export const TECH_KW: string[] = [
 ];
 
 /**
- * 4. Smarter Tech Extraction
+ * Smarter Tech Extraction:
  * Looks for keywords, package.json dependencies, requirements.txt, Dockerfiles, and file extensions
  */
 export function extractTechAdvanced(doc: ParsedDoc): string[] {

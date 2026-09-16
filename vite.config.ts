@@ -39,6 +39,9 @@ export default defineConfig(({ command }) => {
     resolve: {
       alias: {
         '@': path.resolve(__dirname, '.'),
+        '@gitinfographics/parser': path.resolve(__dirname, './packages/parser/src/index.ts'),
+        '@gitinfographics/analyzer': path.resolve(__dirname, './packages/analyzer/src/index.ts'),
+        '@gitinfographics/renderer': path.resolve(__dirname, './packages/renderer/src/index.ts'),
       },
     },
     server: {

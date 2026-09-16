@@ -1,0 +1,50 @@
+{
+  "name": "@gitinfographics/parser",
+  "version": "1.0.0",
+  "description": "Zero-DOM markdown parser for technical repositories, READMEs, and structured documentation.",
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "node ../../scripts/build-package.mjs parser",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/benneberg/gitinfographics.git",
+    "directory": "packages/parser"
+  },
+  "homepage": "https://github.com/benneberg/gitinfographics#readme",
+  "bugs": {
+    "url": "https://github.com/benneberg/gitinfographics/issues"
+  },
+  "keywords": [
+    "markdown",
+    "parser",
+    "ast",
+    "readme",
+    "github",
+    "gitinfographics",
+    "zero-dom",
+    "scandinavian-minimalism"
+  ],
+  "author": "benneberg",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  }
+}
