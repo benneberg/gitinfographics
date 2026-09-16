@@ -12,7 +12,7 @@ permissions:
 
 jobs:
   ccc:
-    name: Generate and test repository context
+    name: Generate and validate repository context
     runs-on: ubuntu-latest
 
     steps:
@@ -30,7 +30,6 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install ccc-contextcompiler
-          pip install pyyaml
 
       - name: Show CCC version
         run: |
@@ -42,7 +41,10 @@ jobs:
           ccc
 
       - name: Verify generated context
+        shell: bash
         run: |
+          set -euo pipefail
+
           test -d .llm-context
 
           count=$(find .llm-context -type f | wc -l)
@@ -51,99 +53,32 @@ jobs:
           echo
           echo "Generated files:"
           find .llm-context -type f | sort
-          
-      - name: Initialize CCC workspace
+
+          echo
+          echo "Context directory:"
+          du -sh .llm-context
+
+      - name: Inspect generated manifest
+        shell: bash
         run: |
-          ccc workspace init
-          echo
-          echo "Workspace files:"
-          find . -maxdepth 2 -name "ccc-workspace.yml" -o -name ".ccc*" | sort
-          
-      - name: Test task-oriented context
-        run: |
-          set +e
+          set -euo pipefail
 
-          echo "=== Layout ==="
-          ccc context-for "add a new infographic layout" \
-            > context-layout.txt \
-            2> context-layout-error.txt
-          layout_exit=$?
-          echo "Exit code: $layout_exit"
-
-          echo
-          echo "=== Renderer ==="
-          ccc context-for "change the SVG renderer" \
-            > context-renderer.txt \
-            2> context-renderer-error.txt
-          renderer_exit=$?
-          echo "Exit code: $renderer_exit"
-
-          echo
-          echo "=== README/content ==="
-          ccc context-for "add support for a new README content type" \
-            > context-content.txt \
-            2> context-content-error.txt
-          content_exit=$?
-          echo "Exit code: $content_exit"
-
-          echo
-          echo "=== Errors ==="
-
-          for file in \
-            context-layout-error.txt \
-            context-renderer-error.txt \
-            context-content-error.txt
-          do
-            echo "--- $file ---"
-            if [ -s "$file" ]; then
-              cat "$file"
-            else
-              echo "(empty)"
-            fi
-          done
-
-          echo
-          echo "=== Result sizes ==="
-
-          wc -c \
-            context-layout.txt \
-            context-renderer.txt \
-            context-content.txt
-
-          echo
-          echo "Task-context experiments completed."
-
-      - name: Inspect context-for output
-        run: |
           echo "========================================"
-          echo "LAYOUT CONTEXT"
+          echo "CCC CONTEXT MANIFEST"
           echo "========================================"
-          cat context-layout.txt
 
-          echo
-          echo "========================================"
-          echo "RENDERER CONTEXT"
-          echo "========================================"
-          cat context-renderer.txt
-
-          echo
-          echo "========================================"
-          echo "README / CONTENT CONTEXT"
-          echo "========================================"
-          cat context-content.txt
+          if [ -f .llm-context/context-manifest.json ]; then
+            cat .llm-context/context-manifest.json
+          else
+            echo "context-manifest.json not found"
+            exit 1
+          fi
 
       - name: Upload CCC context
         uses: actions/upload-artifact@v4
         with:
           name: ccc-context-${{ github.sha }}
           include-hidden-files: true
-          path: |
-            .llm-context/
-            context-layout.txt
-            context-layout-error.txt
-            context-renderer.txt
-            context-renderer-error.txt
-            context-content.txt
-            context-content-error.txt
+          path: .llm-context/
           if-no-files-found: error
           retention-days: 14
