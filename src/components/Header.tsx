@@ -16,7 +16,9 @@ import {
   FolderOpen,
   Share2,
   Keyboard,
-  ShieldCheck
+  ShieldCheck,
+  LayoutTemplate,
+  Users
 } from 'lucide-react';
 import { THEMES } from '../engine/themes';
 import { SAMPLE_READMES, SampleReadme } from '../engine/samples';
@@ -38,6 +40,9 @@ interface HeaderProps {
   onOpenShareModal?: () => void;
   onOpenShortcutsModal?: () => void;
   onOpenGroundingModal?: () => void;
+  onOpenTemplateGallery?: () => void;
+  onOpenSyncModal?: () => void;
+  activePeersCount?: number;
   groundingCoverage?: number;
   currentFormat: string;
   onFormatChange: (format: string) => void;
@@ -62,6 +67,9 @@ export const Header: React.FC<HeaderProps> = ({
   onOpenShareModal,
   onOpenShortcutsModal,
   onOpenGroundingModal,
+  onOpenTemplateGallery,
+  onOpenSyncModal,
+  activePeersCount,
   groundingCoverage
 }) => {
   const [repoInput, setRepoInput] = useState('');
@@ -181,6 +189,35 @@ export const Header: React.FC<HeaderProps> = ({
               <option value="github-preview">GitHub Preview</option>
             </select>
           </div>
+
+          {/* Template Gallery & Custom Schemas */}
+          {onOpenTemplateGallery && (
+            <button
+              onClick={onOpenTemplateGallery}
+              className="flex items-center gap-1 min-h-[36px] px-2.5 py-1 bg-white hover:bg-stone-50 border border-stone-200 rounded-lg text-xs font-medium text-stone-700 shadow-2xs transition-colors shrink-0"
+              title="Browse community & custom layout templates"
+            >
+              <LayoutTemplate className="w-3.5 h-3.5 text-stone-500" />
+              <span className="hidden sm:inline">Templates</span>
+            </button>
+          )}
+
+          {/* Real-Time Collaboration Sync */}
+          {onOpenSyncModal && (
+            <button
+              onClick={onOpenSyncModal}
+              className="flex items-center gap-1 min-h-[36px] px-2.5 py-1 bg-white hover:bg-emerald-50/60 border border-stone-200 rounded-lg text-xs font-medium text-stone-700 shadow-2xs transition-colors shrink-0"
+              title="Real-time multi-user synchronization & session presence"
+            >
+              <Users className="w-3.5 h-3.5 text-emerald-600" />
+              <span className="hidden sm:inline">Sync</span>
+              {(activePeersCount ?? 1) > 1 && (
+                <span className="ml-0.5 px-1 py-0.2 bg-emerald-100 text-emerald-800 text-[10px] rounded-full font-bold">
+                  {activePeersCount}
+                </span>
+              )}
+            </button>
+          )}
 
           {/* Projects Management */}
           {onOpenProjectsModal && (

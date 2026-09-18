@@ -1,0 +1,38 @@
+name: Bundle Size Budget Tracking
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+  workflow_dispatch:
+
+concurrency:
+  group: size-budget-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  size-check:
+    name: Verify Package & Bundle Size Budgets
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build Packages & Web Application
+        run: |
+          npm run build:packages
+          npm run build
+
+      - name: Verify Size Budgets
+        run: node scripts/bundle-size-budget.mjs

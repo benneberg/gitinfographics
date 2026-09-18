@@ -48,6 +48,10 @@ import { InfoModal } from './components/InfoModal';
 import { ContrastModal } from './components/ContrastModal';
 import { ShortcutsModal } from './components/ShortcutsModal';
 import { GroundingModal } from './components/GroundingModal';
+import { TemplateGalleryModal } from './components/TemplateGalleryModal';
+import { SyncModal } from './components/SyncModal';
+import { CustomTemplate } from './engine/templateSchema';
+import { RealTimeSyncEngine } from './engine/sync';
 
 import {
   Sparkles,
@@ -159,6 +163,21 @@ export default function App() {
   const [shortcutsModalOpen, setShortcutsModalOpen] = useState(false);
   const [contrastModalOpen, setContrastModalOpen] = useState(false);
   const [groundingModalOpen, setGroundingModalOpen] = useState(false);
+  const [templateGalleryOpen, setTemplateGalleryOpen] = useState(false);
+  const [syncModalOpen, setSyncModalOpen] = useState(false);
+  const [activePeersCount, setActivePeersCount] = useState(1);
+
+  // Real-Time Collaborative Broadcast Sync Engine
+  const syncEngine = useMemo(() => {
+    let room = 'default';
+    if (typeof window !== 'undefined') {
+      const urlParams = new URLSearchParams(window.location.search);
+      if (urlParams.get('room')) room = urlParams.get('room')!;
+    }
+    const engine = new RealTimeSyncEngine(room);
+    engine.connect();
+    return engine;
+  }, []);
 
   // Notifications & History
   const [history, setHistory] = useState<any[]>([]);
@@ -185,6 +204,83 @@ export default function App() {
     }
     addToast(`Applied ${rec.label} (${rec.suggestedDensity} density)`, 'success');
   }, [addToast]);
+
+  // Apply Custom or Community Template handler
+  const handleApplyTemplate = useCallback((template: CustomTemplate) => {
+    if (template.theme) setTheme(template.theme);
+    if (template.density) setDensity(template.density);
+    if (template.sectionVariants) {
+      const variantIdxMap: Record<string, number> = {
+        grid: 1,
+        timeline: 1,
+        comparison: 2,
+        callout: 1,
+        pills: 1,
+        cards: 0,
+        table: 2
+      };
+      const newV: Record<string, number> = {};
+      Object.entries(template.sectionVariants).forEach(([k, val]) => {
+        newV[k] = typeof val === 'number' ? val : (variantIdxMap[String(val)] ?? 0);
+      });
+      setVariants((prev) => ({ ...prev, ...newV }));
+    }
+    if (template.disabledSections) {
+      const disabledMap: Record<string, boolean> = {};
+      template.disabledSections.forEach((s) => {
+        disabledMap[s] = true;
+      });
+      setDisabledSections(disabledMap);
+    }
+    if (template.showQR !== undefined) {
+      setShowQR(template.showQR);
+    }
+    if (template.qrUrl) {
+      setQrUrl(template.qrUrl);
+    }
+    if (template.customTitle) {
+      setCustomTitle(template.customTitle);
+    }
+    if (template.customSubtitle) {
+      setCustomSubtitle(template.customSubtitle);
+    }
+    if (template.sampleMarkdown) {
+      setMarkdown(template.sampleMarkdown);
+    }
+    addToast(`Applied template "${template.name}"`, 'success');
+  }, [addToast]);
+
+  // Real-Time Collaborative State Listeners
+  useEffect(() => {
+    const unsubPeers = syncEngine.onPeersChange((peers) => {
+      setActivePeersCount(peers.length);
+    });
+    const unsubState = syncEngine.onStateChange((shared) => {
+      if (shared.markdown !== undefined) setMarkdown(shared.markdown);
+      if (shared.theme !== undefined) setTheme(shared.theme);
+      if (shared.density !== undefined) setDensity(shared.density);
+      if (shared.variants !== undefined) setVariants(shared.variants);
+      if (shared.customTitle !== undefined) setCustomTitle(shared.customTitle);
+      if (shared.customSubtitle !== undefined) setCustomSubtitle(shared.customSubtitle);
+      addToast('Received real-time update from peer', 'info');
+    });
+    return () => {
+      unsubPeers();
+      unsubState();
+    };
+  }, [syncEngine, addToast]);
+
+  // Broadcast state changes outward
+  useEffect(() => {
+    syncEngine.broadcastState({
+      markdown,
+      theme,
+      density,
+      variants,
+      customTitle,
+      customSubtitle
+    });
+  }, [markdown, theme, density, variants, customTitle, customSubtitle, syncEngine]);
 
   // Initial Load from LocalStorage
   useEffect(() => {
@@ -570,6 +666,9 @@ export default function App() {
           onOpenShareModal={() => setShareModalOpen(true)}
           onOpenShortcutsModal={() => setShortcutsModalOpen(true)}
           onOpenGroundingModal={() => setGroundingModalOpen(true)}
+          onOpenTemplateGallery={() => setTemplateGalleryOpen(true)}
+          onOpenSyncModal={() => setSyncModalOpen(true)}
+          activePeersCount={activePeersCount}
           groundingCoverage={finalSpec.grounding?.coveragePercent}
         />
       </div>
@@ -1155,6 +1254,8 @@ export default function App() {
         onOpenWorkflow={() => setWorkflowModalOpen(true)}
         onOpenProjects={() => setProjectsModalOpen(true)}
         onOpenShare={() => setShareModalOpen(true)}
+        onOpenTemplates={() => setTemplateGalleryOpen(true)}
+        onOpenSync={() => setSyncModalOpen(true)}
         onOpenShortcuts={() => setShortcutsModalOpen(true)}
         onOpenContrast={() => setContrastModalOpen(true)}
         onOpenTour={() => setShowCoachMarks(true)}
@@ -1252,6 +1353,28 @@ export default function App() {
         onClose={() => setGroundingModalOpen(false)}
         spec={finalSpec}
         onApplyRecommendation={handleApplyRecommendation}
+      />
+
+      {/* Community & Custom Template Gallery Modal */}
+      <TemplateGalleryModal
+        isOpen={templateGalleryOpen}
+        onClose={() => setTemplateGalleryOpen(false)}
+        onApplyTemplate={handleApplyTemplate}
+        currentTheme={theme}
+        currentDensity={density}
+        currentVariants={variants}
+        customTitle={customTitle}
+        customSubtitle={customSubtitle}
+        showQR={showQR}
+        onShowToast={addToast}
+      />
+
+      {/* Real-Time Collaborative Synchronization Modal */}
+      <SyncModal
+        isOpen={syncModalOpen}
+        onClose={() => setSyncModalOpen(false)}
+        syncEngine={syncEngine}
+        onShowToast={addToast}
       />
 
       {/* Toast Container */}

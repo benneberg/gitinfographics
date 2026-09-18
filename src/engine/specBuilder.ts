@@ -21,6 +21,7 @@ import {
   extractTechAdvanced,
   trunc
 } from './extractors';
+import { PluginRegistry } from './plugins';
 
 /**
  * Heuristic detector choosing the ideal visual layout based on repository characteristics.
@@ -205,6 +206,16 @@ export function buildRuleSpec(
   // Badge mining
   if (doc.badges && doc.badges.length) {
     metrics = metrics.concat(extractMetricsFromBadges(doc.badges));
+  }
+  // Plugin System: extensible metric extractors
+  try {
+    const fullText = (doc.title || '') + ' ' + (doc.subtitle || '') + ' ' + (doc.sections || []).map(s => (s.rawText || '') + ' ' + (s.lists || []).join(' ')).join(' ');
+    const pluginMetrics = PluginRegistry.runMetricExtractors(fullText, { parsedDoc: doc, githubMeta: ghMeta });
+    if (pluginMetrics.length > 0) {
+      metrics = metrics.concat(pluginMetrics);
+    }
+  } catch (e) {
+    console.warn('Plugin metric extraction error:', e);
   }
   // Deduplicate
   const mSeen: Record<string, boolean> = {};

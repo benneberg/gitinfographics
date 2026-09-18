@@ -8,3 +8,7 @@ export * from './renderer';
 export * from './github';
 export * from './workflowTemplate';
 export * from './samples';
+export * from './templateSchema';
+export * from './templates';
+export * from './plugins';
+export * from './sync';

@@ -10,7 +10,9 @@ import {
   Keyboard,
   Eye,
   RotateCcw,
-  BookOpen
+  BookOpen,
+  LayoutTemplate,
+  Users
 } from 'lucide-react';
 import { triggerHaptic } from '../../ui/haptics';
 
@@ -20,6 +22,8 @@ interface MobileActionSheetProps {
   onOpenWorkflow: () => void;
   onOpenProjects: () => void;
   onOpenShare: () => void;
+  onOpenTemplates?: () => void;
+  onOpenSync?: () => void;
   onOpenShortcuts: () => void;
   onOpenContrast: () => void;
   onOpenTour: () => void;
@@ -33,6 +37,8 @@ export const MobileActionSheet: React.FC<MobileActionSheetProps> = ({
   onOpenWorkflow,
   onOpenProjects,
   onOpenShare,
+  onOpenTemplates,
+  onOpenSync,
   onOpenShortcuts,
   onOpenContrast,
   onOpenTour,
@@ -48,6 +54,20 @@ export const MobileActionSheet: React.FC<MobileActionSheetProps> = ({
   };
 
   const menuItems = [
+    ...(onOpenTemplates ? [{
+      label: 'Template Gallery',
+      sub: 'Browse community and custom JSON templates',
+      icon: LayoutTemplate,
+      action: onOpenTemplates,
+      color: 'text-emerald-600 bg-emerald-50',
+    }] : []),
+    ...(onOpenSync ? [{
+      label: 'Real-Time Sync',
+      sub: 'Collaborate live with peers across tabs',
+      icon: Users,
+      action: onOpenSync,
+      color: 'text-blue-600 bg-blue-50',
+    }] : []),
     {
       label: 'Projects & Snapshots',
       sub: 'Manage saved repository infographics',
